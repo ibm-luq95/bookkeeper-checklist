@@ -12,6 +12,7 @@ hiredis = "*"
 psycopg2-binary = "*"
 django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
+python-dotenv = "*"
 
 [dev-packages]
 pipdeptree = "*"

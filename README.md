@@ -55,3 +55,8 @@ sudo apt-get install redis
 sudo systemctl enable redis
 sudo systemctl start redis
 ```
+
+### Create .env file
+
+1. Create .env file in src folder.
+2. Copy from env_template and past in .env file you just created.

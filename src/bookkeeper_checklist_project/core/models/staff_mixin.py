@@ -12,7 +12,7 @@ class StaffModelMixin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(_("first_name"), max_length=20, null=False)
     last_name = models.CharField(_("last_name"), max_length=20, null=False)
-    email = models.EmailField(_("email"), max_length=50, null=True)
+    email = models.EmailField(_("email"), max_length=50, null=True, unique=True)
     company_services = models.ForeignKey(
         to=CompanyService, on_delete=models.CASCADE, null=True
     )

@@ -13,6 +13,7 @@ curtsies==0.3.10
 cwcwidth==0.1.6
 Deprecated==1.2.13
 Django==4.0.6
+django-debug-toolbar==3.5.0
 django-extensions==3.2.0
 Faker==13.15.0
 greenlet==1.1.2

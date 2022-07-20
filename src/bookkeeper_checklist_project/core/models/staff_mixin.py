@@ -1,6 +1,6 @@
 import uuid
 
-
+from company_services.models import CompanyService
 from core.utils import sort_dict
 from django.db import models
 from django.forms.models import model_to_dict
@@ -8,9 +8,14 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 
-class BaseModelMixin(models.Model):
+class StaffModelMixin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    metadata = models.JSONField(_("metadata"), default=dict, null=True)
+    first_name = models.CharField(_("first_name"), max_length=20, null=False)
+    last_name = models.CharField(_("last_name"), max_length=20, null=False)
+    email = models.EmailField(_("email"), max_length=50, null=True)
+    company_services = models.ForeignKey(
+        to=CompanyService, on_delete=models.CASCADE, null=True
+    )
     created_at = models.DateTimeField(
         _("created_at"), default=timezone.now, editable=False
     )

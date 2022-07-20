@@ -6,16 +6,13 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(", ")
 
 DEBUG = bool(os.environ.get("DEBUG"))
 
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.cache.UpdateCacheMiddleware",  # new for the cache
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+INSTALLED_APPS = INSTALLED_APPS + [
+    "debug_toolbar",
+    "django_extensions",
+]
+
+MIDDLEWARE = MIDDLEWARE + [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 
@@ -33,9 +30,9 @@ DATABASES = {
 
 # Set Cache Configurations
 # CACHE_MIDDLEWARE_ALIAS = os.environ.get("CACHE_MIDDLEWARE_ALIAS")  # which cache alias to use
-# CACHE_MIDDLEWARE_SECONDS = os.environ.get(
-#     "CACHE_MIDDLEWARE_SECONDS"
-# )  # number of seconds to cache a page for (TTL)
+CACHE_MIDDLEWARE_SECONDS = os.environ.get(
+    "CACHE_MIDDLEWARE_SECONDS"
+)  # number of seconds to cache a page for (TTL)
 
 # Cache Redis
 CACHES = {
@@ -44,3 +41,26 @@ CACHES = {
         "LOCATION": f"redis://{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
     }
 }
+
+# Djagno Debug Toolbar
+INTERNAL_IPS = os.environ.get("INTERNAL_IPS")
+DISABLE_PANELS = {}
+
+DEBUG_TOOLBAR_PANELS = [
+    "debug_toolbar.panels.history.HistoryPanel",
+    "debug_toolbar.panels.versions.VersionsPanel",
+    "debug_toolbar.panels.timer.TimerPanel",
+    "debug_toolbar.panels.settings.SettingsPanel",
+    "debug_toolbar.panels.headers.HeadersPanel",
+    "debug_toolbar.panels.request.RequestPanel",
+    "debug_toolbar.panels.sql.SQLPanel",
+    "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+    "debug_toolbar.panels.templates.TemplatesPanel",
+    "debug_toolbar.panels.cache.CachePanel",
+    "debug_toolbar.panels.signals.SignalsPanel",
+    "debug_toolbar.panels.logging.LoggingPanel",
+    "debug_toolbar.panels.redirects.RedirectsPanel",
+    "debug_toolbar.panels.profiling.ProfilingPanel",
+]
+
+SHOW_COLLAPSED = True

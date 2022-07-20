@@ -20,7 +20,7 @@ class ServiceNameEnum(models.TextChoices):
 class CompanyService(BaseModelMixin):
     label = models.CharField(_("label"), max_length=30, null=True)
     service_name = models.CharField(
-        _("service_name"), max_length=20, choices=ServiceNameEnum.choices
+        _("service_name"), max_length=35, choices=ServiceNameEnum.choices
     )
     email = models.EmailField(_("email"), max_length=60, null=False)
     password = models.CharField(_("password"), max_length=250, null=False)

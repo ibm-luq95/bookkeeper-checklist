@@ -1,1 +1,2 @@
-from .mixins import BaseModelMixin, StaffModelMixin
+from .mixins import BaseModelMixin
+from .staff_mixin import CompanyService

@@ -1,5 +1,4 @@
 from client.models import Client
-from company_services.models import CompanyService
 from core.models import StaffModelMixin
 from django.db import models
 from django.utils.translation import gettext as _

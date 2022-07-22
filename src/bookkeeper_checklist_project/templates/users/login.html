@@ -1,0 +1,25 @@
+{% extends 'core/master.html' %}
+{% load crispy_forms_tags %}
+
+
+
+
+{% block main_content %}
+
+<main>
+    <form method="POST" id="login-form" novalidate>
+        {% csrf_token %}
+        <fieldset form="login-form">
+            <legend class="title">Login Form</legend>
+            {{form| crispy}}
+            <div class="has-text-right">
+                <button class="button is-primary">Login</button>
+            </div>
+        </fieldset>
+
+
+    </form>
+</main>
+
+
+{% endblock main_content %}

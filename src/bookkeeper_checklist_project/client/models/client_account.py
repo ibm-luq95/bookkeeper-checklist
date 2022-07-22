@@ -1,6 +1,7 @@
+from core.models import BaseModelMixin
 from django.db import models
 from django.utils.translation import gettext as _
-from core.models import BaseModelMixin
+
 
 class ClientAccount(BaseModelMixin):
     account_name = models.CharField(_("account_name"), max_length=50, null=True)

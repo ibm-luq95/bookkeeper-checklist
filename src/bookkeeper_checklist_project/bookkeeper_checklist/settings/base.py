@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "core",
+    "users",
     "assistant",
     "bank_account",
     "bookkeeper",
@@ -48,6 +49,8 @@ INSTALLED_APPS = [
     "company_services",
     "notes",
     "tasks",
+    "crispy_forms",
+    "crispy_bulma",
 ]
 
 MIDDLEWARE = [
@@ -178,17 +181,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+MESSAGE_TAGS = {
+    messages.DEBUG: "is-link",
+    messages.INFO: "is-info",
+    messages.SUCCESS: "is-success",
+    messages.WARNING: "is-warning",
+    messages.ERROR: "is-danger",
+}
 
-# CRISPY_TEMPLATE_PACK = "bootstrap5"
+LOGIN_REDIRECT_URL = ""
+LOGOUT_REDIRECT_URL = "/"
 
-# MESSAGE_TAGS = {
-#     messages.DEBUG: "alert-secondary",
-#     messages.INFO: "alert-info",
-#     messages.SUCCESS: "alert-success",
-#     messages.WARNING: "alert-warning",
-#     messages.ERROR: "alert-danger",
-# }
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
 
-# LOGIN_REDIRECT_URL = ""
-# LOGOUT_REDIRECT_URL = "/"
+CRISPY_TEMPLATE_PACK = "bulma"
+
+
+AUTH_USER_MODEL = 'users.CustomUser'

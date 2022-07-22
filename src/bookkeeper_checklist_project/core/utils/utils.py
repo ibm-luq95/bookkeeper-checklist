@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.utils.translation import gettext as _
 
 
 def sort_dict(dict_object: dict) -> dict:
@@ -9,3 +10,7 @@ def sort_dict(dict_object: dict) -> dict:
         else:
             res[k] = v
     return res
+
+
+def get_trans_txt(txt):
+    return _(txt)

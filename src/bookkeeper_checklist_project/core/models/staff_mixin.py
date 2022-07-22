@@ -14,7 +14,7 @@ class StaffModelMixin(models.Model):
     last_name = models.CharField(_("last_name"), max_length=20, null=False)
     email = models.EmailField(_("email"), max_length=50, null=True, unique=True)
     company_services = models.ForeignKey(
-        to=CompanyService, on_delete=models.CASCADE, null=True
+        to=CompanyService, on_delete=models.PROTECT, null=True
     )
     created_at = models.DateTimeField(
         _("created_at"), default=timezone.now, editable=False

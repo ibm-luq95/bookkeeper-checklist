@@ -64,3 +64,17 @@ DEBUG_TOOLBAR_PANELS = [
 ]
 
 SHOW_COLLAPSED = True
+
+
+def show_toolbar(request):
+    return True
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+}
+
+if DEBUG:
+    import mimetypes
+
+    mimetypes.add_type("application/javascript", ".js", True)

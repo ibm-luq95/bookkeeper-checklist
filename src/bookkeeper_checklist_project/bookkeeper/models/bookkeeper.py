@@ -25,3 +25,4 @@ class Bookkeeper(BaseModelMixin):
         to=CompanyService, on_delete=models.PROTECT, null=True, related_name="bookkeeper"
     )
     clients = models.ManyToManyField(to=Client)
+    is_active = models.BooleanField(_("is_active"), default=True)

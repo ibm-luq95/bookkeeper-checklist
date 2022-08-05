@@ -35,12 +35,12 @@ CACHE_MIDDLEWARE_SECONDS = os.environ.get(
 )  # number of seconds to cache a page for (TTL)
 
 # Cache Redis
-CACHES = {
-    "default": {
-        "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
-        "LOCATION": f"redis://{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
+#         "LOCATION": f"redis://{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
+#     }
+# }
 
 # Djagno Debug Toolbar
 INTERNAL_IPS = os.environ.get("INTERNAL_IPS")

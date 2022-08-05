@@ -12,7 +12,9 @@ static_and_media_path_urls = static(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
-    path("", include("users.urls"), name="default-urls"),
+    path("", include("users.urls"), name="users-urls"),
+    path("bookkeeper/", include("bookkeeper.urls"), name="bookkeeper-urls"),
+    path("assistant/", include("assistant.urls"), name="assistant-urls"),
 ]
 
 # set admin configs

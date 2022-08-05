@@ -15,11 +15,11 @@ cryptography==37.0.4
 curtsies==0.3.10
 cwcwidth==0.1.6
 Deprecated==1.2.13
-Django==4.0.6
+Django==4.1
 django-crispy-forms==1.14.0
 django-debug-toolbar==3.5.0
 django-extensions==3.2.0
-Faker==13.15.0
+Faker==13.15.1
 greenlet==1.1.2
 hiredis==2.0.0
 idna==3.3
@@ -31,7 +31,7 @@ pipdeptree==2.2.1
 platformdirs==2.5.2
 prettyprinter==0.18.0
 psycopg2-binary==2.9.3
-pycodestyle==2.8.0
+pycodestyle==2.9.0
 pycparser==2.21
 Pygments==2.12.0
 pyparsing==3.0.9

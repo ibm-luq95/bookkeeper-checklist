@@ -10,12 +10,12 @@ from .manager import CustomUserManager
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_("first_name"), max_length=15)
     last_name = models.CharField(_("last_name"), max_length=15)
-    email = models.EmailField(_("email_address"), unique=True)
+    email = models.EmailField(_("email address"), unique=True)
     is_staff = models.BooleanField(_("is_staff"), default=False)
     is_active = models.BooleanField(_("is_active"), default=True)
     date_joined = models.DateTimeField(_("date_joined"), default=timezone.now)
     user_type = models.CharField(
-        _("user_type"), choices=CustomUserTypeEnum.choices, max_length=15
+        _("user type"), choices=CustomUserTypeEnum.choices, max_length=15
     )
     metadata = models.JSONField(_("metadata"), default=dict, null=True)
     created_at = models.DateTimeField(
@@ -34,7 +34,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     @property
-    def get_fullname(self):
+    def fullname(self):
         return f"{self.first_name} {self.last_name}"
 
     class Meta:

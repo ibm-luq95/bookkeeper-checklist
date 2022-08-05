@@ -1,0 +1,72 @@
+<nav class="navbar is-white">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item brand-text" href="../index.html"> Bookkeeper
+            </a>
+            <div class="navbar-burger burger" data-target="navMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-start">
+                
+                {% if request.resolver_match.url_name == "bookkeeper-dashboard" %}
+                    <a class="navbar-item" href="{% url 'bookkeeper:clients-list' %}"> Clients </a>
+                {% elif request.resolver_match.url_name == "assistant-dashboard" %}
+                <a class="navbar-item" href="{% url 'assistant:bookkeeper-list-url' %}"> Bookkeepers </a>
+                {% endif %}
+                    
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <!-- <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary">
+                        <strong>Sign up</strong>
+                    </a>
+                    <a class="button is-light">
+                        Log in
+                    </a>
+                </div>
+            </div> -->
+            <div class="navbar-item">
+                <div class="dropdown">
+                    <div class="dropdown-trigger">
+                        <button class="button" aria-haspopup="true"
+                            aria-controls="dropdown-menu3">
+
+                            <span>
+                                <i class="fa-solid fa-user"></i>
+                                Terry Lehner MD
+                                <span title="Badge top right" class="badge">8</span>
+                            </span>
+                            <span class="icon is-small">
+                                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                        <div class="dropdown-content">
+                            <a href="#" class="dropdown-item">
+                                Profile
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                Modifiers
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</nav>

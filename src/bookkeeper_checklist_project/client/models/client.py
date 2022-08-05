@@ -18,3 +18,4 @@ class Client(BaseModelMixin):
         null=True,
         related_name="client",
     )
+    is_active = models.BooleanField(_("is_active"), default=True)

@@ -1,0 +1,97 @@
+{% extends 'core/layouts/dashboard.html' %}
+
+
+
+{% block dashboard_content %}
+<!-- Start Profile -->
+<div class="box">
+    <h4 class="title is-4 mb-5">Business Profile</h4>
+    <div class="columns mt-5">
+        <div class="column is-2">
+            <h6 class="title is-6">Phone</h6>
+        </div>
+        <div class="column">
+            123456789
+        </div>
+        <div class="column is-2">
+            <h6 class="title is-6">Website URL</h6>
+        </div>
+        <div class="column">
+            <a href="">https://www.google.com</a>
+        </div>
+    </div>
+    <hr class="m-0" />
+    <div class="columns mt-5">
+        <div class="column is-2">
+            <h6 class="title is-6">Address</h6>
+        </div>
+        <div class="column">
+            Address
+        </div>
+        <div class="column is-2">
+            <h6 class="title is-6">Contact</h6>
+        </div>
+        <div class="column">
+            Contact details
+        </div>
+    </div>
+
+</div>
+<!-- End Profile -->
+
+<!-- Start Tabs -->
+<section class="box">
+    <!-- <h2>Tabs</h2> -->
+    <div class="tab">
+        <button class="tablinks" data-tab-element="tasks-tab" id="defaultOpen">Tasks</button>
+        <button class="tablinks" data-tab-element="notes-tab">Notes</button>
+        <button class="tablinks" data-tab-element="account-and-services-tab">Accounts
+            and Services</button>
+        <button class="tablinks" data-tab-element="past-due-tasks-tab">Past Due
+            Tasks</button>
+    </div>
+
+    <div id="tasks-tab" class="tabcontent">
+
+        <button class="accordion">Section 1</button>
+        <div class="accordion-panel">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+
+        <button class="accordion">Section 2</button>
+        <div class="accordion-panel">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+
+        <button class="accordion">Section 3</button>
+        <div class="accordion-panel">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+    <div id="notes-tab" class="tabcontent">
+        <h3>Notes</h3>
+        <p>Paris is the capital of France.</p>
+    </div>
+
+    <div id="account-and-services-tab" class="tabcontent">
+        <h3>Accounts and Services</h3>
+        <p>Tokyo is the capital of Japan.</p>
+    </div>
+    <div id="past-due-tasks-tab" class="tabcontent">
+        <h3>Past Due Tasks</h3>
+        <p>Tokyo is the capital of Japan.</p>
+    </div>
+</section>
+<!-- End Tabs -->
+
+{% endblock dashboard_content %}

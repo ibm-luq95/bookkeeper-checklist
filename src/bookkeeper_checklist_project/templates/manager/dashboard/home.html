@@ -1,0 +1,113 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-dashboard">
+    <section class="hero is-info welcome is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    Hello, Albert
+                </h1>
+                <h2 class="subtitle">
+                    {{ quote_text }}
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <div class="columns is-mobile has-margin-top-10">
+        <div class="column">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title has-text-black">
+                        Card header
+                    </p>
+
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <canvas id="clientChart" height="250"></canvas>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="#" class="card-footer-item has-text-black">All</a>
+                </footer>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title has-text-black">
+                        Card header
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <canvas id="tasksChart" height="250"></canvas>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="#" class="card-footer-item has-text-black">All</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-mobile">
+        <div class="table-container column">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title has-text-black">
+                        Component
+                    </p>
+
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <div class="table-container">
+                            <table class="table is-hoverable is-bordered is-striped">
+                                <thead>
+                                    <tr>
+                                        <th>One</th>
+                                        <th>Team</th>
+                                        <th>Two</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="#" class="card-footer-item has-text-black">All</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock dashboard_content %}
+
+
+{% block externaljs %}
+<script src="{% static 'js/manager/dashboard/home.js' %}"></script>
+{% endblock externaljs %}

@@ -3,12 +3,16 @@ from company_services.models import CompanyService
 from core.choices import AssistantTypeEnum, CustomUserStatusEnum
 from core.models import BaseModelMixin
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 from django.db import models
 from django.utils.translation import gettext as _
 
 
 class Assistant(BaseModelMixin):
     slug = models.SlugField(_("slug"), max_length=250, null=True)
+    profile_picture = models.ImageField(
+        _("profile_picture"), upload_to="profile_pictures/", null=True, blank=True
+    )
     status = models.CharField(
         _("status"),
         max_length=10,
@@ -34,7 +38,12 @@ class Assistant(BaseModelMixin):
 
     class Meta(BaseModelMixin.Meta):
         permissions = [
+            ("assistant_user", "Assistant User"),
             ("can_access_bookkeeper", _("Can access bookkeeper account details")),
             ("can_edit_bookkeeper", _("Can edit bookkeeper account details")),
             ("can_access_client", _("Can access client(s) account details")),
         ]
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.user.fullname)
+        super(Assistant, self).save(*args, **kwargs)

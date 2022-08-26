@@ -11,18 +11,22 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("bookkeeper", "0001_initial"),
+        ("core", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="bookkeeper",
+            model_name="quote",
             name="user",
-            field=models.OneToOneField(
+            field=models.ForeignKey(
+                blank=True,
                 null=True,
-                on_delete=django.db.models.deletion.PROTECT,
-                related_name="bookkeeper",
+                on_delete=django.db.models.deletion.CASCADE,
                 to=settings.AUTH_USER_MODEL,
             ),
+        ),
+        migrations.AddIndex(
+            model_name="quote",
+            index=models.Index(fields=["created_at"], name="core_quote_created_36e025_idx"),
         ),
     ]

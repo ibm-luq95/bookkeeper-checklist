@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+
 static_and_media_path_urls = static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
@@ -15,6 +16,7 @@ urlpatterns = [
     path("", include("users.urls"), name="users-urls"),
     path("bookkeeper/", include("bookkeeper.urls"), name="bookkeeper-urls"),
     path("assistant/", include("assistant.urls"), name="assistant-urls"),
+    path("manager/", include("manager.urls"), name="manager-urls"),
 ]
 
 # set admin configs

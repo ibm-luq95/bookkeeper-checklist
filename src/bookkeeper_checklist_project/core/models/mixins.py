@@ -10,13 +10,9 @@ from django.utils.translation import gettext as _
 
 class BaseModelMixin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    metadata = models.JSONField(_("metadata"), default=dict, null=True)
-    created_at = models.DateTimeField(
-        _("created_at"), default=timezone.now, editable=False
-    )
-    updated_at = models.DateTimeField(
-        _("updated_at"), auto_now=True, blank=True, null=True
-    )
+    metadata = models.JSONField(_("metadata"), null=True, blank=True, default=dict)
+    created_at = models.DateTimeField(_("created_at"), default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(_("updated_at"), auto_now=True, blank=True, null=True)
 
     class Meta:
         abstract = True
@@ -24,4 +20,7 @@ class BaseModelMixin(models.Model):
 
     @property
     def get_instance_as_dict(self) -> dict:
-        return sort_dict(model_to_dict(self))
+        data = model_to_dict(self)
+        data.setdefault("id", self.id)
+        data.setdefault("created_at", self.created_at)
+        return sort_dict(data)

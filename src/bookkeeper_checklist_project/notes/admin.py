@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Notes
+from .models import Note
 
 
-@admin.register(Notes)
-class NotesAdmin(admin.ModelAdmin):
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
     pass

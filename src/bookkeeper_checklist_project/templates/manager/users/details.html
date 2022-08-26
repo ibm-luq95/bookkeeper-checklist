@@ -1,0 +1,12 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="user-details-view">
+    <h3>Details view</h3>
+    {{object}}
+</section>
+
+{% endblock dashboard_content %}

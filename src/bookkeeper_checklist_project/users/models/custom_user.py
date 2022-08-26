@@ -1,15 +1,20 @@
+import uuid
+from core.utils import sort_dict
+from django.forms.models import model_to_dict
 from core.choices import CustomUserTypeEnum
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django.urls import reverse
 
 from .manager import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    first_name = models.CharField(_("first_name"), max_length=15)
-    last_name = models.CharField(_("last_name"), max_length=15)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    first_name = models.CharField(_("first name"), max_length=15)
+    last_name = models.CharField(_("last name"), max_length=15)
     email = models.EmailField(_("email address"), unique=True)
     is_staff = models.BooleanField(_("is_staff"), default=False)
     is_active = models.BooleanField(_("is_active"), default=True)
@@ -17,13 +22,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     user_type = models.CharField(
         _("user type"), choices=CustomUserTypeEnum.choices, max_length=15
     )
-    metadata = models.JSONField(_("metadata"), default=dict, null=True)
-    created_at = models.DateTimeField(
-        _("created_at"), default=timezone.now, editable=False
+    metadata = models.JSONField(
+        _("metadata"), null=True, blank=True, default=dict, help_text="Enter as JSON object"
     )
-    updated_at = models.DateTimeField(
-        _("updated_at"), auto_now=True, blank=True, null=True
-    )
+    created_at = models.DateTimeField(_("created_at"), default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(_("updated_at"), auto_now=True, blank=True, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -32,6 +35,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def get_absolute_url(self):
+        return reverse("manager:users-detail", kwargs={"pk": self.pk})
+
+    @property
+    def get_instance_as_dict(self) -> dict:
+        data = model_to_dict(self)
+        data.setdefault("id", self.id)
+        data.setdefault("created_at", self.created_at)
+        return sort_dict(data)
 
     @property
     def fullname(self):

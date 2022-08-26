@@ -53,8 +53,10 @@ class TaskStatusEnum(models.TextChoices):
     IN_PROGRESS = "in_progress", _("In progress")
     PAST_DUE = "past_due", _("Past Due")
     COMPLETE = "complete", _("Complete")
+    ARCHIVE = "archive", _("Archive")
 
 
 class CustomUserTypeEnum(models.TextChoices):
     BOOKKEEPER = "bookkeeper", _("Bookkeeper")
     ASSISTANT = "assistant", _("Assistant")
+    MANAGER = "manager", _("Manager")

@@ -21,22 +21,21 @@
                     <figure class="avatar">
                         <img src="https://via.placeholder.com/150">
                     </figure>
-                    <form method="POST" id="login-form">
+                    <form method="POST" id="login-form" action="{% url 'users:login' %}">
                         {% csrf_token %}
                         <fieldset form="login-form">
                             {{form| crispy}}
                             <div class="has-text-right">
                                 <button type="submit" class="button is-block is-info is-large
-                                    is-fullwidth">Login <i class="fa fa-sign-in"
-                                        aria-hidden="true"></i></button>
+                                    is-fullwidth">Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
                             </div>
                         </fieldset>
 
                     </form>
                 </div>
                 <p class="has-text-grey">
-                    <a href="../">Forgot Password</a> &nbsp;·&nbsp;
-                    <a href="../">Need Help?</a>
+                    <a href="">Forgot Password</a> &nbsp;·&nbsp;
+                    <a href="">Need Help?</a>
                 </p>
             </div>
         </div>

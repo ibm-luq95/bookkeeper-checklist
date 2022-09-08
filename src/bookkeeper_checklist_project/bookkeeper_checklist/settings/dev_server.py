@@ -43,7 +43,7 @@ CACHE_MIDDLEWARE_SECONDS = os.environ.get(
 # }
 
 # Djagno Debug Toolbar
-INTERNAL_IPS = os.environ.get("INTERNAL_IPS")
+INTERNAL_IPS = os.environ.get("INTERNAL_IPS").split(", ")
 DISABLE_PANELS = {}
 
 DEBUG_TOOLBAR_PANELS = [

@@ -299,3 +299,8 @@ backup/*
 *.bkp*
 .pydevproject
 .project
+.idea
+pyproject.toml
+mypy.ini
+docker-compose.yml
+Dockerfile

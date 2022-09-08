@@ -32,6 +32,7 @@ class CustomUserManager(BaseUserManager):
         if email == "admin@admin.com":
             extra_fields.setdefault("first_name", "Administrator")
             extra_fields.setdefault("last_name", "Account")
+            extra_fields.setdefault("user_type", "manager")
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError(_("Superuser must have is_staff=True."))

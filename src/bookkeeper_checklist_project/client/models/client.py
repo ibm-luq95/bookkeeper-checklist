@@ -1,20 +1,25 @@
-from distutils.command import upload
 from core.models import BaseModelMixin
 from django.db import models
 from django.utils.translation import gettext as _
 
-from . import ClientAccount, ClientBusinessProfile
+from . import ClientAccount, ImportantContact
 
 
 class Client(BaseModelMixin):
+    """This is client model
+
+    Args:
+        BaseModelMixin (models.Model): Django base model mixin
+    """
+
     name = models.CharField(_("name"), max_length=50, null=True)
     email = models.EmailField(_("email"), max_length=50, null=True)
     industry = models.CharField(_("industry"), max_length=50, null=True)
     client_account = models.ForeignKey(
         to=ClientAccount, on_delete=models.PROTECT, null=True, related_name="client"
     )
-    business_profile = models.OneToOneField(
-        to=ClientBusinessProfile,
+    important_contact = models.OneToOneField(
+        to=ImportantContact,
         on_delete=models.PROTECT,
         null=True,
         related_name="client",

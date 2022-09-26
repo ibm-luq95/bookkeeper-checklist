@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     "client",
     "company_services",
     "notes",
-    "tasks",
+    "jobs",
+    "task",
     "crispy_forms",
     "crispy_bulma",
 ]

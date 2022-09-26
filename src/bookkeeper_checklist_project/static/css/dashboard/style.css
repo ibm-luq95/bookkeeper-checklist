@@ -136,6 +136,7 @@ nav.navbar {
   padding: 14px 16px;
   transition: 0.3s;
   font-size: 17px;
+  /* width: 132px; */
 }
 
 /* Change background color of buttons on hover */
@@ -250,3 +251,6 @@ nav.navbar {
   transition: max-height 0.2s ease-out;
 }
 
+.completed-task-item{
+  text-decoration: line-through !important;
+}

@@ -21,14 +21,24 @@ document.addEventListener("readystatechange", (ev) => {
 
     // first enable all bkchlst inputs when page fully loaded completed
     const allBkChLstInputs = document.querySelectorAll(".bkchlst-input");
+    const inputTrimWhitespaceBtns = document.querySelectorAll(".input-trim-whitespace");
     allBkChLstInputs.forEach((element) => {
-      element.disabled = false;
-      element.classList.remove(isDisabledCssClass);
+      const isDisabled = element.dataset["isDisabled"];
+      if (isDisabled !== "1") {
+        element.disabled = false;
+        element.classList.remove(isDisabledCssClass);
+      }
+    });
+    inputTrimWhitespaceBtns.forEach((element) => {
+      element.value = element.value.trim();
     });
     // Then instantiate the MicroModal module, so that it takes care of all the bindings for you.
     MicroModal.init({
       disableScroll: false,
     });
+
+    const weeklyTasksInputs = document.querySelectorAll(".monthly-task-checkbox");
+    const weeklyTasksSubmitBtn = document.querySelector("#weeklyTasksSubmitBtn");
 
     // bookkeeper add new task button
     const bookkeeperAddNewTaskBtn = document.querySelector("#bookkeeperAddNewTaskBtn");
@@ -39,6 +49,50 @@ document.addEventListener("readystatechange", (ev) => {
           console.info(`${modal.id} is hidden`);
         },
         disableFocus: false,
+      });
+    });
+
+    // task items buttons
+    const openTasksItemsModalBtns = document.querySelectorAll(".open-tasks-items-modal-btn");
+    openTasksItemsModalBtns.forEach((element) => {
+      element.addEventListener("click", (event) => {
+        const currentTarget = event.currentTarget;
+        MicroModal.show("tasks-items-modal", {
+          disableScroll: false,
+          onClose: (modal) => {
+            console.info(`${modal.id} is hidden`);
+          },
+          disableFocus: false,
+        });
+      });
+    });
+
+    // delete task buttons
+    const deleteTaskBtns = document.querySelectorAll(".delete-task-btn");
+    deleteTaskBtns.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        const currentTarget = event.currentTarget;
+        alert("do you want to delete?");
+      });
+    });
+
+    // tasks checkbox main checkbox event
+    const tasksThMainCheckboxs = document.querySelectorAll(".tasks-th-main-checkbox");
+
+    tasksThMainCheckboxs.forEach((element) => {
+      element.addEventListener("change", (event) => {
+        const currentTarget = event.currentTarget;
+
+        const childeElementsCssClass = `.${currentTarget.dataset["childCheckboxClass"]}`;
+        const allChildElements = document.querySelectorAll(childeElementsCssClass);
+        allChildElements.forEach((input) => {
+          console.log(weeklyTasksInputs);
+          if (currentTarget.checked === true) {
+            input.checked = true;
+          } else {
+            input.checked = false;
+          }
+        });
       });
     });
 
@@ -139,9 +193,82 @@ document.addEventListener("readystatechange", (ev) => {
       const currentTarget = event.currentTarget;
       const searchAccountLoader = document.querySelector("#searchAccountLoader");
       const acServicesSearchInput = document.querySelector("#acServicesSearch");
-      searchAccountLoader.hidden = false;
-      currentTarget.disabled = true;
-      acServicesSearchInput.disabled = true;
+      if (acServicesSearchInput.value === "") {
+        acServicesSearchInput.classList.add("is-border-danger");
+      } else {
+        // search in account and services
+        searchAccountLoader.hidden = false;
+        currentTarget.disabled = true;
+        acServicesSearchInput.disabled = true;
+        const bookkeeperClientAccountAndServicesTable = document.querySelector(
+          "#bookkeeper-client-account-and-services-table",
+        );
+        const tbodyElement = bookkeeperClientAccountAndServicesTable.querySelector("tbody");
+        const allTrElements = tbodyElement.querySelectorAll("tr");
+        if (allTrElements.length > 0) {
+          allTrElements.forEach((element) => {
+            element.remove();
+          });
+          setTimeout(() => {
+            const trElement = document.createElement("tr");
+            const tdUrl = document.createElement("td");
+            tdUrl.textContent = "https://www.google.com";
+            trElement.appendChild(tdUrl);
+            const tdUsername = document.createElement("td");
+            tdUsername.textContent = "admin";
+            trElement.appendChild(tdUsername);
+            const tdPassword = document.createElement("td");
+            tdPassword.innerHTML = /*html*/ `<div class="account-service-item account-service-password">
+            <div class="field has-addons">
+              <p class="control">
+                <span class="">
+                  <button class="button showASUPasswordBtn is-small" data-tooltip="Show Password"
+                    data-visibility-status="0" data-password-input="as-password-22">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </span>
+              </p>
+              <div class="control">
+                <input class="input is-small" type="password" value="password" id="as-password-22"
+                  readonly />
+              </div>
+              <div class="control">
+                <button
+                  class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
+                  data-tooltip="Copy password, you have to reveal the password to copy it"
+                  data-clipboard-target="#as-password-22" data-text-type="password">
+                  <i class="fas fa-copy"></i>
+                </button>
+
+              </div>
+            </div>
+
+
+          </div>`;
+            trElement.appendChild(tdPassword);
+            tbodyElement.appendChild(trElement);
+
+            // enable search inputs
+            searchAccountLoader.hidden = true;
+            currentTarget.disabled = false;
+            acServicesSearchInput.disabled = false;
+          }, 2000);
+        }
+      }
+    });
+
+    // open note item
+    const allNotesItemsBtns = document.querySelectorAll(".open-note-item-btn");
+    allNotesItemsBtns.forEach((element) => {
+      element.addEventListener("click", (event) => {
+        MicroModal.show("notes-item-modal", {
+          disableScroll: false,
+          onClose: (modal) => {
+            console.info(`${modal.id} is hidden`);
+          },
+          disableFocus: false,
+        });
+      });
     });
   }
 });

@@ -1,11 +1,11 @@
+from assistant.models import Assistant
 from django.contrib.auth import get_user_model
-from django.views.generic.edit import CreateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
 
-from users.forms import CustomUserCreationForm
 from bookkeeper.models import Bookkeeper
-from assistant.models import Assistant
+from users.forms import CustomUserCreationForm
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):

@@ -1,15 +1,14 @@
-from typing import List, Optional
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
-from prettyprinter import cpprint
-from termcolor import cprint
 
 from users.forms import CustomUserLoginForm
+
+# from prettyprinter import cpprint
+# from termcolor import cprint
 
 
 class LoginView(SuccessMessageMixin, FormView):

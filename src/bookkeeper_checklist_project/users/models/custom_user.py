@@ -1,17 +1,28 @@
 import uuid
-from core.utils import sort_dict
-from django.forms.models import model_to_dict
+
 from core.choices import CustomUserTypeEnum
+from core.utils import sort_dict
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
+from django.forms.models import model_to_dict
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from django.urls import reverse
 
 from .manager import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    """Custom user model, it used instead of default django user model
+
+    Args:
+        AbstractBaseUser (_type_): _description_
+        PermissionsMixin (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(_("first name"), max_length=15)
     last_name = models.CharField(_("last name"), max_length=15)
@@ -23,10 +34,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         _("user type"), choices=CustomUserTypeEnum.choices, max_length=15
     )
     metadata = models.JSONField(
-        _("metadata"), null=True, blank=True, default=dict, help_text="Enter as JSON object"
+        _("metadata"),
+        null=True,
+        blank=True,
+        default=dict,
+        help_text="Enter as JSON object",
     )
-    created_at = models.DateTimeField(_("created_at"), default=timezone.now, editable=False)
-    updated_at = models.DateTimeField(_("updated_at"), auto_now=True, blank=True, null=True)
+    created_at = models.DateTimeField(
+        _("created_at"), default=timezone.now, editable=False
+    )
+    updated_at = models.DateTimeField(
+        _("updated_at"), auto_now=True, blank=True, null=True
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

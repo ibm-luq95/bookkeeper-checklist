@@ -136,45 +136,21 @@
           </div>
           <div class="is-clearfix"></div>
           <div class="tab">
-            <button class="tablinks defaultOpenTab1" data-tab-element="tasks-tab">Tasks</button>
-            <button class="tablinks" data-tab-element="past-due-tasks-tab">Past Due Tasks</button>
+            <button class="tablinks has-text-danger has-text-weight-bold" data-tab-element="past-due-tasks-tab">
+              Past Due Tasks (3)
+            </button>
+            <button class="tablinks defaultOpenTab1 bkchlst-input is-disabled" disabled
+              data-tab-element="weekly-tasks-tab">Weekly Tasks</button>
+            <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="monthly-tasks-tab">Monthly
+              Tasks</button>
+            <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="quarter-tasks-tab">Quarter
+              Tasks</button>
+            <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="yearly-tasks-tab">Yearly
+              Tasks</button>
           </div>
-          <div id="tasks-tab" class="tabcontent tabcontent1">
-            <div class="box">
-              <div class="w3-container">
-                <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>
-                <h6 class="w3-text-teal">
-                  <i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 -
-                  <span class="w3-tag w3-teal w3-round">Current</span>
-                </h6>
-                <p>
-                  Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt
-                  aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde
-                  doloremque repellendus iure, iste.
-                </p>
-                {% comment %}
-                <hr />
-                {% endcomment %}
-              </div>
-            </div>
-            <div class="box">
-              <div class="w3-container">
-                <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>
-                <h6 class="w3-text-teal">
-                  <i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 -
-                  <span class="w3-tag w3-teal w3-round">Current</span>
-                </h6>
-                <p>
-                  Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt
-                  aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde
-                  doloremque repellendus iure, iste.
-                </p>
-                {% comment %}
-                <hr />
-                {% endcomment %}
-              </div>
-            </div>
-            <div class="box">
+
+          <div class="tabcontent" id="past-due-tasks-tab">
+            <div class="box past-dude-task">
               <div class="w3-container">
                 <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>
                 <h6 class="w3-text-teal">
@@ -193,8 +169,444 @@
             </div>
           </div>
 
-          <div class="tabcontent" id="past-due-tasks-tab">
-            <div class="box past-dude-task">
+          <div class="tabcontent" id="weekly-tasks-tab">
+            <div class="container">
+              <div class="b-table">
+                <div class="table-wrapper has-mobile-cards">
+                  <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                    <thead>
+                      <tr>
+                        <th class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="tasks-th-main-checkbox bkchlst-input is-disabled" disabled
+                              data-child-checkbox-class="weekly-task-checkbox">
+                          </label>
+                        </th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="bkchlst-input weekly-task-checkbox is-disabled" disabled />
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Rebecca Bauch</td>
+                        <td data-label="Status">
+                          <span class="tag is-warning has-text-weight-bold">Not Started</span>
+                        </td>
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Oct 25, 2020">Oct 25, 2020</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button" data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger bkchlst-input is-disabled" disabled type="button"
+                              data-tooltip="Delete task">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="bkchlst-input weekly-task-checkbox is-disabled" disabled />
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Felicita Yundt</td>
+                        <td data-label="Status">
+                          <span class="tag is-info has-text-weight-bold">Not started</span>
+                        </td>
+
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 8, 2019</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button" data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled" disabled
+                              type="button" data-tooltip="Delete task">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="has-background-danger-light">
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="bkchlst-input weekly-task-checkbox is-disabled" disabled>
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Mr. Larry Satterfield V</td>
+                        <td data-label="Status">
+                          <span class="tag is-danger has-text-weight-bold">Past</span>
+                        </td>
+
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Dec 18, 2020">Dec 18, 2020</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button" data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled" disabled
+                              type="button" data-tooltip="Delete task">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="has-background-success-light">
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="bkchlst-input weekly-task-checkbox is-disabled" disabled>
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Mr. Broderick Kub</td>
+                        <td data-label="Status">
+                          <span class="tag is-success has-text-weight-bold">Completed</span>
+                        </td>
+
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Sep 13, 2020">Sep 13, 2020</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled" disabled
+                              type="button">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="bkchlst-input weekly-task-checkbox is-disabled" disabled>
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Barry Weber</td>
+                        <td data-label="Status">
+                          <span class="tag is-warning">Label</span>
+                        </td>
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jul 24, 2019">Jul 24, 2019</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button" data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled" disabled
+                              type="button" data-tooltip="Delete task">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <hr />
+              <div class="field is-grouped is-grouped-right">
+                <p class="control">
+                  <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                    id="weeklyTasksSubmitBtn" data-is-disabled="1">
+                    Submit
+                  </button>
+                </p>
+                <!-- <p class="control">
+                  <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                    Cancel
+                  </button>
+                </p> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="tabcontent" id="monthly-tasks-tab">
+            <div class="container">
+              <div class="b-table">
+                <div class="table-wrapper has-mobile-cards">
+                  <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                    <thead>
+                      <tr>
+                        <th class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="tasks-th-main-checkbox bkchlst-input is-disabled"
+                              data-child-checkbox-class="monthly-task-checkbox" disabled>
+                          </label>
+                        </th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="monthly-task-checkbox bkchlst-input is-disabled" disabled />
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Rebecca Bauch</td>
+                        <td data-label="Status">
+                          <span class="tag is-warning has-text-weight-bold">Not Started</span>
+                        </td>
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Oct 25, 2020">Oct 25, 2020</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button" data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger is-disabled bkchlst-input" disabled type="button"
+                              data-tooltip="Delete task">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="monthly-task-checkbox bkchlst-input is-disabled" disabled>
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Felicita Yundt</td>
+                        <td data-label="Status">
+                          <span class="tag is-info has-text-weight-bold">Not started</span>
+                        </td>
+
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 8, 2019</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button" data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled" disabled
+                              type="button" data-tooltip="Delete task">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="has-background-danger-light">
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="monthly-task-checkbox bkchlst-input is-disabled" disabled>
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Mr. Larry Satterfield V</td>
+                        <td data-label="Status">
+                          <span class="tag is-danger has-text-weight-bold">Past</span>
+                        </td>
+
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Dec 18, 2020">Dec 18, 2020</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button" data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled" disabled
+                              type="button" data-tooltip="Delete task">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="has-background-success-light">
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="monthly-task-checkbox bkchlst-input is-disabled" disabled>
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Mr. Broderick Kub</td>
+                        <td data-label="Status">
+                          <span class="tag is-success has-text-weight-bold">Completed</span>
+                        </td>
+
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Sep 13, 2020">Sep 13, 2020</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger delete-task-btn is-disabled bkchlst-input" disabled
+                              type="button">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="bkchlst-input monthly-task-checkbox is-disabled" disabled>
+                          </label>
+                        </td>
+
+                        <td data-label="Title">Barry Weber</td>
+                        <td data-label="Status">
+                          <span class="tag is-warning">Label</span>
+                        </td>
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jul 24, 2019">Jul 24, 2019</small>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled type="button" data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button class="button is-small is-danger delete-task-btn is-disabled bkchlst-input" disabled
+                              type="button" data-tooltip="Delete task">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <hr />
+              <div class="field is-grouped is-grouped-right">
+                <p class="control">
+                  <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                    data-is-disabled="1">
+                    Submit
+                  </button>
+                </p>
+                <!-- <p class="control">
+                  <button type="button" disabled class="button is-light bkchlst-input is-disabled">
+                    Cancel
+                  </button>
+                </p> -->
+              </div>
+            </div>
+          </div>
+          <div class="tabcontent" id="quarter-tasks-tab">
+            <div class="box">
+              quarter-tasks-tab
+              <div class="w3-container">
+                <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>
+                <h6 class="w3-text-teal">
+                  <i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 -
+                  <span class="w3-tag w3-teal w3-round">Current</span>
+                </h6>
+                <p>
+                  Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt
+                  aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde
+                  doloremque repellendus iure, iste.
+                </p>
+                {% comment %}
+                <hr />
+                {% endcomment %}
+              </div>
+            </div>
+          </div>
+          <div class="tabcontent" id="yearly-tasks-tab">
+            <div class="box">
+              yearly-tasks-tab
               <div class="w3-container">
                 <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>
                 <h6 class="w3-text-teal">
@@ -227,7 +639,8 @@
           <div id="accounts-and-services-tab" class="tabcontent2">
             <div class="field has-addons">
               <div class="control is-expanded">
-                <input class="input bkchlst-input" id="acServicesSearch" disabled type="text" placeholder="Find an account and services">
+                <input class="input bkchlst-input" id="acServicesSearch" disabled type="text"
+                  placeholder="Find an account and services">
               </div>
               <div class="control">
                 <button class="button has-tooltip-left bkchlst-input" disabled type="button" id="acsSearchBtn"
@@ -239,62 +652,69 @@
             </div>
             <hr />
             <div class="table-container">
-              <table class="table is-striped is-bordered">
-                <tr>
-                  <th class="has-text-centered">Account URL</th>
-                  <th class="has-text-centered">Username</th>
-                  <th class="has-text-centered">Password</th>
-                </tr>
-                <tr>
-                  <td class="middle-td">
-                    <a href="http://www.helpfulsheep.com/" class="has-text-link">
-                      http://www.helpfulsheep.com/
-                    </a>
-                  </td>
-                  <td>
-                    <div class="account-service-item account-service-username">
-                      <div class="field has-addons">
-                        <div class="control">
-                          <input class="input is-small" type="text" value="username_here" id="ac-username-2" readonly />
-                        </div>
-                        <div class="control">
-                          <button class="button copyASUsernameBtn copyBtn is-small" data-tooltip="Copy Username"
-                            data-clipboard-target="#ac-username-2" data-text-type="username">
-                            <i class="fas fa-copy"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="account-service-item account-service-password">
-                      <div class="field has-addons">
-                        <p class="control">
-                          <span class="">
-                            <button class="button showASUPasswordBtn is-small" data-tooltip="Show Password"
-                              data-visibility-status="0" data-password-input="as-password-22">
-                              <i class="fas fa-eye"></i>
+              <table class="table is-striped is-bordered" style="width: 100%;"
+                id="bookkeeper-client-account-and-services-table">
+                <thead>
+                  <tr>
+                    <th class="has-text-centered">Account URL</th>
+                    <th class="has-text-centered">Username</th>
+                    <th class="has-text-centered">Password</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="middle-td">
+                      <a href="http://www.helpfulsheep.com/" class="has-text-link">
+                        http://www.helpfulsheep.com/
+                      </a>
+                    </td>
+                    <td>
+                      <div class="account-service-item account-service-username">
+                        <div class="field has-addons">
+                          <div class="control">
+                            <input class="input is-small" type="text" value="username_here" id="ac-username-2"
+                              readonly />
+                          </div>
+                          <div class="control">
+                            <button class="button copyASUsernameBtn copyBtn is-small" data-tooltip="Copy Username"
+                              data-clipboard-target="#ac-username-2" data-text-type="username">
+                              <i class="fas fa-copy"></i>
                             </button>
-                          </span>
-                        </p>
-                        <div class="control">
-                          <input class="input is-small" type="password" value="password" id="as-password-22" readonly />
-                        </div>
-                        <div class="control">
-                          <button
-                            class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
-                            data-tooltip="Copy password, you have to reveal the password to copy it"
-                            data-clipboard-target="#as-password-22" data-text-type="password">
-                            <i class="fas fa-copy"></i>
-                          </button>
-
+                          </div>
                         </div>
                       </div>
+                    </td>
+                    <td>
+                      <div class="account-service-item account-service-password">
+                        <div class="field has-addons">
+                          <p class="control">
+                            <span class="">
+                              <button class="button showASUPasswordBtn is-small" data-tooltip="Show Password"
+                                data-visibility-status="0" data-password-input="as-password-22">
+                                <i class="fas fa-eye"></i>
+                              </button>
+                            </span>
+                          </p>
+                          <div class="control">
+                            <input class="input is-small" type="password" value="password" id="as-password-22"
+                              readonly />
+                          </div>
+                          <div class="control">
+                            <button
+                              class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
+                              data-tooltip="Copy password, you have to reveal the password to copy it"
+                              data-clipboard-target="#as-password-22" data-text-type="password">
+                              <i class="fas fa-copy"></i>
+                            </button>
+
+                          </div>
+                        </div>
 
 
-                    </div>
-                  </td>
-                </tr>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
 
@@ -310,7 +730,8 @@
 
                 <div class="list-item-controls">
                   <div class="buttons is-right">
-                    <button class="button" data-tooltip="View note">
+                    <button class="button bkchlst-input is-disabled open-note-item-btn" disabled
+                      data-tooltip="View note">
                       <span class="icon is-small">
                         <i class="fa-solid fa-pencil"></i>
                       </span>
@@ -329,7 +750,8 @@
 
                 <div class="list-item-controls">
                   <div class="buttons is-right">
-                    <button class="button" data-tooltip="View note">
+                    <button class="button bkchlst-input is-disabled open-note-item-btn" disabled
+                      data-tooltip="View note">
                       <span class="icon is-small">
                         <i class="fa-solid fa-pencil"></i>
                       </span>
@@ -348,7 +770,8 @@
 
                 <div class="list-item-controls">
                   <div class="buttons is-right">
-                    <button class="button" data-tooltip="View note">
+                    <button class="button bkchlst-input is-disabled open-note-item-btn" disabled
+                      data-tooltip="View note">
                       <span class="icon is-small">
                         <i class="fa-solid fa-pencil"></i>
                       </span>
@@ -391,13 +814,130 @@
         </p>
       </main>
       <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary">Continue</button>
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>Continue</button>
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
       </footer>
     </div>
   </div>
 </div>
 {% comment %} Add New Task Modal {% endcomment %}
+
+{% comment %} Tasks Items Modal {% endcomment %}
+<div class="modal micromodal-slide" id="tasks-items-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="tasks-items-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="tasks-items-modal-title">
+          Task Title
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="tasks-items-modal-content">
+        <div class="list" style="max-width: 500px; width: 500px;">
+          <div class="list-item has-background-grey-lighter">
+            <label class="checkbox list-item-title">
+              <input type="checkbox" class="mr-1 is-disabled bkchlst-input" disabled checked data-is-disabled="1" />
+              <span class="completed-task-item">Task Name</span>
+              <small class="w3-text-grey is-abbr-like is-inline-block ml-2 has-tooltip-arrow has-tooltip-right"
+                data-tooltip="Created at">Wed Jul 06 2022 14:36:48 GMT+0300</small>
+            </label>
+            <div class="list-item-controls">
+              <div class="buttons is-right">
+
+                <button class="button is-small is-danger bkchlst-input is-disabled delete-task-item-btn" disabled
+                  data-tooltip="delete">
+                  <span class="icon is-small">
+                    <i class="fa-solid fa-trash"></i>
+                  </span>
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <label class="checkbox list-item-title">
+              <input type="checkbox" class="mr-1">
+              Task item
+              <small class="w3-text-grey is-abbr-like is-inline-block ml-2 has-tooltip-arrow has-tooltip-right"
+                data-tooltip="Created at">Wed Jul 06 2022 14:36:48 GMT+0300</small>
+            </label>
+          </div>
+
+          <div class="list-item">
+
+            <div class="list-item-content">
+              <label class="checkbox list-item-title">
+                <input type="checkbox" class="mr-1">
+                Task item
+                <small class="w3-text-grey is-abbr-like is-inline-block ml-2 has-tooltip-arrow has-tooltip-right"
+                  data-tooltip="Created at">Wed Jul 06 2022 14:36:48 GMT+0300</small>
+              </label>
+              <div class="list-item-description">List item description</div>
+            </div>
+          </div>
+
+          <div class="list-item">
+
+            <div class="list-item-content">
+              <div class="list-item-title">List item</div>
+              <div class="list-item-description">List item description</div>
+            </div>
+
+            <div class="list-item-controls">
+              <div class="buttons is-right">
+                <button class="button bkchlst-input is-disabled " disabled data-tooltip="View note">
+                  <span class="icon is-small">
+                    <i class="fa-solid fa-pencil"></i>
+                  </span>
+                </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>Continue</button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+      </footer>
+    </div>
+  </div>
+</div>
+{% comment %} Tasks Items Modal {% endcomment %}
+
+{% comment %} Notes Item Modal {% endcomment %}
+<div class="modal micromodal-slide" id="notes-item-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="notes-item-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="notes-item-modal-title">
+          Notes Item
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="notes-item-modal-content">
+        <form action="">
+          <fieldset>
+            <legend>Note:</legend>
+            <textarea name="note" id="note" class="bkchlst-input is-disabled textarea input-trim-whitespace"
+              style="width: 500px;" disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit quos commodi cumque inventore assumenda expedita ad sed dolores ab ipsam a, doloribus non veritatis necessitatibus cupiditate voluptatibus natus sit nobis.
+            </textarea>
+            <small class="w3-text-grey is-abbr-like is-inline-block mt-2 has-tooltip-arrow has-tooltip-right"
+              data-tooltip="Created at">Wed Jul 06 2022 14:36:48 GMT+0300</small>
+          </fieldset>
+        </form>
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>Update</button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+      </footer>
+    </div>
+  </div>
+</div>
+{% comment %} Notes Item Modal {% endcomment %}
+
 {% endblock dashboard_content %} {% block externaljs %}
 <script src="{% static 'js/bookkeeper/dashboard/client_details.js' %}" defer type="module"></script>
 {% endblock externaljs %}

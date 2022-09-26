@@ -2,6 +2,12 @@ from users.models import CustomUser
 
 
 class Manager(CustomUser):
+    """Manager model represents the manager of the app
+
+    Args:
+        CustomUser (User): Django custom user model
+    """
+
     class Meta:
         proxy = True
         permissions = [

@@ -4,6 +4,12 @@ from django.utils.translation import gettext as _
 
 
 class ClientAccount(BaseModelMixin):
+    """Client account model related with client
+
+    Args:
+        BaseModelMixin (models.Model): Django base model mixin
+    """
+
     account_name = models.CharField(_("account_name"), max_length=50, null=True)
     account_email = models.EmailField(_("account_email"), max_length=50, null=True)
     account_url = models.URLField(_("account_url"), max_length=50, null=True)

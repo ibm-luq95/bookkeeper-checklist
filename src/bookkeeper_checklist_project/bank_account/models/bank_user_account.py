@@ -7,6 +7,12 @@ from . import BankProfile
 
 
 class BankUserAccount(BaseModelMixin):
+    """Bank user account model
+
+    Args:
+        BaseModelMixin (models.Model): Django base model mixin
+    """
+
     clients = models.ManyToManyField(to=Client)
     bank_profile = models.ForeignKey(
         to=BankProfile, on_delete=models.PROTECT, related_name="bank_user_account"

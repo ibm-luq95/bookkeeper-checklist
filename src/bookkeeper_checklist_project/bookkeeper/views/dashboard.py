@@ -5,7 +5,6 @@ import requests
 from core.models import Quote
 from core.utils import get_formatted_logger
 from django.views.generic.base import TemplateView
-from prettyprinter import cpprint
 
 # TODO: remove the custom logger before push (only for development)
 # ###### [Custom Logger] #########
@@ -42,7 +41,6 @@ class DashboardView(TemplateView):
                 created_at__day=today.day,
                 user=self.request.user,
             )
-            
 
             if get_quote_object:
                 get_quote_object = get_quote_object.first()
@@ -65,7 +63,7 @@ class DashboardView(TemplateView):
             context.setdefault("quote_text", quote_text)
             context["bookkeeper_name"] = self.request.user.fullname
             return context
-        except requests.exceptions.ConnectionError as ex:
+        except requests.exceptions.ConnectionError:
             return None
         except Exception as ex:
             logger.error(ex)

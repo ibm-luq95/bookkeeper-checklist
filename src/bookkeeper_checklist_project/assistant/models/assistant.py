@@ -3,12 +3,18 @@ from company_services.models import CompanyService
 from core.choices import AssistantTypeEnum, CustomUserStatusEnum
 from core.models import BaseModelMixin
 from django.contrib.auth import get_user_model
-from django.utils.text import slugify
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 
 class Assistant(BaseModelMixin):
+    """Assistant models
+
+    Args:
+        BaseModelMixin (models.Model): Django base model mixin
+    """
+
     slug = models.SlugField(_("slug"), max_length=250, null=True)
     profile_picture = models.ImageField(
         _("profile_picture"), upload_to="profile_pictures/", null=True, blank=True

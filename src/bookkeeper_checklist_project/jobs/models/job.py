@@ -28,12 +28,12 @@ class Job(BaseModelMixin):
         max_length=20,
         help_text=JOB_HELP_MESSAGES.get("job_type"),
     )
-    job_type = models.CharField(
-        _("job_type"),
+    status = models.CharField(
+        _("status"),
         max_length=20,
         choices=JobStatusEnum.choices,
         default=JobStatusEnum.NOT_STARTED,
-        help_text=JOB_HELP_MESSAGES.get("job_type"),
+        help_text=JOB_HELP_MESSAGES.get("status"),
     )
     client = models.ForeignKey(
         to=Client,

@@ -1,4 +1,6 @@
-{% extends 'core/layouts/dashboard.html' %} {% load static %} {% block externalcss %}
+{% extends 'core/layouts/dashboard.html' %} 
+{% load static %} 
+{% block externalcss %}
 <link rel="stylesheet" href="{% static 'css/dashboard/client_details.css' %}" />
 
 {% endblock externalcss %} {% block dashboard_content %}
@@ -127,7 +129,7 @@
           <div class="p-2 mb-5">
             <h2 class="is-pulled-left w3-text-grey">
               <i class="fas fa-tasks w3-margin-right w2-xxlarge w3-text-teal"></i>
-              Tasks
+              Jobs
             </h2>
             <button class="button mt-5 mx-5 is-pulled-right is-small bkchlst-input is-disabled" disabled
               id="bookkeeperAddNewTaskBtn" data-tooltip="New task">
@@ -137,16 +139,16 @@
           <div class="is-clearfix"></div>
           <div class="tab">
             <button class="tablinks has-text-danger has-text-weight-bold" data-tab-element="past-due-tasks-tab">
-              Past Due Tasks (3)
+              Past Due Jobs (3)
             </button>
             <button class="tablinks defaultOpenTab1 bkchlst-input is-disabled" disabled
-              data-tab-element="weekly-tasks-tab">Weekly Tasks</button>
+              data-tab-element="weekly-tasks-tab">Weekly Jobs</button>
             <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="monthly-tasks-tab">Monthly
-              Tasks</button>
+              Jobs</button>
             <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="quarter-tasks-tab">Quarter
-              Tasks</button>
+              Jobs</button>
             <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="yearly-tasks-tab">Yearly
-              Tasks</button>
+              Jobs</button>
           </div>
 
           <div class="tabcontent" id="past-due-tasks-tab">
@@ -185,6 +187,8 @@
                         <th>Title</th>
                         <th>Status</th>
                         <th>Created</th>
+                        <th>Due Date</th>
+                        <th data-tooltip="Tasks Count" class="has-tooltip-right has-tooltip-arrow">Count</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -203,6 +207,12 @@
 
                         <td data-label="Created">
                           <small class="has-text-grey is-abbr-like" title="Oct 25, 2020">Oct 25, 2020</small>
+                        </td>
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
+                        </td>
+                        <td data-label="Created">
+                          10
                         </td>
                         <td class="is-actions-cell">
                           <div class="buttons is-right">
@@ -238,6 +248,12 @@
                         <td data-label="Created">
                           <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 8, 2019</small>
                         </td>
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
+                        </td>
+                        <td data-label="Created">
+                          10
+                        </td>
                         <td class="is-actions-cell">
                           <div class="buttons is-right">
                             <button
@@ -271,6 +287,12 @@
 
                         <td data-label="Created">
                           <small class="has-text-grey is-abbr-like" title="Dec 18, 2020">Dec 18, 2020</small>
+                        </td>
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
+                        </td>
+                        <td data-label="Created">
+                          10
                         </td>
                         <td class="is-actions-cell">
                           <div class="buttons is-right">
@@ -306,6 +328,12 @@
                         <td data-label="Created">
                           <small class="has-text-grey is-abbr-like" title="Sep 13, 2020">Sep 13, 2020</small>
                         </td>
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
+                        </td>
+                        <td data-label="Created">
+                          10
+                        </td>
                         <td class="is-actions-cell">
                           <div class="buttons is-right">
                             <button
@@ -337,6 +365,12 @@
                         </td>
                         <td data-label="Created">
                           <small class="has-text-grey is-abbr-like" title="Jul 24, 2019">Jul 24, 2019</small>
+                        </td>
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
+                        </td>
+                        <td data-label="Created">
+                          10
                         </td>
                         <td class="is-actions-cell">
                           <div class="buttons is-right">
@@ -586,7 +620,7 @@
           </div>
           <div class="tabcontent" id="quarter-tasks-tab">
             <div class="box">
-              quarter-tasks-tab
+              quarter-Jobs-tab
               <div class="w3-container">
                 <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>
                 <h6 class="w3-text-teal">
@@ -606,7 +640,7 @@
           </div>
           <div class="tabcontent" id="yearly-tasks-tab">
             <div class="box">
-              yearly-tasks-tab
+              yearly-Jobs-tab
               <div class="w3-container">
                 <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>
                 <h6 class="w3-text-teal">
@@ -822,7 +856,7 @@
 </div>
 {% comment %} Add New Task Modal {% endcomment %}
 
-{% comment %} Tasks Items Modal {% endcomment %}
+{% comment %} Jobs Items Modal {% endcomment %}
 <div class="modal micromodal-slide" id="tasks-items-modal" aria-hidden="true">
   <div class="modal__overlay" tabindex="-1">
     <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="tasks-items-modal-title">
@@ -904,7 +938,7 @@
     </div>
   </div>
 </div>
-{% comment %} Tasks Items Modal {% endcomment %}
+{% comment %} Jobs Items Modal {% endcomment %}
 
 {% comment %} Notes Item Modal {% endcomment %}
 <div class="modal micromodal-slide" id="notes-item-modal" aria-hidden="true">

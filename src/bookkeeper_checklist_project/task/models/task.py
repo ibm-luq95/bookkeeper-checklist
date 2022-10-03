@@ -13,5 +13,6 @@ class Task(BaseModelMixin):
     title = models.CharField(_("title"), max_length=80, null=True)
     is_completed = models.BooleanField(_("is_completed"), default=False)
     hints = models.CharField(_("hints"), max_length=50, null=True, blank=True)
+    start_date = models.DateField(_("start_date"), null=True)
     due_date = models.DateField(_("due_date"))
 

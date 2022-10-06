@@ -12,6 +12,7 @@ django-extensions
 django-filter
 django-stubs
 faker
+flake8-polyfill
 hiredis
 inquirer
 pep8
@@ -25,14 +26,13 @@ prettytable
 prospector
 psycopg2-binary
 pylama
-pylint-common
 pypika
 pytest-django
 python-dotenv
 redis
 remote-pdb
 rich
-setoptconf
+setoptconf-tmp
 termcolor
 vulture
 yapf

@@ -40,6 +40,9 @@ class Bookkeeper(BaseModelMixin):
     clients = models.ManyToManyField(to=Client)
     is_active = models.BooleanField(_("is_active"), default=True)
 
+    def __str__(self) -> str:
+        return f"{self.user.first_name} {self.user.last_name}"
+
     class Meta(BaseModelMixin.Meta):
         permissions = [
             ("bookkeeper_user", "Bookkeeper User"),

@@ -5,9 +5,40 @@
 {% block dashboard_content %}
 
 <section id="manager-bookkeepers-list">
-    <h1>List all bookkeeper</h1>
-    {{objects}}
+    <header>
+        <h3 class="title is-3">Bookkeepers</h3>
+    </header>
+    <hr>
+    <div class="box">
+        <div class="list">
+            {% for object in object_list %}
+            <div class="list-item">
+                <div class="list-item-title">
+                    <a class="has-text-dark"
+                        href="{% url 'manager:bookkeeper-details' object.slug %}">{{ object.user.fullname|upper }}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="box">
+        <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
+            {% if page_obj.has_previous %}
+            <a class="pagination-previous" href="?page=1">&laquo; First</a>
+            <a class="pagination-previous" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <a class="pagination-next" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="pagination-next" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+            <ul class="pagination-list">
+                <li><a class="pagination-link" aria-label="Goto page {{ page_obj.number }}">{{ page_obj.number }}</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </section>
 
 {% endblock dashboard_content %}
-

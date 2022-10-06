@@ -5,6 +5,7 @@ from core.choices import JobStatusEnum, JobTypeEnum
 from django.utils.translation import gettext as _
 from client.models import Client
 from task.models import Task
+from bookkeeper.models import Bookkeeper
 from .help_messages import JOB_HELP_MESSAGES
 
 
@@ -15,6 +16,13 @@ class Job(BaseModelMixin):
         BaseModelMixin (models.Model): Django model base mixin
     """
 
+    bookkeeper = models.ForeignKey(
+        to=Bookkeeper,
+        on_delete=models.PROTECT,
+        related_name="jobs",
+        # null=True,
+        help_text=JOB_HELP_MESSAGES.get("bookkeeper"),
+    )
     title = models.CharField(
         _("title"), max_length=70, null=False, help_text=JOB_HELP_MESSAGES.get("title")
     )
@@ -24,7 +32,7 @@ class Job(BaseModelMixin):
     job_type = models.CharField(
         _("job_type"),
         choices=JobTypeEnum.choices,
-        default=JobTypeEnum.NO_TYPE,
+        # default=JobTypeEnum.NO_TYPE,
         max_length=20,
         help_text=JOB_HELP_MESSAGES.get("job_type"),
     )
@@ -32,7 +40,7 @@ class Job(BaseModelMixin):
         _("status"),
         max_length=20,
         choices=JobStatusEnum.choices,
-        default=JobStatusEnum.NOT_STARTED,
+        # default=JobStatusEnum.NOT_STARTED,
         help_text=JOB_HELP_MESSAGES.get("status"),
     )
     client = models.ForeignKey(

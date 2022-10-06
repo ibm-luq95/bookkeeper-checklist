@@ -1,74 +1,112 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
+      <head>
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>
 
-        {% block title %}
-        {{ title }}
-        {% endblock title %}
+                  {% block title %}
+{{ title }}
+                  {% endblock title %}
 
-    </title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="title" content="{{ title }}" />
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
-    <meta name="author" content="Ibrahim Luqman" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% comment %} <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet"> {% endcomment %}
-    <link rel="stylesheet" href="{% static 'css/all.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bulma.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-badge.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-list.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-tooltip.css' %}" />
+            </title>
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="title" content="{{ title }}" />
+            <meta name="description" content="" />
+            <meta name="keywords" content="" />
+            <meta name="robots" content="index, follow" />
+            <meta name="language" content="English" />
+            <meta name="author" content="Ibrahim Luqman" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            {% comment %}
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
+                  rel="stylesheet"> {% endcomment %}
+            <link rel="stylesheet" href="{% static 'css/all.css' %}" />
+            <link rel="stylesheet" href="{% static 'css/bulma.css' %}" />
+            <link rel="stylesheet"
+                  href="{% static 'css/bulma-extensions/bulma-badge.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'css/bulma-extensions/bulma-list.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'css/bulma-extensions/bulma-tooltip.css' %}"/>
 
-    <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-helpers.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/vendors/micromodal/micromodal.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/vendors/toastify/toastify.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/vendors/bulma-table/main.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/dashboard/style.css' %}" />
-    {% block externalcss %} {% endblock externalcss %}
-</head>
+            <link rel="stylesheet"
+                  href="{% static 'css/bulma-extensions/bulma-helpers.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'css/vendors/micromodal/micromodal.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'css/vendors/toastify/toastify.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'css/vendors/bulma-table/main.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'vendors/DataTables/datatables.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'vendors/DataTables/Buttons-2.2.3/css/buttons.bulma.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'vendors/DataTables/FixedHeader-3.2.4/css/fixedHeader.bulma.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'vendors/DataTables/Responsive-2.3.0/css/responsive.bulma.css' %}"/>
+            <link rel="stylesheet"
+                  href="{% static 'vendors/DataTables/DateTime-1.1.2/css/dataTables.dateTime.css' %}"/>
+            <link rel="stylesheet" href="{% static 'css/dashboard/style.css' %}" />
+            {% block externalcss %}
+ 
+            {% endblock externalcss %}
+      </head>
 
-<body>
+      <body>
 
-    <!-- START NAV -->
-    {% include 'core/includes/top_navbar.html' %}
-    <!-- END NAV -->
-    <div class="container">
-        <div class="columns">
-            {% if request.user.user_type == "manager" %}
-            
-            <!-- START LEFT SIDE -->
-            <div class="column is-3">
-                {% include 'core/includes/left_side.html' %}
+            <!-- START NAV -->
+{% include "core/includes/top_navbar.html" %}
+            <!-- END NAV -->
+            <div class="container">
+                  <div class="columns">
+                        {% if request.user.user_type == "manager" %}
+
+                              <!-- START LEFT SIDE -->
+                              <div class="column is-3">{% include "core/includes/left_side.html" %}</div>
+                              <!-- END LEFT SIDE -->
+                        {% endif %}
+
+                        <!-- START CONTENT -->
+                        <div class="column {% if request.user.user_type == 'manager' %} is-9 {% else %} is-12 {% endif %}">
+                              <main id="dashboard-main" class="mt-3">
+                                    {% block dashboard_content %}
+                                    {% endblock dashboard_content %}
+                              </main>
+                        </div>
+                        <!-- END CONTENT -->
+                  </div>
             </div>
-            <!-- END LEFT SIDE -->
-            {% endif %}
-                
-            <!-- START CONTENT -->
-            <div class="column {% if request.user.user_type == 'manager' %} is-9 {% else %} is-12 {% endif %}">
-                <main id="dashboard-main" class="mt-3">
-                    {% block dashboard_content %}{% endblock dashboard_content %}
-                </main>
-            </div>
-            <!-- END CONTENT -->
-        </div>
-    </div>
-    <script src="{% static 'js/chart.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/all.js' %}" type="text/javascript"></script>
-    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/vendors/micromodal/micromodal.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/vendors/toastify/toastify.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/vendors/clipboard/clipboard.js' %}"></script>
-    {% block externaljs %} {% endblock externaljs %}
-</body>
+            <script type="text/javascript"
+                    src="{% static 'vendors/DataTables/jQuery-3.6.0/jquery-3.6.0.js' %}"></script>
+            <script src="{% static 'js/chart.js' %}" type="text/javascript"></script>
+            <script src="{% static 'js/all.js' %}" type="text/javascript"></script>
+            <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
+            <script type="text/javascript"
+                    src="{% static 'js/vendors/micromodal/micromodal.min.js' %}"></script>
+            <script type="text/javascript"
+                    src="{% static 'js/vendors/toastify/toastify.js' %}"></script>
+            <script type="text/javascript"
+                    src="{% static 'js/vendors/clipboard/clipboard.js' %}"></script>
+            <script type="text/javascript"
+                    src="{% static 'vendors/DataTables/datatables.js' %}"></script>
+            <script type="text/javascript"
+                    src="{% static 'vendors/DataTables/Buttons-2.2.3/js/buttons.bulma.js' %}"></script>
+            <script type="text/javascript" src="{% static 'vendors/DataTables/FixedHeader-3.2.4/js/fixedHeader.bulma.js' %}">
+            </script>
+            <script type="text/javascript" src="{% static 'vendors/DataTables/Responsive-2.3.0/js/responsive.bulma.js' %}">
+            </script>
+            <script type="text/javascript" src="{% static 'vendors/DataTables/DateTime-1.1.2/js/dataTables.dateTime.js' %}"></script>
+            <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/pdfmake.js' %}"></script>
+            <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/vfs_fonts.js' %}"></script>
+            {% block externaljs %}
+ 
+            {% endblock externaljs %}
+      </body>
 
 </html>

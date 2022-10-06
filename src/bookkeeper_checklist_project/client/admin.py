@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Client, ClientAccount
+from .models import Client, ClientAccount, ImportantContact
 
 
 @admin.register(Client)
@@ -9,4 +9,9 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(ClientAccount)
 class ClientAccountAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ImportantContact)
+class ImportantContactAdmin(admin.ModelAdmin):
     pass

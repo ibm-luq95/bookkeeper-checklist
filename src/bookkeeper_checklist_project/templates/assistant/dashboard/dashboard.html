@@ -1,334 +1,340 @@
-{% extends 'core/layouts/dashboard.html' %}
-
-
+{% extends "core/layouts/dashboard.html" %}
 
 {% block dashboard_content %}
-<section class="hero is-info welcome is-small">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title">
-                Hello, {{ assistant_fake_name }}
-            </h1>
-            <h2 class="subtitle">
-                I hope you are having a great day!
-            </h2>
+    <section class="hero is-info welcome is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Hello, {{ assistant_fake_name }}</h1>
+                <h2 class="subtitle">I hope you are having a great day!</h2>
+            </div>
         </div>
-    </div>
-</section>
-<section class="info-tiles">
-    <div class="tile is-ancestor has-text-centered">
-        <div class="tile is-parent">
-            <article class="tile is-child box">
-                <p class="title">439k</p>
-                <p class="subtitle">Clients</p>
-            </article>
+    </section>
+    <section class="info-tiles">
+        <div class="tile is-ancestor has-text-centered">
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">439k</p>
+                    <p class="subtitle">Clients</p>
+                </article>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">59k</p>
+                    <p class="subtitle">Customers</p>
+                </article>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">3.4k</p>
+                    <p class="subtitle">Open Orders</p>
+                </article>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">19</p>
+                    <p class="subtitle">Exceptions</p>
+                </article>
+            </div>
         </div>
-        <div class="tile is-parent">
-            <article class="tile is-child box">
-                <p class="title">59k</p>
-                <p class="subtitle">Customers</p>
-            </article>
-        </div>
-        <div class="tile is-parent">
-            <article class="tile is-child box">
-                <p class="title">3.4k</p>
-                <p class="subtitle">Open Orders</p>
-            </article>
-        </div>
-        <div class="tile is-parent">
-            <article class="tile is-child box">
-                <p class="title">19</p>
-                <p class="subtitle">Exceptions</p>
-            </article>
-        </div>
-    </div>
-</section>
-<div class="columns">
-    <div class="column is-6">
-        <div class="card events-card">
-            <header class="card-header">
-                <p class="card-header-title subtitle is-capitalized
-                    has-text-weight-bold has-text-dark">
-                    Tasks
-                </p>
-                <!-- <a href="#" class="card-header-icon"
-                    aria-label="more options">
+    </section>
+    <div class="columns">
+        <div class="column is-6">
+            <div class="card events-card">
+                <header class="card-header">
+                    <p class="card-header-title subtitle is-capitalized has-text-weight-bold has-text-dark">Tasks</p>
+                    <!-- <a href="#" class="card-header-icon" aria-label="more options">
                     <span class="icon">
-                        <i class="fa fa-angle-down"
-                            aria-hidden="true"></i>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </span>
                 </a> -->
-            </header>
-            <div class="card-table">
-                <div class="content">
-                    <table class="table is-fullwidth
-                        is-striped">
-                        <tbody>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                </header>
+                <div class="card-table">
+                    <div class="content">
+                        <table class="table is-fullwidth is-striped">
+                            <tbody>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>Lorum ipsum dolem aire</td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>Lorum ipsum dolem aire</td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>Lorum ipsum dolem aire</td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>Lorum ipsum dolem aire</td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>Lorum ipsum dolem aire</td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>Lorum ipsum dolem aire</td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>Lorum ipsum dolem aire</td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>Lorum ipsum dolem aire</td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </td>
+                                    <td>
+Lorum ipsum dolem aire
+                                    </td>
+                                    <td class="level-right">
+                                        <a class="button is-small is-primary" href="#">Action</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <footer class="card-footer">
+                    <a href="#" class="card-footer-item">View
+                                                                                                                                                                All</a>
+                </footer>
             </div>
-            <footer class="card-footer">
-                <a href="#" class="card-footer-item">View
-                    All</a>
-            </footer>
         </div>
-    </div>
-    <div class="column is-6">
-        <div class="card events-card">
-            <header class="card-header">
-                <p class="card-header-title subtitle is-capitalized
-                    has-text-weight-bold has-text-dark">
+        <div class="column is-6">
+            <div class="card events-card">
+                <header class="card-header">
+                    <p class="card-header-title subtitle is-capitalized has-text-weight-bold has-text-dark">
                     Bookkeepers
-                </p>
-                <!-- <a href="#" class="card-header-icon"
-                    aria-label="more options">
+                    </p>
+                    <!-- <a href="#" class="card-header-icon" aria-label="more options">
                     <span class="icon">
-                        <i class="fa fa-angle-down"
-                            aria-hidden="true"></i>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </span>
                 </a> -->
-            </header>
-            <div class="card-content p-0 card-table">
-                <div class="list has-visible-pointer-controls">
-                    <div class="list-item">
-                        <div class="list-item-image">
-                            <figure class="image bookkeeper-rounded-thumbs">
-                                <img class="is-rounded"
-                                    src="https://via.placeholder.com/128x128.png?text=Image">
-                            </figure>
-                        </div>
+                </header>
+                <div class="card-content p-0 card-table">
+                    <div class="list has-visible-pointer-controls">
+                        <div class="list-item">
+                            <div class="list-item-image">
+                                <figure class="image bookkeeper-rounded-thumbs">
+                                    <img class="is-rounded"
+                                         src="https://via.placeholder.com/128x128.png?text=Image">
+                                </figure>
+                            </div>
 
-                        <div class="list-item-content">
-                            <a href="" class="list-item-title">List item</a>
-                            <div class="list-item-description">List item
-                                description</div>
-                        </div>
+                            <div class="list-item-content">
+                                <a href="" class="list-item-title">List item</a>
+                                <div class="list-item-description">
+List item
+                                description
+                                </div>
+                            </div>
 
-                        <div class="list-item-controls">
-                            <div class="buttons is-right">
-                                <button class="button is-small has-tooltip-arrow
-                                    has-tooltip-left" data-tooltip="Edit">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                </button>
+                            <div class="list-item-controls">
+                                <div class="buttons is-right">
+                                    <button class="button is-small has-tooltip-arrow has-tooltip-left"
+                                            data-tooltip="Edit">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </button>
 
-                                <!-- <button class="button is-small">
+                                    <!-- <button class="button is-small">
                                     <span class="icon is-small">
                                         <i class="fas fa-ellipsis-h"></i>
                                     </span>
                                 </button> -->
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="list-item">
-                        <div class="list-item-image">
-                            <figure class="image bookkeeper-rounded-thumbs">
-                                <img class="is-rounded"
-                                    src="https://via.placeholder.com/128x128.png?text=Image">
-                            </figure>
-                        </div>
+                        <div class="list-item">
+                            <div class="list-item-image">
+                                <figure class="image bookkeeper-rounded-thumbs">
+                                    <img class="is-rounded"
+                                         src="https://via.placeholder.com/128x128.png?text=Image">
+                                </figure>
+                            </div>
 
-                        <div class="list-item-content">
-                            <a href="" class="list-item-title">List item</a>
-                            <div class="list-item-description">List item
-                                description</div>
-                        </div>
+                            <div class="list-item-content">
+                                <a href="" class="list-item-title">List item</a>
+                                <div class="list-item-description">
+List item
+                                description
+                                </div>
+                            </div>
 
-                        <div class="list-item-controls">
-                            <div class="buttons is-right">
-                                <button class="button is-small has-tooltip-arrow
-                                    has-tooltip-left" data-tooltip="Edit">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                </button>
+                            <div class="list-item-controls">
+                                <div class="buttons is-right">
+                                    <button class="button is-small has-tooltip-arrow has-tooltip-left"
+                                            data-tooltip="Edit">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </button>
 
-                                <!-- <button class="button is-small">
+                                    <!-- <button class="button is-small">
                                     <span class="icon is-small">
                                         <i class="fas fa-ellipsis-h"></i>
                                     </span>
                                 </button> -->
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="list-item">
-                        <div class="list-item-image">
-                            <figure class="image bookkeeper-rounded-thumbs">
-                                <img class="is-rounded"
-                                    src="https://via.placeholder.com/128x128.png?text=Image">
-                            </figure>
-                        </div>
+                        <div class="list-item">
+                            <div class="list-item-image">
+                                <figure class="image bookkeeper-rounded-thumbs">
+                                    <img class="is-rounded"
+                                         src="https://via.placeholder.com/128x128.png?text=Image">
+                                </figure>
+                            </div>
 
-                        <div class="list-item-content">
-                            <a href="" class="list-item-title">List item</a>
-                            <div class="list-item-description">List item
-                                description</div>
-                        </div>
+                            <div class="list-item-content">
+                                <a href="" class="list-item-title">List item</a>
+                                <div class="list-item-description">
+List item
+                                description
+                                </div>
+                            </div>
 
-                        <div class="list-item-controls">
-                            <div class="buttons is-right">
-                                <button class="button is-small has-tooltip-arrow
-                                    has-tooltip-left" data-tooltip="Edit">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                </button>
+                            <div class="list-item-controls">
+                                <div class="buttons is-right">
+                                    <button class="button is-small has-tooltip-arrow has-tooltip-left"
+                                            data-tooltip="Edit">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </button>
 
-                                <!-- <button class="button is-small">
+                                    <!-- <button class="button is-small">
                                     <span class="icon is-small">
                                         <i class="fas fa-ellipsis-h"></i>
                                     </span>
                                 </button> -->
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="list-item">
-                        <div class="list-item-image">
-                            <figure class="image bookkeeper-rounded-thumbs">
-                                <img class="is-rounded"
-                                    src="https://via.placeholder.com/128x128.png?text=Image">
-                            </figure>
-                        </div>
+                        <div class="list-item">
+                            <div class="list-item-image">
+                                <figure class="image bookkeeper-rounded-thumbs">
+                                    <img class="is-rounded"
+                                         src="https://via.placeholder.com/128x128.png?text=Image">
+                                </figure>
+                            </div>
 
-                        <div class="list-item-content">
-                            <a href="" class="list-item-title">List item</a>
-                            <div class="list-item-description">List item
-                                description</div>
-                        </div>
+                            <div class="list-item-content">
+                                <a href="" class="list-item-title">List item</a>
+                                <div class="list-item-description">
+List item
+                                description
+                                </div>
+                            </div>
 
-                        <div class="list-item-controls">
-                            <div class="buttons is-right">
-                                <button class="button is-small has-tooltip-arrow
-                                    has-tooltip-left" data-tooltip="Edit">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                </button>
+                            <div class="list-item-controls">
+                                <div class="buttons is-right">
+                                    <button class="button is-small has-tooltip-arrow has-tooltip-left"
+                                            data-tooltip="Edit">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </button>
 
-                                <!-- <button class="button is-small">
+                                    <!-- <button class="button is-small">
                                     <span class="icon is-small">
                                         <i class="fas fa-ellipsis-h"></i>
                                     </span>
                                 </button> -->
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="list-item">
-                        <div class="list-item-image">
-                            <figure class="image bookkeeper-rounded-thumbs">
-                                <img class="is-rounded"
-                                    src="https://via.placeholder.com/128x128.png?text=Image">
-                            </figure>
-                        </div>
+                        <div class="list-item">
+                            <div class="list-item-image">
+                                <figure class="image bookkeeper-rounded-thumbs">
+                                    <img class="is-rounded"
+                                         src="https://via.placeholder.com/128x128.png?text=Image">
+                                </figure>
+                            </div>
 
-                        <div class="list-item-content">
-                            <a href="" class="list-item-title">List item</a>
-                            <div class="list-item-description">List item
-                                description</div>
-                        </div>
+                            <div class="list-item-content">
+                                <a href="" class="list-item-title">List item</a>
+                                <div class="list-item-description">
+List item
+                                description
+                                </div>
+                            </div>
 
-                        <div class="list-item-controls">
-                            <div class="buttons is-right">
-                                <button class="button is-small has-tooltip-arrow
-                                    has-tooltip-left" data-tooltip="Edit">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                </button>
+                            <div class="list-item-controls">
+                                <div class="buttons is-right">
+                                    <button class="button is-small has-tooltip-arrow has-tooltip-left"
+                                            data-tooltip="Edit">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </button>
 
-                                <!-- <button class="button is-small">
+                                    <!-- <button class="button is-small">
                                     <span class="icon is-small">
                                         <i class="fas fa-ellipsis-h"></i>
                                     </span>
                                 </button> -->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <footer class="card-footer">
+                    <a href="#" class="card-footer-item">View
+                                                                                                                                                                All</a>
+                </footer>
             </div>
-            <footer class="card-footer">
-                <a href="#" class="card-footer-item">View
-                    All</a>
-            </footer>
         </div>
     </div>
-</div>
 {% endblock dashboard_content %}

@@ -1,176 +1,110 @@
-{% extends 'core/layouts/dashboard.html' %}
+{% extends "core/layouts/dashboard.html" %}
 {% load static %}
-
-
-
 {% block dashboard_content %}
-<h3 class="title is-3">Clients</h3>
-<div class="columns">
-    <div class="column">
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                    <img src="{% static 'imgs/company_logo.jpg' %}" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media">
-                    <!-- <div class="media-left">
-                        <figure class="image is-48x48">
-                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                        </figure>
-                    </div> -->
-                    <div class="media-content">
-                        <p class="title is-4">
-                            <a href="{% url 'bookkeeper:clients-details' 1 %}">John Smith</a>
-                        </p>
-                        <p class="subtitle is-6">@johnsmith</p>
-                    </div>
-                </div>
-
-                <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris.
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-            </div>
-            <footer class="card-footer">
-                <a href="#" class="card-footer-item">Save</a>
-                <a href="#" class="card-footer-item">Edit</a>
-                <a href="#" class="card-footer-item">Delete</a>
-            </footer>
-        </div>
-    </div>
-    <div class="column">
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                    <img src="{% static 'imgs/company_logo.jpg' %}" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media">
-                    <!-- <div class="media-left">
-                        <figure class="image is-48x48">
-                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                        </figure>
-                    </div> -->
-                    <div class="media-content">
-                        <p class="title is-4">
-                            <a href="{% url 'bookkeeper:clients-details' 1 %}">John Smith</a>
-                        </p>
-                        <p class="subtitle is-6">@johnsmith</p>
-                    </div>
-                </div>
-
-                <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris.
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-            </div>
-            <footer class="card-footer">
-                <a href="#" class="card-footer-item">Save</a>
-                <a href="#" class="card-footer-item">Edit</a>
-                <a href="#" class="card-footer-item">Delete</a>
-            </footer>
-        </div>
-    </div>
-    <div class="column">
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                    <img src="{% static 'imgs/company_logo.jpg' %}" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media">
-                    <!-- <div class="media-left">
-                        <figure class="image is-48x48">
-                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                        </figure>
-                    </div> -->
-                    <div class="media-content">
-                        <p class="title is-4">
-                            <a href="{% url 'bookkeeper:clients-details' 1 %}">John Smith</a>
-                        </p>
-                        <p class="subtitle is-6">@johnsmith</p>
-                    </div>
-                </div>
-
-                <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris.
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-            </div>
-            <footer class="card-footer">
-                <a href="#" class="card-footer-item">Save</a>
-                <a href="#" class="card-footer-item">Edit</a>
-                <a href="#" class="card-footer-item">Delete</a>
-            </footer>
-        </div>
-    </div>
-    <div class="column">
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                    <img src="{% static 'imgs/company_logo.jpg' %}" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media">
-                    <!-- <div class="media-left">
-                        <figure class="image is-48x48">
-                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                        </figure>
-                    </div> -->
-                    <div class="media-content">
-                        <p class="title is-4">
-                            <a href="{% url 'bookkeeper:clients-details' 1 %}">John Smith</a>
-                        </p>
-                        <p class="subtitle is-6">@johnsmith</p>
-                    </div>
-                </div>
-
-                <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris.
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-            </div>
-            <footer class="card-footer">
-                <a href="#" class="card-footer-item">Save</a>
-                <a href="#" class="card-footer-item">Edit</a>
-                <a href="#" class="card-footer-item">Delete</a>
-            </footer>
-        </div>
-    </div>
-</div>
-<!-- Start Pagination -->
-<div class="columns">
-    <div class="column">
-        <div class="box mt-5">
-            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-                <a class="pagination-previous">Previous</a>
-                <a class="pagination-next">Next page</a>
-                <ul class="pagination-list">
-                    <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-                    <li><span class="pagination-ellipsis">&hellip;</span></li>
-                    <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-                    <li><a class="pagination-link is-current" aria-label="Page
-                            46" aria-current="page">46</a></li>
-                    <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-                    <li><span class="pagination-ellipsis">&hellip;</span></li>
-                    <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
-<!-- End Pagination -->
+    <h3 class="title is-3">Clients</h3>
+    <!-- Start jobs table -->
+    <table class="table is-fullwidth" id="clientsJobsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Jobs</th>
+                <th>Tasks</th>
+                <th>Start Date</th>
+                <th>Due Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Jobs</th>
+                <th>Tasks</th>
+                <th>Start Date</th>
+                <th>Due Date</th>
+                <th></th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>
+                    <a href="">Maurice Beier</a>
+                </td>
+                <td>
+                    Ricardo_Ledner66@yahoo.com
+                </td>
+                <td>4</td>
+                <td>22</td>
+                <td>Mon Mar 14 2022</td>
+                <td>Mon Mar 20 2023</td>
+                <td>
+                    <a href="" class="button is-small has-tooltip-arrow" data-tooltip="View client">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr class="has-background-danger-light">
+                <td>3</td>
+                <td>
+                    <a href="">Owen Roob</a>
+                </td>
+                <td>
+                    Kathleen.Mayer@hotmail.com
+                </td>
+                <td>2</td>
+                <td>22</td>
+                <td>Mon Mar 14 2022</td>
+                <td>Mon Mar 20 2023</td>
+                <td>
+                    <a href="" class="button is-small has-tooltip-arrow" data-tooltip="View client">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>
+                    <a href="">Latoya Kiehn</a>
+                </td>
+                <td>
+                    Anissa.Schmidt@hotmail.com
+                </td>
+                <td>3</td>
+                <td>5</td>
+                <td>Mon Mar 14 2022</td>
+                <td>Mon Mar 20 2023</td>
+                <td>
+                    <a href="" class="button is-small has-tooltip-arrow" data-tooltip="View client">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr class="has-background-success-light">
+                <td>4</td>
+                <td>
+                    <a href="">Phil Hirthe</a>
+                </td>
+                <td>
+                    Mohammad61@yahoo.com
+                </td>
+                <td>8</td>
+                <td>5</td>
+                <td>Mon Mar 14 2022</td>
+                <td>Mon Mar 20 2023</td>
+                <td>
+                    <a href="" class="button is-small has-tooltip-arrow" data-tooltip="View client">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- End jobs table -->
 {% endblock dashboard_content %}
+{% block externaljs %}
+    <script src="{% static 'js/bookkeeper/dashboard/client_list.js' %}" defer type="module"></script>
+{% endblock externaljs %}

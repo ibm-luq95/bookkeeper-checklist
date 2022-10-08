@@ -3,6 +3,6 @@ from bookkeeper.views import DashboardView
 
 
 urlpatterns = [
-    path("", DashboardView.as_view(), name="bookkeeper-dashboard"),
+    path("", DashboardView.as_view(), name="dashboard"),
     path("clients/", include("bookkeeper.urls.clients"), name="clients-urls"),
 ]

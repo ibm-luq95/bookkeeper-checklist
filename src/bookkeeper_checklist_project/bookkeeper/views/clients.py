@@ -1,24 +1,32 @@
-from django.views.generic.base import TemplateView
-import faker
-from core.models import Quote
-import requests
-from datetime import datetime
 import random
+from datetime import datetime
+
+import faker
+import requests
+from core.models import Quote
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic.base import TemplateView
 from prettyprinter import cpprint
 
+from .mixins import BookkeeperAccessMixin
 
-class ClientsListView(TemplateView):
+
+class ClientsListView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
     template_name = "bookkeeper/clients/list.html"
+    login_url = reverse_lazy("users:login")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", "All Clients")
+        cpprint(self.request.user.groups.all())
         return context
 
 
-class ClientsDetailsView(TemplateView):
+class ClientsDetailsView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
     template_name = "bookkeeper/clients/details.html"
+    login_url = reverse_lazy("users:login")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

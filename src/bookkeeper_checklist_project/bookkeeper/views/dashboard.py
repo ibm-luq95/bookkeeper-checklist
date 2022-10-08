@@ -4,7 +4,10 @@ from datetime import datetime
 import requests
 from core.models import Quote
 from core.utils import get_formatted_logger
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
+from .mixins import BookkeeperAccessMixin
 
 # TODO: remove the custom logger before push (only for development)
 # ###### [Custom Logger] #########
@@ -14,8 +17,9 @@ logger = get_formatted_logger(__name__)
 # ###### [Custom Logger] #########
 
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
     template_name = "bookkeeper/dashboard/dashboard.html"
+    login_url = reverse_lazy("users:login")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

@@ -2,8 +2,20 @@
 <nav class="navbar is-white">
     <div class="container">
         <div class="navbar-brand">
-            <a class="navbar-item brand-text" href=""> Bookkeeper
+            {% if request.user.user_type == "bookkeeper" %}
+            <a class="navbar-item brand-text" href="{% url 'bookkeeper:dashboard' %}"> 
+                Bookkeeper
             </a>
+            {% elif request.user.user_type == "assistant" %}
+            <a class="navbar-item brand-text" href="{% url 'assistant:dashboard' %}"> 
+                Bookkeeper
+            </a>
+            {% elif request.user.user_type == "manager" %}
+            <a class="navbar-item brand-text" href="{% url 'manager:dashboard' %}"> 
+                Bookkeeper
+            </a>
+            {% endif %}
+            
             <div class="navbar-burger burger" data-target="navMenu">
                 <span></span>
                 <span></span>

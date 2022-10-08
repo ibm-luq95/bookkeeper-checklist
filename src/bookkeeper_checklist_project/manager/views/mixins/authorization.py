@@ -1,6 +1,7 @@
-from django.contrib.auth.views import redirect_to_login
-from django.shortcuts import redirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.views import redirect_to_login
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import redirect
 
 
 class ManagerAccessMixin(PermissionRequiredMixin):
@@ -16,9 +17,6 @@ class ManagerAccessMixin(PermissionRequiredMixin):
 
         if not self.has_permission():
             user_type = self.request.user.user_type
-            if user_type == "assistant":
-                return redirect("assistant:assistant-dashboard")
-            elif user_type == "bookkeeper":
-                return redirect("bookkeeper:bookkeeper-dashboard")
+            raise PermissionDenied
 
         return super(ManagerAccessMixin, self).dispatch(request, *args, **kwargs)

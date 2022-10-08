@@ -3,6 +3,6 @@ from assistant.views import DashboardView
 
 
 urlpatterns = [
-    path("", DashboardView.as_view(), name="assistant-dashboard"),
+    path("", DashboardView.as_view(), name="dashboard"),
     
 ]

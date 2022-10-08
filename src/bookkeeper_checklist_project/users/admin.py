@@ -12,4 +12,4 @@ class PermissionAdmin(admin.ModelAdmin):
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ('user_type', "created_at", "updated_at", "is_active")

@@ -1,8 +1,13 @@
 from bookkeeper.models import Bookkeeper
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+
+from .mixins import ManagerAccessMixin
 
 
-class BookkeepersListView(ListView):
+class BookkeepersListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
+    login_url = reverse_lazy("users:login")
     template_name: str = "manager/bookkeeper/list.html"
     model = Bookkeeper
     paginate_by: int = 10
@@ -14,7 +19,8 @@ class BookkeepersListView(ListView):
         return context
 
 
-class BookkeepersDetailsView(DetailView):
+class BookkeepersDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
+    login_url = reverse_lazy("users:login")
     template_name = "manager/bookkeeper/details.html"
     model = Bookkeeper
 

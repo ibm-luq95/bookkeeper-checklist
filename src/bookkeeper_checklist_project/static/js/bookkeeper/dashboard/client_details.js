@@ -154,6 +154,15 @@ document.addEventListener("readystatechange", (ev) => {
       });
     }
 
+    const copyASurlBtns = document.querySelectorAll(".copyASurlBtn");
+    copyASurlBtns.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        const currentTarget = event.currentTarget;
+        const UrlInputId = currentTarget.dataset["clipboardTarget"];
+        const UrlInputElement = document.querySelector(`${UrlInputId}`);
+      });
+    });
+
     const allShowASPasswordBtns = document.querySelectorAll(".showASUPasswordBtn");
     allShowASPasswordBtns.forEach((btn) => {
       btn.addEventListener("click", (event) => {
@@ -181,79 +190,17 @@ document.addEventListener("readystatechange", (ev) => {
       const copiedText = e.text;
       const element = e.trigger;
       const textType = element.dataset["textType"];
-      if (textType === "username") {
-        showToastNotification(`Username ${copiedText} copied successfully`, "success");
-      } else if (textType === "password") {
-        showToastNotification(`Password copied successfully`, "success");
-      }
-    });
+      switch (textType) {
+        case "username":
+          showToastNotification(`Username ${copiedText} copied successfully`, "success");
+          break;
 
-    const acsSearchBtn = document.querySelector("#acsSearchBtn");
-    acsSearchBtn.addEventListener("click", (event) => {
-      const currentTarget = event.currentTarget;
-      const searchAccountLoader = document.querySelector("#searchAccountLoader");
-      const acServicesSearchInput = document.querySelector("#acServicesSearch");
-      if (acServicesSearchInput.value === "") {
-        acServicesSearchInput.classList.add("is-border-danger");
-      } else {
-        // search in account and services
-        searchAccountLoader.hidden = false;
-        currentTarget.disabled = true;
-        acServicesSearchInput.disabled = true;
-        const bookkeeperClientAccountAndServicesTable = document.querySelector(
-          "#bookkeeper-client-account-and-services-table",
-        );
-        const tbodyElement = bookkeeperClientAccountAndServicesTable.querySelector("tbody");
-        const allTrElements = tbodyElement.querySelectorAll("tr");
-        if (allTrElements.length > 0) {
-          allTrElements.forEach((element) => {
-            element.remove();
-          });
-          setTimeout(() => {
-            const trElement = document.createElement("tr");
-            const tdUrl = document.createElement("td");
-            tdUrl.textContent = "https://www.google.com";
-            trElement.appendChild(tdUrl);
-            const tdUsername = document.createElement("td");
-            tdUsername.textContent = "admin";
-            trElement.appendChild(tdUsername);
-            const tdPassword = document.createElement("td");
-            tdPassword.innerHTML = /*html*/ `<div class="account-service-item account-service-password">
-            <div class="field has-addons">
-              <p class="control">
-                <span class="">
-                  <button class="button showASUPasswordBtn is-small" data-tooltip="Show Password"
-                    data-visibility-status="0" data-password-input="as-password-22">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </span>
-              </p>
-              <div class="control">
-                <input class="input is-small" type="password" value="password" id="as-password-22"
-                  readonly />
-              </div>
-              <div class="control">
-                <button
-                  class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
-                  data-tooltip="Copy password, you have to reveal the password to copy it"
-                  data-clipboard-target="#as-password-22" data-text-type="password">
-                  <i class="fas fa-copy"></i>
-                </button>
-
-              </div>
-            </div>
-
-
-          </div>`;
-            trElement.appendChild(tdPassword);
-            tbodyElement.appendChild(trElement);
-
-            // enable search inputs
-            searchAccountLoader.hidden = true;
-            currentTarget.disabled = false;
-            acServicesSearchInput.disabled = false;
-          }, 2000);
-        }
+        case "password":
+          showToastNotification(`Password copied successfully`, "success");
+          break;
+        case "url":
+          showToastNotification(`Url copied successfully`, "success");
+          break;
       }
     });
 
@@ -268,6 +215,87 @@ document.addEventListener("readystatechange", (ev) => {
           },
           disableFocus: false,
         });
+      });
+    });
+
+    const tableFooterSearchElements = document.querySelectorAll(
+      "#clientsAccountAndServicesTable tfoot th",
+    );
+    tableFooterSearchElements.forEach((element) => {
+      const title = element.textContent;
+      let inputID;
+      switch (element.id) {
+        case "footerUrl":
+          inputID = "searchFooterUrl";
+          break;
+        case "footerUsername":
+          inputID = "searchFooterUsername";
+          break;
+        case "footerPassword":
+          inputID = "searchFooterPassword";
+          break;
+      }
+      // element.innerHTML = '<input type="text" placeholder="Search ' + title + '" />';
+      const searchInputElement = document.createElement("input");
+      searchInputElement.type = "text";
+      searchInputElement.id = inputID;
+      searchInputElement.classList.add(...["input", "is-small", "searchTableFooterInput"]);
+      searchInputElement.placeholder = `Search ${title}`;
+      element.appendChild(searchInputElement);
+    });
+
+    const clientsAccountAndServicesTable = $("#clientsAccountAndServicesTable").DataTable({
+      autoWidth: true,
+      // processing: true,
+      info: true,
+      // "paging": false,
+      // stateSave: true,
+      stateSaveCallback: function (settings, data) {
+        localStorage.setItem("DataTables_" + settings.sInstance, JSON.stringify(data));
+      },
+      stateLoadCallback: function (settings) {
+        return JSON.parse(localStorage.getItem("DataTables_" + settings.sInstance));
+      },
+      fixedHeader: true,
+      // responsive: true,
+      columnDefs: [{ type: "html-input", targets: [0, 1, 2] }],
+      // dom: "Bfrtip",
+      /* buttons: [
+        {
+          extend: "alert",
+          text: "My button 1",
+        },
+        {
+          extend: "alert",
+          text: "My button 2",
+        },
+        {
+          extend: "alert",
+          text: "My button 3",
+        },
+      ], */
+      // buttons: ["copy", "csv", "pdf"],
+      initComplete: function () {
+        // Apply the search
+        this.api()
+          .columns()
+          .every(function () {
+            let that = this;
+            // console.log(this.footer());
+            $("input", this.footer()).on("keyup change clear", function () {
+              if (that.search() !== this.value) {
+                that.search(this.value).draw();
+              }
+            });
+          });
+      },
+    });
+    // Apply the search
+    clientsAccountAndServicesTable.columns().every(function () {
+      let that = this;
+
+      $("input", this.footer()).on("keyup change", function () {
+        that.search(this.value).draw();
       });
     });
   }

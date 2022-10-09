@@ -143,7 +143,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATIC_ROOT = BASE_DIR / "/home/ibrahim/bookkeeper-checklist/src/bookkeeper_checklist_project/static"
+STATIC_ROOT = BASE_DIR / "/home/ibrahim/bookkeeper-checklist/src/bookkeeper_checklist_project/staticfiles"
 
 MEDIA_ROOT = BASE_DIR / "media"
 

@@ -51,9 +51,9 @@ class LoginView(SuccessMessageMixin, FormView):
         else:
             messages.error(self.request, "User credentials not correct!")
             return super().form_invalid(form)
-        print("######################")
-        print(user.user_type)
-        print("######################")
+        # print("######################")
+        # print(user.user_type)
+        # print("######################")
         if user_type == "assistant":
             return redirect("assistant:dashboard")
         elif user_type == "bookkeeper":

@@ -41,6 +41,7 @@ class Assistant(BaseModelMixin):
         to=CompanyService, on_delete=models.PROTECT, null=True, related_name="assistant"
     )
     clients = models.ManyToManyField(to=Client)
+    bio = models.TextField(_('bio'), null=True, blank=True)
 
     class Meta(BaseModelMixin.Meta):
         permissions = [

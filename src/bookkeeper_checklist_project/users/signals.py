@@ -22,7 +22,7 @@ def create_profile(sender, instance, created, **kwargs):
         if created:
             with transaction.atomic():
 
-                print("create group")
+                # print("create group")
                 group = None
                 user = instance
                 user_type = user.user_type
@@ -40,7 +40,7 @@ def create_profile(sender, instance, created, **kwargs):
                         "USER", message=f"The group {group} not exists!"
                     )
                 group_object = group_object.first()
-                print(group_object)
+                # print(group_object)
                 instance.groups.add(group_object)
                 instance.save()
 

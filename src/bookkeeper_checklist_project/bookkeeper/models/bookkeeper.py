@@ -39,6 +39,7 @@ class Bookkeeper(BaseModelMixin):
     )
     clients = models.ManyToManyField(to=Client)
     is_active = models.BooleanField(_("is_active"), default=True)
+    bio = models.TextField(_('bio'), null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"

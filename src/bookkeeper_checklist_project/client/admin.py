@@ -1,17 +1,18 @@
 from django.contrib import admin
+from core.admin import BaseAdminModelMixin
 from .models import Client, ClientAccount, ImportantContact
 
 
 @admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
+class ClientAdmin(BaseAdminModelMixin):
     pass
 
 
 @admin.register(ClientAccount)
-class ClientAccountAdmin(admin.ModelAdmin):
+class ClientAccountAdmin(BaseAdminModelMixin):
     pass
 
 
 @admin.register(ImportantContact)
-class ImportantContactAdmin(admin.ModelAdmin):
+class ImportantContactAdmin(BaseAdminModelMixin):
     pass

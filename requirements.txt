@@ -3,7 +3,6 @@ bandit
 black
 blessings
 bpython
-colorama
 coverage
 crispy-bulma
 cryptography
@@ -11,16 +10,18 @@ django-debug-toolbar
 django-extensions
 django-filter
 django-stubs
+djangorestframework
+djlint
 faker
 flake8-polyfill
 hiredis
 inquirer
+markdown
 pep8
 phone-gen
 pillow
 pip-chill
 pipdeptree
-poetry-semver
 prettyprinter
 prettytable
 prospector

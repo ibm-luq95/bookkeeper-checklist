@@ -1,5 +1,8 @@
 "use strict";
 
+import { getCookie } from "../../utils/cookie.js";
+import { enableInputsOnLoad, sendRequest } from "../../utils/helpers.js";
+import { showToastNotification } from "../../utils/notifications.js";
 document.addEventListener("readystatechange", (ev) => {
   // The document is still loading.
   /* if (document.readyState === "loading") {
@@ -13,13 +16,18 @@ document.addEventListener("readystatechange", (ev) => {
 
   // check if the page fully loaded with all resources
   if (document.readyState === "complete") {
-    $(() => {
-      $("#edit-preferences").click(function () {
-        $("#edit-preferences-modal").addClass("is-active");
+    enableInputsOnLoad("bkchlst-input");
+    const readonlySelectElements = document.querySelectorAll(".readonly-select");
+    readonlySelectElements.forEach((element) => {
+      element.addEventListener("change", (event) => {
+        return false;
       });
-      $(".modal-card-head button.delete, .modal-save, .modal-cancel").click(function () {
-        $("#edit-preferences-modal").removeClass("is-active");
-      });
+    });
+    $("#edit-preferences").click(function () {
+      $("#edit-preferences-modal").addClass("is-active");
+    });
+    $(".modal-card-head button.delete, .modal-save, .modal-cancel").click(function () {
+      $("#edit-preferences-modal").removeClass("is-active");
     });
 
     let tabsWithContent = (function () {
@@ -94,7 +102,55 @@ document.addEventListener("readystatechange", (ev) => {
         text: "My button 3",
       },
     ], */
-      buttons: ["copy", "csv", "pdf"],
+      buttons: [
+        "copy",
+        "csv",
+        "pdf",
+        {
+          text: "Add New Job",
+          className: "is-success",
+          action: (e, dt, node, config) => {
+            // console.log(config);
+            // alert("Button activated");
+            // dt.data.reload();
+            MicroModal.show("jobs-form-modal", {
+              disableScroll: false,
+              onClose: (modal) => {
+                console.info(`${modal.id} is hidden`);
+              },
+              disableFocus: false,
+            });
+          },
+        },
+      ],
+    });
+
+    const managerAddNewJobForm = document.querySelector("#managerAddNewJobForm");
+    managerAddNewJobForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const currentTarget = event.currentTarget;
+      const formData = new FormData(currentTarget);
+      const requestOptions = {
+        method: "POST",
+        dataToSend: formData,
+        url: currentTarget.action,
+      };
+      const tasksArray = formData.getAll("tasks");
+      formData.delete("tasks");
+      formData.append("tasks", JSON.stringify(tasksArray));
+      const request = sendRequest(requestOptions);
+      request
+        .then((data) => {
+          showToastNotification(`${data["msg"]}`, "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        })
+        .catch((error) => {
+          console.error(error);
+          showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+        });
+      // currentTarget.submit();
     });
   }
 });

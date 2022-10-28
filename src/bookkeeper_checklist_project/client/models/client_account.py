@@ -18,3 +18,6 @@ class ClientAccount(BaseModelMixin):
         _("account_password"), max_length=250, null=True
     )
     last_modified_date = models.DateTimeField(_("last_modified_date"), auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.account_name}"

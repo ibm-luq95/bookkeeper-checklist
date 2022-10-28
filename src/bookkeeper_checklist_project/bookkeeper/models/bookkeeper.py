@@ -7,6 +7,8 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
+# from jobs.models import Job
+
 
 class Bookkeeper(BaseModelMixin):
     """Bookkeeper model
@@ -39,7 +41,7 @@ class Bookkeeper(BaseModelMixin):
     )
     clients = models.ManyToManyField(to=Client)
     is_active = models.BooleanField(_("is_active"), default=True)
-    bio = models.TextField(_('bio'), null=True, blank=True)
+    bio = models.TextField(_("bio"), null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"
@@ -52,3 +54,10 @@ class Bookkeeper(BaseModelMixin):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.fullname)
         super(Bookkeeper, self).save(*args, **kwargs)
+
+    def get_tasks_count(self):
+        all_tasks = []
+        all_jobs = self.jobs.all()
+        for job in all_jobs:
+            all_tasks.append(job.tasks.count())
+        return sum(all_tasks)

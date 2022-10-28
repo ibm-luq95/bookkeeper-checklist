@@ -1,5 +1,6 @@
 {% extends "core/layouts/dashboard.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block externalcss %}
 <link rel="stylesheet" href="{% static 'css/manager/bookkeeper/details.css' %}" />
@@ -140,7 +141,7 @@
                             <p class="stat-key">Jobs</p>
                         </div>
                         <div class="column is-2-tablet is-4-mobile has-text-centered">
-                            <p class="stat-val">10</p>
+                            <p class="stat-val">{{ object.get_tasks_count }}</p>
                             <p class="stat-key">Tasks</p>
                         </div>
                         <div class="column is-2-tablet is-4-mobile has-text-centered">
@@ -179,55 +180,72 @@
                                         <span>Tasks</span>
                                     </a>
                                 </li>
-                                <li class="link">
+                                <!-- <li class="link">
                                     <a>
                                         <span class="icon">
                                             <i class="fa fa-balance-scale"></i>
                                         </span>
                                         <span>Compare</span>
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
 
                         <div>
                             <section class="tab-content">
+
+                                {% if object.jobs.count > 0 %}
                                 <!-- Start jobs table -->
                                 <table class="table is-fullwidth table-100" id="managerClientsJobsTable">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Name</th>
-                                            <th>Client</th>
+                                            <th>Account Name</th>
+                                            <th>Status</th>
+                                            <th>Type</th>
                                             <th>Tasks</th>
-                                            <th>Start Date</th>
-                                            <th>Due Date</th>
+                                            <th>Created Date</th>
+                                            <!-- <th>Due Date</th> -->
                                             <!-- <th></th> -->
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Name</th>
-                                            <th>Client</th>
+                                            <th>Account Name</th>
+                                            <th>Status</th>
+                                            <th>Type</th>
                                             <th>Tasks</th>
                                             <th>Start Date</th>
-                                            <th>Due Date</th>
+                                            <!-- <th>Due Date</th> -->
                                             <!-- <th></th> -->
                                         </tr>
                                     </tfoot>
                                     <tbody>
+                                        {% for job in object.jobs.all %}
+
                                         <tr>
-                                            <td>1</td>
                                             <td>
-                                                <a href="">Maurice Beier</a>
+                                                <a href="">
+                                                    {{ job.title }}
+                                                </a>
                                             </td>
                                             <td>
-                                                Client Name
+                                                {{ job.client.name }}
                                             </td>
-                                            <td>22</td>
-                                            <td>Mon Mar 14 2022</td>
-                                            <td>Mon Mar 20 2023</td>
+                                            <td>
+                                                {{ job.get_status_display }}
+                                            </td>
+                                            <td>
+                                                {{ job.get_job_type_display }}
+                                            </td>
+                                            <td>
+                                                {{ job.tasks.count }}
+                                            </td>
+                                            <td>
+                                                {{ job.created_at }}
+                                            </td>
+                                            <!-- <td>Mon Mar 20 2023</td> -->
                                             <!-- <td>
                                                 <a href="" class="button is-small has-tooltip-arrow"
                                                     data-tooltip="View client">
@@ -235,90 +253,60 @@
                                                 </a>
                                             </td> -->
                                         </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>
-                                                <a href="">Owen Roob</a>
-                                            </td>
-                                            <td>
-                                                Client Name
-                                            </td>
-                                            <td>22</td>
-                                            <td>Mon Mar 14 2022</td>
-                                            <td>Mon Mar 20 2023</td>
-                                            <!-- <td>
-                                                <a href="" class="button is-small has-tooltip-arrow"
-                                                    data-tooltip="View client">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </a>
-                                            </td> -->
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>
-                                                <a href="">Latoya Kiehn</a>
-                                            </td>
-                                            <td>
-                                                Client Name
-                                            </td>
-                                            <td>5</td>
-                                            <td>Mon Mar 14 2022</td>
-                                            <td>Mon Mar 20 2023</td>
-                                            <!-- <td>
-                                                <a href="" class="button is-small has-tooltip-arrow"
-                                                    data-tooltip="View client">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </a>
-                                            </td> -->
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>
-                                                <a href="">Phil Hirthe</a>
-                                            </td>
-                                            <td>
-                                                Client Name
-                                            </td>
-                                            <td>5</td>
-                                            <td>Mon Mar 14 2022</td>
-                                            <td>Mon Mar 20 2023</td>
-                                            <!-- <td>
-                                                <a href="" class="button is-small has-tooltip-arrow"
-                                                    data-tooltip="View client">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </a>
-                                            </td> -->
-                                        </tr>
+                                        {% endfor %}
+
+
                                     </tbody>
                                 </table>
                                 <!-- End jobs table -->
+
+                                {% else %}
+                                <div class="notification is-warning">
+                                    <!-- <button class="delete"></button> -->
+                                    No Jobs
+                                </div>
+                                {% endif  %}
+
+
                             </section>
                             <section class="tab-content">
+
                                 <table class="table is-fullwidth table-100">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Name</th>
+                                            <th>Account Name</th>
                                             <th>Client</th>
                                             <!-- <th></th> -->
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Name</th>
                                             <th>Client</th>
                                             <!-- <th></th> -->
                                         </tr>
                                     </tfoot>
+                                    <tbody>
+                                        {% for client in object.clients.all %}
+                                        <tr>
+                                            <td>
+                                                {{ client.name }}
+                                            </td>
+                                            <td>
+                                                {{ client.client_account.account_name }}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
                                 </table>
                             </section>
                             <section class="tab-content">
                                 Tasks
                             </section>
-                            <section class="tab-content">
+                            <!-- <section class="tab-content">
                                 444444444444
-                            </section>
+                            </section> -->
                         </div>
                     </div>
                 </div>
@@ -329,6 +317,36 @@
     </div>
 </section>
 
+<!-- Start Jobs Form -->
+<div class="modal micromodal-slide" id="jobs-form-modal" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true" aria-labelledby="jobs-form-modal-title">
+            <header class="modal__header">
+                <h2 class="modal__title" id="jobs-form-modal-title">
+                    New job to {{ object.user.fullname }}
+                </h2>
+
+                <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+                </button>
+            </header>
+            <main class="modal__content" id="jobs-form-modal-content">
+                <form action="{% url 'manager:bookkeeper_api:create-job-bookkeeper' %}" method="POST" id="managerAddNewJobForm">
+                    {% csrf_token %}
+                    {{ jobs_form|crispy }}
+                </form>
+            </main>
+            <footer class="modal__footer">
+                <button type="submit" form="managerAddNewJobForm" class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
+                    Add
+                </button>
+                <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+                    Close
+                </button>
+            </footer>
+        </div>
+    </div>
+</div>
+<!-- End Jobs Form -->
 {% endblock dashboard_content %}
 
 

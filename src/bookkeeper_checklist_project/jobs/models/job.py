@@ -18,7 +18,7 @@ class Job(BaseModelMixin):
 
     bookkeeper = models.ForeignKey(
         to=Bookkeeper,
-        on_delete=models.PROTECT,
+        on_delete=models.PROTECT,  # TODO: check how to change the bookkeeper easily
         related_name="jobs",
         # null=True,
         help_text=JOB_HELP_MESSAGES.get("bookkeeper"),
@@ -50,3 +50,6 @@ class Job(BaseModelMixin):
         help_text=JOB_HELP_MESSAGES.get("client"),
     )
     tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
+
+    def __str__(self) -> str:
+        return self.title

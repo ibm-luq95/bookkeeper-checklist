@@ -20,15 +20,8 @@ document.addEventListener("readystatechange", (ev) => {
     const clipboardJs = new ClipboardJS(".copyBtn");
 
     // first enable all bkchlst inputs when page fully loaded completed
-    const allBkChLstInputs = document.querySelectorAll(".bkchlst-input");
     const inputTrimWhitespaceBtns = document.querySelectorAll(".input-trim-whitespace");
-    allBkChLstInputs.forEach((element) => {
-      const isDisabled = element.dataset["isDisabled"];
-      if (isDisabled !== "1") {
-        element.disabled = false;
-        element.classList.remove(isDisabledCssClass);
-      }
-    });
+    
     inputTrimWhitespaceBtns.forEach((element) => {
       element.value = element.value.trim();
     });
@@ -86,7 +79,7 @@ document.addEventListener("readystatechange", (ev) => {
         const childeElementsCssClass = `.${currentTarget.dataset["childCheckboxClass"]}`;
         const allChildElements = document.querySelectorAll(childeElementsCssClass);
         allChildElements.forEach((input) => {
-          console.log(weeklyTasksInputs);
+          // console.log(weeklyTasksInputs);
           if (currentTarget.checked === true) {
             input.checked = true;
           } else {

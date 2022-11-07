@@ -14,9 +14,11 @@ class ExceptionErrorCodes(Enum):
     ASSISTANT = "assistant error"
     USER = "user error"
     CUSTOM_USER = "custom user error"
+    TASKS = "tasks error"
+    JOBS = "jobs error"
 
 
-class ProjectException(Exception):
+class ProjectError(Exception):
     """Project exception for all errors in payment app
 
     Args:

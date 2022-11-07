@@ -42,11 +42,20 @@
   margin-bottom: 0;
 }
 
-#tabs-with-content .tab-content {
+/* #tabs-with-content .tab-content {
   padding: 1rem;
   display: none;
-}
+} */
 
 #tabs-with-content .tab-content.is-active {
   display: block;
+}
+
+#tab-content section {
+  display: none;
+}
+
+#tab-content section.is-active {
+  display: block;
+  padding-bottom: 10px;
 }

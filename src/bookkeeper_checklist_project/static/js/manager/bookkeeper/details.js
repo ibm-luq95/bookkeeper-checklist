@@ -2,6 +2,7 @@
 
 import { getCookie } from "../../utils/cookie.js";
 import { enableInputsOnLoad, sendRequest } from "../../utils/helpers.js";
+import { showMicroModal } from "../../utils/model-box.js";
 import { showToastNotification } from "../../utils/notifications.js";
 document.addEventListener("readystatechange", (ev) => {
   // The document is still loading.
@@ -17,6 +18,8 @@ document.addEventListener("readystatechange", (ev) => {
   // check if the page fully loaded with all resources
   if (document.readyState === "complete") {
     enableInputsOnLoad("bkchlst-input");
+    const addNewJobBtn = document.querySelector("#addNewJobBtn");
+    const addNewClientBtn = document.querySelector("#addNewClientBtn");
     const readonlySelectElements = document.querySelectorAll(".readonly-select");
     readonlySelectElements.forEach((element) => {
       element.addEventListener("change", (event) => {
@@ -29,43 +32,26 @@ document.addEventListener("readystatechange", (ev) => {
     $(".modal-card-head button.delete, .modal-save, .modal-cancel").click(function () {
       $("#edit-preferences-modal").removeClass("is-active");
     });
+    $("#tabs li").on("click", function () {
+      const tab = $(this).data("tab");
 
-    let tabsWithContent = (function () {
-      let tabs = document.querySelectorAll(".tabs li");
-      let tabsContent = document.querySelectorAll(".tab-content");
+      $("#tabs li").removeClass("is-active");
+      $(this).addClass("is-active");
 
-      let deactvateAllTabs = function () {
-        tabs.forEach(function (tab) {
-          tab.classList.remove("is-active");
-        });
-      };
+      $("#tab-content section").removeClass("is-active");
+      $('section[data-content="' + tab + '"]').addClass("is-active");
+    });
 
-      let hideTabsContent = function () {
-        tabsContent.forEach(function (tabContent) {
-          tabContent.classList.remove("is-active");
-        });
-      };
-
-      let activateTabsContent = function (tab) {
-        tabsContent[getIndex(tab)].classList.add("is-active");
-      };
-
-      let getIndex = function (el) {
-        return [...el.parentElement.children].indexOf(el);
-      };
-
-      tabs.forEach(function (tab) {
-        tab.addEventListener("click", function () {
-          deactvateAllTabs();
-          hideTabsContent();
-          tab.classList.add("is-active");
-          activateTabsContent(tab);
-        });
+    if (addNewJobBtn) {
+      addNewJobBtn.addEventListener("click", (event) => {
+        showMicroModal("jobs-form-modal");
       });
-
-      tabs[0].click();
-    })();
-
+    }
+    if (addNewClientBtn) {
+      addNewClientBtn.addEventListener("click", (event) => {
+        showMicroModal("client-form-modal");
+      });
+    }
     $.fn.dataTable.ext.buttons.alert = {
       className: "buttons-alert",
 
@@ -88,22 +74,8 @@ document.addEventListener("readystatechange", (ev) => {
       fixedHeader: true,
       responsive: true,
       dom: "Bfrtip",
-      /* buttons: [
-      {
-        extend: "alert",
-        text: "My button 1",
-      },
-      {
-        extend: "alert",
-        text: "My button 2",
-      },
-      {
-        extend: "alert",
-        text: "My button 3",
-      },
-    ], */
       buttons: [
-        "copy",
+        // "copy",
         "csv",
         "pdf",
         {
@@ -113,13 +85,71 @@ document.addEventListener("readystatechange", (ev) => {
             // console.log(config);
             // alert("Button activated");
             // dt.data.reload();
-            MicroModal.show("jobs-form-modal", {
-              disableScroll: false,
-              onClose: (modal) => {
-                console.info(`${modal.id} is hidden`);
-              },
-              disableFocus: false,
-            });
+            showMicroModal("jobs-form-modal");
+          },
+        },
+      ],
+    });
+
+    const clientsTable = $("#managerClientsTable").DataTable({
+      autoWidth: true,
+      processing: true,
+      // "info": false,
+      // "paging": false,
+      // stateSave: true,
+      stateSaveCallback: function (settings, data) {
+        localStorage.setItem("DataTables_" + settings.sInstance, JSON.stringify(data));
+      },
+      stateLoadCallback: function (settings) {
+        return JSON.parse(localStorage.getItem("DataTables_" + settings.sInstance));
+      },
+      fixedHeader: true,
+      responsive: true,
+      dom: "Bfrtip",
+      buttons: [
+        // "copy",
+        "csv",
+        "pdf",
+        {
+          text: "Add New Client",
+          className: "is-success",
+          action: (e, dt, node, config) => {
+            // console.log(config);
+            // alert("Button activated");
+            // dt.data.reload();
+            showMicroModal("client-form-modal");
+          },
+        },
+      ],
+    });
+
+    const tasksTable = $("#managerTasksTable").DataTable({
+      autoWidth: true,
+      processing: true,
+      // "info": false,
+      // "paging": false,
+      // stateSave: true,
+      stateSaveCallback: function (settings, data) {
+        localStorage.setItem("DataTables_" + settings.sInstance, JSON.stringify(data));
+      },
+      stateLoadCallback: function (settings) {
+        return JSON.parse(localStorage.getItem("DataTables_" + settings.sInstance));
+      },
+      fixedHeader: true,
+      responsive: true,
+      dom: "Bfrtip",
+      buttons: [
+        // "copy",
+        "csv",
+        "pdf",
+        {
+          text: "Add New Task",
+          className: "is-success",
+          action: (e, dt, node, config) => {
+            // console.log(config);
+            // alert("Button activated");
+            // dt.data.reload();
+            showMicroModal("tasks-form-modal");
           },
         },
       ],
@@ -129,6 +159,9 @@ document.addEventListener("readystatechange", (ev) => {
     managerAddNewJobForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const currentTarget = event.currentTarget;
+      const submitBtn = document.querySelector("button#managerAddNewJobBtn");
+      submitBtn.disabled = true;
+      submitBtn.classList.add(...["disabled", "cur-progress", "is-disabled"]);
       const formData = new FormData(currentTarget);
       const requestOptions = {
         method: "POST",
@@ -142,13 +175,17 @@ document.addEventListener("readystatechange", (ev) => {
       request
         .then((data) => {
           showToastNotification(`${data["msg"]}`, "success");
+          submitBtn.disabled = false;
+          submitBtn.classList.remove("disabled", "cur-progress", "is-disabled");
           setTimeout(() => {
             window.location.reload();
-          }, 1500);
+          }, 1000);
         })
         .catch((error) => {
           console.error(error);
           showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          submitBtn.disabled = false;
+          submitBtn.classList.remove("disabled", "cur-progress", "is-disabled");
         });
       // currentTarget.submit();
     });

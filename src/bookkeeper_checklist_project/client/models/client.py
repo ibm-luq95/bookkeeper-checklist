@@ -1,7 +1,7 @@
-from core.models import BaseModelMixin
 from django.db import models
 from django.utils.translation import gettext as _
 
+from core.models import BaseModelMixin
 from . import ClientAccount, ImportantContact
 
 
@@ -36,4 +36,5 @@ class Client(BaseModelMixin):
 
     def __str__(self) -> str:
         # return self.client_account
-        return f"{self.email} - {self.client_account}"
+        # return f"{self.email} - {self.client_account}"
+        return self.name

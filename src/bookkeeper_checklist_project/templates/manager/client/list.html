@@ -1,0 +1,110 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-clients-list">
+    <header>
+        <h3 class="title is-3">
+            Clients <a class="button is-primary mx-2" href="{% url 'manager:client:create' %}">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </h3>
+    </header>
+    <hr />
+    <div class="box">
+        {% if object_list.count > 0 %}
+        <table class="table is-fullwidth table-100" id="managerClientsTable">
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Industry</th>
+                    <th>Jobs</th>
+                    <th>Tasks</th>
+                    <!-- <th>Slug</th> -->
+                    <th>Created AT</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Industry</th>
+                    <th>Jobs</th>
+                    <th>Tasks</th>
+                    <!-- <th>Slug</th> -->
+                    <th>Created AT</th>
+                    <th>Actions</th>
+                </tr>
+            </tfoot>
+            <tbody>
+
+                {% for object in object_list %}
+                    <tr>
+                        <td>
+                            <a href="">
+                                {{ object.name }}
+                            </a>
+                        </td>
+                        <td>
+                            +123456
+                        </td>
+                        <td>
+                            <a href="mailto:{{ object.email }}">
+                                {{ object.email }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ object.industry }}
+                        </td>
+                        <td>
+                            {{ object.jobs.count }}
+                        </td>
+                        <td>
+                            {{ object.tasks }}
+                        </td>
+                        <td>
+                            {{ object.created_at }}
+                        </td>
+                        <td>
+                            <div class="buttons are-small">
+                                <a href=""
+                                   class="button is-info is-light">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                                <a href=""
+                                   class="button is-success is-light">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <a href=""
+                                   class="button is-danger is-light">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        {% else %}
+        <div class="notification is-warning">
+            <!-- <button class="delete"></button> -->
+            No client(s)
+            <a class="is-primary is-inverted is-hoverable is-hovered mx-1" href="{% url 'manager:client:create' %}">
+                Create new client
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    {% endblock dashboard_content %}
+
+    {% block externaljs %}
+    <script src="{% static 'js/manager/client/list.js' %}" defer type="module"></script>
+    {% endblock externaljs %}

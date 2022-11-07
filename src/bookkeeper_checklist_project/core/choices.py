@@ -37,7 +37,7 @@ class ServiceNameEnum(models.TextChoices):
     SHARED_ACCOUNTS = "shared_accounts", _("Shared Accounts")
 
 
-class BaseStatusTypesEnum(models.TextChoices):
+class TaskStatusEnum(models.TextChoices):
     NO_TYPE = "no_type", _("No Type")
     RECURRING = "recurring", _("Recurring")
     WEEKLY = "weekly", _("Weekly")

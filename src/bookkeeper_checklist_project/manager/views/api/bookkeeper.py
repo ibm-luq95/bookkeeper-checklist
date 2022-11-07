@@ -1,13 +1,17 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.request import Request
+import json
+import traceback
+
+from rest_framework import permissions
 from rest_framework import status
 from rest_framework.exceptions import APIException
-from rest_framework import permissions
-from prettyprinter import cpprint
-import json
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from core.utils import get_formatted_logger
 from jobs.serializers import CreateJobSerializer
+
+logger = get_formatted_logger(__name__)
 
 
 class CreateJobToBookkeeper(APIView):
@@ -30,6 +34,7 @@ class CreateJobToBookkeeper(APIView):
                 {"msg": "Job created successfully!"}, status=status.HTTP_201_CREATED
             )
         except APIException as ex:
+            logger.error("API Exception")
             print(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -38,7 +43,7 @@ class CreateJobToBookkeeper(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            print(ex)
+            logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),

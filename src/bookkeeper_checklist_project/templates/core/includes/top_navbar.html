@@ -37,10 +37,10 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a class="navbar-item" href="{% url 'manager:bookkeeper-list' %}">
+                        <a class="navbar-item" href="{% url 'manager:bookkeeper:list' %}">
                             List all bookkeepers
                         </a>
-                        <a class="navbar-item" href="{% url 'manager:users-create' %}">
+                        <a class="navbar-item" href="{% url 'manager:users:create' %}">
                             Create new bookkeeper
                         </a>
                     </div>
@@ -65,11 +65,25 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a class="navbar-item">
+                        <a class="navbar-item" href="{% url 'manager:client:list' %}">
                             List all clients
                         </a>
                         <a class="navbar-item">
-                            Create new assistant
+                            Create new client
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Jobs
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="{% url 'manager:jobs:list' %}">
+                            List all jobs
+                        </a>
+                        <a class="navbar-item" href="{% url 'manager:jobs:create' %}">
+                            Create new job
                         </a>
                     </div>
                 </div>

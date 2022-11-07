@@ -121,7 +121,7 @@ nav.navbar {
 
 /* Style the tab */
 .tab {
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid #ccc;
   /* background-color: #f1f1f1; */
 }
@@ -261,4 +261,8 @@ nav.navbar {
 
 .readonly-select {
   pointer-events: none !important;
+}
+
+.cur-progress {
+  cursor: progress;
 }

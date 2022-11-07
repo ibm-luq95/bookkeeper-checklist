@@ -12,4 +12,5 @@ class BaseModelFormMixin(forms.ModelForm):
         exclude = [
             "metadata",
             "is_deleted",
+            "slug"
         ]

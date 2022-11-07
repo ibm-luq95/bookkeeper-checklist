@@ -6,4 +6,4 @@ from .models import Job
 
 @admin.register(Job)
 class JobAdmin(BaseAdminModelMixin):
-    pass
+    list_filter = ("bookkeeper", "job_type", "status", "client")

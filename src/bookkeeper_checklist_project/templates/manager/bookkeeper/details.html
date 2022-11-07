@@ -131,8 +131,7 @@
                             <p class="tagline">
 
                                 <a class="button is-primary is-outlined" href="#" id="edit-preferences"
-                                    style="margin: 5px 0">Preferences
-                                </a>
+                                    style="margin: 5px 0">Preferences</a>
 
                             </p>
                         </div>
@@ -151,139 +150,172 @@
                     </div>
                 </div>
                 <div class="profile-options is-fullwidth">
-                    <div id="tabs-with-content">
-                        <div class="tabs is-fullwidth is-medium">
-                            <ul>
-                                <li class="link">
-                                    <a>
-                                        <span class="icon">
-                                            <i class="fa fa-list"></i>
-                                        </span>
-                                        <span>Jobs</span>
-                                    </a>
-                                </li>
-                                <li class="link">
-                                    <a>
-                                        <span class="icon">
-                                            <i class="fa-solid fa-users"></i>
-                                        </span>
-                                        <span>
-                                            Clients
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="link">
-                                    <a>
-                                        <span class="icon">
-                                            <i class="fa-solid fa-list-check"></i>
-                                        </span>
-                                        <span>Tasks</span>
-                                    </a>
-                                </li>
-                                <!-- <li class="link">
-                                    <a>
-                                        <span class="icon">
-                                            <i class="fa fa-balance-scale"></i>
-                                        </span>
-                                        <span>Compare</span>
-                                    </a>
-                                </li> -->
-                            </ul>
-                        </div>
+                    <div class="tabs is-toggle is-fullwidth" id="tabs">
+                        <ul>
+                            <li class="is-active" data-tab="1">
+                                <a>
+                                    <span class="icon is-small"><i class="fa-solid fa-list"></i></span>
+                                    <span>Jobs</span>
+                                </a>
+                            </li>
+                            <li data-tab="2">
+                                <a>
+                                    <span class="icon is-small"><i class="fa-solid fa-users"></i></span>
+                                    <span>Clients</span>
+                                </a>
+                            </li>
+                            <li data-tab="3">
+                                <a>
+                                    <span class="icon is-small"><i class="fa-solid fa-solid fa-key"></i></span>
+                                    <span>Accounts & Services</span>
+                                </a>
+                            </li>
+                            <li data-tab="4">
+                                <a>
+                                    <span class="icon is-small"><i class="fa-sharp fa-solid fa-notes"></i></span>
+                                    <span>Notes</span>
+                                </a>
+                            </li>
 
-                        <div>
-                            <section class="tab-content">
+                        </ul>
+                    </div>
+                    <div id="tab-content">
+                        <section class="is-active" data-content="1">
+                            {% if object.jobs.count > 0 %}
+                            <!-- Start jobs table -->
+                            <table class="table is-fullwidth table-100" id="managerClientsJobsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Account Name</th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>
+                                            Type
+                                        </th>
+                                        <th>
+                                            Tasks
+                                        </th>
+                                        <th>
+                                            Created Date
+                                        </th>
+                                        <!-- <th>Due Date</th> -->
+                                        <!-- <th></th> -->
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Account Name
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>
+                                            Type
+                                        </th>
+                                        <th>
+                                            Tasks
+                                        </th>
+                                        <th>
+                                            Start Date
+                                        </th>
+                                        <!-- <th>Due Date</th> -->
+                                        <!-- <th></th> -->
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    {% for job in object.jobs.all %}
 
-                                {% if object.jobs.count > 0 %}
-                                <!-- Start jobs table -->
-                                <table class="table is-fullwidth table-100" id="managerClientsJobsTable">
+                                    <tr>
+                                        <td>
+                                            <a href="">
+                                                {{ job.title }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{ job.client.name }}
+                                        </td>
+                                        <td>
+                                            {{ job.get_status_display }}
+                                        </td>
+                                        <td>
+                                            {{ job.get_job_type_display }}
+                                        </td>
+                                        <td>
+                                            {{ job.tasks.count }}
+                                        </td>
+                                        <td>
+                                            {{ job.created_at }}
+                                        </td>
+                                        <!-- <td>Mon Mar 20 2023</td> -->
+                                        <!-- <td>
+                                            <a href="" class="button is-small has-tooltip-arrow" data-tooltip="View client">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                        </td> -->
+                                    </tr>
+                                    {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                            <!-- End jobs table -->
+
+                            {% else %}
+                            <div class="notification is-warning">
+                                <!-- <button class="delete"></button> -->
+                                No Jobs <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
+                                    id="addNewJobBtn">Create new job</a>
+                            </div>
+                            {% endif  %}
+                        </section>
+                        <section data-content="2">
+                            <div id="clientsTabWrapper">
+
+                                {% if object.clients.count > 0 %}
+                                <table class="table is-fullwidth table-100" id="managerClientsTable">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Account Name</th>
-                                            <th>Status</th>
-                                            <th>Type</th>
-                                            <th>Tasks</th>
-                                            <th>Created Date</th>
-                                            <!-- <th>Due Date</th> -->
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Account Name
+                                            </th>
+                                            <th>
+                                                Email
+                                            </th>
+                                            <th>
+                                                Username
+                                            </th>
+                                            <th>
+                                                Password
+                                            </th>
                                             <!-- <th></th> -->
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Account Name</th>
-                                            <th>Status</th>
-                                            <th>Type</th>
-                                            <th>Tasks</th>
-                                            <th>Start Date</th>
-                                            <!-- <th>Due Date</th> -->
-                                            <!-- <th></th> -->
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        {% for job in object.jobs.all %}
-
-                                        <tr>
-                                            <td>
-                                                <a href="">
-                                                    {{ job.title }}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                {{ job.client.name }}
-                                            </td>
-                                            <td>
-                                                {{ job.get_status_display }}
-                                            </td>
-                                            <td>
-                                                {{ job.get_job_type_display }}
-                                            </td>
-                                            <td>
-                                                {{ job.tasks.count }}
-                                            </td>
-                                            <td>
-                                                {{ job.created_at }}
-                                            </td>
-                                            <!-- <td>Mon Mar 20 2023</td> -->
-                                            <!-- <td>
-                                                <a href="" class="button is-small has-tooltip-arrow"
-                                                    data-tooltip="View client">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </a>
-                                            </td> -->
-                                        </tr>
-                                        {% endfor %}
-
-
-                                    </tbody>
-                                </table>
-                                <!-- End jobs table -->
-
-                                {% else %}
-                                <div class="notification is-warning">
-                                    <!-- <button class="delete"></button> -->
-                                    No Jobs
-                                </div>
-                                {% endif  %}
-
-
-                            </section>
-                            <section class="tab-content">
-
-                                <table class="table is-fullwidth table-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Account Name</th>
-                                            <th>Client</th>
-                                            <!-- <th></th> -->
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Client</th>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Account Name
+                                            </th>
+                                            <th>
+                                                Email
+                                            </th>
+                                            <th>
+                                                Username
+                                            </th>
+                                            <th>
+                                                Password
+                                            </th>
                                             <!-- <th></th> -->
                                         </tr>
                                     </tfoot>
@@ -296,18 +328,102 @@
                                             <td>
                                                 {{ client.client_account.account_name }}
                                             </td>
+                                            <td>
+                                                {{ client.client_account.account_email }}
+                                            </td>
+                                            <td>
+                                                {{ client.client_account.account_username }}
+                                            </td>
+                                            <td>
+                                                {{ client.client_account.account_password }}
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                            </section>
-                            <section class="tab-content">
-                                Tasks
-                            </section>
-                            <!-- <section class="tab-content">
-                                444444444444
-                            </section> -->
-                        </div>
+                                {% else %}
+                                <div class="notification is-warning">
+                                    <!-- <button class="delete"></button> -->
+                                    No clients <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
+                                        id="addNewClientBtn">Create new client</a>
+                                </div>
+                                {% endif %}
+
+                            </div>
+                        </section>
+                        <section data-content="3">
+
+                            <div id="accountsAndServicesTabWrapper">
+
+                                
+                                <table class="table is-fullwidth table-100" id="managerTasksTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Title
+                                            </th>
+                                            <th>
+                                                Hint
+                                            </th>
+                                            <th>
+                                                Client
+                                            </th>
+                                            <th>
+                                                Job
+                                            </th>
+                                            <th>
+                                                Start Date
+                                            </th>
+                                            <th>
+                                                Due Date
+                                            </th>
+                                            <th class="has-text-centered">
+                                                Completed
+                                            </th>
+                                            <!-- <th></th> -->
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>
+                                                Title
+                                            </th>
+                                            <th>
+                                                Hint
+                                            </th>
+                                            <th>
+                                                Client
+                                            </th>
+                                            <th>
+                                                Job
+                                            </th>
+                                            <th>
+                                                Start Date
+                                            </th>
+                                            <th>
+                                                Due Date
+                                            </th>
+                                            <th class="has-text-centered">
+                                                Completed
+                                            </th>
+                                            <!-- <th></th> -->
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        
+
+                                       
+                                    </tbody>
+                                </table>
+                                
+
+                            </div>
+                        </section>
+
+                        <section data-content="4">
+                            Notes
+                        </section>
+
                     </div>
                 </div>
 
@@ -318,35 +434,14 @@
 </section>
 
 <!-- Start Jobs Form -->
-<div class="modal micromodal-slide" id="jobs-form-modal" aria-hidden="true">
-    <div class="modal__overlay" tabindex="-1">
-        <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true" aria-labelledby="jobs-form-modal-title">
-            <header class="modal__header">
-                <h2 class="modal__title" id="jobs-form-modal-title">
-                    New job to {{ object.user.fullname }}
-                </h2>
-
-                <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-                </button>
-            </header>
-            <main class="modal__content" id="jobs-form-modal-content">
-                <form action="{% url 'manager:bookkeeper_api:create-job-bookkeeper' %}" method="POST" id="managerAddNewJobForm">
-                    {% csrf_token %}
-                    {{ jobs_form|crispy }}
-                </form>
-            </main>
-            <footer class="modal__footer">
-                <button type="submit" form="managerAddNewJobForm" class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
-                    Add
-                </button>
-                <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-                    Close
-                </button>
-            </footer>
-        </div>
-    </div>
-</div>
+{% include 'manager/bookkeeper/segments/create_job_modal.html' with object=object %}
 <!-- End Jobs Form -->
+
+<!-- Start Client Form -->
+{% include 'manager/bookkeeper/segments/create_client_modal.html' with object=object %}
+<!-- End Client Form -->
+
+
 {% endblock dashboard_content %}
 
 

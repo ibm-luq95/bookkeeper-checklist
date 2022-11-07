@@ -3,44 +3,27 @@ from django.core import serializers
 from collections.abc import Iterable
 from django.db.models.query import QuerySet
 from django.core.exceptions import ObjectDoesNotExist
-import logging
-from logging import Logger
+from .debugging_print import cprint_print
 
 
-class CustomFormatter(logging.Formatter):
-    grey = "\x1b[38;20m"
-    yellow = "\x1b[33;20m"
-    red = "\x1b[31;20m"
-    bold_red = "\x1b[31;1m"
-    reset = "\x1b[0m"
-    format = (
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
-    )
-
-    FORMATS = {
-        logging.DEBUG: grey + format + reset,
-        logging.INFO: grey + format + reset,
-        logging.WARNING: yellow + format + reset,
-        logging.ERROR: red + format + reset,
-        logging.CRITICAL: bold_red + format + reset,
-    }
-
-    def format(self, record):
-        log_fmt = self.FORMATS.get(record.levelno)
-        formatter = logging.Formatter(log_fmt)
-        return formatter.format(record)
+class Colors:
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
 
 
-def get_formatted_logger(file_name: str) -> Logger:
-    logger = logging.getLogger(file_name)
-    logger.setLevel(logging.DEBUG)
-
-    # create console handler with a higher log level
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(CustomFormatter())
-    logger.addHandler(ch)
-    return logger
+def print_dict_keys_values(data: dict) -> None:
+    for key, value in data.items():
+        # cprint_print(f"Key:-> {key}, Value:-> {value}", "yellow")
+        print(
+            f"{Colors.WARNING}Key:-> {key}{Colors.OKBLUE}, {Colors.HEADER}Value:->{Colors.OKGREEN} {value}"
+        )
 
 
 def dd(request, data=""):

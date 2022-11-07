@@ -8,5 +8,7 @@ JOB_HELP_MESSAGES = {
     "job_type": _("Type of this job, Recurring, Weekly, Urgent,..etc"),
     "status": _("Status of this job, Not Started, In Progress, Done,..etc"),
     "client": _("Client this job belong to"),
-    "tasks": _("Tasks of this job")
+    "tasks": _("Tasks of this job"),
+    "description": _("Description of the job"),
+    "due_date": _("Due date for this job"),
 }

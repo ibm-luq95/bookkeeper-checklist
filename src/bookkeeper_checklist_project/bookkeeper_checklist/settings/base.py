@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_filters",
     "rest_framework",
+    "crispy_forms",
+    "crispy_bulma",
     "core",
     "manager",
     "users",
@@ -55,8 +57,6 @@ INSTALLED_APPS = [
     "notes",
     "jobs",
     "task",
-    "crispy_forms",
-    "crispy_bulma",
 ]
 
 MIDDLEWARE = [

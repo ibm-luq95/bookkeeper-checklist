@@ -1,10 +1,11 @@
+from django import forms
+
 from core.forms import BaseModelFormMixin
 from jobs.models import Job
 from task.models import Task
-from django import forms
 
 
-class JobForm(forms.ModelForm):
+class JobForm(BaseModelFormMixin):
     def __init__(self, bookkeeper=None, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)
         if bookkeeper is not None:
@@ -16,10 +17,9 @@ class JobForm(forms.ModelForm):
         queryset=Task.objects.all(), widget=forms.CheckboxSelectMultiple
     )
 
-    class Meta:
+    class Meta(BaseModelFormMixin.Meta):
         model = Job
-        exclude = [
-            "metadata",
-            "is_deleted",
-        ]
-        # BaseModelFormMixin.Meta.exclude.extend(["tasks", "client"])
+        widgets = {
+            "due_date": forms.DateInput(attrs={"class": "input", "type": "date"}),
+            "note": forms.TextInput(),
+        }

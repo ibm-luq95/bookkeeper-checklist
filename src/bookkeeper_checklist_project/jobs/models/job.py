@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-#
-from core.models import BaseModelMixin
 from django.db import models
-from core.choices import JobStatusEnum, JobTypeEnum
+from django.urls import reverse
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
-from client.models import Client
-from task.models import Task
+
 from bookkeeper.models import Bookkeeper
+from client.models import Client
+from core.choices import JobStatusEnum, JobTypeEnum
+from core.models import BaseModelMixin
+from task.models import Task
 from .help_messages import JOB_HELP_MESSAGES
 
 
@@ -18,19 +21,30 @@ class Job(BaseModelMixin):
 
     bookkeeper = models.ForeignKey(
         to=Bookkeeper,
-        on_delete=models.PROTECT,  # TODO: check how to change the bookkeeper easily
+        on_delete=models.SET_NULL,
         related_name="jobs",
-        # null=True,
+        null=True,
+        blank=True,
         help_text=JOB_HELP_MESSAGES.get("bookkeeper"),
     )
     title = models.CharField(
-        _("title"), max_length=70, null=False, help_text=JOB_HELP_MESSAGES.get("title")
+        _("title"), max_length=100, null=False, help_text=JOB_HELP_MESSAGES.get("title")
     )
-    note = models.TextField(
-        _("note"), null=True, help_text=JOB_HELP_MESSAGES.get("note")
+    slug = models.SlugField(_("slug"), max_length=250, null=True, blank=True)
+    description = models.TextField(
+        _("description"),
+        null=True,
+        blank=True,
+        help_text=JOB_HELP_MESSAGES.get("description"),
+    )
+    due_date = models.DateField(
+        _("due date"),
+        null=True,
+        blank=True,
+        help_text=JOB_HELP_MESSAGES.get("due_date"),
     )
     job_type = models.CharField(
-        _("job_type"),
+        _("job type"),
         choices=JobTypeEnum.choices,
         # default=JobTypeEnum.NO_TYPE,
         max_length=20,
@@ -45,11 +59,25 @@ class Job(BaseModelMixin):
     )
     client = models.ForeignKey(
         to=Client,
-        on_delete=models.PROTECT,
+        on_delete=models.PROTECT,  # TODO: check if this should be null not protected
         null=True,
+        blank=True,
+        related_name="jobs",
         help_text=JOB_HELP_MESSAGES.get("client"),
     )
     tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
+    note = models.TextField(
+        _("note"), null=True, help_text=JOB_HELP_MESSAGES.get("note"), blank=True
+    )
 
     def __str__(self) -> str:
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("manager:jobs:details", kwargs={"pk": self.pk})
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        self.bookkeeper.clients.add(self.client)
+        self.bookkeeper.save()
+        super(Job, self).save(*args, **kwargs)

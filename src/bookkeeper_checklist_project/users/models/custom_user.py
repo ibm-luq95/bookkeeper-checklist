@@ -56,7 +56,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def get_absolute_url(self):
-        return reverse("manager:users-detail", kwargs={"pk": self.pk})
+        return reverse("manager:users:detail", kwargs={"pk": self.pk})
 
     @property
     def get_instance_as_dict(self) -> dict:

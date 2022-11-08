@@ -1,0 +1,32 @@
+{% load crispy_forms_tags %}
+<div class="modal micromodal-slide" id="jobs-form-modal" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true"
+            aria-labelledby="jobs-form-modal-title">
+            <header class="modal__header">
+                <h2 class="modal__title" id="jobs-form-modal-title">
+                    New job to {{ object.user.fullname }}
+                </h2>
+
+                <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+                </button>
+            </header>
+            <main class="modal__content" id="jobs-form-modal-content">
+                <form action="{% url 'manager:api:bookkeeper:create-job-bookkeeper' %}" method="POST"
+                    id="managerAddNewJobForm">
+                    {% csrf_token %}
+                    {{ jobs_form|crispy }}
+                </form>
+            </main>
+            <footer class="modal__footer">
+                <button id="managerAddNewJobBtn" type="submit" form="managerAddNewJobForm"
+                    class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
+                    Add
+                </button>
+                <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+                    Close
+                </button>
+            </footer>
+        </div>
+    </div>
+</div>

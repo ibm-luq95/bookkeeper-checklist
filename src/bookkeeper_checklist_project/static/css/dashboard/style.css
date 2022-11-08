@@ -121,7 +121,7 @@ nav.navbar {
 
 /* Style the tab */
 .tab {
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid #ccc;
   /* background-color: #f1f1f1; */
 }
@@ -251,10 +251,18 @@ nav.navbar {
   transition: max-height 0.2s ease-out;
 } */
 
-.completed-task-item{
+.completed-task-item {
   text-decoration: line-through !important;
 }
 
-.table-100{
+.table-100 {
   width: 100% !important;
+}
+
+.readonly-select {
+  pointer-events: none !important;
+}
+
+.cur-progress {
+  cursor: progress;
 }

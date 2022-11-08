@@ -1,17 +1,20 @@
+from core.admin import BaseAdminModelMixin
 from django.contrib import admin
+
 from .models import BankAccountItem, BankProfile, BankUserAccount
+
 
 # Register your models here.
 @admin.register(BankProfile)
-class BankProfileAdmin(admin.ModelAdmin):
+class BankProfileAdmin(BaseAdminModelMixin):
     pass
 
 
 @admin.register(BankUserAccount)
-class BankUserAccountAdmin(admin.ModelAdmin):
+class BankUserAccountAdmin(BaseAdminModelMixin):
     pass
 
 
 @admin.register(BankAccountItem)
-class BankAccountItemAdmin(admin.ModelAdmin):
+class BankAccountItemAdmin(BaseAdminModelMixin):
     pass

@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group, User
 from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from core.utils import ProjectException
+from core.utils import ProjectError
 from users.models import CustomUser
 
 # TODO: remove the custom logger before push (only for development)
@@ -36,7 +36,7 @@ def create_profile(sender, instance, created, **kwargs):
                 group_object = Group.objects.filter(name=group)
 
                 if not group_object:
-                    raise ProjectException(
+                    raise ProjectError(
                         "USER", message=f"The group {group} not exists!"
                     )
                 group_object = group_object.first()

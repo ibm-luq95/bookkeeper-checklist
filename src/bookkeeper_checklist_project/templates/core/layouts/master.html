@@ -2,58 +2,58 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <title>
+<head>
+    <title>
 
-            {% block title %}
-            {{ title }}
-            {% endblock title %}
+        {% block title %}
+        {{ title }}
+        {% endblock title %}
 
-        </title>
+    </title>
 
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="title" content="{{ title }}" />
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-        <meta name="robots" content="index, follow" />
-        <meta name="language" content="English" />
-        <meta name="author" content="Ibrahim Luqman" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="{% static 'css/all.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/bulma.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="title" content="{{ title }}" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="author" content="Ibrahim Luqman" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/all.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/app.css' %}" />
 
-        {% block externalcss %} {% endblock externalcss %}
+    {% block externalcss %} {% endblock externalcss %}
 
-    </head>
+</head>
 
-    <body>
-        <!-- Here is our main header that is used across all the pages of our website -->
-        <header id="header"></header>
+<body>
+    <!-- Here is our main header that is used across all the pages of our website -->
+    <header id="header"></header>
 
 
-        <!-- Here is our page's main content -->
-        <section class="section">
+    <!-- Here is our page's main content -->
 
-            <div class="container">
-                <!-- Include flash messages file -->
-                {% include 'core/includes/messages.html' %}
-                <!-- Include flash messages file -->
-                {% block main_content %}
 
-                {% endblock main_content %}
-            </div>
-        </section>
+    <main class="container is-fluid">
+        <!-- Include flash messages file -->
+        {% include 'core/includes/messages.html' %}
+        <!-- Include flash messages file -->
+        {% block main_content %}
 
-        <!-- And here is our main footer that is used across all the pages of our website -->
-        <footer id="footer">
+        {% endblock main_content %}
+    </main>
 
-        </footer>
 
-        <script src="{% static 'js/all.js' %}"></script>
-        <script async src="{% static 'js/app.js' %}"></script>
-        {% block externaljs %} {% endblock externaljs %}
-    </body>
+    <!-- And here is our main footer that is used across all the pages of our website -->
+    <footer id="footer">
+
+    </footer>
+    <script src="{% url 'js_settings' %}" defer></script>
+    <script src="{% static 'js/all.js' %}"></script>
+    <script async src="{% static 'js/app.js' %}"></script>
+    {% block externaljs %} {% endblock externaljs %}
+</body>
 
 </html>

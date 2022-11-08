@@ -1,7 +1,9 @@
+from core.admin import BaseAdminModelMixin
 from django.contrib import admin
+
 from .models import Job
 
 
 @admin.register(Job)
-class JobAdmin(admin.ModelAdmin):
-    exclude = ("metadata",)
+class JobAdmin(BaseAdminModelMixin):
+    list_filter = ("bookkeeper", "job_type", "status", "client")

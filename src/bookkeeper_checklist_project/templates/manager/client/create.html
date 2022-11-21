@@ -4,22 +4,27 @@
 
 {% block dashboard_content %}
 
-    <section id="manager-create-user-form">
-        <form method="post" id="create-user-form">
-{% csrf_token %}
+<section id="manager-create-client-form">
+    <div class="box">
+        <form method="post" id="create-client-form" enctype="multipart/form-data">
+            {% csrf_token %}
             <legend class="title has-text-black">
                 Create new client
             </legend>
-            <fieldset form="create-user-form">
+            <hr />
+
+            <fieldset form="create-client-form">
                 {{ form| crispy }}
+                <hr />
                 <div class="has-text-right">
                     <button type="submit" class="button is-info is-fullwidth">
-                        Create <i class="fa fa-sign-in" aria-hidden="true"></i>
+                        Create
                     </button>
                 </div>
             </fieldset>
 
         </form>
-    </section>
+    </div>
+</section>
 
 {% endblock dashboard_content %}

@@ -37,6 +37,8 @@ def create_groups(sender, instance, created, **kwargs):
                     case _:
                         if user.is_staff is True and user.is_superuser is True:
                             group = MANAGER_GROUP_NAME
+                            user.user_type = "manager"
+                            user.save()
                 group_object = Group.objects.filter(name=group)
 
                 if not group_object:

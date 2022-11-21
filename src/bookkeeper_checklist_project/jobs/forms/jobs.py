@@ -14,7 +14,7 @@ class JobForm(BaseModelFormMixin):
             self.fields["bookkeeper"].widget.attrs.update({"class": "readonly-select"})
 
     tasks = forms.ModelMultipleChoiceField(
-        queryset=Task.objects.all(), widget=forms.CheckboxSelectMultiple
+        queryset=Task.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
     )
 
     class Meta(BaseModelFormMixin.Meta):

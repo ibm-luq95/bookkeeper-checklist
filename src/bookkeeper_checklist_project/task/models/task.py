@@ -22,10 +22,12 @@ class Task(BaseModelMixin):
         choices=TaskStatusEnum.choices,
     )
     is_completed = models.BooleanField(_("is completed"), default=False)
-    hints = models.CharField(_("hints"), max_length=50, null=True, blank=True)
-    notes = models.TextField(_("notes"), null=True, blank=True)
+    hints = models.CharField(_("hints"), max_length=60, null=True, blank=True)
+    additional_notes = models.TextField(_("additional notes"), null=True, blank=True)
     start_date = models.DateField(_("start date"), null=True, blank=True)
     due_date = models.DateField(_("due date"))
+
+    objects = models.Manager()
 
     def __str__(self) -> str:
         return self.title

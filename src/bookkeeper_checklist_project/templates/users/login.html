@@ -18,9 +18,9 @@
                 <hr class="login-hr">
                 <p class="subtitle has-text-black">Please login to proceed.</p>
                 <div class="box">
-                    <figure class="avatar">
+                    {% comment %} <figure class="avatar">
                         <img src="https://via.placeholder.com/150">
-                    </figure>
+                    </figure> {% endcomment %}
                     <form method="POST" id="login-form" action="{% url 'users:login' %}">
                         {% csrf_token %}
                         <fieldset form="login-form">

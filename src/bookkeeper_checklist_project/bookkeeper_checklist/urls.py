@@ -13,13 +13,18 @@ static_and_media_path_urls = static(
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # TODO: add protection package to prevent admin access
-    path('api-auth/', include('rest_framework.urls')),
+    path("api-auth/", include("rest_framework.urls")),
     path("js-settings/", js_settings, name="js_settings"),
     path("__debug__/", include("debug_toolbar.urls")),
     path("", include("users.urls"), name="users-urls"),
     path("bookkeeper/", include("bookkeeper.urls"), name="bookkeeper-urls"),
     path("assistant/", include("assistant.urls"), name="assistant-urls"),
     path("manager/", include("manager.urls"), name="manager-urls"),
+    path("documents/", include("documents.urls"), name="documents-urls"),
+    path("notes/", include("notes.urls"), name="notes-urls"),
+    path(
+        "company-services/", include("company_services.urls"), name="company-services-urls"
+    ),
 ]
 
 # set admin configs

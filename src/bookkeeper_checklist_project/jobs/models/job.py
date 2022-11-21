@@ -65,7 +65,9 @@ class Job(BaseModelMixin):
         related_name="jobs",
         help_text=JOB_HELP_MESSAGES.get("client"),
     )
-    tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
+    tasks = models.ManyToManyField(
+        to=Task, help_text=JOB_HELP_MESSAGES.get("tasks")
+    )
     note = models.TextField(
         _("note"), null=True, help_text=JOB_HELP_MESSAGES.get("note"), blank=True
     )

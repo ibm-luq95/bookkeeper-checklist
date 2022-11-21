@@ -5,5 +5,16 @@ from .bookkeeper import (
     BookkeepersDetailsView,
     BookkeeperDeleteView,
 )
-from .client import ClientListView, ClientCreateView
+from .client import (
+    ClientListView,
+    ClientCreateView,
+    ClientDetailView,
+    ClientUpdateView,
+    ClientDeleteView,
+)
 from .jobs import JobListView, JobCreateView, JobDetailsView
+from .client_account import (
+    ClientAccountCreateView,
+    ClientAccountListView,
+    ClientAccountDetailView,
+)

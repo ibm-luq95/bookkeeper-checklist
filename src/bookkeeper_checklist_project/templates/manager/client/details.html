@@ -1,0 +1,892 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block externalcss %}
+<link rel="stylesheet" href="{% static 'css/dashboard/client_details.css' %}" />
+
+{% endblock externalcss %}
+
+{% block dashboard_content %}
+
+<section id="manager-create-client-account-detail">
+  <div class="box">
+    <header>
+      <h2 class="title is-3">{{ object.name }}</h2>
+    </header>
+  </div>
+  <hr />
+  <!-- Page Container -->
+  <div class="w3-content w3-margin-top mx-0" style="max-width: 1400px">
+    <!-- The Grid -->
+    <div class="w3-row-padding">
+      <!-- Left Column -->
+      <div class="w3-third">
+        <div class="w3-white w3-text-grey w3-card-4">
+          <div class="w3-display-container has-text-centered pt-3">
+            {% if object.company_logo %}
+            <img src="{{ object.company_logo.url }}" style="height: 150px" alt="{{ object.name }}" />
+            {% else %}
+            <img src="{% static 'imgs/default_client.jpg' %}" style="height: 150px" alt="{{ object.name }}" />
+            {% endif %}
+
+            <div class="w3-display-bottomleft w3-container w3-text-black" style="position: relative">
+              <h2>{{ object.name }}</h2>
+            </div>
+            <!-- <hr /> -->
+          </div>
+          <div class="w3-container my-4">
+            <p class="my-3">
+              <i class="fa fa-briefcase fa-fw w3-margin-right w3-text-teal has-tooltip-arrow is-inline-block"
+                data-tooltip="Industry" title="Industry"></i>
+              {{ object.industry }}
+            </p>
+            <p class="my-3">
+              <i class="fa fa-home fa-fw w3-margin-right w3-text-teal"></i>
+              London, UK
+            </p>
+            <p class="my-3">
+              <i class="fa fa-envelope fa-fw w3-margin-right w3-text-teal"></i>
+              {{ object.email }}
+            </p>
+            <!-- <p class="my-3">
+              <i class="fa fa-phone fa-fw w3-margin-right w3-text-teal"></i>1224435534
+            </p> -->
+            <hr />
+
+            <p class="w3-large mb-2">
+
+              <h5 class="title is-4">
+                <i class="fa fa-building fa-fw mr-1 is-inline-block w3-text-teal"></i>
+                Important Contact
+                <button class="button is-small mx-3" type="button" id="managerShowClientImportantContactBtn">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </h5>
+            </p>
+            <div class="list has-visible-pointer-controls">
+              <div class="list-item">
+                <div class="list-item-content">
+                  <div class="list-item-title">Contact Name</div>
+                  <div class="list-item-description">{{ object.important_contact.contact_fullname }}</div>
+                </div>
+
+                {% comment %}
+                <div class="list-item-controls">
+                  <div class="buttons is-right">
+                    <button class="button">
+                      <span class="icon is-small">
+                        <i class="fas fa-ellipsis-h"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                {% endcomment %}
+              </div>
+
+              <div class="list-item">
+                <div class="list-item-content">
+                  <div class="list-item-title">Label</div>
+                  <div class="list-item-description">{{ object.important_contact.contact_label }}</div>
+                </div>
+
+                {% comment %}
+                <div class="list-item-controls">
+                  <div class="buttons is-right">
+                    <button class="button">
+                      <span class="icon is-small">
+                        <i class="fas fa-ellipsis-h"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                {% endcomment %}
+              </div>
+
+              <div class="list-item">
+                <div class="list-item-content">
+                  <div class="list-item-title">Phone</div>
+                  <div class="list-item-description">{{ object.important_contact.contact_phone }}</div>
+                </div>
+
+                {% comment %}
+                <div class="list-item-controls">
+                  <div class="buttons is-right">
+                    <button class="button">
+                      <span class="icon is-small">
+                        <i class="fas fa-ellipsis-h"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                {% endcomment %}
+              </div>
+
+              <div class="list-item">
+                <div class="list-item-content">
+                  <div class="list-item-title">Email Contact</div>
+                  <div class="list-item-description">{{ object.important_contact.contact_email }}</div>
+                </div>
+
+                {% comment %}
+                <div class="list-item-controls">
+                  <div class="buttons is-right">
+                    <button class="button">
+                      <span class="icon is-small">
+                        <i class="fas fa-ellipsis-h"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                {% endcomment %}
+              </div>
+
+              <div class="list-item">
+                <div class="list-item-content">
+                  <div class="list-item-title">Website URL</div>
+                  <div class="list-item-description">{{ object.important_contact.contact_website }}</div>
+                </div>
+
+                {% comment %}
+                <div class="list-item-controls">
+                  <div class="buttons is-right">
+                    <button class="button">
+                      <span class="icon is-small">
+                        <i class="fas fa-ellipsis-h"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                {% endcomment %}
+              </div>
+
+
+
+            </div>
+            <br />
+
+            <br />
+          </div>
+        </div>
+        <br />
+
+        <!-- End Left Column -->
+      </div>
+
+      <!-- Right Column -->
+      <div class="w3-twothird">
+        <div class="w3-container w3-card w3-white w3-margin-bottom py-5">
+          <div id="accordion_second">
+            <article class="message">
+              <div class="message-header">
+                <p>
+                  Jobs <a href="#collapsible-jobs-accordion" data-action="collapse">Collapse/Expand</a>
+                </p>
+              </div>
+              <div id="collapsible-jobs-accordion" class="message-body is-collapsible" data-parent="accordion_second"
+                data-allow-multiple="true">
+                <div class="message-body-content">
+
+                  <div class="container" style="overflow: auto; height: 500px;">
+                    <div class="b-table">
+                      <div class="table-wrapper has-mobile-cards">
+                        <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                          <thead>
+                            <tr>
+                              <th>Title</th>
+                              <th>Bookkeeper(s)</th>
+                              <th>Tasks</th>
+                              <th>Status</th>
+                              <th>Due Date</th>
+                              <th>Created Date</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for job in object.jobs.all %}
+                            <tr>
+
+                              <td data-label="Title">
+                                <a href="">{{ job.title }}</a>
+                              </td>
+
+                              <td data-label="Bookkeeper(s)">{{ job.bookkeeper }}</td>
+
+                              <td data-label="Tasks">{{ job.tasks.count }}</td>
+                              <td data-label="Status">
+                                {% if job.status == "past_due" %}
+                                <span class="tag is-danger is-small">{{ job.get_status_display }}</span>
+                                {% elif job.status == "complete" %}
+                                <span class="tag is-success is-small">{{ job.get_status_display }}</span>
+                                {% elif job.status == "in_progress" %}
+                                <span class="tag is-warning is-small">{{ job.get_status_display }}</span>
+                                {% elif job.status == "not_started" %}
+                                <span class="tag is-light is-small">{{ job.get_status_display }}</span>
+                                {% elif job.status == "archive" %}
+                                <span class="tag is-link is-small">{{ job.get_status_display }}</span>
+                                {% elif job.status == "not_started" %}
+                                <span class="tag is-info is-small">{{ job.get_status_display }}</span>
+                                {% endif %}
+                              </td>
+                              <td data-label="Due Date">
+                                {{ job.due_date }}
+                              </td>
+                              <td data-label="Created Date">
+                                {{ job.created_at|date }}
+                              </td>
+                              <td class="is-actions-cell">
+                                <div class="buttons is-right">
+                                  <button
+                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                                    disabled type="button" data-tooltip="View items">
+                                    <span class="icon">
+                                      <i class="fa-solid fa-eye"></i>
+                                    </span>
+                                  </button>
+                                  <button class="button is-small is-danger bkchlst-input is-disabled" disabled
+                                    type="button" data-tooltip="Delete task">
+                                    <span class="icon">
+                                      <i class="fa-solid fa-trash"></i>
+                                    </span>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            {% endfor %}
+
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="field is-grouped is-grouped-right">
+                      <p class="control">
+                        <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                          id="managerAddJobBtn" data-is-disabled="0">
+                          Create
+                        </button>
+                      </p>
+                      <!-- <p class="control">
+                      <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                        Cancel
+                      </button>
+                    </p> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="message">
+              <div class="message-header">
+                <p>
+                  Tasks <a href="#collapsible-tasks-accordion" data-action="collapse">Collapse/Expand</a>
+                </p>
+              </div>
+              <div id="collapsible-tasks-accordion" class="message-body is-collapsible" data-parent="accordion_second"
+                data-allow-multiple="true">
+                <div class="message-body-content">
+                  Tasks
+                </div>
+              </div>
+            </article>
+            <article class="message">
+              <div class="message-header">
+                <p>
+                  Notes <a href="#collapsible-notes-accordion" data-action="collapse">Collapse/Expand</a>
+                </p>
+              </div>
+              <div id="collapsible-notes-accordion" class="message-body is-collapsible" data-parent="accordion_second"
+                data-allow-multiple="true">
+                <div class="message-body-content">
+                  <div class="container">
+                    <div class="b-table">
+                      
+                      <div class="table-wrapper has-mobile-cards">
+                        <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                          <thead>
+                            <tr>
+                              <th>
+                                Title
+                              </th>
+                              <th>
+                                Body
+                              </th>
+                              <th>
+                                Created
+                              </th>
+                              <th>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            {% for note in object.notes.filter %}
+                            <tr>
+
+                              <td data-label="Title">
+                                <a href="">{{ note.title }}</a>
+                              </td>
+
+                              <td data-label="Body">
+                                <small class="has-text-grey">
+                                  {{ note.body|truncatechars:15 }}
+                                </small>
+                              </td>
+                              <td data-label="Created">
+                                <small class="has-text-grey is-abbr-like" title="{{ note.created_at }}">
+                                  {{ note.created_at|date }}
+                                </small>
+                              </td>
+                              <td class="is-actions-cell">
+                                <div class="buttons is-right">
+                                  <button
+                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled managerViewNoteBtn"
+                                    disabled type="button" data-tooltip="View note" data-note-id="{{ note.pk }}">
+                                    <span class="icon">
+                                      <i class="fa-solid fa-eye"></i>
+                                    </span>
+                                  </button>
+                                  <button
+                                    class="button is-small is-danger bkchlst-input is-disabled managerDeleteNoteBtn"
+                                    disabled type="button" data-tooltip="Delete note" data-note-id="{{ note.pk }}">
+                                    <span class="icon">
+                                      <i class="fa-solid fa-trash"></i>
+                                    </span>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            {% endfor %}
+
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="field is-grouped is-grouped-right">
+                      <p class="control">
+                        <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                          id="managerAddNoteBtn" data-is-disabled="0">
+                          Create
+                        </button>
+                      </p>
+                      <!-- <p class="control">
+                      <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                        Cancel
+                      </button>
+                    </p> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="message">
+              <div class="message-header">
+                <p>
+                  Accounts & Services <a href="#collapsible-accounts-and-services-accordion"
+                    data-action="collapse">Collapse/Expand</a>
+                </p>
+              </div>
+              <div id="collapsible-accounts-and-services-accordion" class="message-body is-collapsible"
+                data-parent="accordion_second" data-allow-multiple="true">
+                <div class="message-body-content">
+                  <table class="table is-fullwidth" id="clientsAccountAndServicesTable">
+                    <thead>
+                      <tr>
+                        <th>
+                          Label
+                        </th>
+                        <th>
+                          Name
+                        </th>
+                        <!-- <th>
+                        URL
+                        </th> -->
+                        <th>
+                        Username / Email
+                        </th>
+                        <th>
+                        Password
+                        </th>
+    
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>
+                          Label
+                        </th>
+                        <th>
+                          Name
+                        </th>
+                        <!-- <th id="footerURL">
+                              URL
+                        </th> -->
+                        <th id="footerUsername">
+    Username / Email
+                        </th>
+                        <th id="footerPassword">
+    Password
+                        </th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      {% for service in object.company_services.all %}
+                        <tr>
+                          <td>
+                            {{ service.label }}
+                          </td>
+                          <td>
+                            {{ service.get_service_name_display }}
+                          </td>
+                          <!-- <td>
+                            <div class="account-service-item account-service-url">
+                              <div class="field has-addons">
+                                <div class="control">
+                                  <input class="input is-small accountAndServicesInput"
+                                         type="url"
+                                         value="{{ service.url }}"
+                                         id="ac-url-{{ service.id }}"
+                                         readonly/>
+                                </div>
+                                <div class="control">
+                                  <button class="button copyASurlBtn copyBtn is-small"
+                                          data-tooltip="Copy url"
+                                          data-clipboard-target="#ac-url-{{ service.id }}"
+                                          data-text-type="url">
+                                    <i class="fa-solid fa-link"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </td> -->
+                          <td>
+                            <div class="account-service-item account-service-username">
+                              <div class="field has-addons">
+                                <div class="control">
+                                  <input class="input is-small"
+                                         type="text"
+                                         value="{{ service.email }}"
+                                         id="ac-username-{{ service.id }}"
+                                         readonly/>
+                                </div>
+                                <div class="control">
+                                  <button class="button copyASUsernameBtn copyBtn is-small"
+                                          data-tooltip="Copy Username"
+                                          data-clipboard-target="#ac-username-{{ service.id }}"
+                                          data-text-type="username">
+                                    <i class="fas fa-copy"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="account-service-item account-service-password">
+                              <div class="field has-addons">
+                                <p class="control">
+                                  <button class="button showASUPasswordBtn is-small"
+                                          data-tooltip="Show Password"
+                                          data-visibility-status="0"
+                                          data-password-input="as-password-{{ service.id }}">
+                                    <i class="fas fa-eye"></i>
+                                  </button>
+                                </p>
+                                <div class="control">
+                                  <input class="input is-small"
+                                         type="password"
+                                         value="{{ service.password }}"
+                                         id="as-password-{{ service.id }}"
+                                         readonly/>
+                                </div>
+                                <div class="control">
+                                  <button class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
+                                          data-tooltip="Copy password, you have to reveal the password to copy it"
+                                          data-clipboard-target="#as-password-{{ service.id }}"
+                                          data-text-type="password">
+                                    <i class="fas fa-copy"></i>
+                                  </button>
+    
+                                </div>
+                              </div>
+    
+    
+                            </div>
+                          </td>
+    
+                        </tr>
+                      {% empty %}
+                        <tr>
+                          <td colspan="3">
+                        No account and services
+                          </td>
+                        </tr>
+                      {% endfor %}
+    
+    
+                    </tbody>
+                  </table>
+                </div>
+                <div class="field is-grouped is-grouped-right">
+                  <p class="control">
+                    <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                      id="managerAddCompanyServiceBtn" data-is-disabled="0">
+                      Create
+                    </button>
+                  </p>
+                  <!-- <p class="control">
+                  <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                    Cancel
+                  </button>
+                </p> -->
+                </div>
+              </div>
+            </article>
+            <div>
+              <nav class="panel">
+                <p class="panel-heading has-text-white" style="background-color: #4a4a4a;
+                    font-size: unset">
+                  Documents <a href="#collapsible-panel" data-action="collapse">Collapse/Expand</a>
+                </p>
+                <div id="collapsible-panel" class="is-collapsible">
+                  <!-- Wrapper Div to be able to collapse/expand Panel's content -->
+                  <!-- <div class="panel-block">
+                    <p class="control has-icons-left">
+                    <input class="input is-small" type="text" placeholder="search">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                    </p>
+                  </div> -->
+
+
+                  <div class="container">
+                    <div class="b-table">
+                      <div class="table-wrapper has-mobile-cards">
+                        <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                          <thead>
+                            <tr>
+                              <th>
+                                Title
+                              </th>
+                              <th>
+                                Download
+                              </th>
+                              <th>
+                                Created
+                              </th>
+                              <th>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for document in object.documents.all %}
+                            <tr>
+
+                              <td data-label="Title">
+                                <a href="{{ document.document_file.url }}">{{ document.title }}</a>
+                              </td>
+
+                              <td data-label="Download">
+                                <a class="button is-small" href="{{ document.document_file.url }}"
+                                  download="{{ document.document_file.url }}">
+                                  <i class="fa-solid fa-download"></i>
+                                </a>
+                              </td>
+                              <td data-label="Created">
+                                <small class="has-text-grey is-abbr-like" title="{{ document.created_at }}">
+                                  {{ document.created_at }}
+                                </small>
+                              </td>
+                              <td class="is-actions-cell">
+                                <div class="buttons is-right">
+                                  <!-- <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled" disabled type="button" data-tooltip="View items">
+                                    <span class="icon">
+                                      <i class="fa-solid fa-eye"></i>
+                                    </span>
+                                  </button> -->
+                                  <button
+                                    class="button is-small is-danger bkchlst-input is-disabled managerDeleteDocumentBtn"
+                                    disabled type="button" data-tooltip="Delete document">
+                                    <span class="icon">
+                                      <i class="fa-solid fa-trash"></i>
+                                    </span>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            {% endfor %}
+
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="field is-grouped is-grouped-right">
+                      <p class="control">
+                        <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                          id="managerAddDocumentBtn" data-is-disabled="0">
+                          Create
+                        </button>
+                      </p>
+                      <!-- <p class="control">
+                      <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                        Cancel
+                      </button>
+                    </p> -->
+                    </div>
+                  </div>
+
+
+                </div>
+
+              </nav>
+
+            </div>
+
+
+
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- End Right Column -->
+    </div>
+
+    <!-- End Grid -->
+  </div>
+
+  <!-- End Page Container -->
+</section>
+
+<!-- Start Important Contact Form -->
+<div class="modal micromodal-slide" id="important-contact-form-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true"
+      aria-labelledby="important-contact-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="important-contact-form-modal-title">
+          Important Contact
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="important-contact-form-modal-content">
+
+        {% csrf_token %}
+        {{ important_contact_form|crispy }}
+
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+<!-- End Important Contact Form -->
+
+<!-- Start Document Form -->
+<div class="modal micromodal-slide" id="document-form-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true"
+      aria-labelledby="document-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="document-form-modal-title">
+          Create Document
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="document-form-modal-content">
+
+        <div id="addDocumentFormWrapper" class="my-5">
+          <form method="POST" enctype="multipart/form-data"
+            action="{% url 'documents:api:manager_api:create-document-manager' %}" id="addDocumentForm">
+            <fieldset>
+              <legend>
+                Add new document to client
+              </legend>
+              {% csrf_token %}
+
+              <input type="hidden" name="client" id="client" value="{{ object.pk }}" />
+              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
+              {{ document_form| crispy }}
+              <button class="button is-fullwidth is-primary is-rounded" type="submit">
+                Add
+              </button>
+            </fieldset>
+          </form>
+        </div>
+
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+<!-- End Document Form -->
+
+<!-- Start Note Form -->
+<div class="modal micromodal-slide" id="notes-form-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true"
+      aria-labelledby="notes-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="notes-form-modal-title">
+          Create Note
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="notes-form-modal-content">
+
+        <div id="addNoteFormWrapper" class="my-5">
+          <form method="POST" action="{% url 'notes:api:manager:create-note-manager' %}" id="addNoteForm">
+            <fieldset>
+              <legend>
+                Add new note to client
+              </legend>
+              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
+              {% csrf_token %}
+
+              {{ note_form| crispy }}
+              <button class="button is-fullwidth is-primary is-rounded" type="submit">
+                Add
+              </button>
+            </fieldset>
+          </form>
+        </div>
+
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+<!-- End Note Form -->
+
+<!-- Start Retrieve Note Form -->
+<div class="modal micromodal-slide" id="note-retrieve-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true"
+      aria-labelledby="note-retrieve-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="note-retrieve-modal-title">
+          Retrieve Note
+          <button class="button is-loading is-small" id="managerNoteLoaderBtn">
+            Loading
+          </button>
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="note-retrieve-modal-content">
+
+        <div id="retrieveNoteFormWrapper" class="my-5">
+          <form method="PUT" action="{% url 'notes:api:manager:update-note' %}" id="retrieveNoteForm">
+            <fieldset form="retrieveNoteForm">
+              <legend>
+                Retrieve note
+              </legend>
+              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
+              <input type="hidden" name="note_id" id="note_id" />
+              {% csrf_token %}
+
+              {{ note_form| crispy }}
+              <!-- <button class="button is-fullwidth is-primary is-rounded" type="submit">
+                Add
+              </button> -->
+            </fieldset>
+          </form>
+        </div>
+
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="retrieveNoteForm">
+          Update
+        </button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+<!-- End Retrieve Note Form -->
+
+
+<!-- Start Company Services Form -->
+<div class="modal micromodal-slide" id="company-services-form-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true"
+      aria-labelledby="company-services-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="company-services-form-modal-title">
+          Company Services
+          <button class="button is-loading is-small" id="managerCompanyServicesLoaderBtn" hidden>
+            Loading
+          </button>
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="company-services-form-modal-content">
+
+        <div id="companyServicesFormWrapper" class="my-5">
+          <form method="POST" action="{% url 'company-services:api:manager:create-company-services' %}" id="companyServiceForm">
+            <fieldset form="companyServiceForm">
+              <legend>
+                Create Company Services
+              </legend>
+              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
+              {% csrf_token %}
+
+              {{ company_services_form| crispy }}
+            </fieldset>
+          </form>
+        </div>
+
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="companyServiceForm">
+          Create
+        </button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+<!-- End Company Services Form -->
+
+{% endblock dashboard_content %}
+
+{% block externaljs %}
+<script defer>
+  window.localStorage.setItem("retrieveNoteUrl", "{% url 'notes:api:manager:retrieve-note-manager' %}");
+  window.localStorage.setItem("UpdateNoteUrl", "{% url 'notes:api:manager:update-note' %}");
+  window.localStorage.setItem("DeleteNoteUrl", "{% url 'notes:api:manager:delete-note' %}");
+  window.localStorage.setItem("origin", "{{ origin }}");
+</script>
+<script src="{% static 'js/manager/client/details.js' %}" defer type="module"></script>
+{% endblock externaljs %}

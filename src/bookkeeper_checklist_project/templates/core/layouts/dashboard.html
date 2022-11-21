@@ -36,6 +36,7 @@
             <link rel="stylesheet" href="{% static 'css/vendors/toastify/toastify.css' %}" />
             <link rel="stylesheet" href="{% static 'css/vendors/bulma-table/main.css' %}" />
             <link rel="stylesheet" href="{% static 'vendors/DataTables/datatables.css' %}" />
+            <link rel="stylesheet" href="{% static 'vendors/bulma-collapsible/css/bulma-collapsible.min.css' %}" />
             <link rel="stylesheet" href="{% static 'vendors/DataTables/Buttons-2.2.3/css/buttons.bulma.css' %}" />
             <link rel="stylesheet"
                   href="{% static 'vendors/DataTables/FixedHeader-3.2.4/css/fixedHeader.bulma.css' %}" />
@@ -80,9 +81,9 @@
             <script type="text/javascript" src="{% static 'vendors/DataTables/jQuery-3.6.0/jquery-3.6.0.js' %}">
             </script>
             <script src="{% static 'js/chart.js' %}" type="text/javascript" defer></script>
-            <script src="{% static 'js/all.js' %}" type="text/javascript" defer></script>
-            <script type="text/javascript" src="{% static 'js/app.js' %}" defer></script>
+            <script src="{% static 'js/all.js' %}" defer></script>
             <script type="text/javascript" src="{% static 'js/vendors/micromodal/micromodal.min.js' %}"></script>
+            <script type="text/javascript" src="{% static 'vendors/bulma-collapsible/js/bulma-collapsible.min.js' %}" defer></script>
             <script type="text/javascript" src="{% static 'js/vendors/toastify/toastify.js' %}"></script>
             <script type="text/javascript" src="{% static 'js/vendors/clipboard/clipboard.js' %}"></script>
             <script type="text/javascript" src="{% static 'vendors/DataTables/datatables.js' %}"></script>
@@ -98,6 +99,7 @@
                   src="{% static 'vendors/DataTables/DateTime-1.1.2/js/dataTables.dateTime.js' %}"></script>
             <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/pdfmake.js' %}"></script>
             <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/vfs_fonts.js' %}"></script>
+            <script type="module" src="{% static 'js/app.js' %}" defer></script>
             {% block externaljs %}
 
             {% endblock externaljs %}

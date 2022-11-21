@@ -1,6 +1,7 @@
+from django import forms
+
 from core.forms import BaseModelFormMixin
 from task.models import Task
-from django import forms
 
 
 class TaskForm(BaseModelFormMixin):

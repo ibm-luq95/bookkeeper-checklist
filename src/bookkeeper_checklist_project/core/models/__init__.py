@@ -1,3 +1,4 @@
+from .querysets import BaseQuerySetMixin
+from .managers import SoftDeleteManager
 from .mixins import BaseModelMixin
-from .staff_mixin import StaffModelMixin
 from .quote import Quote

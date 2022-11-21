@@ -1,0 +1,28 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-create-client-account-form">
+    <div class="box">
+        <form method="post" id="create-client-account-form">
+            {% csrf_token %}
+            <legend class="title has-text-black">
+                Create new client account
+            </legend>
+            <hr>
+            <fieldset form="create-client-account-form">
+                {{ form| crispy }}
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info is-fullwidth">
+                        Create <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

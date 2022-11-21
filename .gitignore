@@ -309,3 +309,4 @@ changelogs
 changelog
 create_db.sql
 src/bookkeeper_checklist_project/media
+backup

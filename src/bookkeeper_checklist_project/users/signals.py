@@ -17,7 +17,7 @@ logger = get_formatted_logger(__name__)
 
 
 @receiver(post_save, sender=CustomUser)
-def create_profile(sender, instance, created, **kwargs):
+def create_groups(sender, instance, created, **kwargs):
     try:
         if created:
             with transaction.atomic():
@@ -34,6 +34,9 @@ def create_profile(sender, instance, created, **kwargs):
                         group = ASSISTANT_GROUP_NAME
                     case "manager":
                         group = MANAGER_GROUP_NAME
+                    case _:
+                        if user.is_staff is True and user.is_superuser is True:
+                            group = MANAGER_GROUP_NAME
                 group_object = Group.objects.filter(name=group)
 
                 if not group_object:
@@ -44,6 +47,7 @@ def create_profile(sender, instance, created, **kwargs):
                 instance.save()
     except ProjectError as ex:
         logger.error(ex.message)
+        logger.error(traceback.format_exc())
 
     except Exception as ex:
         logger.error(traceback.format_exc())

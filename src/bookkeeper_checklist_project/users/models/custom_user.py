@@ -1,7 +1,5 @@
 import uuid
 
-from core.choices import CustomUserTypeEnum
-from core.utils import sort_dict
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.forms.models import model_to_dict
@@ -9,7 +7,15 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
+from core.choices import CustomUserTypeEnum
+from core.utils import get_formatted_logger
+from core.utils import sort_dict
 from .manager import CustomUserManager
+
+# TODO: remove the custom logger before push (only for development)
+# ###### [Custom Logger] #########
+logger = get_formatted_logger(__name__)
+# ###### [Custom Logger] #########
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -40,20 +46,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         default=dict,
         help_text="Enter as JSON object",
     )
-    created_at = models.DateTimeField(
-        _("created_at"), default=timezone.now, editable=False
-    )
-    updated_at = models.DateTimeField(
-        _("updated_at"), auto_now=True, blank=True, null=True
-    )
+    is_deleted = models.BooleanField(_("is_deleted"), default=False)
+    created_at = models.DateTimeField(_("created_at"), default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(_("updated_at"), auto_now=True, blank=True, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
+    class Meta:
+        verbose_name = "user"
+        verbose_name_plural = "users"
+
     def __str__(self):
-        return self.email
+        # return self.email
+        full_info = f"{self.fullname}:-> {self.email}"
+        return full_info
 
     def get_absolute_url(self):
         return reverse("manager:users:detail", kwargs={"pk": self.pk})
@@ -68,7 +77,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     @property
     def fullname(self):
         return f"{self.first_name} {self.last_name}"
-
-    class Meta:
-        verbose_name = "user"
-        verbose_name_plural = "users"

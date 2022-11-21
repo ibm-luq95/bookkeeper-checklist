@@ -1,5 +1,5 @@
 from core.forms import BaseModelFormMixin
-from client.models import ClientAccount
+from client_account.models import ClientAccount
 from django import forms
 
 

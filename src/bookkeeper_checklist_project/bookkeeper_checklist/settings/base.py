@@ -42,21 +42,28 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # "django.contrib.sites",
     "django_filters",
     "rest_framework",
+    # "rest_framework.authtoken",
     "crispy_forms",
     "crispy_bulma",
-    "core",
-    "manager",
-    "users",
-    "assistant",
-    "bank_account",
-    "bookkeeper",
-    "client",
-    "company_services",
-    "notes",
-    "jobs",
-    "task",
+    "betterforms",
+    # "crispy_bootstrap5",
+    "core.apps.CoreConfig",
+    "users.apps.UsersConfig",
+    "manager.apps.ManagerConfig",
+    "assistant.apps.AssistantConfig",
+    "bank_account.apps.BankAccountConfig",
+    "bookkeeper.apps.BookkeeperConfig",
+    "important_contact.apps.ImportantContactConfig",
+    "documents.apps.DocumentsConfig",
+    "client_account.apps.ClientAccountConfig",
+    "client.apps.ClientConfig",
+    "company_services.apps.CompanyServicesConfig",
+    "notes.apps.NotesConfig",
+    "jobs.apps.JobsConfig",
+    "task.apps.TaskConfig",
 ]
 
 MIDDLEWARE = [
@@ -69,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "core.errors.ExceptionMiddleware"
 ]
 
 ROOT_URLCONF = "bookkeeper_checklist.urls"
@@ -205,13 +213,18 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bulma"
 
 CRISPY_TEMPLATE_PACK = "bulma"
 
+# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+#
+# CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 AUTH_USER_MODEL = "users.CustomUser"
 
 REST_FRAMEWORK = {
+    # "EXCEPTION_HANDLER": "core.errors.api_exception_handler",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -221,3 +234,18 @@ REST_FRAMEWORK = {
         # "rest_framework.parsers.FormParser",
     ],
 }
+# check if cache enabled
+if bool(os.environ.get("IS_CACHE_ENABLED")):
+    CACHE_MIDDLEWARE_ALIAS = os.environ.get(
+        "CACHE_MIDDLEWARE_ALIAS"
+    )  # which cache alias to use
+    CACHE_MIDDLEWARE_SECONDS = int(
+        os.environ.get("CACHE_MIDDLEWARE_SECONDS")
+    )  # number of seconds to cache a page for (TTL)
+
+    CACHE_MIDDLEWARE_KEY_PREFIX = os.environ.get(
+        "CACHE_MIDDLEWARE_KEY_PREFIX"
+    )  # should be used if the cache is shared across multiple sites that
+    # use the
+    # same
+    # Django instance

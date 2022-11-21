@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView, DeleteView
 
 from bookkeeper.helpers import BookkeeperHelper
 from bookkeeper.models import Bookkeeper
-from client.forms import ClientAccountForm, ClientForm
+from client.forms import ClientForm
 from jobs.forms import JobForm
 from task.forms import TaskForm
 from .mixins import ManagerAccessMixin
@@ -36,7 +36,7 @@ class BookkeepersDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView)
         context["jobs_form"] = JobForm(bookkeeper=self.get_object())
         context["client_form"] = ClientForm()
         context["task_form"] = TaskForm()
-        context["client_account_form"] = ClientAccountForm()
+        # context["client_account_form"] = ClientAccountForm()
         context["bookkeeper_helper"] = BookkeeperHelper(bookkeeper=self.get_object())
         # print(context["jobs_form"].data)
         return context

@@ -41,19 +41,14 @@ DATABASES = {
 
 
 # Set Cache Configurations
-# CACHE_MIDDLEWARE_ALIAS = os.environ.get("CACHE_MIDDLEWARE_ALIAS")  # which cache alias to use
-CACHE_MIDDLEWARE_SECONDS = os.environ.get(
-    "CACHE_MIDDLEWARE_SECONDS"
-)  # number of seconds to cache a page for (TTL)
 
 # Cache Redis
-# CACHES = {
-#     "default": {
-#         "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
-#         "LOCATION": f"redis://{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
-#     }
-# }
-
+CACHES = {
+    "default": {
+        "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
+        "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
+    }
+}
 # Djagno Debug Toolbar
 INTERNAL_IPS = os.environ.get("INTERNAL_IPS")
 DISABLE_PANELS = {}

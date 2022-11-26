@@ -66,7 +66,7 @@ const sendRequest = (options) => {
         method: options["method"],
         mode: "same-origin",
         credentials: "include",
-        cache: 'no-cache',
+        cache: "no-cache",
         body: JSON.stringify(options["dataToSend"]),
         // body: formData,
       };
@@ -131,7 +131,7 @@ class UploadFileRequest {
       this.ajaxObject.setRequestHeader("X-CSRFToken", this.csrfToken);
       // console.log(this.csrfToken);
       this.ajaxObject.withCredentials = true;
-      this.ajaxObject.timeout = 60;
+      // this.ajaxObject.timeout = 60;
       this.ajaxObject.responseType = "json";
     } catch (error) {
       console.error(error);
@@ -149,7 +149,7 @@ class UploadFileRequest {
 
         if (this.isDebugging === true) {
           // this.ajaxObject.addEventListener("progress", this.uploadProgressHandler, false);
-          this.ajaxObject.addEventListener("progress", this.uploadProgressHandler, false);
+          this.ajaxObject.upload.addEventListener("progress", this.uploadProgressHandler, false);
           // set upload error handler
         }
 
@@ -158,7 +158,7 @@ class UploadFileRequest {
 
         // call setHeader method
         this.setHeaders();
-        
+
         // this.ajaxObject.addEventListener("error", this.errorHandler, false);
         this.ajaxObject.addEventListener("error", this.errorHandler, false);
         // set upload abort handler
@@ -176,13 +176,13 @@ class UploadFileRequest {
         );
         this.ajaxObject.send(this.formData);
         this.ajaxObject.addEventListener("readystatechange", (event) => {
-          if (this.ajaxObject.readyState === 4 && this.ajaxObject.status === 200) {
-            console.warn(event.currentTarget.status);
+          if (this.ajaxObject.readyState === 4) {
+            const response = this.ajaxObject.response;
             if (this.ok() === true) {
-              resolve(this.ajaxObject.response);
+              resolve(response["msg"]);
             } else {
-              console.error(this.ajaxObject.statusText);
-              reject(this.ajaxObject.response);
+              console.error(this.ajaxObject.response);
+              reject(response["user_error_msg"]);
             }
           }
         });
@@ -198,8 +198,8 @@ class UploadFileRequest {
    * @returns bool
    */
   ok() {
-    console.log(this.ajaxObject.status);
-    if (this.ajaxObject.status >= 200 && this.ajaxObject.status <= 299) {
+    // console.log(this.ajaxObject.status);
+    if (this.ajaxObject.status >= 200 && this.ajaxObject.status < 400) {
       return true;
     } else {
       return false;

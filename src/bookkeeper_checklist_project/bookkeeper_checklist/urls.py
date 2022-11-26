@@ -22,6 +22,8 @@ urlpatterns = [
     path("manager/", include("manager.urls"), name="manager-urls"),
     path("documents/", include("documents.urls"), name="documents-urls"),
     path("notes/", include("notes.urls"), name="notes-urls"),
+    path("task/", include("task.urls"), name="task-urls"),
+    path("jobs/", include("jobs.urls"), name="jobs-urls"),
     path(
         "company-services/", include("company_services.urls"), name="company-services-urls"
     ),

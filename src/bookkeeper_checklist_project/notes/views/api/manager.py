@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-#
-import json
 import traceback
 
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.exceptions import APIException
-from rest_framework import authentication
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics
-from rest_framework import parsers
 
 from core.utils import get_formatted_logger, debugging_print
 from notes.models import Note
@@ -52,7 +48,7 @@ class CreateNoteManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while add job to bookkeeper!",
+                "user_error_msg": "Error while create note!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -83,7 +79,7 @@ class RetrieveNoteManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while add job to bookkeeper!",
+                "user_error_msg": "Error while retriever note!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -118,7 +114,7 @@ class UpdateNoteManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while add job to bookkeeper!",
+                "user_error_msg": "Error while update note!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -153,6 +149,6 @@ class DeleteNoteManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while add job to bookkeeper!",
+                "user_error_msg": "Error while delete note!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)

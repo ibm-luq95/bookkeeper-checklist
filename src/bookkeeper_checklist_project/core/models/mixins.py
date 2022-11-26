@@ -1,12 +1,13 @@
 import uuid
 
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.forms.models import model_to_dict
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from core.utils import sort_dict
 from core.models import SoftDeleteManager
+from core.utils import sort_dict
 
 
 class BaseModelMixin(models.Model):
@@ -17,7 +18,7 @@ class BaseModelMixin(models.Model):
     updated_at = models.DateTimeField(
         _("updated_at"), auto_now=True, blank=True, null=True, editable=False
     )
-    deleted_at = models.DateTimeField(_("deleted_at"), null=True, default=None)
+    deleted_at = models.DateTimeField(_("deleted_at"), null=True, default=None, blank=True)
 
     # undeleted_objects = SoftDeleteManager()
     # objects = models.Manager()
@@ -50,3 +51,12 @@ class BaseModelMixin(models.Model):
         data.setdefault("created_at", self.created_at)
         data.setdefault("updated_at", self.updated_at)
         return sort_dict(data)
+
+
+class UserForeignKeyMixin(models.Model):
+    user = models.ForeignKey(
+        to=get_user_model(), on_delete=models.SET_NULL, blank=True, null=True
+    )
+
+    class Meta:
+        abstract = True

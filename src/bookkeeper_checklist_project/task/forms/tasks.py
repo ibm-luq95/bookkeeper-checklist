@@ -5,8 +5,12 @@ from task.models import Task
 
 
 class TaskForm(BaseModelFormMixin):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, client=None, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
+        self.fields.pop("user")
+        if client is not None:
+            self.fields["client"].initial = client
+            self.fields["client"].widget.attrs.update({"class": "readonly-select"})
 
     class Meta(BaseModelFormMixin.Meta):
         model = Task

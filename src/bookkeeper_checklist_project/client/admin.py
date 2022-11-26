@@ -6,13 +6,13 @@ from core.constants import ADMIN_FILTER_LIST
 from .models import Client
 
 
-class BookkeeperInline(admin.TabularInline):
-    model = Bookkeeper.clients.through
-    extra = 2
+# class BookkeeperInline(admin.TabularInline):
+#     model = Bookkeeper.clients.through
+#     extra = 2
 
 
 @admin.register(Client)
 class ClientAdmin(BaseAdminModelMixin):
-    inlines = (BookkeeperInline,)
+    # inlines = (BookkeeperInline,)
     list_display = ["name", "email", "industry", "created_at", "is_active", "is_deleted"]
     list_filter = ADMIN_FILTER_LIST + ["is_deleted", "is_active"]

@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   );
   const addDocumentFormWrapper = document.querySelector("div#addDocumentFormWrapper");
   const addDocumentForm = addDocumentFormWrapper.querySelector("form#addDocumentForm");
+  const addDocumentFormFieldSet = addDocumentForm.querySelector("fieldset");
+  const managerAddJobBtn = document.querySelector("button#managerAddJobBtn");
+  const managerDocumentLoaderBtn = document.querySelector("button#managerDocumentLoaderBtn");
   const addNoteFormWrapper = document.querySelector("div#addNoteFormWrapper");
   const addNoteForm = addNoteFormWrapper.querySelector("form#addNoteForm");
   const managerAddDocumentBtn = document.querySelector("button#managerAddDocumentBtn");
@@ -33,6 +36,18 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const managerCompanyServicesLoaderBtn = document.querySelector(
     "button#managerCompanyServicesLoaderBtn",
   );
+  const managerDeleteDocumentBtn = document.querySelectorAll(".managerDeleteDocumentBtn");
+
+  const jobsFormWrapper = document.querySelector("div#jobsFormWrapper");
+  const managerJobsLoaderBtn = document.querySelector("button#managerJobsLoaderBtn");
+  const jobsForm = jobsFormWrapper.querySelector("form#jobsForm");
+  const jobsFormFieldset = jobsForm.querySelector("fieldset");
+
+  const managerAddTasksBtn = document.querySelector("button#managerAddTasksBtn");
+  const tasksCreateFormWrapper = document.querySelector("div#tasksCreateFormWrapper");
+  const tasksCreateForm = tasksCreateFormWrapper.querySelector("form#tasksCreateForm");
+  const tasksCreateFormFieldSet = tasksCreateForm.querySelector("fieldset");
+  const managerTasksLoaderBtn = document.querySelector("button#managerTasksLoaderBtn");
 
   if (managerAddDocumentBtn) {
     managerAddDocumentBtn.addEventListener("click", (e) => {
@@ -40,6 +55,12 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       showMicroModal("document-form-modal");
     });
   }
+  managerAddJobBtn.addEventListener("click", (event) => {
+    showMicroModal("jobs-create-form-modal");
+  });
+  managerAddTasksBtn.addEventListener("click", (event) => {
+    showMicroModal("tasks-create-form-modal");
+  });
   managerAddCompanyServiceBtn.addEventListener("click", (event) => {
     showMicroModal("company-services-form-modal");
   });
@@ -55,6 +76,8 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     ev.preventDefault();
     const currentTarget = addDocumentForm;
     const documentFile = currentTarget["id_document_file"].files[0];
+    addDocumentFormFieldSet.disabled = true;
+    managerDocumentLoaderBtn.hidden = false;
     const formData = new FormData();
     // console.log(currentTarget.action);
     // console.log(currentTarget.elements);
@@ -83,21 +106,19 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     request
       .then((data) => {
         console.log(data);
+        showToastNotification(data, "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .catch((error) => {
         console.error(error);
         showToastNotification("Error while add new document!", "danger");
-      });
-    // console.log();
-    /* const request = sendRequest(requestOptions);
-    request
-      .then((data) => {
-        console.log(data);
       })
-      .catch((error) => {
-        console.error(error);
-        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
-      }); */
+      .finally(() => {
+        addDocumentFormFieldSet.disabled = false;
+        managerDocumentLoaderBtn.hidden = true;
+      });
   });
 
   // add notes form submit form
@@ -321,5 +342,132 @@ document.addEventListener("DOMContentLoaded", (ev) => {
         passwordInputElement.type = "text";
       }
     });
+  });
+
+  // delete document buttons
+  managerDeleteDocumentBtn.forEach((btn) => {
+    btn.addEventListener("click", (ev) => {
+      const DeleteDocumentUrl = window.localStorage.getItem("DeleteDocumentUrl");
+      const fullUrl = window.location.origin + DeleteDocumentUrl;
+      const currentTarget = ev.currentTarget;
+      const documentId = currentTarget.dataset["documentId"];
+      const documentTitle = currentTarget.dataset["documentTitle"];
+      const msg = confirm(`Do you want to delete document ${documentTitle}?`);
+      if (msg === true) {
+        const requestOptions = {
+          method: "DELETE",
+          dataToSend: { documentId: documentId },
+          url: fullUrl,
+        };
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            showToastNotification("Document deleted successfully", "success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          });
+      }
+    });
+  });
+
+  // create new job form event
+  jobsForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const currentTarget = event.currentTarget;
+    jobsFormFieldset.disabled = true;
+    managerJobsLoaderBtn.hidden = false;
+    const bookkeepersArray = new Array();
+    const tasksArray = new Array();
+    console.log(currentTarget["tasks"]);
+    // console.log(currentTarget["bookkeeper"]);
+    currentTarget["bookkeeper"].forEach((input) => {
+      if (input.checked === true) {
+        bookkeepersArray.push(input.value);
+      }
+    });
+    currentTarget["tasks"].forEach((input) => {
+      if (input.checked === true) {
+        tasksArray.push(input.value);
+      }
+    });
+    const formData = {
+      bookkeeper: bookkeepersArray,
+      title: currentTarget["title"].value,
+      description: currentTarget["description"].value,
+      due_date: currentTarget["due_date"].value,
+      client: currentTarget["client"].value,
+      status: currentTarget["status"].value,
+      note: currentTarget["note"].value,
+      job_type: currentTarget["job_type"].value,
+      tasks: tasksArray,
+    };
+    console.log(formData);
+    const requestOptions = {
+      method: "POST",
+      dataToSend: formData,
+      url: currentTarget.action,
+    };
+    const request = sendRequest(requestOptions);
+    request
+      .then((data) => {
+        showToastNotification(data["msg"], "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      })
+      .catch((error) => {
+        console.error(error);
+        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+      })
+      .finally(() => {
+        jobsFormFieldset.disabled = false;
+        managerJobsLoaderBtn.hidden = true;
+      });
+  });
+
+  // create new task form event
+  tasksCreateForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const submitBtn = document.querySelector("button#managerTasksCreateSubmitBtn");
+    const currentTarget = event.currentTarget;
+    tasksCreateFormFieldSet.disabled = true;
+    managerTasksLoaderBtn.hidden = false;
+    submitBtn.disabled = true;
+    submitBtn.classList.add("is-disabled");
+
+    const formData = {
+      title: currentTarget["title"].value,
+      status: currentTarget["status"].value,
+      is_completed: currentTarget["is_completed"].value,
+      hints: currentTarget["hints"].value,
+      user: currentTarget["user"].value,
+      additional_notes: currentTarget["additional_notes"].value,
+      client: currentTarget["client"].value,
+      due_date: currentTarget["due_date"].value,
+      start_date: currentTarget["start_date"].value,
+    };
+    console.log(formData);
+    const requestOptions = {
+      method: "POST",
+      dataToSend: formData,
+      url: currentTarget.action,
+    };
+    const request = sendRequest(requestOptions);
+    request
+      .then((data) => {
+        showToastNotification("Task created successfully", "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      })
+      .catch((error) => {
+        console.error(error);
+        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+      });
   });
 });

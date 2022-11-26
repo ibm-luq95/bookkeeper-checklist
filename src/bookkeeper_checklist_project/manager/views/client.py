@@ -14,6 +14,8 @@ from important_contact.forms import ImportantContactForm
 from documents.forms import DocumentForm
 from notes.forms import NoteForm
 from company_services.forms import CompanyServiceForm
+from jobs.forms import JobForm
+from task.forms import TaskForm
 
 
 class ClientListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
@@ -70,12 +72,16 @@ class ClientDetailView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
             instance=client.important_contact, is_readonly=True
         )
         company_services_form = CompanyServiceForm(client=client)
+        jobs_form = JobForm(client=client)
+        tasks_form = TaskForm(client=client)
         context.setdefault("important_contact_form", important_contact_form)
         document_form = DocumentForm(document_section="client", client=client)
         note_form = NoteForm(client=client, note_section="client")
         context.setdefault("document_form", document_form)
         context.setdefault("note_form", note_form)
         context.setdefault("company_services_form", company_services_form)
+        context.setdefault("jobs_form", jobs_form)
+        context.setdefault("tasks_form", tasks_form)
         origin = self.request.get_host()
         context.setdefault("origin", origin)
         return context

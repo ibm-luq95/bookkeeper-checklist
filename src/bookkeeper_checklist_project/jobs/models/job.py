@@ -19,13 +19,16 @@ class Job(BaseModelMixin):
         BaseModelMixin (models.Model): Django model base mixin
     """
 
-    bookkeeper = models.ForeignKey(
-        to=Bookkeeper,
-        on_delete=models.SET_NULL,
-        related_name="jobs",
-        null=True,
-        blank=True,
-        help_text=JOB_HELP_MESSAGES.get("bookkeeper"),
+    # bookkeeper = models.ForeignKey(
+    #     to=Bookkeeper,
+    #     on_delete=models.SET_NULL,
+    #     related_name="jobs",
+    #     null=True,
+    #     blank=True,
+    #     help_text=JOB_HELP_MESSAGES.get("bookkeeper"),
+    # )
+    bookkeeper = models.ManyToManyField(
+        to=Bookkeeper, help_text=JOB_HELP_MESSAGES.get("bookkeeper"), related_name="jobs"
     )
     title = models.CharField(
         _("title"), max_length=100, null=False, help_text=JOB_HELP_MESSAGES.get("title")
@@ -65,9 +68,7 @@ class Job(BaseModelMixin):
         related_name="jobs",
         help_text=JOB_HELP_MESSAGES.get("client"),
     )
-    tasks = models.ManyToManyField(
-        to=Task, help_text=JOB_HELP_MESSAGES.get("tasks")
-    )
+    tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
     note = models.TextField(
         _("note"), null=True, help_text=JOB_HELP_MESSAGES.get("note"), blank=True
     )

@@ -22,5 +22,6 @@ class CompanyService(BaseModelMixin):
         _("service name"), max_length=35, choices=ServiceNameEnum.choices
     )
     label = models.CharField(_("label"), max_length=30, null=True)
+    url = models.URLField(_("URL"), null=True, blank=True)
     email = models.EmailField(_("email"), max_length=60, null=False)
     password = models.CharField(_("password"), max_length=250, null=False)

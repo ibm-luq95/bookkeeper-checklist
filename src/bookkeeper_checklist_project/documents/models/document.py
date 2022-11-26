@@ -55,7 +55,5 @@ class Documents(BaseModelMixin):
         to=get_user_model(), on_delete=models.SET_NULL, related_name="documents", null=True
     )
 
-    objects = models.Manager()
-
     def get_absolute_url(self):
         return reverse("documents:manager:details", kwargs={"pk": self.pk})

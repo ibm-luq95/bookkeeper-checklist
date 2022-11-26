@@ -41,7 +41,7 @@ class Bookkeeper(BaseModelMixin):
         null=True,
         related_name="bookkeeper",
     )
-    clients = models.ManyToManyField(to=Client)
+    # clients = models.ManyToManyField(to=Client)
     is_active = models.BooleanField(_("is_active"), default=True)
     bio = models.TextField(_("bio"), null=True, blank=True)
 

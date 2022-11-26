@@ -2,17 +2,21 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
+from client.models import Client
 from core.choices import TaskStatusEnum
-from core.models import BaseModelMixin
+from core.models import BaseModelMixin, UserForeignKeyMixin
 
 
-class Task(BaseModelMixin):
+class Task(BaseModelMixin, UserForeignKeyMixin):
     """Tasks for every job
 
     Args:
         BaseModelMixin (models.Model): The base django model mixin
     """
 
+    client = models.ForeignKey(
+        to=Client, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
+    )
     title = models.CharField(_("title"), max_length=80, null=True)
     status = models.CharField(
         _("status"),
@@ -26,8 +30,6 @@ class Task(BaseModelMixin):
     additional_notes = models.TextField(_("additional notes"), null=True, blank=True)
     start_date = models.DateField(_("start date"), null=True, blank=True)
     due_date = models.DateField(_("due date"))
-
-    objects = models.Manager()
 
     def __str__(self) -> str:
         return self.title

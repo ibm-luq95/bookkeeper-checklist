@@ -48,7 +48,10 @@
                             <td>
                                 <a href="{% url 'manager:bookkeeper:details' object.slug %}">{{ object.user.fullname }}</a>
                             </td>
-                            <td class="has-text-centered">{{ object.clients.count }}</td>
+                            <td class="has-text-centered">
+                                
+                                {{ object.get_clients_total }}
+                            </td>
                             <td class="has-text-centered">{{ object.get_tasks_count }}</td>
                             <td>{{ object.is_active_labeled }}</td>
                             <td>{{ object.status|title }}</td>

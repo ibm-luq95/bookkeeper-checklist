@@ -26,8 +26,8 @@
             <div class="navbar-start">
 
                 {% if request.user.user_type == "bookkeeper" %}
-                <a class="navbar-item" href="{% url 'bookkeeper:clients-list' %}"> Clients </a>
-                <a class="navbar-item" href="{% url 'bookkeeper:clients-list' %}"> Jobs </a>
+                <a class="navbar-item" href="{% url 'bookkeeper:client:list' %}"> Clients </a>
+                <a class="navbar-item" href="{% url 'bookkeeper:job:list' %}"> Jobs </a>
                 {% elif request.user.user_type == "assistant" %}
                 <a class="navbar-item" href="{% url 'assistant:bookkeeper-list-url' %}"> Bookkeepers </a>
                 {% elif request.user.user_type == "manager" %}
@@ -74,6 +74,9 @@
                         <a class="navbar-item" href="{% url 'manager:client_account:list' %}">
                             Client accounts
                         </a>
+                        <a class="navbar-item" href="{% url 'manager:client_account:list' %}">
+                            Client services
+                        </a>
                     </div>
                 </div>
                 <div class="navbar-item has-dropdown is-hoverable">
@@ -119,7 +122,7 @@
                             <span>
                                 <i class="fa-solid fa-user"></i>
                                 {{ request.user.fullname }}
-                                <span title="Badge top right" class="badge">8</span>
+                                <!-- <span title="Badge top right" class="badge">8</span> -->
                             </span>
                             <span class="icon is-small">
                                 <i class="fas fa-angle-down" aria-hidden="true"></i>

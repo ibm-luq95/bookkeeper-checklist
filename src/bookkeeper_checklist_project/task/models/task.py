@@ -2,9 +2,10 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-from client.models import Client
+# from client.models import Client
 from core.choices import TaskStatusEnum
 from core.models import BaseModelMixin, UserForeignKeyMixin
+from jobs.models import Job
 
 
 class Task(BaseModelMixin, UserForeignKeyMixin):
@@ -14,8 +15,11 @@ class Task(BaseModelMixin, UserForeignKeyMixin):
         BaseModelMixin (models.Model): The base django model mixin
     """
 
-    client = models.ForeignKey(
-        to=Client, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
+    # client = models.ForeignKey(
+    #     to=Client, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
+    # )
+    job = models.ForeignKey(
+        to=Job, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
     )
     title = models.CharField(_("title"), max_length=80, null=True)
     status = models.CharField(

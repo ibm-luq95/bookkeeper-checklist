@@ -20,8 +20,6 @@ class BaseModelMixin(models.Model):
     )
     deleted_at = models.DateTimeField(_("deleted_at"), null=True, default=None, blank=True)
 
-    # undeleted_objects = SoftDeleteManager()
-    # objects = models.Manager()
     objects = SoftDeleteManager()
     original_objects = models.Manager()
 
@@ -55,7 +53,11 @@ class BaseModelMixin(models.Model):
 
 class UserForeignKeyMixin(models.Model):
     user = models.ForeignKey(
-        to=get_user_model(), on_delete=models.SET_NULL, blank=True, null=True
+        to=get_user_model(),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="%(class)s_related",
     )
 
     class Meta:

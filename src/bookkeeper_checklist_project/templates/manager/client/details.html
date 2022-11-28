@@ -209,8 +209,15 @@
                                 <a href="">{{ job.title }}</a>
                               </td>
 
-                              <td data-label="Bookkeeper(s)">{{ job.bookkeeper }}</td>
-
+                              <td data-label="Bookkeeper(s)">
+                                
+                                {% for bookkeeper in job.bookkeeper.all %}
+                                  <a href="">
+                                    {{ bookkeeper.user.fullname }}
+                                  </a> <br />
+                                {% endfor %}
+                                  
+                              </td>
                               <td data-label="Tasks">{{ job.tasks.count }}</td>
                               <td data-label="Status">
                                 {% if job.status == "past_due" %}
@@ -236,14 +243,14 @@
                               <td class="is-actions-cell">
                                 <div class="buttons is-right">
                                   <button
-                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled managerViewJobBtn" data-job-id="{{ job.pk }}"
                                     disabled type="button" data-tooltip="View items">
                                     <span class="icon">
                                       <i class="fa-solid fa-eye"></i>
                                     </span>
                                   </button>
-                                  <button class="button is-small is-danger bkchlst-input is-disabled" disabled
-                                    type="button" data-tooltip="Delete task">
+                                  <button class="button is-small is-danger bkchlst-input is-disabled managerDeleteJobBtn" data-job-id="{{ job.pk }}" disabled
+                                    type="button" data-tooltip="Delete job">
                                     <span class="icon">
                                       <i class="fa-solid fa-trash"></i>
                                     </span>
@@ -309,25 +316,44 @@
                             </tr>
                           </thead>
                           <tbody>
-                            {% for task in object.tasks.all %}
-                              <tr>
-                                <td>
-                                  {{ task.title }}
-                                </td>
-                                <td>
-                                  {{ task.get_status_display }}
-                                </td>
-                                <td>
-                                  {{ task.start_date }}
-                                </td>
-                                <td>
-                                  {{ task.due_date }}
-                                </td>
-                                <td>
-
-                                </td>
-                              </tr>
+                            
+                            {% for job in object.jobs.all %}
+                              
+                            {% for task in job.tasks.all %}
+                            <tr>
+                              <td>
+                                {{ task.title }}
+                              </td>
+                              <td>
+                                {{ task.get_status_display }}
+                              </td>
+                              <td>
+                                {{ task.start_date }}
+                              </td>
+                              <td>
+                                {{ task.due_date }}
+                              </td>
+                              <td class="is-actions-cell">
+                                <div class="buttons is-right">
+                                  <button
+                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled managerViewTaskBtn" data-task-id="{{ task.pk }}"
+                                    disabled type="button" data-tooltip="View items">
+                                    <span class="icon">
+                                      <i class="fa-solid fa-eye"></i>
+                                    </span>
+                                  </button>
+                                  <button class="button is-small is-danger bkchlst-input is-disabled managerDeleteTaskBtn" data-task-id="{{ task.pk }}" disabled
+                                    type="button" data-tooltip="Delete task">
+                                    <span class="icon">
+                                      <i class="fa-solid fa-trash"></i>
+                                    </span>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
                             {% endfor %}
+                              
+                          {% endfor %}
 
                           </tbody>
                         </table>

@@ -6,13 +6,14 @@ from django.utils.translation import gettext as _
 from client.models import Client
 from company_services.models import CompanyService
 from core.choices import CustomUserStatusEnum
-from core.models import BaseModelMixin
+from core.models import BaseModelMixin, UserForeignKeyMixin
+from core.utils import debugging_print
 
 
 # from jobs.models import Job
 
 
-class Bookkeeper(BaseModelMixin):
+class Bookkeeper(BaseModelMixin, UserForeignKeyMixin):
     """Bookkeeper model
 
     Args:
@@ -28,12 +29,6 @@ class Bookkeeper(BaseModelMixin):
         max_length=10,
         choices=CustomUserStatusEnum.choices,
         default=CustomUserStatusEnum.ENABLED,
-    )
-    user = models.OneToOneField(
-        to=get_user_model(),
-        null=True,
-        on_delete=models.PROTECT,
-        related_name="bookkeeper",
     )
     company_services = models.ForeignKey(
         to=CompanyService,
@@ -70,3 +65,11 @@ class Bookkeeper(BaseModelMixin):
             return "Active"
         else:
             return "Deactivate"
+
+    @property
+    def get_clients_total(self) -> int:
+        total_list = set()
+        jobs = self.jobs.select_related()
+        for job in jobs:
+            total_list.add(str(job.client.pk))
+        return len(total_list)

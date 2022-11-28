@@ -1,20 +1,17 @@
 {% extends "core/layouts/dashboard.html" %}
 {% load static %}
-{% load client_tags %}
 {% block dashboard_content %}
-<h3 class="title is-3">Clients</h3>
-
+<h3 class="title is-3">Jobs</h3>
 
 {% if object_list.count > 0 %}
 <!-- Start jobs table -->
-<table class="table is-fullwidth" id="clientsJobsTable">
+<table class="table is-fullwidth" id="jobsTable">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Jobs</th>
-            <th>Tasks</th>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Job Type</th>
+            <th>Status</th>
             <th>Start Date</th>
             <th>Due Date</th>
             <th></th>
@@ -22,11 +19,10 @@
     </thead>
     <tfoot>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Jobs</th>
-            <th>Tasks</th>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Job Type</th>
+            <th>Status</th>
             <th>Start Date</th>
             <th>Due Date</th>
             <th></th>
@@ -37,20 +33,19 @@
         {% for object in object_list %}
 
         <tr>
-            <td>1</td>
             <td>
                 <a href="{% url 'bookkeeper:client:details' object.pk %}">
-                    {{ object.name }}
+                    {{ object.title }}
                 </a>
             </td>
             <td>
-                <a href="mailto:{{ object.email }}">{{ object.email }}</a>
+               {{ object.client }}
             </td>
             <td>
-                {{ object.jobs.count }}
+                {{ object.get_job_type_display }}
             </td>
             <td>
-                {{ object.jobs.filter|tasks_count_for_job }}
+                {{ object.get_status_display }}
             </td>
             <td>Mon Mar 14 2022</td>
             <td>Mon Mar 20 2023</td>
@@ -69,7 +64,7 @@
 <!-- End jobs table -->
 {% else %}
 <div class="notification">
-    You have no clinets
+    You have no jobs
 </div>
 {% endif %}
 
@@ -77,5 +72,5 @@
 
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/bookkeeper/dashboard/client_list.js' %}" defer type="module"></script>
+<script src="{% static 'js/bookkeeper/dashboard/jobs_list.js' %}" defer type="module"></script>
 {% endblock externaljs %}

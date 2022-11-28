@@ -20,9 +20,9 @@ class JobForm(BaseModelFormMixin):
     bookkeeper = forms.ModelMultipleChoiceField(
         queryset=Bookkeeper.objects.all(), widget=forms.CheckboxSelectMultiple
     )
-    tasks = forms.ModelMultipleChoiceField(
-        queryset=Task.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
-    )
+    # tasks = forms.ModelMultipleChoiceField(
+    #     queryset=Task.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
+    # )
 
     class Meta(BaseModelFormMixin.Meta):
         model = Job

@@ -5,7 +5,7 @@ from client.serializers import ClientSerializer
 
 
 class CreateJobSerializer(serializers.ModelSerializer):
-    tasks = TaskSerializer(many=True, read_only=True)
+    # tasks = TaskSerializer(many=True, read_only=True)
     # client = ClientSerializer()
 
     class Meta:

@@ -1,6 +1,9 @@
 from bookkeeper.models import Bookkeeper
 import traceback
 from core.utils import ProjectError, get_formatted_logger, debugging_print
+from django.db.models import QuerySet
+from jobs.models import Job
+from client.models import Client
 
 logger = get_formatted_logger(__file__)
 

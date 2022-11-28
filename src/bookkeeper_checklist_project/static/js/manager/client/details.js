@@ -48,6 +48,10 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const tasksCreateForm = tasksCreateFormWrapper.querySelector("form#tasksCreateForm");
   const tasksCreateFormFieldSet = tasksCreateForm.querySelector("fieldset");
   const managerTasksLoaderBtn = document.querySelector("button#managerTasksLoaderBtn");
+  const managerDeleteJobBtn = document.querySelectorAll("button.managerDeleteJobBtn");
+  const managerViewJobBtn = document.querySelectorAll("button.managerViewJobBtn");
+  const managerViewTaskBtn = document.querySelectorAll("button.managerViewTaskBtn");
+  const managerDeleteTaskBtn = document.querySelectorAll("button.managerDeleteTaskBtn");
 
   if (managerAddDocumentBtn) {
     managerAddDocumentBtn.addEventListener("click", (e) => {
@@ -301,6 +305,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       password: currentTarget["password"].value,
       client: currentTarget["client"].value,
       user: currentTarget["user"].value,
+      url: currentTarget["url"].value,
     };
     const requestOptions = {
       method: "POST",
@@ -384,17 +389,26 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     const bookkeepersArray = new Array();
     const tasksArray = new Array();
     console.log(currentTarget["tasks"]);
-    // console.log(currentTarget["bookkeeper"]);
-    currentTarget["bookkeeper"].forEach((input) => {
-      if (input.checked === true) {
-        bookkeepersArray.push(input.value);
-      }
-    });
-    currentTarget["tasks"].forEach((input) => {
-      if (input.checked === true) {
-        tasksArray.push(input.value);
-      }
-    });
+    console.log(currentTarget["bookkeeper"]);
+    // check if bookkeeper exists
+    if (currentTarget["bookkeeper"]) {
+      currentTarget["bookkeeper"].forEach((input) => {
+        if (input.checked === true) {
+          bookkeepersArray.push(input.value);
+        }
+      });
+    }
+
+    // check if tasks exists
+    if (currentTarget["tasks"]) {
+      currentTarget["tasks"].forEach((input) => {
+        if (input.checked === true) {
+          tasksArray.push(input.value);
+        }
+      });
+    }
+
+    // throw new Error("s");
     const formData = {
       bookkeeper: bookkeepersArray,
       title: currentTarget["title"].value,
@@ -447,7 +461,8 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       hints: currentTarget["hints"].value,
       user: currentTarget["user"].value,
       additional_notes: currentTarget["additional_notes"].value,
-      client: currentTarget["client"].value,
+      // client: currentTarget["client"].value,
+      job: currentTarget["job"].value,
       due_date: currentTarget["due_date"].value,
       start_date: currentTarget["start_date"].value,
     };
@@ -469,5 +484,36 @@ document.addEventListener("DOMContentLoaded", (ev) => {
         console.error(error);
         showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
       });
+  });
+
+  // delete job buttons
+  managerDeleteJobBtn.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const jobId = event.currentTarget.dataset["jobId"];
+      alert("Work on progress");
+    });
+  });
+
+  // view job buttons
+  managerViewJobBtn.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const jobId = event.currentTarget.dataset["jobId"];
+      alert("Work on progress");
+    });
+  });
+
+  // view task buttons
+  managerViewTaskBtn.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const taskId = event.currentTarget.dataset["taskId"];
+      alert("Work on progress");
+    });
+  });
+  // delete task buttons
+  managerDeleteTaskBtn.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const taskId = event.currentTarget.dataset["taskId"];
+      alert("Work on progress");
+    });
   });
 });

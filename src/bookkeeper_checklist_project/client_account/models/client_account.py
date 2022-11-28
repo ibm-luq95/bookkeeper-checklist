@@ -13,11 +13,11 @@ class ClientAccount(BaseModelMixin):
         BaseModelMixin (models.Model): Django base model mixin
     """
 
-    client = models.OneToOneField(
+    client = models.ForeignKey(
         to=Client,
         on_delete=models.RESTRICT,
         null=True,
-        related_name="client_account",
+        related_name="client_accounts",
         blank=True,
     )
     account_name = models.CharField(_("account name"), max_length=50, null=True)

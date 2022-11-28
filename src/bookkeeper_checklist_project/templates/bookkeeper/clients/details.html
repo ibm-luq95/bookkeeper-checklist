@@ -1,5 +1,6 @@
 {% extends "core/layouts/dashboard.html" %}
 {% load static %}
+{% load bookkeeper_tags %}
 {% block externalcss %}
   <link rel="stylesheet"
         href="{% static 'css/dashboard/client_details.css' %}"/>
@@ -20,7 +21,7 @@
                    style="width: 100%; height: 150px"
                    alt="Avatar"/>
               <div class="w3-display-bottomleft w3-container w3-text-black">
-                <h2>Jane Doe</h2>
+                <h2>{{ object.name }}</h2>
               </div>
             </div>
             <div class="w3-container my-4">
@@ -48,7 +49,7 @@
                 <div class="list-item">
                   <div class="list-item-content">
                     <div class="list-item-title">Phone</div>
-                    <div class="list-item-description">List item description</div>
+                    <div class="list-item-description">{{ object.important_contact.contact_phone }}</div>
                   </div>
 
                   {% comment %}
@@ -67,9 +68,8 @@
                 <div class="list-item">
                   <div class="list-item-content">
                     <div class="list-item-title">Website URL</div>
-                    <div class="list-item-description">List item description</div>
+                    <div class="list-item-description">{{ object.important_contact.contact_website }}</div>
                   </div>
-
                   {% comment %}
                 <div class="list-item-controls">
                   <div class="buttons is-right">
@@ -85,8 +85,8 @@
 
                 <div class="list-item">
                   <div class="list-item-content">
-                    <div class="list-item-title">Address</div>
-                    <div class="list-item-description">List item description</div>
+                    <div class="list-item-title">Label</div>
+                    <div class="list-item-description">{{ object.important_contact.contact_label }}</div>
                   </div>
 
                   {% comment %}
@@ -103,8 +103,8 @@
                 </div>
                 <div class="list-item">
                   <div class="list-item-content">
-                    <div class="list-item-title">Contact</div>
-                    <div class="list-item-description">List item description</div>
+                    <div class="list-item-title">Email</div>
+                    <div class="list-item-description">{{ object.important_contact.contact_email }}</div>
                   </div>
 
                   {% comment %}
@@ -149,7 +149,7 @@
             <div class="tab">
               <button class="tablinks has-text-danger has-text-weight-bold"
                       data-tab-element="past-due-tasks-tab">
-              Past Due Jobs (3)
+              Past Due Jobs ({{ object|get_jobs_by_status:'past_due'|length }})
               </button>
               <button class="tablinks defaultOpenTab1 bkchlst-input is-disabled"
                       disabled
@@ -177,23 +177,108 @@
             </div>
 
             <div class="tabcontent" id="past-due-tasks-tab">
-              <div class="box past-dude-task">
-                <div class="w3-container">
-                  <h5 class="w3-opacity">
-                    <b>Front End Developer / w3schools.com</b>
-                  </h5>
-                  <h6 class="w3-text-teal">
-                    <i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 -
-                    <span class="w3-tag w3-teal w3-round">Current</span>
-                  </h6>
-                  <p>
-                  Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt
-                  aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde
-                  doloremque repellendus iure, iste.
-                  </p>
-                  {% comment %}
+              <div class="container">
+                <div class="b-table">
+                  <div class="table-wrapper has-mobile-cards">
+                    <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                      <thead>
+                        <tr>
+                          <th class="is-checkbox-cell">
+                            <label class="checkbox">
+                              <input type="checkbox"
+                                     class="tasks-th-main-checkbox bkchlst-input is-disabled"
+                                     disabled
+                                     data-child-checkbox-class="past-due-task-checkbox">
+                            </label>
+                          </th>
+                          <th>Title</th>
+                          <th>Status</th>
+                          <th>Created</th>
+                          <th>Due Date</th>
+                          <th data-tooltip="Tasks Count"
+                              class="has-tooltip-right has-tooltip-arrow">Count</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- has-background-danger-light,  has-background-success-light -->
+                        {% for past_due in object|get_jobs_by_status:'past_due' %}
+                        <tr class="{% if past_due.status == 'past_due' %} has-background-danger-light {% endif %}">
+                          <td class="is-checkbox-cell">
+                            <label class="checkbox">
+                              <input type="checkbox" data-past-due-job-id="{{ past_due.pk }}"
+                                     class="bkchlst-input past-due-job-checkbox is-disabled"
+                                     disabled />
+                            </label>
+                          </td>
+
+                          <td data-label="Title">{{ past_due.title }}</td>
+                          <td data-label="Status">
+                            
+                            <span class="tag is-danger has-text-weight-bold">
+                              {{ past_due.get_status_display }}
+                            </span>
+                              
+                            
+                          </td>
+
+                          <td data-label="Created">
+                            <small class="has-text-grey is-abbr-like" title="{{ past_due.created_at|date }}">
+                              {{ past_due.created_at|date }}
+                            </small>
+                          </td>
+                          <td data-label="Due Date">
+                            <small class="has-text-grey is-abbr-like" title="{{ past_due.due_date|date }}">
+                              {{ past_due.due_date|date }}
+                            </small>
+                          </td>
+                          <td data-label="Tasks Count">
+                            {{ past_due.tasks.count }}
+                          </td>
+                          <td class="is-actions-cell">
+                            <div class="buttons is-right">
+                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                                      disabled
+                                      type="button" data-past-due-job-id="{{ past_due.pk }}"
+                                      data-tooltip="View items">
+                                <span class="icon">
+                                  <i class="fa-solid fa-eye"></i>
+                                </span>
+                              </button>
+                              <button class="button is-small is-danger bkchlst-input is-disabled"
+                                      disabled data-past-due-job-id="{{ past_due.pk }}"
+                                      type="button"
+                                      data-tooltip="Delete task">
+                                <span class="icon">
+                                  <i class="fa-solid fa-trash"></i>
+                                </span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                          
+                       
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                 <hr />
-                  {% endcomment %}
+                <div class="field is-grouped is-grouped-right">
+                  <p class="control">
+                    <button type="button"
+                            disabled
+                            class="button is-primary bkchlst-input is-disabled"
+                            id="pastDueJobsSubmitBtn"
+                            data-is-disabled="1">
+                    Submit
+                    </button>
+                  </p>
+                  <!-- <p class="control">
+                  <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                    Cancel
+                  </button>
+                </p> -->
                 </div>
               </div>
             </div>
@@ -210,7 +295,7 @@
                               <input type="checkbox"
                                      class="tasks-th-main-checkbox bkchlst-input is-disabled"
                                      disabled
-                                     data-child-checkbox-class="weekly-task-checkbox">
+                                     data-child-checkbox-class="weekly-job-checkbox">
                             </label>
                           </th>
                           <th>Title</th>
@@ -223,39 +308,70 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        <!-- has-background-danger-light,  has-background-success-light -->
+                        {% for weekly_job in object|get_jobs_by_type:'weekly' %}
+                        <tr class="{% if weekly_job.status == 'past_due' %} has-background-danger-light {% endif %}">
                           <td class="is-checkbox-cell">
                             <label class="checkbox">
-                              <input type="checkbox"
-                                     class="bkchlst-input weekly-task-checkbox is-disabled"
-                                     disabled/>
+                              <input type="checkbox" data-weekly-job-id="{{ weekly_job.pk }}"
+                                     class="bkchlst-input weekly-job-checkbox is-disabled"
+                                     disabled />
                             </label>
                           </td>
 
-                          <td data-label="Title">Rebecca Bauch</td>
+                          <td data-label="Title">{{ weekly_job.title }}</td>
                           <td data-label="Status">
-                            <span class="tag is-warning has-text-weight-bold">Not Started</span>
+                            
+                            {% if weekly_job.status == "past_due" %}
+                            <span class="tag is-danger has-text-weight-bold">
+                              {{ weekly_job.get_status_display }}
+                            </span>
+                            {% elif weekly_job.status == "complete" %}
+                            <span class="tag is-success has-text-weight-bold">
+                              {{ weekly_job.get_status_display }}
+                            </span>
+                            {% elif weekly_job.status == "not_started" %}
+                            <span class="tag is-light has-text-weight-bold">
+                              {{ weekly_job.get_status_display }}
+                            </span>
+                            {% elif weekly_job.status == "in_progress" %}
+                            <span class="tag is-info has-text-weight-bold">
+                              {{ weekly_job.get_status_display }}
+                            </span>
+                            {% elif weekly_job.status == "archive" %}
+                            <span class="tag is-dark has-text-weight-bold">
+                              {{ weekly_job.get_status_display }}
+                            </span>
+                            {% endif %}
+                              
+                            
                           </td>
 
                           <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Oct 25, 2020">Oct 25, 2020</small>
+                            <small class="has-text-grey is-abbr-like" title="{{ weekly_job.created_at|date }}">
+                              {{ weekly_job.created_at|date }}
+                            </small>
                           </td>
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
+                          <td data-label="Due Date">
+                            <small class="has-text-grey is-abbr-like" title="{{ weekly_job.due_date|date }}">
+                              {{ weekly_job.due_date|date }}
+                            </small>
                           </td>
-                          <td data-label="Created">10</td>
+                          <td data-label="Tasks Count">
+                            {{ weekly_job.tasks.count }}
+                          </td>
                           <td class="is-actions-cell">
                             <div class="buttons is-right">
                               <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
                                       disabled
-                                      type="button"
+                                      type="button" data-weekly-job-id="{{ weekly_job.pk }}"
                                       data-tooltip="View items">
                                 <span class="icon">
                                   <i class="fa-solid fa-eye"></i>
                                 </span>
                               </button>
                               <button class="button is-small is-danger bkchlst-input is-disabled"
-                                      disabled
+                                      disabled data-weekly-job-id="{{ weekly_job.pk }}"
                                       type="button"
                                       data-tooltip="Delete task">
                                 <span class="icon">
@@ -265,188 +381,9 @@
                             </div>
                           </td>
                         </tr>
-                        <tr>
-                          <td class="is-checkbox-cell">
-                            <label class="checkbox">
-                              <input type="checkbox"
-                                     class="bkchlst-input weekly-task-checkbox is-disabled"
-                                     disabled/>
-                            </label>
-                          </td>
-
-                          <td data-label="Title">Felicita Yundt</td>
-                          <td data-label="Status">
-                            <span class="tag is-info has-text-weight-bold">Not started</span>
-                          </td>
-
-
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 8, 2019</small>
-                          </td>
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
-                          </td>
-                          <td data-label="Created">
-                          10
-                          </td>
-                          <td class="is-actions-cell">
-                            <div class="buttons is-right">
-                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="View items">
-                                <span class="icon">
-                                  <i class="fa-solid fa-eye"></i>
-                                </span>
-                              </button>
-                              <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="Delete task">
-                                <span class="icon">
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="has-background-danger-light">
-                          <td class="is-checkbox-cell">
-                            <label class="checkbox">
-                              <input type="checkbox"
-                                     class="bkchlst-input weekly-task-checkbox is-disabled"
-                                     disabled>
-                            </label>
-                          </td>
-
-                          <td data-label="Title">
-                          Mr. Larry Satterfield V
-                          </td>
-                          <td data-label="Status">
-                            <span class="tag is-danger has-text-weight-bold">Past</span>
-                          </td>
-
-
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Dec 18, 2020">Dec 18, 2020</small>
-                          </td>
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
-                          </td>
-                          <td data-label="Created">
-                          10
-                          </td>
-                          <td class="is-actions-cell">
-                            <div class="buttons is-right">
-                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="View items">
-                                <span class="icon">
-                                  <i class="fa-solid fa-eye"></i>
-                                </span>
-                              </button>
-                              <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="Delete task">
-                                <span class="icon">
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="has-background-success-light">
-                          <td class="is-checkbox-cell">
-                            <label class="checkbox">
-                              <input type="checkbox"
-                                     class="bkchlst-input weekly-task-checkbox is-disabled"
-                                     disabled>
-                            </label>
-                          </td>
-
-                          <td data-label="Title">
-                          Mr. Broderick Kub
-                          </td>
-                          <td data-label="Status">
-                            <span class="tag is-success has-text-weight-bold">Completed</span>
-                          </td>
-
-
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Sep 13, 2020">Sep 13, 2020</small>
-                          </td>
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
-                          </td>
-                          <td data-label="Created">
-                          10
-                          </td>
-                          <td class="is-actions-cell">
-                            <div class="buttons is-right">
-                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button">
-                                <span class="icon">
-                                  <i class="fa-solid fa-eye"></i>
-                                </span>
-                              </button>
-                              <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button">
-                                <span class="icon">
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="is-checkbox-cell">
-                            <label class="checkbox">
-                              <input type="checkbox"
-                                     class="bkchlst-input weekly-task-checkbox is-disabled"
-                                     disabled>
-                            </label>
-                          </td>
-
-                          <td data-label="Title">
-                          Barry Weber
-                          </td>
-                          <td data-label="Status">
-                            <span class="tag is-warning">Label</span>
-                          </td>
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jul 24, 2019">Jul 24, 2019</small>
-                          </td>
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 10, 2019</small>
-                          </td>
-                          <td data-label="Created">
-                          10
-                          </td>
-                          <td class="is-actions-cell">
-                            <div class="buttons is-right">
-                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="View items">
-                                <span class="icon">
-                                  <i class="fa-solid fa-eye"></i>
-                                </span>
-                              </button>
-                              <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="Delete task">
-                                <span class="icon">
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
+                        {% endfor %}
+                          
+                       
                       </tbody>
                     </table>
                   </div>
@@ -482,55 +419,84 @@
                             <label class="checkbox">
                               <input type="checkbox"
                                      class="tasks-th-main-checkbox bkchlst-input is-disabled"
-                                     data-child-checkbox-class="monthly-task-checkbox"
-                                     disabled>
+                                     disabled
+                                     data-child-checkbox-class="monthly-job-checkbox">
                             </label>
                           </th>
-                          <th>
-                          Title
-                          </th>
-                          <th>
-                          Status
-                          </th>
-                          <th>
-                          Created
-                          </th>
-                          <th>
-                          </th>
+                          <th>Title</th>
+                          <th>Status</th>
+                          <th>Created</th>
+                          <th>Due Date</th>
+                          <th data-tooltip="Tasks Count"
+                              class="has-tooltip-right has-tooltip-arrow">Count</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        <!-- has-background-danger-light,  has-background-success-light -->
+                        {% for monthly_job in object|get_jobs_by_type:'monthly' %}
+                        <tr class="{% if monthly_job.status == 'past_due' %} has-background-danger-light {% endif %}">
                           <td class="is-checkbox-cell">
                             <label class="checkbox">
-                              <input type="checkbox"
-                                     class="monthly-task-checkbox bkchlst-input is-disabled"
-                                     disabled/>
+                              <input type="checkbox" data-weekly-job-id="{{ monthly_job.pk }}"
+                                     class="bkchlst-input weekly-job-checkbox is-disabled"
+                                     disabled />
                             </label>
                           </td>
 
-                          <td data-label="Title">
-                          Rebecca Bauch
-                          </td>
+                          <td data-label="Title">{{ monthly_job.title }}</td>
                           <td data-label="Status">
-                            <span class="tag is-warning has-text-weight-bold">Not Started</span>
+                            
+                            {% if monthly_job.status == "past_due" %}
+                            <span class="tag is-danger has-text-weight-bold">
+                              {{ monthly_job.get_status_display }}
+                            </span>
+                            {% elif monthly_job.status == "complete" %}
+                            <span class="tag is-success has-text-weight-bold">
+                              {{ monthly_job.get_status_display }}
+                            </span>
+                            {% elif monthly_job.status == "not_started" %}
+                            <span class="tag is-light has-text-weight-bold">
+                              {{ monthly_job.get_status_display }}
+                            </span>
+                            {% elif monthly_job.status == "in_progress" %}
+                            <span class="tag is-info has-text-weight-bold">
+                              {{ monthly_job.get_status_display }}
+                            </span>
+                            {% elif monthly_job.status == "archive" %}
+                            <span class="tag is-dark has-text-weight-bold">
+                              {{ monthly_job.get_status_display }}
+                            </span>
+                            {% endif %}
+                              
+                            
                           </td>
 
                           <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Oct 25, 2020">Oct 25, 2020</small>
+                            <small class="has-text-grey is-abbr-like" title="{{ monthly_job.created_at|date }}">
+                              {{ monthly_job.created_at|date }}
+                            </small>
+                          </td>
+                          <td data-label="Due Date">
+                            <small class="has-text-grey is-abbr-like" title="{{ monthly_job.due_date|date }}">
+                              {{ monthly_job.due_date|date }}
+                            </small>
+                          </td>
+                          <td data-label="Tasks Count">
+                            {{ monthly_job.tasks.count }}
                           </td>
                           <td class="is-actions-cell">
                             <div class="buttons is-right">
                               <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
                                       disabled
-                                      type="button"
+                                      type="button" data-monthly-job-id="{{ monthly_job.pk }}"
                                       data-tooltip="View items">
                                 <span class="icon">
                                   <i class="fa-solid fa-eye"></i>
                                 </span>
                               </button>
-                              <button class="button is-small is-danger is-disabled bkchlst-input"
-                                      disabled
+                              <button class="button is-small is-danger bkchlst-input is-disabled"
+                                      disabled data-monthly-job-id="{{ monthly_job.pk }}"
                                       type="button"
                                       data-tooltip="Delete task">
                                 <span class="icon">
@@ -540,166 +506,9 @@
                             </div>
                           </td>
                         </tr>
-                        <tr>
-                          <td class="is-checkbox-cell">
-                            <label class="checkbox">
-                              <input type="checkbox"
-                                     class="monthly-task-checkbox bkchlst-input is-disabled"
-                                     disabled>
-                            </label>
-                          </td>
-
-                          <td data-label="Title">
-                          Felicita Yundt
-                          </td>
-                          <td data-label="Status">
-                            <span class="tag is-info has-text-weight-bold">Not started</span>
-                          </td>
-
-
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jan 8, 2019">Jan 8, 2019</small>
-                          </td>
-                          <td class="is-actions-cell">
-                            <div class="buttons is-right">
-                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="View items">
-                                <span class="icon">
-                                  <i class="fa-solid fa-eye"></i>
-                                </span>
-                              </button>
-                              <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="Delete task">
-                                <span class="icon">
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="has-background-danger-light">
-                          <td class="is-checkbox-cell">
-                            <label class="checkbox">
-                              <input type="checkbox"
-                                     class="monthly-task-checkbox bkchlst-input is-disabled"
-                                     disabled>
-                            </label>
-                          </td>
-
-                          <td data-label="Title">
-                          Mr. Larry Satterfield V
-                          </td>
-                          <td data-label="Status">
-                            <span class="tag is-danger has-text-weight-bold">Past</span>
-                          </td>
-
-
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Dec 18, 2020">Dec 18, 2020</small>
-                          </td>
-                          <td class="is-actions-cell">
-                            <div class="buttons is-right">
-                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="View items">
-                                <span class="icon">
-                                  <i class="fa-solid fa-eye"></i>
-                                </span>
-                              </button>
-                              <button class="button is-small is-danger delete-task-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="Delete task">
-                                <span class="icon">
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="has-background-success-light">
-                          <td class="is-checkbox-cell">
-                            <label class="checkbox">
-                              <input type="checkbox"
-                                     class="monthly-task-checkbox bkchlst-input is-disabled"
-                                     disabled>
-                            </label>
-                          </td>
-
-                          <td data-label="Title">
-                          Mr. Broderick Kub
-                          </td>
-                          <td data-label="Status">
-                            <span class="tag is-success has-text-weight-bold">Completed</span>
-                          </td>
-
-
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Sep 13, 2020">Sep 13, 2020</small>
-                          </td>
-                          <td class="is-actions-cell">
-                            <div class="buttons is-right">
-                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button">
-                                <span class="icon">
-                                  <i class="fa-solid fa-eye"></i>
-                                </span>
-                              </button>
-                              <button class="button is-small is-danger delete-task-btn is-disabled bkchlst-input"
-                                      disabled
-                                      type="button">
-                                <span class="icon">
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="is-checkbox-cell">
-                            <label class="checkbox">
-                              <input type="checkbox"
-                                     class="bkchlst-input monthly-task-checkbox is-disabled"
-                                     disabled>
-                            </label>
-                          </td>
-
-                          <td data-label="Title">
-                          Barry Weber
-                          </td>
-                          <td data-label="Status">
-                            <span class="tag is-warning">Label</span>
-                          </td>
-                          <td data-label="Created">
-                            <small class="has-text-grey is-abbr-like" title="Jul 24, 2019">Jul 24, 2019</small>
-                          </td>
-                          <td class="is-actions-cell">
-                            <div class="buttons is-right">
-                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="View items">
-                                <span class="icon">
-                                  <i class="fa-solid fa-eye"></i>
-                                </span>
-                              </button>
-                              <button class="button is-small is-danger delete-task-btn is-disabled bkchlst-input"
-                                      disabled
-                                      type="button"
-                                      data-tooltip="Delete task">
-                                <span class="icon">
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
+                        {% endfor %}
+                          
+                       
                       </tbody>
                     </table>
                   </div>
@@ -710,12 +519,13 @@
                     <button type="button"
                             disabled
                             class="button is-primary bkchlst-input is-disabled"
+                            id="monthlyTasksSubmitBtn"
                             data-is-disabled="1">
                     Submit
                     </button>
                   </p>
                   <!-- <p class="control">
-                  <button type="button" disabled class="button is-light bkchlst-input is-disabled">
+                  <button disabled type="button" class="button is-light bkchlst-input is-disabled">
                     Cancel
                   </button>
                 </p> -->
@@ -723,46 +533,250 @@
               </div>
             </div>
             <div class="tabcontent" id="quarter-tasks-tab">
-              <div class="box">
-              quarter-Jobs-tab
-                <div class="w3-container">
-                  <h5 class="w3-opacity">
-                    <b>Front End Developer / w3schools.com</b>
-                  </h5>
-                  <h6 class="w3-text-teal">
-                    <i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 -
-                    <span class="w3-tag w3-teal w3-round">Current</span>
-                  </h6>
-                  <p>
-                  Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt
-                  aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde
-                  doloremque repellendus iure, iste.
-                  </p>
-                  {% comment %}
+              <div class="container">
+                <div class="b-table">
+                  <div class="table-wrapper has-mobile-cards">
+                    <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                      <thead>
+                        <tr>
+                          <th class="is-checkbox-cell">
+                            <label class="checkbox">
+                              <input type="checkbox"
+                                     class="tasks-th-main-checkbox bkchlst-input is-disabled"
+                                     disabled
+                                     data-child-checkbox-class="quarterly-task-checkbox">
+                            </label>
+                          </th>
+                          <th>Title</th>
+                          <th>Status</th>
+                          <th>Created</th>
+                          <th>Due Date</th>
+                          <th data-tooltip="Tasks Count"
+                              class="has-tooltip-right has-tooltip-arrow">Count</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- has-background-danger-light,  has-background-success-light -->
+                        {% for quarterly_job in object|get_jobs_by_type:'quarterly' %}
+                        <tr class="{% if quarterly_job.status == 'past_due' %} has-background-danger-light {% endif %}">
+                          <td class="is-checkbox-cell">
+                            <label class="checkbox">
+                              <input type="checkbox" data-quarterly-job-id="{{ quarterly_job.pk }}"
+                                     class="bkchlst-input quarterly-job-checkbox is-disabled"
+                                     disabled />
+                            </label>
+                          </td>
+
+                          <td data-label="Title">{{ quarterly_job.title }}</td>
+                          <td data-label="Status">
+                            
+                            {% if quarterly_job.status == "past_due" %}
+                            <span class="tag is-danger has-text-weight-bold">
+                              {{ quarterly_job.get_status_display }}
+                            </span>
+                            {% elif quarterly_job.status == "complete" %}
+                            <span class="tag is-success has-text-weight-bold">
+                              {{ quarterly_job.get_status_display }}
+                            </span>
+                            {% elif quarterly_job.status == "not_started" %}
+                            <span class="tag is-light has-text-weight-bold">
+                              {{ quarterly_job.get_status_display }}
+                            </span>
+                            {% elif quarterly_job.status == "in_progress" %}
+                            <span class="tag is-info has-text-weight-bold">
+                              {{ quarterly_job.get_status_display }}
+                            </span>
+                            {% elif quarterly_job.status == "archive" %}
+                            <span class="tag is-dark has-text-weight-bold">
+                              {{ quarterly_job.get_status_display }}
+                            </span>
+                            {% endif %}
+                              
+                            
+                          </td>
+
+                          <td data-label="Created">
+                            <small class="has-text-grey is-abbr-like" title="{{ quarterly_job.created_at|date }}">
+                              {{ quarterly_job.created_at|date }}
+                            </small>
+                          </td>
+                          <td data-label="Due Date">
+                            <small class="has-text-grey is-abbr-like" title="{{ quarterly_job.due_date|date }}">
+                              {{ quarterly_job.due_date|date }}
+                            </small>
+                          </td>
+                          <td data-label="Tasks Count">
+                            {{ quarterly_job.tasks.count }}
+                          </td>
+                          <td class="is-actions-cell">
+                            <div class="buttons is-right">
+                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                                      disabled
+                                      type="button" data-quarterly-job-id="{{ quarterly_job.pk }}"
+                                      data-tooltip="View items">
+                                <span class="icon">
+                                  <i class="fa-solid fa-eye"></i>
+                                </span>
+                              </button>
+                              <button class="button is-small is-danger bkchlst-input is-disabled"
+                                      disabled data-quarterly-job-id="{{ quarterly_job.pk }}"
+                                      type="button"
+                                      data-tooltip="Delete task">
+                                <span class="icon">
+                                  <i class="fa-solid fa-trash"></i>
+                                </span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                          
+                       
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                 <hr />
-                  {% endcomment %}
+                <div class="field is-grouped is-grouped-right">
+                  <p class="control">
+                    <button type="button"
+                            disabled
+                            class="button is-primary bkchlst-input is-disabled"
+                            id="quarterlyTasksSubmitBtn"
+                            data-is-disabled="1">
+                    Submit
+                    </button>
+                  </p>
+                  <!-- <p class="control">
+                  <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                    Cancel
+                  </button>
+                </p> -->
                 </div>
               </div>
             </div>
             <div class="tabcontent" id="yearly-tasks-tab">
-              <div class="box">
-              yearly-Jobs-tab
-                <div class="w3-container">
-                  <h5 class="w3-opacity">
-                    <b>Front End Developer / w3schools.com</b>
-                  </h5>
-                  <h6 class="w3-text-teal">
-                    <i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 -
-                    <span class="w3-tag w3-teal w3-round">Current</span>
-                  </h6>
-                  <p>
-                  Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt
-                  aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde
-                  doloremque repellendus iure, iste.
-                  </p>
-                  {% comment %}
+              <div class="container">
+                <div class="b-table">
+                  <div class="table-wrapper has-mobile-cards">
+                    <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                      <thead>
+                        <tr>
+                          <th class="is-checkbox-cell">
+                            <label class="checkbox">
+                              <input type="checkbox"
+                                     class="tasks-th-main-checkbox bkchlst-input is-disabled"
+                                     disabled
+                                     data-child-checkbox-class="yearly-job-checkbox">
+                            </label>
+                          </th>
+                          <th>Title</th>
+                          <th>Status</th>
+                          <th>Created</th>
+                          <th>Due Date</th>
+                          <th data-tooltip="Tasks Count"
+                              class="has-tooltip-right has-tooltip-arrow">Count</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- has-background-danger-light,  has-background-success-light -->
+                        {% for yearly in object|get_jobs_by_type:'yearly' %}
+                        <tr class="{% if yearly.status == 'past_due' %} has-background-danger-light {% endif %}">
+                          <td class="is-checkbox-cell">
+                            <label class="checkbox">
+                              <input type="checkbox" data-weekly-job-id="{{ yearly.pk }}"
+                                     class="bkchlst-input yearly-job-checkbox is-disabled"
+                                     disabled />
+                            </label>
+                          </td>
+
+                          <td data-label="Title">{{ yearly.title }}</td>
+                          <td data-label="Status">
+                            
+                            {% if yearly.status == "past_due" %}
+                            <span class="tag is-danger has-text-weight-bold">
+                              {{ yearly.get_status_display }}
+                            </span>
+                            {% elif yearly.status == "complete" %}
+                            <span class="tag is-success has-text-weight-bold">
+                              {{ yearly.get_status_display }}
+                            </span>
+                            {% elif yearly.status == "not_started" %}
+                            <span class="tag is-light has-text-weight-bold">
+                              {{ yearly.get_status_display }}
+                            </span>
+                            {% elif yearly.status == "in_progress" %}
+                            <span class="tag is-info has-text-weight-bold">
+                              {{ yearly.get_status_display }}
+                            </span>
+                            {% elif yearly.status == "archive" %}
+                            <span class="tag is-dark has-text-weight-bold">
+                              {{ yearly.get_status_display }}
+                            </span>
+                            {% endif %}
+                              
+                            
+                          </td>
+
+                          <td data-label="Created">
+                            <small class="has-text-grey is-abbr-like" title="{{ yearly.created_at|date }}">
+                              {{ yearly.created_at|date }}
+                            </small>
+                          </td>
+                          <td data-label="Due Date">
+                            <small class="has-text-grey is-abbr-like" title="{{ yearly.due_date|date }}">
+                              {{ yearly.due_date|date }}
+                            </small>
+                          </td>
+                          <td data-label="Tasks Count">
+                            {{ yearly.tasks.count }}
+                          </td>
+                          <td class="is-actions-cell">
+                            <div class="buttons is-right">
+                              <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                                      disabled
+                                      type="button" data-yearly-job-id="{{ yearly.pk }}"
+                                      data-tooltip="View items">
+                                <span class="icon">
+                                  <i class="fa-solid fa-eye"></i>
+                                </span>
+                              </button>
+                              <button class="button is-small is-danger bkchlst-input is-disabled"
+                                      disabled data-yearly-job-id="{{ yearly.pk }}"
+                                      type="button"
+                                      data-tooltip="Delete task">
+                                <span class="icon">
+                                  <i class="fa-solid fa-trash"></i>
+                                </span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                          
+                       
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                 <hr />
-                  {% endcomment %}
+                <div class="field is-grouped is-grouped-right">
+                  <p class="control">
+                    <button type="button"
+                            disabled
+                            class="button is-primary bkchlst-input is-disabled"
+                            id="yearlyTasksSubmitBtn"
+                            data-is-disabled="1">
+                    Submit
+                    </button>
+                  </p>
+                  <!-- <p class="control">
+                  <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                    Cancel
+                  </button>
+                </p> -->
                 </div>
               </div>
             </div>
@@ -781,12 +795,20 @@
               <button class="tablinks2" data-tab-element="notes-tab">
               Notes
               </button>
+              <button class="tablinks2" data-tab-element="documents-tab">
+              Documents
+              </button>
             </div>
 
             <div id="accounts-and-services-tab" class="tabcontent2">
+              
+              {% if object.company_services.count > 0 %}
               <table class="table is-fullwidth" id="clientsAccountAndServicesTable">
                 <thead>
                   <tr>
+                    <th>
+                      Name
+                    </th>
                     <th>
                     URL
                     </th>
@@ -801,6 +823,9 @@
                 </thead>
                 <tfoot>
                   <tr>
+                    <th id="footerName">
+                      Name
+                    </th>
                     <th id="footerURL">
 URL
                     </th>
@@ -813,22 +838,26 @@ Password
                   </tr>
                 </tfoot>
                 <tbody>
-                  {% for fdata in fake_data %}
+                  {% for account_object in object.company_services.all %}
                     <tr>
+                      <td>
+                        {{ account_object.label }}
+                        {{ account_object.url }}
+                      </td>
                       <td>
                         <div class="account-service-item account-service-url">
                           <div class="field has-addons">
                             <div class="control">
                               <input class="input is-small accountAndServicesInput"
                                      type="url"
-                                     value="{{ fdata.url }}"
-                                     id="ac-url-{{ fdata.id }}"
+                                     value="{{ account_object.url }}"
+                                     id="ac-url-{{ account_object.pk }}"
                                      readonly/>
                             </div>
                             <div class="control">
                               <button class="button copyASurlBtn copyBtn is-small"
                                       data-tooltip="Copy url"
-                                      data-clipboard-target="#ac-url-{{ fdata.id }}"
+                                      data-clipboard-target="#ac-url-{{ account_object.pk }}"
                                       data-text-type="url">
                                 <i class="fa-solid fa-link"></i>
                               </button>
@@ -842,14 +871,14 @@ Password
                             <div class="control">
                               <input class="input is-small"
                                      type="text"
-                                     value="{{ fdata.username }}"
-                                     id="ac-username-{{ fdata.id }}"
+                                     value="{{ account_object.email }}"
+                                     id="ac-username-{{ account_object.pk }}"
                                      readonly/>
                             </div>
                             <div class="control">
                               <button class="button copyASUsernameBtn copyBtn is-small"
                                       data-tooltip="Copy Username"
-                                      data-clipboard-target="#ac-username-{{ fdata.id }}"
+                                      data-clipboard-target="#ac-username-{{ account_object.pk }}"
                                       data-text-type="username">
                                 <i class="fas fa-copy"></i>
                               </button>
@@ -864,21 +893,21 @@ Password
                               <button class="button showASUPasswordBtn is-small"
                                       data-tooltip="Show Password"
                                       data-visibility-status="0"
-                                      data-password-input="as-password-{{ fdata.id }}">
+                                      data-password-input="as-password-{{ account_object.pk }}">
                                 <i class="fas fa-eye"></i>
                               </button>
                             </p>
                             <div class="control">
                               <input class="input is-small"
                                      type="password"
-                                     value="{{ fdata.password }}"
-                                     id="as-password-{{ fdata.id }}"
+                                     value="{{ account_object.password }}"
+                                     id="as-password-{{ account_object.pk }}"
                                      readonly/>
                             </div>
                             <div class="control">
                               <button class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
                                       data-tooltip="Copy password, you have to reveal the password to copy it"
-                                      data-clipboard-target="#as-password-{{ fdata.id }}"
+                                      data-clipboard-target="#as-password-{{ account_object.pk }}"
                                       data-text-type="password">
                                 <i class="fas fa-copy"></i>
                               </button>
@@ -891,96 +920,116 @@ Password
                       </td>
 
                     </tr>
-                  {% empty %}
-                    <tr>
-                      <td colspan="3">
-                    No account and services
-                      </td>
-                    </tr>
-                  {% endfor %}
-
+                    {% endfor %}
 
                 </tbody>
               </table>
+              {% else %}
+              <div class="notification">
+                No accounts
+              </div>
+              {% endif %}
+                
+             
 
             </div>
             <div class="tabcontent2" id="notes-tab">
               <div class="list has-visible-pointer-controls">
-                <div class="list-item">
+                
+                {% if object.notes.count > 0 %}
+                  
+                  {% for note in object.notes.all %}
+                  <div class="list-item">
 
-                  <div class="list-item-content">
-                    <div class="list-item-title">
-                    List item
+                    <div class="list-item-content">
+                      <div class="list-item-title">
+                        {{ note.title }}
+                      </div>
+                      <div class="list-item-description">
+                        {{ note.body }}
+                      </div>
                     </div>
-                    <div class="list-item-description">
-                    List item description
+  
+                    <div class="list-item-controls">
+                      <div class="buttons is-right">
+                        <button class="button bkchlst-input is-disabled open-note-item-btn"
+                                disabled data-note-id="{{ note.pk }}"
+                                data-tooltip="View note">
+                          <span class="icon is-small">
+                            <i class="fa-solid fa-pencil"></i>
+                          </span>
+                        </button>
+  
+                      </div>
                     </div>
                   </div>
-
-                  <div class="list-item-controls">
-                    <div class="buttons is-right">
-                      <button class="button bkchlst-input is-disabled open-note-item-btn"
-                              disabled
-                              data-tooltip="View note">
-                        <span class="icon is-small">
-                          <i class="fa-solid fa-pencil"></i>
-                        </span>
-                      </button>
-
-                    </div>
-                  </div>
+                  {% endfor %}
+                    
+                {% else %}
+                <div class="notification">
+                  No Notes
                 </div>
-
-                <div class="list-item">
-
-                  <div class="list-item-content">
-                    <div class="list-item-title">
-                    List item
-                    </div>
-                    <div class="list-item-description">
-                    List item description
-                    </div>
-                  </div>
-
-                  <div class="list-item-controls">
-                    <div class="buttons is-right">
-                      <button class="button bkchlst-input is-disabled open-note-item-btn"
-                              disabled
-                              data-tooltip="View note">
-                        <span class="icon is-small">
-                          <i class="fa-solid fa-pencil"></i>
-                        </span>
-                      </button>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="list-item">
-
-                  <div class="list-item-content">
-                    <div class="list-item-title">
-                    List item
-                    </div>
-                    <div class="list-item-description">
-                    List item description
-                    </div>
-                  </div>
-
-                  <div class="list-item-controls">
-                    <div class="buttons is-right">
-                      <button class="button bkchlst-input is-disabled open-note-item-btn"
-                              disabled
-                              data-tooltip="View note">
-                        <span class="icon is-small">
-                          <i class="fa-solid fa-pencil"></i>
-                        </span>
-                      </button>
-
-                    </div>
-                  </div>
-                </div>
+                {% endif %}
               </div>
+            </div>
+            <div id="documents-tab" class="tabcontent2">
+              <div class="container">
+                {% if object.documents.count > 0 %}
+                <div class="b-table">
+                  <div class="table-wrapper has-mobile-cards">
+                    <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                      <thead>
+                        <tr>
+                      
+                          <th>Title</th>
+                          <th>Document Section</th>
+                          <th>Download</th>
+                          <th>Created</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- has-background-danger-light,  has-background-success-light -->
+                        {% for document in object.documents.all %}
+                 
+                        
+                        <tr>
+
+                          <td data-label="Title">
+                            <a href="{{ document.document_file.url }}">{{ document.title }}</a>
+                          </td>
+                          <td data-label="Document Section">
+                              {{ document.document_section }}
+                          </td>
+
+                          <td>
+                            {{ document.created_at|date }}
+                          </td>
+                          <td data-label="Created">
+                            <a class="button is-small" href="{{ document.document_file.url }}"
+                                  download="{{ document.document_file.url }}">
+                                  <i class="fa-solid fa-download"></i>
+                                </a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                          
+                       
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                 
+                    
+                {% else %}
+                <div class="notification">
+                  No Documents
+                </div>
+                {% endif %}
+                
+              
+              </div>
+
             </div>
           </div>
 

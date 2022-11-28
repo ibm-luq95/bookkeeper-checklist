@@ -48,3 +48,6 @@ class Client(BaseModelMixin):
 
     def get_absolute_url(self):
         return reverse("manager:client:details", kwargs={"pk": self.pk})
+
+    def get_tasks_count(self):
+        return self.jobs.all()

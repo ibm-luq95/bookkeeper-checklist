@@ -15,3 +15,14 @@ class CreateJobSerializer(serializers.ModelSerializer):
             "is_deleted",
         )
         # depth = 1
+
+
+class JobSerializer(serializers.ModelSerializer):
+    tasks = TaskSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Job
+        exclude = (
+            "metadata",
+            "is_deleted",
+        )

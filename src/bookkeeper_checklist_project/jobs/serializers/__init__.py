@@ -1,1 +1,1 @@
-from .jobs import CreateJobSerializer
+from .jobs import CreateJobSerializer, JobSerializer

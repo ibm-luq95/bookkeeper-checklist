@@ -154,25 +154,25 @@
               <button class="tablinks defaultOpenTab1 bkchlst-input is-disabled"
                       disabled
                       data-tab-element="weekly-tasks-tab">
-              Weekly Jobs
+              Weekly Jobs ({{ object|get_jobs_by_type:'weekly'|length }})
               </button>
               <button class="tablinks bkchlst-input is-disabled"
                       disabled
                       data-tab-element="monthly-tasks-tab">
               Monthly
-              Jobs
+              Jobs ({{ object|get_jobs_by_type:'monthly'|length }})
               </button>
               <button class="tablinks bkchlst-input is-disabled"
                       disabled
                       data-tab-element="quarter-tasks-tab">
               Quarter
-              Jobs
+              Jobs ({{ object|get_jobs_by_type:'quarterly'|length }})
               </button>
               <button class="tablinks bkchlst-input is-disabled"
                       disabled
                       data-tab-element="yearly-tasks-tab">
               Yearly
-              Jobs
+              Jobs ({{ object|get_jobs_by_type:'yearly'|length }})
               </button>
             </div>
 
@@ -238,7 +238,7 @@
                           <td class="is-actions-cell">
                             <div class="buttons is-right">
                               <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
+                                      disabled data-job-id="{{ past_due.pk }}"
                                       type="button" data-past-due-job-id="{{ past_due.pk }}"
                                       data-tooltip="View items">
                                 <span class="icon">
@@ -247,7 +247,7 @@
                               </button>
                               <button class="button is-small is-danger bkchlst-input is-disabled"
                                       disabled data-past-due-job-id="{{ past_due.pk }}"
-                                      type="button"
+                                      type="button" data-job-id="{{ past_due.pk }}"
                                       data-tooltip="Delete task">
                                 <span class="icon">
                                   <i class="fa-solid fa-trash"></i>
@@ -310,7 +310,7 @@
                       <tbody>
                         <!-- has-background-danger-light,  has-background-success-light -->
                         {% for weekly_job in object|get_jobs_by_type:'weekly' %}
-                        <tr class="{% if weekly_job.status == 'past_due' %} has-background-danger-light {% endif %}">
+                        <tr class="{% if weekly_job.status == 'past_due' %} has-background-danger-light {% elif weekly_job.status == 'complete' %} has-background-success-light {% endif %}">
                           <td class="is-checkbox-cell">
                             <label class="checkbox">
                               <input type="checkbox" data-weekly-job-id="{{ weekly_job.pk }}"
@@ -342,6 +342,10 @@
                             <span class="tag is-dark has-text-weight-bold">
                               {{ weekly_job.get_status_display }}
                             </span>
+                            {% elif weekly_job.status == "not_complete" %}
+                            <span class="tag is-link has-text-weight-bold">
+                              {{ weekly_job.get_status_display }}
+                            </span>
                             {% endif %}
                               
                             
@@ -363,7 +367,7 @@
                           <td class="is-actions-cell">
                             <div class="buttons is-right">
                               <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
+                                      disabled data-job-id="{{ weekly_job.pk }}"
                                       type="button" data-weekly-job-id="{{ weekly_job.pk }}"
                                       data-tooltip="View items">
                                 <span class="icon">
@@ -372,7 +376,7 @@
                               </button>
                               <button class="button is-small is-danger bkchlst-input is-disabled"
                                       disabled data-weekly-job-id="{{ weekly_job.pk }}"
-                                      type="button"
+                                      type="button" data-job-id="{{ weekly_job.pk }}"
                                       data-tooltip="Delete task">
                                 <span class="icon">
                                   <i class="fa-solid fa-trash"></i>
@@ -435,7 +439,7 @@
                       <tbody>
                         <!-- has-background-danger-light,  has-background-success-light -->
                         {% for monthly_job in object|get_jobs_by_type:'monthly' %}
-                        <tr class="{% if monthly_job.status == 'past_due' %} has-background-danger-light {% endif %}">
+                        <tr class="{% if monthly_job.status == 'past_due' %} has-background-danger-light {% elif monthly_job.status == 'complete' %} has-background-success-light {% endif %}">
                           <td class="is-checkbox-cell">
                             <label class="checkbox">
                               <input type="checkbox" data-weekly-job-id="{{ monthly_job.pk }}"
@@ -467,6 +471,11 @@
                             <span class="tag is-dark has-text-weight-bold">
                               {{ monthly_job.get_status_display }}
                             </span>
+                            {% elif monthly_job.status == "not_complete" %}
+                            <span class="tag is-link has-text-weight-bold">
+                              {{ monthly_job.get_status_display }}
+                            </span>
+                            
                             {% endif %}
                               
                             
@@ -488,7 +497,7 @@
                           <td class="is-actions-cell">
                             <div class="buttons is-right">
                               <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
+                                      disabled data-job-id="{{ monthly_job.pk }}"
                                       type="button" data-monthly-job-id="{{ monthly_job.pk }}"
                                       data-tooltip="View items">
                                 <span class="icon">
@@ -497,7 +506,7 @@
                               </button>
                               <button class="button is-small is-danger bkchlst-input is-disabled"
                                       disabled data-monthly-job-id="{{ monthly_job.pk }}"
-                                      type="button"
+                                      type="button" data-job-id="{{ monthly_job.pk }}"
                                       data-tooltip="Delete task">
                                 <span class="icon">
                                   <i class="fa-solid fa-trash"></i>
@@ -559,7 +568,7 @@
                       <tbody>
                         <!-- has-background-danger-light,  has-background-success-light -->
                         {% for quarterly_job in object|get_jobs_by_type:'quarterly' %}
-                        <tr class="{% if quarterly_job.status == 'past_due' %} has-background-danger-light {% endif %}">
+                        <tr class="{% if quarterly_job.status == 'past_due' %} has-background-danger-light {% elif quarterly_job.status == 'complete' %} has-background-success-light {% endif %}">
                           <td class="is-checkbox-cell">
                             <label class="checkbox">
                               <input type="checkbox" data-quarterly-job-id="{{ quarterly_job.pk }}"
@@ -591,6 +600,10 @@
                             <span class="tag is-dark has-text-weight-bold">
                               {{ quarterly_job.get_status_display }}
                             </span>
+                            {% elif quarterly_job.status == "not_complete" %}
+                            <span class="tag is-link has-text-weight-bold">
+                              {{ quarterly_job.get_status_display }}
+                            </span>
                             {% endif %}
                               
                             
@@ -612,7 +625,7 @@
                           <td class="is-actions-cell">
                             <div class="buttons is-right">
                               <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
+                                      disabled data-job-id="{{ quarterly_job.pk }}"
                                       type="button" data-quarterly-job-id="{{ quarterly_job.pk }}"
                                       data-tooltip="View items">
                                 <span class="icon">
@@ -621,7 +634,7 @@
                               </button>
                               <button class="button is-small is-danger bkchlst-input is-disabled"
                                       disabled data-quarterly-job-id="{{ quarterly_job.pk }}"
-                                      type="button"
+                                      type="button" data-job-id="{{ quarterly_job.pk }}"
                                       data-tooltip="Delete task">
                                 <span class="icon">
                                   <i class="fa-solid fa-trash"></i>
@@ -683,7 +696,7 @@
                       <tbody>
                         <!-- has-background-danger-light,  has-background-success-light -->
                         {% for yearly in object|get_jobs_by_type:'yearly' %}
-                        <tr class="{% if yearly.status == 'past_due' %} has-background-danger-light {% endif %}">
+                        <tr class="{% if yearly.status == 'past_due' %} has-background-danger-light {% elif yearly.status == 'complete' %} has-background-success-light {% endif %}">
                           <td class="is-checkbox-cell">
                             <label class="checkbox">
                               <input type="checkbox" data-weekly-job-id="{{ yearly.pk }}"
@@ -715,6 +728,10 @@
                             <span class="tag is-dark has-text-weight-bold">
                               {{ yearly.get_status_display }}
                             </span>
+                            {% elif yearly.status == "not_complete" %}
+                            <span class="tag is-link has-text-weight-bold">
+                              {{ yearly.get_status_display }}
+                            </span>
                             {% endif %}
                               
                             
@@ -736,7 +753,7 @@
                           <td class="is-actions-cell">
                             <div class="buttons is-right">
                               <button class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
-                                      disabled
+                                      disabled data-job-id="{{ yearly.pk }}"
                                       type="button" data-yearly-job-id="{{ yearly.pk }}"
                                       data-tooltip="View items">
                                 <span class="icon">
@@ -745,7 +762,7 @@
                               </button>
                               <button class="button is-small is-danger bkchlst-input is-disabled"
                                       disabled data-yearly-job-id="{{ yearly.pk }}"
-                                      type="button"
+                                      type="button" data-job-id="{{ yearly.pk }}"
                                       data-tooltip="Delete task">
                                 <span class="icon">
                                   <i class="fa-solid fa-trash"></i>
@@ -1095,93 +1112,49 @@ Password
          aria-labelledby="tasks-items-modal-title">
       <header class="modal__header">
         <h2 class="modal__title" id="tasks-items-modal-title">
-          Task Title
         </h2>
         <button class="modal__close" aria-label="Close modal" data-micromodal-close>
         </button>
       </header>
       <main class="modal__content" id="tasks-items-modal-content">
-        <div class="list" style="max-width: 500px; width: 500px;">
-          <div class="list-item has-background-grey-lighter">
-            <label class="checkbox list-item-title">
-              <input type="checkbox"
-                     class="mr-1 is-disabled bkchlst-input"
-                     disabled
-                     checked
-                     data-is-disabled="1"/>
-              <span class="completed-task-item">Task Name</span>
-              <small class="w3-text-grey is-abbr-like is-inline-block ml-2 has-tooltip-arrow has-tooltip-right"
-                     data-tooltip="Created at">Wed Jul 06 2022 14:36:48 GMT+0300</small>
-            </label>
-            <div class="list-item-controls">
-              <div class="buttons is-right">
-
-                <button class="button is-small is-danger bkchlst-input is-disabled delete-task-item-btn"
-                        disabled
-                        data-tooltip="delete">
-                  <span class="icon is-small">
-                    <i class="fa-solid fa-trash"></i>
-                  </span>
-                </button>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="list-item">
-            <label class="checkbox list-item-title">
-              <input type="checkbox" class="mr-1">
-              Task item
-              <small class="w3-text-grey is-abbr-like is-inline-block ml-2 has-tooltip-arrow has-tooltip-right"
-                     data-tooltip="Created at">Wed Jul 06 2022 14:36:48 GMT+0300</small>
-            </label>
-          </div>
-
-          <div class="list-item">
-
-            <div class="list-item-content">
-              <label class="checkbox list-item-title">
-                <input type="checkbox" class="mr-1">
-                Task item
-                <small class="w3-text-grey is-abbr-like is-inline-block ml-2 has-tooltip-arrow has-tooltip-right"
-                       data-tooltip="Created at">Wed Jul 06 2022 14:36:48 GMT+0300</small>
-              </label>
-              <div class="list-item-description">
-                List item description
-              </div>
-            </div>
-          </div>
-
-          <div class="list-item">
-
-            <div class="list-item-content">
-              <div class="list-item-title">
-                List item
-              </div>
-              <div class="list-item-description">
-                List item description
-              </div>
-            </div>
-
-            <div class="list-item-controls">
-              <div class="buttons is-right">
-                <button class="button bkchlst-input is-disabled "
-                        disabled
-                        data-tooltip="View note">
-                  <span class="icon is-small">
-                    <i class="fa-solid fa-pencil"></i>
-                  </span>
-                </button>
-
-              </div>
-            </div>
+        <div class="notification is-warning" id="noTasksNotification" hidden>
+          No task(s)
+      </div>
+      <div class="container" id="tasksTableWrapper" hidden>
+        <div class="b-table">
+          <div class="table-wrapper has-mobile-cards">
+            <table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="jobTasksTable">
+              <thead>
+                <tr>
+                  <th class="is-checkbox-cell">
+                    <label class="checkbox">
+                      <input type="checkbox"
+                             class="tasks-th-main-checkbox bkchlst-input is-disabled"
+                             disabled
+                             data-child-checkbox-class="tasks-checkbox">
+                    </label>
+                  </th>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Created</th>
+                  <th>Due Date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- has-background-danger-light,  has-background-success-light -->
+              </tbody>
+            </table>
           </div>
         </div>
+      
+      
+      </div>
       </main>
       <footer class="modal__footer">
         <button class="modal__btn modal__btn-primary bkchlst-input is-disabled"
-                disabled>
-          Continue
+                disabled id="updateTaskBookkeeperBtn">
+          Update
         </button>
         <button class="modal__btn"
                 data-micromodal-close
@@ -1240,8 +1213,107 @@ Password
 </div>
 {% comment %} Notes Item Modal {% endcomment %}
 
+{% comment %} Task Details Modal {% endcomment %}
+<div class="modal micromodal-slide"
+     id="task-details-modal"
+     aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="taskDetailsModalTitle">
+      <header class="modal__header">
+        <h2 class="modal__title" id="taskDetailsModalTitle">
+        
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="task-details-modal-content" style="max-width: 500px; width: 500px;">
+        <form action="" id="taskDetailsModalForm">
+          <fieldset form="taskDetailsModalForm">
+            <legend>
+              Task Details
+            </legend>
+            <div class="field">
+              <label class="label" for="taskDetailsJobTitle">Job Title</label>
+              <div class="control">
+                <input class="input" type="text" name="job_title" id="taskDetailsJobTitle" readonly />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="taskDetailsTitle">Title</label>
+              <div class="control">
+                <input class="input" type="text" name="title" id="taskDetailsTitle" readonly />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="taskDetailsType">Task Type</label>
+              <div class="control">
+                <input class="input" type="text" name="task_type" id="taskDetailsType" readonly />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="checkbox" for="taskDetailsIsCompleted">
+                <input type="checkbox" name="is_completed" id="taskDetailsIsCompleted" onclick="return false;" />
+                Is Completed
+              </label>
+            </div>
+
+            <div class="field">
+              <label class="label" for="taskDetailsHints">Hints</label>
+              <div class="control">
+                <input class="input" type="text" name="hints" id="taskDetailsHints" readonly />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="taskDetailsAdditionalNote">Additional notes</label>
+              <div class="control">
+                <textarea class="textarea" name="additional_notes" readonly></textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="taskDetailsStartDate">Start Date</label>
+              <div class="control">
+                <input class="input" type="date" name="start_date" readonly id="taskDetailsStartDate" />
+              </div>
+            </div>
+
+
+            <div class="field">
+              <label class="label" for="taskDetailsDueDate">Due Date</label>
+              <div class="control">
+                <input class="input" type="date" name="due_date" readonly id="taskDetailsDueDate" />
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn"
+                data-micromodal-close
+                aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+{% comment %} Task Details Modal {% endcomment %}
+
 {% endblock dashboard_content %}
 
 {% block externaljs %}
+<script>
+  window.localStorage.setItem("fetchJobsUrl", "{% url 'jobs:api:bookkeeper:fetch' %}");
+  window.localStorage.setItem("setTaskCompletedUrl", "{% url 'task:api:bookkeeper:set-task-completed' %}");
+  window.localStorage.setItem("retrieveTaskUrl", "{% url 'task:api:bookkeeper:retrieve' %}");
+</script>
   <script src="{% static 'js/bookkeeper/dashboard/client_details.js' %}" defer type="module"></script>
 {% endblock externaljs %}

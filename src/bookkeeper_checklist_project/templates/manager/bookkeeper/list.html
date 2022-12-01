@@ -20,6 +20,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Email</th>
                         <th>Client(s) Count</th>
                         <th>Task(s) Count</th>
                         <th>Active</th>
@@ -32,6 +33,7 @@
                 <tfoot>
                     <tr>
                         <th>Name</th>
+                        <th>Email</th>
                         <th>Client(s) Count</th>
                         <th>Task(s) Count</th>
                         <th>Active</th>
@@ -47,6 +49,11 @@
                         <tr>
                             <td>
                                 <a href="{% url 'manager:bookkeeper:details' object.slug %}">{{ object.user.fullname }}</a>
+                            </td>
+                            <td>
+                                <a href="mailto:{{ object.user.email }}">
+                                    {{ object.user.email }}
+                                </a>
                             </td>
                             <td class="has-text-centered">
                                 

@@ -8,5 +8,10 @@ urlpatterns = [
         "manager/",
         include("jobs.urls.api.manager"),
         name="manager-jobs-api-urls",
-    )
+    ),
+    path(
+        "bookkeeper/",
+        include("jobs.urls.api.bookkeeper"),
+        name="bookkeeper-jobs-api-urls",
+    ),
 ]

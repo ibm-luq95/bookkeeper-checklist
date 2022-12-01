@@ -77,3 +77,7 @@ class Job(BaseModelMixin):
         # self.bookkeeper.clients.add(self.client)
         # self.bookkeeper.save()
         super(Job, self).save(*args, **kwargs)
+
+    def get_all_not_completed_tasks(self):
+        filtered = filter(lambda task: task.is_completed is False, self.tasks.all())
+        return tuple(filtered)

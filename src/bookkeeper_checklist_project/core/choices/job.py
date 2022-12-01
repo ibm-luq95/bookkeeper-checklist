@@ -19,4 +19,5 @@ class JobStatusEnum(models.TextChoices):
     IN_PROGRESS = "in_progress", _("In Progress")
     PAST_DUE = "past_due", _("Past Due")
     COMPLETE = "complete", _("Complete")
+    NOT_COMPLETE = "not_complete", _("Not Complete")
     ARCHIVE = "archive", _("Archive")

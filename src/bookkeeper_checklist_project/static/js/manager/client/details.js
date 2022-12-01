@@ -390,13 +390,21 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     const tasksArray = new Array();
     console.log(currentTarget["tasks"]);
     console.log(currentTarget["bookkeeper"]);
+    console.log(currentTarget["bookkeeper"].length);
     // check if bookkeeper exists
-    if (currentTarget["bookkeeper"]) {
-      currentTarget["bookkeeper"].forEach((input) => {
-        if (input.checked === true) {
-          bookkeepersArray.push(input.value);
-        }
-      });
+    try {
+      if (currentTarget["bookkeeper"]) {
+        currentTarget["bookkeeper"].forEach((input) => {
+          if (input.checked === true) {
+            bookkeepersArray.push(input.value);
+          }
+        });
+      }
+    } catch (er) {
+      if (er instanceof TypeError) {
+        // in case the bookkeeper is single one not multiple
+        bookkeepersArray.push(currentTarget["bookkeeper"].value);
+      }
     }
 
     // check if tasks exists
@@ -456,8 +464,8 @@ document.addEventListener("DOMContentLoaded", (ev) => {
 
     const formData = {
       title: currentTarget["title"].value,
-      status: currentTarget["status"].value,
-      is_completed: currentTarget["is_completed"].value,
+      task_type: currentTarget["task_type"].value,
+      is_completed: currentTarget["is_completed"].checked,
       hints: currentTarget["hints"].value,
       user: currentTarget["user"].value,
       additional_notes: currentTarget["additional_notes"].value,

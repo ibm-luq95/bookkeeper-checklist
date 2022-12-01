@@ -233,6 +233,7 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.JSONParser",
         # "rest_framework.parsers.FormParser",
     ],
+    "DATETIME_FORMAT": "%Y-%m-%d"
 }
 # check if cache enabled
 if bool(os.environ.get("IS_CACHE_ENABLED")):

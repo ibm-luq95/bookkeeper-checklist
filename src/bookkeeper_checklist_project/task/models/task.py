@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 # from client.models import Client
-from core.choices import TaskStatusEnum
+from core.choices import TaskStatusEnum, TaskTypeEnum
 from core.models import BaseModelMixin, UserForeignKeyMixin
 from jobs.models import Job
 
@@ -22,12 +22,12 @@ class Task(BaseModelMixin, UserForeignKeyMixin):
         to=Job, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
     )
     title = models.CharField(_("title"), max_length=80, null=True)
-    status = models.CharField(
-        _("status"),
+    task_type = models.CharField(
+        _("task type"),
         max_length=15,
         null=True,
         blank=True,
-        choices=TaskStatusEnum.choices,
+        choices=TaskTypeEnum.choices,
     )
     is_completed = models.BooleanField(_("is completed"), default=False)
     hints = models.CharField(_("hints"), max_length=60, null=True, blank=True)

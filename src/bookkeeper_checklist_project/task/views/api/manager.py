@@ -22,11 +22,11 @@ class CreateTaskManagerApiView(APIView):
         serializer = ""
         try:
             data = request.data
-            debugging_print(data)
+            # debugging_print(data)
             serializer = CreateTaskSerializer(data=data)
             if not serializer.is_valid():
                 raise APIException(serializer.error_messages)
-            debugging_print(serializer.validated_data)
+            # debugging_print(serializer.validated_data)
             serializer.save()
             return Response(
                 data={"msg": "Task created successfully!"}, status=status.HTTP_201_CREATED

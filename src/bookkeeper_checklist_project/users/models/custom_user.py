@@ -49,6 +49,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_deleted = models.BooleanField(_("is_deleted"), default=False)
     created_at = models.DateTimeField(_("created_at"), default=timezone.now, editable=False)
     updated_at = models.DateTimeField(_("updated_at"), auto_now=True, blank=True, null=True)
+    deleted_at = models.DateTimeField(_("deleted_at"), null=True, default=None, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

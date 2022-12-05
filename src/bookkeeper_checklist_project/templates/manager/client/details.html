@@ -232,6 +232,8 @@
                                 <span class="tag is-link is-small">{{ job.get_status_display }}</span>
                                 {% elif job.status == "not_started" %}
                                 <span class="tag is-info is-small">{{ job.get_status_display }}</span>
+                                {% elif job.status == "not_complete" %}
+                                <span class="tag is-link is-small">{{ job.get_status_display }}</span>
                                 {% endif %}
                               </td>
                               <td data-label="Due Date">
@@ -249,7 +251,7 @@
                                       <i class="fa-solid fa-eye"></i>
                                     </span>
                                   </button>
-                                  <button class="button is-small is-danger bkchlst-input is-disabled managerDeleteJobBtn" data-job-id="{{ job.pk }}" disabled
+                                  <button class="button is-small is-danger bkchlst-input is-disabled managerDeleteJobBtn" data-job-id="{{ job.pk }}" data-job-title="{{ job.title }}" disabled
                                     type="button" data-tooltip="Delete job">
                                     <span class="icon">
                                       <i class="fa-solid fa-trash"></i>
@@ -1019,6 +1021,56 @@
 </div>
 <!-- End Jobs Form -->
 
+<!-- Start Jobs Update Form -->
+<div class="modal micromodal-slide" id="job-details-update-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1"> <!-- @audit -->
+    <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true"
+      aria-labelledby="job-details-update-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="job-details-update-modal-title">
+          Update job
+          <button class="button is-loading is-small" id="managerUpdateJobsLoaderBtn" hidden>
+            Loading
+          </button>
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="job-details-update-modal-content">
+
+        <div id="jobsUpdateFormWrapper" class="my-5">
+          <form method="PUT" action="{% url 'jobs:api:manager:update' %}" id="jobsUpdateForm">
+            <fieldset form="jobsUpdateForm">
+              <!-- <legend>
+                Create new job
+              </legend> -->
+              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
+              <input type="hidden" name="jobId" id="jobId" value="" />
+              {% csrf_token %}
+
+              {{ jobs_form| crispy }}
+
+              <h4 class="has-text-weight-bold">Tasks</h4>
+              
+            </fieldset>
+          </form>
+        </div>
+
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="jobsUpdateForm">
+          Update
+        </button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+<!-- End Jobs Update Form -->
+
 <!-- Start Tasks Form -->
 <div class="modal micromodal-slide" id="tasks-create-form-modal" aria-hidden="true">
   <div class="modal__overlay" tabindex="-1">
@@ -1073,6 +1125,8 @@
   window.localStorage.setItem("UpdateNoteUrl", "{% url 'notes:api:manager:update-note' %}");
   window.localStorage.setItem("DeleteNoteUrl", "{% url 'notes:api:manager:delete-note' %}");
   window.localStorage.setItem("DeleteDocumentUrl", "{% url 'documents:api:manager_api:delete-document' %}");
+  window.localStorage.setItem("RetrieveJobUrl", "{% url 'jobs:api:manager:retrieve' %}");
+  window.localStorage.setItem("DeleteJobUrl", "{% url 'jobs:api:manager:delete' %}");
   window.localStorage.setItem("origin", "{{ origin }}");
 </script>
 <script src="{% static 'js/manager/client/details.js' %}" defer type="module"></script>

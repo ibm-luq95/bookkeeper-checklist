@@ -1,7 +1,9 @@
 from rest_framework import serializers
+
+from core.constants import EXCLUDED_FIELDS
 from jobs.models import Job
 from task.serializers import TaskSerializer
-from client.serializers import ClientSerializer
+from bookkeeper.serializers import BookkeeperSerializer
 
 
 class CreateJobSerializer(serializers.ModelSerializer):
@@ -19,10 +21,9 @@ class CreateJobSerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
+    bookkeeper = BookkeeperSerializer(many=True, read_only=True)
 
     class Meta:
         model = Job
-        exclude = (
-            "metadata",
-            "is_deleted",
-        )
+        exclude = EXCLUDED_FIELDS
+        depth = 2

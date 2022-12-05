@@ -16,7 +16,7 @@ logger = get_formatted_logger(__name__)
 
 
 class CreateTaskManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""

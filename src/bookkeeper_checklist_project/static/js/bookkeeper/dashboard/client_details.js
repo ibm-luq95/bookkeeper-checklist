@@ -293,6 +293,7 @@ document.addEventListener("readystatechange", (ev) => {
                 switch (tdName) {
                   case "task-td-checkbox":
                     const input = node.querySelector("input[type='checkbox']");
+                    input.setAttribute("data-is-completed", "1");
                     input.checked = true;
                     input.disabled = true;
                     break;

@@ -25,7 +25,8 @@ class BaseModelMixin(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ["-created_at", "-updated_at"]
+        # ordering = ["-created_at", "-updated_at"]
+        ordering = ["-created_at"]
 
     def soft_delete(self):
         self.is_deleted = True

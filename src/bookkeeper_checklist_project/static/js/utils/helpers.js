@@ -271,4 +271,26 @@ class UploadFileRequest {
   }
 }
 
-export { enableInputsOnLoad, sendRequest, fadeIn, fadeOut, UploadFileRequest, sendGetRequest };
+/**
+ * This will serialize form inputs
+ * @param {HTMLFormElement} formElement The form element
+ * @param {Array} excludedFields Array of excluded fields
+ * @returns {Object} json object of all inputs
+ */
+const formInputSerializer = (formElement, excludedFields) => {
+  const serializedObject = {};
+  Array.from(formElement.elements).forEach((element) => {
+    serializedObject[element.name] = element.type === "checkbox" ? element.checked : element.value;
+  });
+  return serializedObject;
+};
+
+export {
+  enableInputsOnLoad,
+  sendRequest,
+  fadeIn,
+  fadeOut,
+  UploadFileRequest,
+  sendGetRequest,
+  formInputSerializer,
+};

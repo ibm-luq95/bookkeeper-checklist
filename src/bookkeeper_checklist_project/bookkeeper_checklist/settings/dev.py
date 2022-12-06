@@ -50,7 +50,7 @@ CACHES = {
     }
 }
 # Djagno Debug Toolbar
-INTERNAL_IPS = os.environ.get("INTERNAL_IPS")
+INTERNAL_IPS = os.environ.get("INTERNAL_IPS").split(", ")
 DISABLE_PANELS = {}
 
 DEBUG_TOOLBAR_PANELS = [

@@ -327,7 +327,7 @@
                                 {{ task.title }}
                               </td>
                               <td>
-                                {{ task.get_status_display }}
+                                {{ task.get_task_type_display }}
                               </td>
                               <td>
                                 {{ task.start_date }}
@@ -345,7 +345,7 @@
                                     </span>
                                   </button>
                                   <button class="button is-small is-danger bkchlst-input is-disabled managerDeleteTaskBtn" data-task-id="{{ task.pk }}" disabled
-                                    type="button" data-tooltip="Delete task">
+                                    type="button" data-tooltip="Delete task" data-task-title="{{ task.title }}">
                                     <span class="icon">
                                       <i class="fa-solid fa-trash"></i>
                                     </span>
@@ -1090,7 +1090,7 @@
       <main class="modal__content" id="tasks-create-form-modal-content">
 
         <div id="tasksCreateFormWrapper" class="my-5">
-          <form method="POST" action="{% url 'task:api:manager:create-task-manager' %}" id="tasksCreateForm">
+          <form method="POST" action="{% url 'task:api:manager:create' %}" id="tasksCreateForm">
             <fieldset form="tasksCreateForm">
               <legend>
                 Create new task
@@ -1117,6 +1117,53 @@
 </div>
 <!-- End Tasks Form -->
 
+<!-- Start Update Tasks Form -->
+<div class="modal micromodal-slide" id="tasks-update-form-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" style="width: 1000px" role="dialog" aria-modal="true"
+      aria-labelledby="tasks-update-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="tasks-update-form-modal-title">
+          Update Task
+          <button class="button is-loading is-small" id="managerTasksUpdateLoaderBtn" hidden>
+            Loading
+          </button>
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="tasks-update-form-modal-content">
+
+        <div id="tasksUpdateFormWrapper" class="my-5">
+          <form method="PUT" action="{% url 'task:api:manager:update' %}" id="tasksUpdateForm">
+            <fieldset form="tasksUpdateForm">
+              <!-- <legend>
+                Create new task
+              </legend> -->
+              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
+              <input type="hidden" name="taskId" id="taskId" value="" />
+              {% csrf_token %}
+
+              {{ tasks_form| crispy }}
+            </fieldset>
+          </form>
+        </div>
+
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" id="managerTasksUpdateSubmitBtn" disabled form="tasksUpdateForm">
+          Update
+        </button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+<!-- End Update Tasks Form -->
+
 {% endblock dashboard_content %}
 
 {% block externaljs %}
@@ -1127,6 +1174,8 @@
   window.localStorage.setItem("DeleteDocumentUrl", "{% url 'documents:api:manager_api:delete-document' %}");
   window.localStorage.setItem("RetrieveJobUrl", "{% url 'jobs:api:manager:retrieve' %}");
   window.localStorage.setItem("DeleteJobUrl", "{% url 'jobs:api:manager:delete' %}");
+  window.localStorage.setItem("RetrieveTaskUrl", "{% url 'task:api:manager:retrieve' %}");
+  window.localStorage.setItem("DeleteTaskUrl", "{% url 'task:api:manager:delete' %}");
   window.localStorage.setItem("origin", "{{ origin }}");
 </script>
 <script src="{% static 'js/manager/client/details.js' %}" defer type="module"></script>

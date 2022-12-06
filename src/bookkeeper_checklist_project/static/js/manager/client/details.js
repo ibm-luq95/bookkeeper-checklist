@@ -1,7 +1,12 @@
 "use strict";
 import { showMicroModal, MicroModalHandler } from "../../utils/model-box.js";
 import { showToastNotification } from "../../utils/notifications.js";
-import { enableInputsOnLoad, sendRequest, UploadFileRequest } from "../../utils/helpers.js";
+import {
+  enableInputsOnLoad,
+  formInputSerializer,
+  sendRequest,
+  UploadFileRequest,
+} from "../../utils/helpers.js";
 import { getCookie } from "../../utils/cookie.js";
 import {
   isDisabledCssClass,
@@ -52,6 +57,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const managerViewJobBtn = document.querySelectorAll("button.managerViewJobBtn");
   const managerViewTaskBtn = document.querySelectorAll("button.managerViewTaskBtn");
   const managerDeleteTaskBtn = document.querySelectorAll("button.managerDeleteTaskBtn");
+  const tasksUpdateForm = document.querySelector("form#tasksUpdateForm");
 
   if (managerAddDocumentBtn) {
     managerAddDocumentBtn.addEventListener("click", (e) => {
@@ -496,6 +502,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
 
   // delete job buttons
   managerDeleteJobBtn.forEach((btn) => {
+    // @audit
     btn.addEventListener("click", (event) => {
       const deleteJobUrl = window.localStorage.getItem("DeleteJobUrl");
       const jobId = event.currentTarget.dataset["jobId"];
@@ -713,14 +720,113 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   managerViewTaskBtn.forEach((btn) => {
     btn.addEventListener("click", (event) => {
       const taskId = event.currentTarget.dataset["taskId"];
-      alert("Work on progress");
+      const url = window.localStorage.getItem("RetrieveTaskUrl");
+      const callBacks = {
+        onOpenCallBack: () => {
+          // console.log("Open update job");
+          const requestOptions = {
+            method: "POST",
+            dataToSend: { taskId: taskId },
+            url: url,
+          };
+          const request = sendRequest(requestOptions);
+          request
+            .then((data) => {
+              const taskObject = data["task"];
+              console.log(taskObject);
+              tasksUpdateForm["job"].value = taskObject["job"];
+              tasksUpdateForm["taskId"].value = taskObject["id"];
+              tasksUpdateForm["title"].value = taskObject["title"];
+              tasksUpdateForm["task_type"].value = taskObject["task_type"];
+              tasksUpdateForm["hints"].value = taskObject["hints"];
+              tasksUpdateForm["additional_notes"].value = taskObject["additional_notes"];
+              tasksUpdateForm["start_date"].value = taskObject["start_date"];
+              tasksUpdateForm["due_date"].value = taskObject["due_date"];
+              if (taskObject["is_completed"] === true) {
+                tasksUpdateForm["is_completed"].checked = true;
+              } else {
+                tasksUpdateForm["is_completed"].checked = false;
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+            })
+            .finally(() => {
+              // jobsFormFieldset.disabled = false;
+              // managerJobsLoaderBtn.hidden = true;
+            });
+        },
+        onCloseCallback: () => {
+          console.warn("Close Update task");
+        },
+      };
+      new MicroModalHandler("tasks-update-form-modal", callBacks);
     });
+  });
+  // update task form
+  tasksUpdateForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const managerTasksUpdateLoaderBtn = document.querySelector(
+      "button#managerTasksUpdateLoaderBtn",
+    );
+    const currentTarget = event.currentTarget;
+    const fieldset = currentTarget.querySelector("fieldset");
+    const url = currentTarget.action;
+    const updatedInputs = formInputSerializer(currentTarget);
+    fieldset.disabled = true;
+    managerTasksUpdateLoaderBtn.hidden = false;
+    const requestOptions = {
+      method: "PUT",
+      dataToSend: updatedInputs,
+      url: url,
+    };
+    const request = sendRequest(requestOptions);
+    request
+      .then((data) => {
+        console.log(data);
+        showToastNotification(`${JSON.stringify(data["msg"])}`, "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      })
+      .catch((error) => {
+        console.error(error);
+        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+      })
+      .finally(() => {
+        fieldset.disabled = false;
+        managerTasksUpdateLoaderBtn.hidden = true;
+      });
   });
   // delete task buttons
   managerDeleteTaskBtn.forEach((btn) => {
     btn.addEventListener("click", (event) => {
       const taskId = event.currentTarget.dataset["taskId"];
-      alert("Work on progress");
+      const taskTitle = event.currentTarget.dataset["taskTitle"];
+      const url = window.localStorage.getItem("DeleteTaskUrl");
+      const msg = confirm(`Do you want to delete task ${taskTitle}`);
+      if (msg) {
+        const requestOptions = {
+          method: "DELETE",
+          dataToSend: { taskId: taskId },
+          url: url,
+        };
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            console.log(data);
+            showToastNotification(`${JSON.stringify(data["msg"])}`, "success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          })
+          .finally(() => {});
+      }
     });
   });
 });

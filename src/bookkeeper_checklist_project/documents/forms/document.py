@@ -10,7 +10,8 @@ class DocumentForm(BaseModelFormMixin):
         super(DocumentForm, self).__init__(*args, **kwargs)
         if document_section is not None:
             self.fields["document_section"].initial = document_section
-            self.fields.pop("task")
+            # self.fields["document_section"].widget.attrs.update({"class": "readonly-select"})
+            # self.fields.pop("task")
             self.fields.pop("job")
 
         if client is not None:

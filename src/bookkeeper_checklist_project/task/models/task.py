@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-#
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 # from client.models import Client
@@ -29,6 +30,13 @@ class Task(BaseModelMixin, UserForeignKeyMixin):
         blank=True,
         choices=TaskTypeEnum.choices,
     )
+    task_status = models.CharField(
+        _("task status"),
+        max_length=15,
+        null=True,
+        blank=True,
+        choices=TaskStatusEnum.choices,
+    )
     is_completed = models.BooleanField(_("is completed"), default=False)
     hints = models.CharField(_("hints"), max_length=60, null=True, blank=True)
     additional_notes = models.TextField(_("additional notes"), null=True, blank=True)
@@ -37,3 +45,6 @@ class Task(BaseModelMixin, UserForeignKeyMixin):
 
     def __str__(self) -> str:
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("bookkeeper:tasks:details", kwargs={"pk": self.pk})

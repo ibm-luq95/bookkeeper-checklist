@@ -6,7 +6,9 @@ from django.views.generic import ListView, CreateView, DetailView
 
 from jobs.forms import JobForm
 from jobs.models import Job
+from notes.forms import NoteForm
 from task.forms import TaskForm
+from documents.forms import DocumentForm
 from .mixins import ManagerAccessMixin
 
 
@@ -45,6 +47,12 @@ class JobDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = "Job details"
-        context.setdefault("task_form", TaskForm)
+        job_object = self.get_object()
+        document_form = DocumentForm(document_section="job", client=job_object.client)
+        task_form = TaskForm(client=job_object.client)
+        note_form = NoteForm(client=job_object.client, note_section="job")
+        context["title"] = f"Job - {job_object.title}"
+        context.setdefault("task_form", task_form)
+        context.setdefault("document_form", document_form)
+        context.setdefault("note_form", note_form)
         return context

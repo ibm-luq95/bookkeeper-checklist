@@ -3,11 +3,12 @@ from datetime import datetime
 
 import requests
 from core.models import Quote
-from core.utils import get_formatted_logger
+from core.utils import get_formatted_logger, debugging_print
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from .mixins import BookkeeperAccessMixin
+from bookkeeper.helpers import BookkeeperHelper
 
 # TODO: remove the custom logger before push (only for development)
 # ###### [Custom Logger] #########
@@ -66,6 +67,15 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
             context["title"] = "Bookkeeper - Dashboard"
             context.setdefault("quote_text", quote_text)
             context["bookkeeper_name"] = self.request.user.fullname
+            bookkeeper = self.request.user.bookkeeper_related.get()
+            # debugging_print(bookkeeper)
+            context.setdefault("bookkeeper", bookkeeper)
+            bookkeeper_helper = BookkeeperHelper(bookkeeper)
+            context.setdefault("clients", bookkeeper_helper.get_clients())
+            context.setdefault(
+                "total_past_due_total", bookkeeper_helper.get_past_due_tasks_total
+            )
+            context.setdefault("last_tasks", bookkeeper_helper.get_last_tasks())
             return context
         except requests.exceptions.ConnectionError:
             return None

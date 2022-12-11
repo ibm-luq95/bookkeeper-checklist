@@ -11,3 +11,13 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "is_deleted",
         )
         # depth = 1
+
+    def validate(self, data):
+        """
+        Check that start is before finish.
+        """
+        if data["start_date"] > data["due_date"]:
+            raise serializers.ValidationError(
+                {"due_date": "Due date must occur after start date"}
+            )
+        return data

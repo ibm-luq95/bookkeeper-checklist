@@ -28,6 +28,7 @@
                 {% if request.user.user_type == "bookkeeper" %}
                 <a class="navbar-item" href="{% url 'bookkeeper:client:list' %}"> Clients </a>
                 <a class="navbar-item" href="{% url 'bookkeeper:job:list' %}"> Jobs </a>
+                <a class="navbar-item" href="{% url 'bookkeeper:tasks:list' %}"> Tasks </a>
                 {% elif request.user.user_type == "assistant" %}
                 <a class="navbar-item" href="{% url 'assistant:bookkeeper-list-url' %}"> Bookkeepers </a>
                 {% elif request.user.user_type == "manager" %}

@@ -1,3 +1,4 @@
 from .dashboard import DashboardView
 from .clients import ClientsListView, ClientsDetailsView
-from .jobs import JobListView
+from .jobs import JobListView, JobDetailView
+from .tasks import TaskListView, TaskDetailView

@@ -1,17 +1,16 @@
-{% extends "core/layouts/dashboard.html" %}
+{% extends 'core/layouts/dashboard.html' %}
 {% load static %}
-{% block dashboard_content %}
-<h3 class="title is-3">Jobs</h3>
 
+{% block dashboard_content %}
 {% if object_list.count > 0 %}
 <!-- Start jobs table -->
-<table class="table is-fullwidth" id="jobsTable">
+<table class="table is-fullwidth" id="tasksTable">
     <thead>
         <tr>
             <th>Title</th>
-            <th>Client</th>
-            <th>Job Type</th>
-            <th>Status</th>
+            <th>Job</th>
+            <th>Task Type</th>
+            <th>Task Status</th>
             <th>Start Date</th>
             <th>Due Date</th>
             <th></th>
@@ -19,10 +18,10 @@
     </thead>
     <tfoot>
         <tr>
-            <th>Title</th>
-            <th>Client</th>
-            <th>Job Type</th>
-            <th>Status</th>
+            <th>Name</th>
+            <th>Job</th>
+            <th>Task Type</th>
+            <th>Task Status</th>
             <th>Start Date</th>
             <th>Due Date</th>
             <th></th>
@@ -34,23 +33,27 @@
 
         <tr>
             <td>
-                <a href="{% url 'bookkeeper:job:details' object.pk %}">
+                <a href="{% url 'bookkeeper:tasks:details' object.pk %}">
                     {{ object.title }}
                 </a>
             </td>
             <td>
-               <a href="{% url 'bookkeeper:client:details' object.client.pk %}">{{ object.client }}</a>
+                <a href="">{{ object.job }}</a>
             </td>
             <td>
-                {{ object.get_job_type_display }}
+                {{ object.get_task_type_display }}
             </td>
             <td>
-                {{ object.get_status_display }}
+                {{ object.get_task_status_display }}
             </td>
-            <td>Mon Mar 14 2022</td>
-            <td>Mon Mar 20 2023</td>
             <td>
-                <a href="{% url 'bookkeeper:client:details' object.pk %}" class="button is-small has-tooltip-arrow" data-tooltip="View client">
+                {{ object.start_date|date }}
+            </td>
+            <td>
+                {{ object.due_date|date }}
+            </td>
+            <td>
+                <a href="{% url 'bookkeeper:tasks:details' object.pk %}" class="button is-small has-tooltip-arrow" data-tooltip="View task">
                     <i class="fa-solid fa-eye"></i>
                 </a>
             </td>
@@ -64,13 +67,11 @@
 <!-- End jobs table -->
 {% else %}
 <div class="notification">
-    You have no jobs
+    You have no tasks
 </div>
 {% endif %}
 
-
-
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/bookkeeper/dashboard/jobs_list.js' %}" defer type="module"></script>
+<script src="{% static 'js/bookkeeper/dashboard/tasks_list.js' %}" defer type="module"></script>
 {% endblock externaljs %}

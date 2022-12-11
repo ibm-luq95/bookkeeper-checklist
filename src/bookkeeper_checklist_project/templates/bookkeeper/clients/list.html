@@ -10,25 +10,19 @@
 <table class="table is-fullwidth" id="clientsJobsTable">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Jobs</th>
             <th>Tasks</th>
-            <th>Start Date</th>
-            <th>Due Date</th>
             <th></th>
         </tr>
     </thead>
     <tfoot>
         <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Jobs</th>
             <th>Tasks</th>
-            <th>Start Date</th>
-            <th>Due Date</th>
             <th></th>
         </tr>
     </tfoot>
@@ -37,7 +31,6 @@
         {% for object in object_list %}
 
         <tr>
-            <td>1</td>
             <td>
                 <a href="{% url 'bookkeeper:client:details' object.pk %}">
                     {{ object.name }}
@@ -52,8 +45,6 @@
             <td>
                 {{ object.jobs.filter|tasks_count_for_job }}
             </td>
-            <td>Mon Mar 14 2022</td>
-            <td>Mon Mar 20 2023</td>
             <td>
                 <a href="{% url 'bookkeeper:client:details' object.pk %}" class="button is-small has-tooltip-arrow" data-tooltip="View client">
                     <i class="fa-solid fa-eye"></i>
@@ -69,7 +60,7 @@
 <!-- End jobs table -->
 {% else %}
 <div class="notification">
-    You have no clinets
+    You have no client(s)
 </div>
 {% endif %}
 

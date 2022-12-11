@@ -1,27 +1,30 @@
 {% load crispy_forms_tags %}
-<div class="modal micromodal-slide" id="tasks-form-modal" aria-hidden="true">
+<div class="modal micromodal-slide" id="note-form-modal" aria-hidden="true">
     <div class="modal__overlay" tabindex="-1">
         <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-            aria-labelledby="tasks-form-modal-title">
+            aria-labelledby="note-form-modal-title">
             <header class="modal__header">
-                <h2 class="modal__title" id="tasks-form-modal-title">
-                    New task
+                <h2 class="modal__title" id="note-form-modal-title">
+                    New Note
                 </h2>
 
                 <button class="modal__close" aria-label="Close modal" data-micromodal-close>
                 </button>
             </header>
-            <main class="modal__content" id="tasks-form-modal-content">
-                <form action="" method="POST"
-                    id="managerAddNewTaskForm">
+            <main class="modal__content" id="note-form-modal-content">
+                <form action="{% url 'notes:api:manager:create-note-manager' %}" method="POST"
+                    id="managerAddNewNoteForm">
                     {% csrf_token %}
-                    <fieldset form="managerAddNewTaskForm">
-                        {{ task_form|crispy }}
+                    <input type="hidden" name="user" value="{{ request.user.pk }}" />
+                    <input type="hidden" name="job" value="{{ object.pk }}" />
+                    <fieldset form="managerAddNewNoteForm">
+                        {{ note_form|crispy }}
                     </fieldset>
+                    
                 </form>
             </main>
             <footer class="modal__footer">
-                <button type="submit" form="managerAddNewTaskForm"
+                <button type="submit" form="managerAddNewNoteForm"
                     class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
                     Add
                 </button>

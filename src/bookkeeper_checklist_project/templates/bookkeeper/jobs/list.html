@@ -34,12 +34,12 @@
 
         <tr>
             <td>
-                <a href="{% url 'bookkeeper:client:details' object.pk %}">
+                <a href="{% url 'bookkeeper:job:details' object.pk %}">
                     {{ object.title }}
                 </a>
             </td>
             <td>
-               {{ object.client }}
+               <a href="{% url 'bookkeeper:client:details' object.client.pk %}">{{ object.client }}</a>
             </td>
             <td>
                 {{ object.get_job_type_display }}

@@ -16,7 +16,10 @@ logger = get_formatted_logger(__name__)
 
 
 class CreateNoteManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [
+        permissions.IsAdminUser,
+        permissions.IsAuthenticated,
+    ]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -54,7 +57,7 @@ class CreateNoteManagerApiView(APIView):
 
 
 class RetrieveNoteManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -85,7 +88,7 @@ class RetrieveNoteManagerApiView(APIView):
 
 
 class UpdateNoteManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
 
     def put(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -120,7 +123,7 @@ class UpdateNoteManagerApiView(APIView):
 
 
 class DeleteNoteManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
 
     def delete(self, request: Request, *args, **kwargs):
         serializer = ""

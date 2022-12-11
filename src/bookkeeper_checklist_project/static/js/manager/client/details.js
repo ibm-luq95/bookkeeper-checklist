@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
         showToastNotification(data, "success");
         setTimeout(() => {
           window.location.reload();
-        }, 1000);
+        }, 500);
       })
       .catch((error) => {
         console.error(error);
@@ -394,9 +394,10 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     managerJobsLoaderBtn.hidden = false;
     const bookkeepersArray = new Array();
     const tasksArray = new Array();
-    console.log(currentTarget["tasks"]);
-    console.log(currentTarget["bookkeeper"]);
-    console.log(currentTarget["bookkeeper"].length);
+    Array.from(currentTarget.elements).forEach((element) => {
+      element.classList.remove("is-danger");
+    });
+
     // check if bookkeeper exists
     try {
       if (currentTarget["bookkeeper"]) {
@@ -451,6 +452,13 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       .catch((error) => {
         console.error(error);
         showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+        const userErrors = error["user_error_msg"];
+        for (const key in userErrors) {
+          if (Object.hasOwnProperty.call(userErrors, key)) {
+            const element = userErrors[key];
+            currentTarget[key].classList.add(...["is-danger"]);
+          }
+        }
       })
       .finally(() => {
         jobsFormFieldset.disabled = false;
@@ -465,9 +473,11 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     const currentTarget = event.currentTarget;
     tasksCreateFormFieldSet.disabled = true;
     managerTasksLoaderBtn.hidden = false;
-    submitBtn.disabled = true;
+    submitBtn.disabled = true; // @audit
     submitBtn.classList.add("is-disabled");
-
+    Array.from(currentTarget.elements).forEach((element) => {
+      element.classList.remove("is-danger");
+    });
     const formData = {
       title: currentTarget["title"].value,
       task_type: currentTarget["task_type"].value,
@@ -475,12 +485,11 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       hints: currentTarget["hints"].value,
       user: currentTarget["user"].value,
       additional_notes: currentTarget["additional_notes"].value,
-      // client: currentTarget["client"].value,
       job: currentTarget["job"].value,
       due_date: currentTarget["due_date"].value,
       start_date: currentTarget["start_date"].value,
     };
-    console.log(formData);
+    // console.log(formData);
     const requestOptions = {
       method: "POST",
       dataToSend: formData,
@@ -497,6 +506,16 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       .catch((error) => {
         console.error(error);
         showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+        tasksCreateFormFieldSet.disabled = false;
+        managerTasksLoaderBtn.hidden = true;
+        submitBtn.disabled = false;
+        const userErrors = error["user_error_msg"];
+        for (const key in userErrors) {
+          if (Object.hasOwnProperty.call(userErrors, key)) {
+            const element = userErrors[key];
+            currentTarget[key].classList.add(...["is-danger"]);
+          }
+        }
       });
   });
 
@@ -776,6 +795,9 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     const updatedInputs = formInputSerializer(currentTarget);
     fieldset.disabled = true;
     managerTasksUpdateLoaderBtn.hidden = false;
+    Array.from(currentTarget.elements).forEach((element) => {
+      element.classList.remove("is-danger");
+    });
     const requestOptions = {
       method: "PUT",
       dataToSend: updatedInputs,
@@ -793,6 +815,13 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       .catch((error) => {
         console.error(error);
         showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+        const userErrors = error["user_error_msg"];
+        for (const key in userErrors) {
+          if (Object.hasOwnProperty.call(userErrors, key)) {
+            const element = userErrors[key];
+            currentTarget[key].classList.add(...["is-danger"]);
+          }
+        }
       })
       .finally(() => {
         fieldset.disabled = false;

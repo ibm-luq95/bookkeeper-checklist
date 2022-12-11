@@ -51,7 +51,7 @@
                             <td>{{ object.industry }}</td>
                             <td>{{ object.jobs.count }}</td>
                             <td>{{ object.get_total_tasks_for_all_jobs }}</td>
-                            <td>{{ object.created_at }}</td>
+                            <td>{{ object.created_at|date }}</td>
                             <td>
                                 <div class="buttons are-small">
                                     <a href="{% url 'manager:client:details' object.pk %}"

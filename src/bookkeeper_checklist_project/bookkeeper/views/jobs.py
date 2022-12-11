@@ -3,7 +3,7 @@ import traceback
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
 
 from client.models import Client
@@ -23,5 +23,18 @@ class JobListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", "All Jobs")
+
+        return context
+
+
+class JobDetailView(LoginRequiredMixin, BookkeeperAccessMixin, DetailView):
+    login_url = reverse_lazy("login")
+    template_name = "bookkeeper/jobs/detail.html"
+    model = Job
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context.setdefault("title", "Job - ")
 
         return context

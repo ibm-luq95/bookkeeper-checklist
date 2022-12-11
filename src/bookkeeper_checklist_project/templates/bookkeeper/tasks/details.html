@@ -1,0 +1,28 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="bookkeeper-update-task-form" class="container">
+    <div class="box">
+        <form method="post" id="update-task-form">
+            {% csrf_token %}
+            <legend class="title has-text-black">
+                Update Task
+            </legend>
+            <hr />
+
+            <fieldset form="update-task-form">
+                {{ form| crispy }}
+                <hr />
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info is-fullwidth">Update</button>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

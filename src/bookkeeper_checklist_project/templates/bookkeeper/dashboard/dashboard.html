@@ -4,12 +4,8 @@
 <section class="hero is-info welcome is-small">
     <div class="hero-body">
         <div class="container">
-            <h1 class="title">
-                Hello, {{ bookkeeper_name }}
-            </h1>
-            <h2 class="subtitle">
-                {{ quote_text }}
-            </h2>
+            <h1 class="title">Hello, {{ bookkeeper_name }}</h1>
+            <h2 class="subtitle">{{ quote_text }}</h2>
         </div>
     </div>
 </section>
@@ -17,20 +13,20 @@
     <div class="tile is-ancestor has-text-centered">
         <div class="tile is-parent">
             <article class="tile is-child box">
-                <p class="title">439k</p>
+                <p class="title">{{ clients.count }}</p>
                 <p class="subtitle">Clients</p>
             </article>
         </div>
 
         <div class="tile is-parent">
             <article class="tile is-child box">
-                <p class="title">3.4k</p>
-                <p class="subtitle">Open Tasks</p>
+                <p class="title">{{ bookkeeper.jobs.count }}</p>
+                <p class="subtitle">Jobs</p>
             </article>
         </div>
         <div class="tile is-parent">
             <article class="tile is-child box">
-                <p class="title has-text-danger">19</p>
+                <p class="title has-text-danger">{{ total_past_due_total }}</p>
                 <p class="subtitle has-text-danger-dark">Past Due</p>
             </article>
         </div>
@@ -40,101 +36,49 @@
     <div class="column is-6">
         <div class="card events-card">
             <header class="card-header">
-                <p class="card-header-title subtitle is-capitalized
-                    has-text-weight-bold has-text-dark">
-                    Clients
-                </p>
-                <!-- <a href="#" class="card-header-icon"
-                    aria-label="more options">
+                <p class="card-header-title subtitle is-capitalized has-text-weight-bold has-text-dark">Clients</p>
+                <!-- <a href="#" class="card-header-icon" aria-label="more options">
                     <span class="icon">
-                        <i class="fa fa-angle-down"
-                            aria-hidden="true"></i>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </span>
                 </a> -->
             </header>
             <div class="card-table">
                 <div class="content">
-                    <table class="table is-fullwidth
-                        is-striped">
+                    <table class="table is-fullwidth is-striped">
                         <tbody>
+
+                            {% if clients.count > 0 %}
+                            {% for client in clients %}
                             <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
+                                <td width="5%" class="pl-5">
+                                    <i class="fa-solid fa-user"></i>
+                                </td>
+                                <td>
+                                    <a href="{% url 'bookkeeper:client:details' client.pk %}">
+                                        {{ client.name }}
+
+                                    </a>
+                                </td>
+                                <td class="level-right">
+                                    <a class="button is-small is-primary" title="Jobs count"
+                                        href="{% url 'bookkeeper:client:details' client.pk %}">
+                                        {{ client.jobs.count }}
+                                    </a>
+                                </td>
                             </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
-                            <tr>
-                                <td width="5%"><i class="fa-solid fa-bell"></i></td>
-                                <td>Lorum ipsum dolem aire</td>
-                                <td class="level-right"><a
-                                        class="button
-                                        is-small is-primary"
-                                        href="#">Action</a></td>
-                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <div class="notification is-warning">No Client(s).</div>
+                            {% endif %}
+
+
                         </tbody>
                     </table>
                 </div>
             </div>
             <footer class="card-footer">
-                <a href="#" class="card-footer-item">View
+                <a href="{% url 'bookkeeper:client:list' %}" class="card-footer-item">View
                     All</a>
             </footer>
         </div>
@@ -142,68 +86,35 @@
     <div class="column is-6">
         <div class="card events-card">
             <header class="card-header">
-                <p class="card-header-title subtitle is-capitalized
-                    has-text-weight-bold has-text-dark">
-                    Weekly Tasks
-                </p>
-                <!-- <a href="#" class="card-header-icon"
-                    aria-label="more options">
+                <p class="card-header-title subtitle is-capitalized has-text-weight-bold has-text-dark">Last Tasks</p>
+                <!-- <a href="#" class="card-header-icon" aria-label="more options">
                     <span class="icon">
-                        <i class="fa fa-angle-down"
-                            aria-hidden="true"></i>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </span>
                 </a> -->
             </header>
             <div class="card-content p-0 card-table">
                 <div class="list">
+                    {% if last_tasks|length > 0 %}
+                    {% for task in last_tasks %}
                     <div class="list-item">
                         <div class="list-item-title">
-                            <a href="" class="has-text-dark">List item</a>
+                            <a href="{% url 'bookkeeper:tasks:details' task.pk %}" class="has-text-dark">
+                                {{ task.title }}
+                            </a>
                         </div>
                     </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="notification is-warning">No Task(s).</div>
+                    {% endif %}
+                    
 
-                    <div class="list-item">
-                        <div class="list-item-title">
-                            <a href="" class="has-text-dark">List item</a>
-                        </div>
-                    </div>
-
-                    <div class="list-item">
-                        <div class="list-item-content">
-                            <div class="list-item-title">
-                                <a href="" class="has-text-dark">List item</a>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-content">
-                            <div class="list-item-title">
-                                <a href="" class="has-text-dark">List item</a>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-content">
-                            <div class="list-item-title">
-                                <a href="" class="has-text-dark">List item</a>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-content">
-                            <div class="list-item-title">
-                                <a href="" class="has-text-dark">List item</a>
-                            </div>
-
-                        </div>
-                    </div>
+                  
                 </div>
             </div>
             <footer class="card-footer">
-                <a href="#" class="card-footer-item">View
+                <a href="{% url 'bookkeeper:tasks:list' %}" class="card-footer-item">View
                     All</a>
             </footer>
         </div>

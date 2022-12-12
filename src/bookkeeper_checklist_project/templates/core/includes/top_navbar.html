@@ -26,8 +26,9 @@
             <div class="navbar-start">
 
                 {% if request.user.user_type == "bookkeeper" %}
-                <a class="navbar-item" href="{% url 'bookkeeper:clients-list' %}"> Clients </a>
-                <a class="navbar-item" href="{% url 'bookkeeper:clients-list' %}"> Jobs </a>
+                <a class="navbar-item" href="{% url 'bookkeeper:client:list' %}"> Clients </a>
+                <a class="navbar-item" href="{% url 'bookkeeper:job:list' %}"> Jobs </a>
+                <a class="navbar-item" href="{% url 'bookkeeper:tasks:list' %}"> Tasks </a>
                 {% elif request.user.user_type == "assistant" %}
                 <a class="navbar-item" href="{% url 'assistant:bookkeeper-list-url' %}"> Bookkeepers </a>
                 {% elif request.user.user_type == "manager" %}
@@ -68,8 +69,14 @@
                         <a class="navbar-item" href="{% url 'manager:client:list' %}">
                             List all clients
                         </a>
-                        <a class="navbar-item">
+                        <a class="navbar-item" href="{% url 'manager:client:create' %}">
                             Create new client
+                        </a>
+                        <a class="navbar-item" href="{% url 'manager:client_account:list' %}">
+                            Client accounts
+                        </a>
+                        <a class="navbar-item" href="{% url 'manager:client_account:list' %}">
+                            Client services
                         </a>
                     </div>
                 </div>
@@ -84,6 +91,9 @@
                         </a>
                         <a class="navbar-item" href="{% url 'manager:jobs:create' %}">
                             Create new job
+                        </a>
+                        <a class="navbar-item" href="">
+                           Templates
                         </a>
                     </div>
                 </div>
@@ -113,7 +123,7 @@
                             <span>
                                 <i class="fa-solid fa-user"></i>
                                 {{ request.user.fullname }}
-                                <span title="Badge top right" class="badge">8</span>
+                                <!-- <span title="Badge top right" class="badge">8</span> -->
                             </span>
                             <span class="icon is-small">
                                 <i class="fas fa-angle-down" aria-hidden="true"></i>

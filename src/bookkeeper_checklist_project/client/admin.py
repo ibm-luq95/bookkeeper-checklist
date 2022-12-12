@@ -1,25 +1,18 @@
-from bookkeeper.models import Bookkeeper
-from core.admin import BaseAdminModelMixin
 from django.contrib import admin
 
-from .models import Client, ClientAccount, ImportantContact
+from bookkeeper.models import Bookkeeper
+from core.admin import BaseAdminModelMixin
+from core.constants import ADMIN_FILTER_LIST
+from .models import Client
 
 
-class BookkeeperInline(admin.TabularInline):
-    model = Bookkeeper.clients.through
-    extra = 2
+# class BookkeeperInline(admin.TabularInline):
+#     model = Bookkeeper.clients.through
+#     extra = 2
 
 
 @admin.register(Client)
 class ClientAdmin(BaseAdminModelMixin):
-    inlines = (BookkeeperInline,)
-
-
-@admin.register(ClientAccount)
-class ClientAccountAdmin(BaseAdminModelMixin):
-    pass
-
-
-@admin.register(ImportantContact)
-class ImportantContactAdmin(BaseAdminModelMixin):
-    pass
+    # inlines = (BookkeeperInline,)
+    list_display = ["name", "email", "industry", "created_at", "is_active", "is_deleted"]
+    list_filter = ADMIN_FILTER_LIST + ["is_deleted", "is_active"]

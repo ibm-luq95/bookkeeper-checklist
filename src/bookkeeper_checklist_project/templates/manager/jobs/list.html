@@ -18,8 +18,8 @@
             <table class="table is-fullwidth table-100" id="managerClientsTable">
                 <thead>
                     <tr>
-                        <th>Client</th>
                         <th>Job Title</th>
+                        <th>Client</th>
                         <th>Task(s)</th>
                         <th>Status</th>
                         <th>Due Date</th>
@@ -29,8 +29,8 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Client</th>
                         <th>Job Title</th>
+                        <th>Client</th>
                         <th>Task(s)</th>
                         <th>Status</th>
                         <th>Due Date</th>
@@ -43,11 +43,12 @@
                     {% for object in object_list %}
                         <tr>
                             <td>
-                                <a href="">{{ object.client }}</a>
-                            </td>
-                            <td>
                                 <a href="{% url 'manager:jobs:details' object.pk %}">{{ object.title }}</a>
                             </td>
+                            <td>
+                                <a href="{% url 'manager:client:details' object.client.pk %}">{{ object.client }}</a>
+                            </td>
+                            
                             <td>{{ object.tasks.count }}</td>
                             <td>
                                 {% if object.status == "past_due" %}
@@ -62,17 +63,19 @@
                                     <span class="tag is-link is-medium">{{ object.get_status_display }}</span>
                                 {% elif object.status == "not_started" %}
                                     <span class="tag is-info is-medium">{{ object.get_status_display }}</span>
+                                {% elif object.status == "not_complete" %}
+                                    <span class="tag is-link is-medium">{{ object.get_status_display }}</span>
                                 {% endif %}
                             </td>
                             <td>{{ object.due_date }}</td>
-                            <td>{{ object.created_at }}</td>
+                            <td>{{ object.created_at|date }}</td>
                             <td>
                                 <div class="buttons are-small">
                                     <a href="{% url 'manager:jobs:details' object.pk %}"
                                        class="button is-info is-light">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
-                                    <a href="{% url 'manager:bookkeeper:details' object.slug %}"
+                                    <a href=""
                                        class="button is-success is-light">
                                         <i class="fa-solid fa-pencil"></i>
                                     </a>
@@ -90,10 +93,10 @@
         {% else %}
             <div class="notification is-warning">
                 <!-- <button class="delete"></button> -->
-            No client(s)
+            No Job(s)
                 <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
-                   href="{% url 'manager:users:create' %}">
-                Create new client
+                   href="{% url 'manager:jobs:create' %}">
+                Create new job
                 </a>
             </div>
         {% endif %}

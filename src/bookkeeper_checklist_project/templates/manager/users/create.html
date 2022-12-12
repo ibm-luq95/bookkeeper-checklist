@@ -7,13 +7,13 @@
 <section id="manager-create-user-form">
     <form method="post" id="create-user-form">
         {% csrf_token %}
-        <legend class="title has-text-black">Create new staff member</legend>
+        <legend class="title has-text-black">
+            Create new staff member
+        </legend>
         <fieldset form="create-user-form">
-            {{form| crispy}}
+            {{ form| crispy }}
             <div class="has-text-right">
-                <button type="submit" class="button is-info
-                    is-fullwidth">Create <i class="fa fa-sign-in"
-                        aria-hidden="true"></i></button>
+                <button type="submit" class="button is-info is-fullwidth">Create</button>
             </div>
         </fieldset>
 

@@ -8,7 +8,8 @@ from bookkeeper.models import Bookkeeper
 from client.models import Client
 from core.choices import JobStatusEnum, JobTypeEnum
 from core.models import BaseModelMixin
-from task.models import Task
+
+# from task.models import Task
 from .help_messages import JOB_HELP_MESSAGES
 
 
@@ -19,13 +20,8 @@ class Job(BaseModelMixin):
         BaseModelMixin (models.Model): Django model base mixin
     """
 
-    bookkeeper = models.ForeignKey(
-        to=Bookkeeper,
-        on_delete=models.SET_NULL,
-        related_name="jobs",
-        null=True,
-        blank=True,
-        help_text=JOB_HELP_MESSAGES.get("bookkeeper"),
+    bookkeeper = models.ManyToManyField(
+        to=Bookkeeper, help_text=JOB_HELP_MESSAGES.get("bookkeeper"), related_name="jobs"
     )
     title = models.CharField(
         _("title"), max_length=100, null=False, help_text=JOB_HELP_MESSAGES.get("title")
@@ -65,7 +61,7 @@ class Job(BaseModelMixin):
         related_name="jobs",
         help_text=JOB_HELP_MESSAGES.get("client"),
     )
-    tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
+    # tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
     note = models.TextField(
         _("note"), null=True, help_text=JOB_HELP_MESSAGES.get("note"), blank=True
     )
@@ -78,6 +74,10 @@ class Job(BaseModelMixin):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        self.bookkeeper.clients.add(self.client)
-        self.bookkeeper.save()
+        # self.bookkeeper.clients.add(self.client)
+        # self.bookkeeper.save()
         super(Job, self).save(*args, **kwargs)
+
+    def get_all_not_completed_tasks(self):
+        filtered = filter(lambda task: task.is_completed is False, self.tasks.all())
+        return tuple(filtered)

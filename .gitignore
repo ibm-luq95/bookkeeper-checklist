@@ -228,7 +228,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-# .env
+#.env
 .venv
 env/
 venv/
@@ -307,3 +307,14 @@ Dockerfile
 src/bookkeeper_checklist_project/custom_script.py
 changelogs
 changelog
+create_db.sql
+src/bookkeeper_checklist_project/media
+backup
+docs
+src/.env
+
+# Ignore Django Migrations in Development if you are working on team
+# Only for Development only
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py

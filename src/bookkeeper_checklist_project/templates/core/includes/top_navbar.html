@@ -97,7 +97,21 @@
                         </a>
                     </div>
                 </div>
-                <a class="navbar-item" href=""> Site Settings </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Site Settings
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="{% url 'site_settings:web-app-settings' %}">
+                            Web App Settings
+                        </a>
+                        <!-- <a class="navbar-item" href="">
+                            Update settings
+                        </a> -->
+                        
+                    </div>
+                </div>
 
                 {% endif %}
 

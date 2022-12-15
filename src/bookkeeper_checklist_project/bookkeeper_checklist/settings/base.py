@@ -20,7 +20,6 @@ BASE_DIR = (
     Path(__file__).resolve().parent.parent.parent
 )  # custom BASE_DIR to match the project
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -31,7 +30,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -51,6 +49,7 @@ INSTALLED_APPS = [
     "betterforms",
     # "crispy_bootstrap5",
     "core.apps.CoreConfig",
+    "site_settings.apps.SiteSettingsConfig",
     "users.apps.UsersConfig",
     "manager.apps.ManagerConfig",
     "assistant.apps.AssistantConfig",
@@ -99,7 +98,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "bookkeeper_checklist.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -109,7 +107,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -129,7 +126,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -140,7 +136,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -167,7 +162,6 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 # Use new password Scrypt algorithm
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.ScryptPasswordHasher",
@@ -176,7 +170,6 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
-
 
 # Enabling password validation
 
@@ -213,11 +206,9 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bulma"
 
 CRISPY_TEMPLATE_PACK = "bulma"
 
-# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-#
-# CRISPY_TEMPLATE_PACK = "bootstrap5"
-
 AUTH_USER_MODEL = "users.CustomUser"
+
+SESSION_COOKIE_AGE = int(os.environ.get("SESSION_COOKIE_AGE"))
 
 REST_FRAMEWORK = {
     # "EXCEPTION_HANDLER": "core.errors.api_exception_handler",
@@ -233,7 +224,7 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.JSONParser",
         # "rest_framework.parsers.FormParser",
     ],
-    "DATETIME_FORMAT": "%Y-%m-%d"
+    "DATETIME_FORMAT": "%Y-%m-%d",
 }
 # check if cache enabled
 if bool(os.environ.get("IS_CACHE_ENABLED")):

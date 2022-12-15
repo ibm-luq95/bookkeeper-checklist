@@ -20,10 +20,24 @@ class LoginView(SuccessMessageMixin, FormView):
     form_class = CustomUserLoginForm
     success_message: str = "Login successfully"
 
+    def get(self, request, *args, **kwargs):
+        """Handle GET requests: instantiate a blank version of the form."""
+        # check if user authenticated
+        if self.request.user.is_authenticated:
+            user_type = self.request.user.user_type
+            if user_type == "bookkeeper":
+                return redirect("bookkeeper:dashboard")
+            elif user_type == "manager":
+                return redirect("manager:dashboard")
+            elif user_type == "assistant":
+                return redirect("assistant:dashboard")
+        return self.render_to_response(self.get_context_data())
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context["title"] = "Login"
+
         return context
 
     def form_valid(self, form):

@@ -27,6 +27,7 @@ urlpatterns = [
     path(
         "company-services/", include("company_services.urls"), name="company-services-urls"
     ),
+    path("site-settings/", include("site_settings.urls"), name="site-settings-url"),
 ]
 
 # set admin configs

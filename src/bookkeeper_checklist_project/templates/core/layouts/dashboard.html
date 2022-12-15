@@ -3,25 +3,26 @@
 <html lang="en">
 
       <head>
-            <meta charset="utf-8" />
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>
-
                   {% block title %}
                   {{ title }}
                   {% endblock title %}
-
             </title>
             <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <meta name="title" content="{{ title }}" />
+            <meta name="robots" content="index, follow" />
             <meta name="description" content="" />
             <meta name="keywords" content="" />
-            <meta name="robots" content="index, follow" />
-            <meta name="language" content="English" />
             <meta name="author" content="Ibrahim Luqman" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="title" content="{{ title }}" />
+            <meta name="language" content="English" />
+            <link rel="canonical" href="URL">
+            <meta name="subject" content="WEBSITE PAGE SUBJECT">
+            <meta name="copyright" content="COPYRIGHT_HOLDERS">
+            <meta name="revised" content="REVISION_DATE">
+            <meta name='Classification' content='Business'>
+            <meta name='url' content='URL'>
             {% comment %}
             <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
             {% endcomment %}
@@ -83,7 +84,8 @@
             <script src="{% static 'js/chart.js' %}" type="text/javascript" defer></script>
             <script src="{% static 'js/all.js' %}" defer></script>
             <script type="text/javascript" src="{% static 'js/vendors/micromodal/micromodal.min.js' %}"></script>
-            <script type="text/javascript" src="{% static 'vendors/bulma-collapsible/js/bulma-collapsible.min.js' %}" defer></script>
+            <script type="text/javascript" src="{% static 'vendors/bulma-collapsible/js/bulma-collapsible.min.js' %}"
+                  defer></script>
             <script type="text/javascript" src="{% static 'js/vendors/toastify/toastify.js' %}"></script>
             <script type="text/javascript" src="{% static 'js/vendors/clipboard/clipboard.js' %}"></script>
             <script type="text/javascript" src="{% static 'vendors/DataTables/datatables.js' %}"></script>

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "maintenance_mode",
     # "django.contrib.sites",
     "django_filters",
     "rest_framework",
@@ -66,16 +67,17 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # "django.middleware.cache.UpdateCacheMiddleware",  # new for the cache
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    # "django.middleware.cache.UpdateCacheMiddleware",  # new for the cache
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "core.errors.ExceptionMiddleware"
+    "bookkeeper.middleware.BookkeeperMiddleware",
+    "maintenance_mode.middleware.MaintenanceModeMiddleware",
+    # "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
 ]
 
 ROOT_URLCONF = "bookkeeper_checklist.urls"
@@ -91,6 +93,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "site_settings.context_processors.return_all_context",
+                "maintenance_mode.context_processors.maintenance_mode",
             ],
         },
     },
@@ -226,6 +230,28 @@ REST_FRAMEWORK = {
     ],
     "DATETIME_FORMAT": "%Y-%m-%d",
 }
+
+# if True the maintenance-mode will be activated
+# MAINTENANCE_MODE = False
+# by default, a file named "maintenance_mode_state.txt" will be created in the settings.py directory
+# you can customize the state file path in case the default one is not writable
+MAINTENANCE_MODE_STATE_FILE_PATH = BASE_DIR / "maintenance_mode_state.txt"
+# the template that will be shown by the maintenance-mode page
+MAINTENANCE_MODE_TEMPLATE = "maintenance/503.html"
+
+# the HTTP status code to send
+# MAINTENANCE_MODE_STATUS_CODE = 404
+
+# list of urls that will not be affected by the maintenance-mode
+# urls will be used to compile regular expressions objects
+MAINTENANCE_MODE_IGNORE_URLS = (r"^/manager", r"/logout", r"/")
+
+# if True admin site will not be affected by the maintenance-mode page
+MAINTENANCE_MODE_IGNORE_ADMIN_SITE = True
+
+# if True the superuser will not see the maintenance-mode page
+MAINTENANCE_MODE_IGNORE_SUPERUSER = False
+
 # check if cache enabled
 if bool(os.environ.get("IS_CACHE_ENABLED")):
     CACHE_MIDDLEWARE_ALIAS = os.environ.get(

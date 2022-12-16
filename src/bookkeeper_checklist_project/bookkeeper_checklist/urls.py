@@ -2,7 +2,7 @@ from core.utils import get_trans_txt
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from core.views import js_settings
 
 
@@ -13,6 +13,7 @@ static_and_media_path_urls = static(
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # TODO: add protection package to prevent admin access
+    # re_path(r"^maintenance-mode/", include("maintenance_mode.urls")),
     path("api-auth/", include("rest_framework.urls")),
     path("js-settings/", js_settings, name="js_settings"),
     path("__debug__/", include("debug_toolbar.urls")),

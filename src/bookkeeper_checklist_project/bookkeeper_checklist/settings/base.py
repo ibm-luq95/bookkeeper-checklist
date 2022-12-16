@@ -20,7 +20,6 @@ BASE_DIR = (
     Path(__file__).resolve().parent.parent.parent
 )  # custom BASE_DIR to match the project
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -32,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "maintenance_mode",
     # "django.contrib.sites",
     "django_filters",
     "rest_framework",
@@ -51,6 +50,7 @@ INSTALLED_APPS = [
     "betterforms",
     # "crispy_bootstrap5",
     "core.apps.CoreConfig",
+    "site_settings.apps.SiteSettingsConfig",
     "users.apps.UsersConfig",
     "manager.apps.ManagerConfig",
     "assistant.apps.AssistantConfig",
@@ -67,16 +67,17 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # "django.middleware.cache.UpdateCacheMiddleware",  # new for the cache
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    # "django.middleware.cache.UpdateCacheMiddleware",  # new for the cache
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "core.errors.ExceptionMiddleware"
+    "bookkeeper.middleware.BookkeeperMiddleware",
+    "maintenance_mode.middleware.MaintenanceModeMiddleware",
+    # "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
 ]
 
 ROOT_URLCONF = "bookkeeper_checklist.urls"
@@ -92,13 +93,14 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "site_settings.context_processors.return_all_context",
+                "maintenance_mode.context_processors.maintenance_mode",
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = "bookkeeper_checklist.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -109,7 +111,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -129,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -140,7 +140,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -167,7 +166,6 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 # Use new password Scrypt algorithm
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.ScryptPasswordHasher",
@@ -176,7 +174,6 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
-
 
 # Enabling password validation
 
@@ -213,11 +210,9 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bulma"
 
 CRISPY_TEMPLATE_PACK = "bulma"
 
-# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-#
-# CRISPY_TEMPLATE_PACK = "bootstrap5"
-
 AUTH_USER_MODEL = "users.CustomUser"
+
+SESSION_COOKIE_AGE = int(os.environ.get("SESSION_COOKIE_AGE"))
 
 REST_FRAMEWORK = {
     # "EXCEPTION_HANDLER": "core.errors.api_exception_handler",
@@ -233,8 +228,30 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.JSONParser",
         # "rest_framework.parsers.FormParser",
     ],
-    "DATETIME_FORMAT": "%Y-%m-%d"
+    "DATETIME_FORMAT": "%Y-%m-%d",
 }
+
+# if True the maintenance-mode will be activated
+# MAINTENANCE_MODE = False
+# by default, a file named "maintenance_mode_state.txt" will be created in the settings.py directory
+# you can customize the state file path in case the default one is not writable
+MAINTENANCE_MODE_STATE_FILE_PATH = BASE_DIR / "maintenance_mode_state.txt"
+# the template that will be shown by the maintenance-mode page
+MAINTENANCE_MODE_TEMPLATE = "maintenance/503.html"
+
+# the HTTP status code to send
+# MAINTENANCE_MODE_STATUS_CODE = 404
+
+# list of urls that will not be affected by the maintenance-mode
+# urls will be used to compile regular expressions objects
+MAINTENANCE_MODE_IGNORE_URLS = (r"^/manager", r"/logout", r"/")
+
+# if True admin site will not be affected by the maintenance-mode page
+MAINTENANCE_MODE_IGNORE_ADMIN_SITE = True
+
+# if True the superuser will not see the maintenance-mode page
+MAINTENANCE_MODE_IGNORE_SUPERUSER = False
+
 # check if cache enabled
 if bool(os.environ.get("IS_CACHE_ENABLED")):
     CACHE_MIDDLEWARE_ALIAS = os.environ.get(

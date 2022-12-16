@@ -47,6 +47,7 @@ CACHES = {
     "default": {
         "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
         "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
+        "TIMEOUT": None
     }
 }
 # Djagno Debug Toolbar

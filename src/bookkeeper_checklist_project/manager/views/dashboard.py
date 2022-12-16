@@ -24,5 +24,5 @@ class DashboardHomeView(LoginRequiredMixin, ManagerAccessMixin, TemplateView):
         # all_permissions = Permission.objects.filter(group__user=self.request.user)
         # cpprint(all_permissions)
         # cpprint(all_permissions.first().name)
-        cpprint(self.request.user.groups.all())
+        # cpprint(self.request.user.groups.all())
         return context

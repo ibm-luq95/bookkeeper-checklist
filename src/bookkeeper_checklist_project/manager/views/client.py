@@ -69,7 +69,7 @@ class ClientDetailView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         client = self.get_object()
         context["title"] = f"Client - {client.name}"
         important_contact_form = ImportantContactForm(
-            instance=client.important_contact, is_readonly=True
+            instance=client.important_contact, is_readonly=False
         )
         company_services_form = CompanyServiceForm(client=client)
         jobs_form = JobForm(client=client)

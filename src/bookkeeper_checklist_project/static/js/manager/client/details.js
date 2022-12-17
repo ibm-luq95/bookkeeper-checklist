@@ -58,6 +58,38 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const managerViewTaskBtn = document.querySelectorAll("button.managerViewTaskBtn");
   const managerDeleteTaskBtn = document.querySelectorAll("button.managerDeleteTaskBtn");
   const tasksUpdateForm = document.querySelector("form#tasksUpdateForm");
+  const updateImportantContactForm = document.querySelector("form#updateImportantContactForm");
+
+  // update important contact form
+  updateImportantContactForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const currentTarget = event.currentTarget;
+    const fieldset = updateImportantContactForm.querySelector("fieldset");
+    const formData = formInputSerializer(currentTarget);
+    fieldset.disabled = true;
+    const requestOptions = {
+      method: "PUT",
+      dataToSend: formData,
+      url: currentTarget.action,
+    };
+    const request = sendRequest(requestOptions);
+    request
+      .then((data) => {
+        console.log(data);
+        showToastNotification("Important contact updated!", "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      })
+      .catch((error) => {
+        console.error(error);
+        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+      })
+      .finally(() => {
+        fieldset.disabled = false;
+        console.warn("Finally");
+      });
+  });
 
   if (managerAddDocumentBtn) {
     managerAddDocumentBtn.addEventListener("click", (e) => {

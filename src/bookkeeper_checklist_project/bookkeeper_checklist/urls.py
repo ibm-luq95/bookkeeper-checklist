@@ -5,11 +5,9 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from core.views import js_settings
 
-
 static_and_media_path_urls = static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # TODO: add protection package to prevent admin access
@@ -25,6 +23,11 @@ urlpatterns = [
     path("notes/", include("notes.urls"), name="notes-urls"),
     path("task/", include("task.urls"), name="task-urls"),
     path("jobs/", include("jobs.urls"), name="jobs-urls"),
+    path(
+        "important_contact/",
+        include("important_contact.urls"),
+        name="important_contact-urls",
+    ),
     path(
         "company-services/", include("company_services.urls"), name="company-services-urls"
     ),

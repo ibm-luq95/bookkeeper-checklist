@@ -770,11 +770,19 @@
       </header>
       <main class="modal__content" id="important-contact-form-modal-content">
 
-        {% csrf_token %}
-        {{ important_contact_form|crispy }}
+        <form action="{% url 'important_contact:api:manager:update' %}" method="PUT" id="updateImportantContactForm">
+          <fieldset form="updateImportantContactForm">
+            {% csrf_token %}
+          <input type="hidden" name="client" value="{{ object.pk }}" />
+          {{ important_contact_form|crispy }}
+          </fieldset>
+        </form>
 
       </main>
       <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="updateImportantContactForm">
+          Update
+        </button>
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
           Close
         </button>

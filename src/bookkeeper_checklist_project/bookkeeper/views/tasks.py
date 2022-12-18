@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-#
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import QuerySet
@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView
 from django.contrib import messages
 
-from core.utils import get_formatted_logger
+from core.utils import get_formatted_logger, debugging_print
 from task.forms import TaskForm
 from task.models import Task
 from .mixins import BookkeeperAccessMixin
@@ -68,7 +68,11 @@ class TaskListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
 
 
 class TaskUpdateView(
-    LoginRequiredMixin, BookkeeperAccessMixin, SuccessMessageMixin, UpdateView
+    LoginRequiredMixin,
+    BookkeeperAccessMixin,
+    UserPassesTestMixin,
+    SuccessMessageMixin,
+    UpdateView,
 ):
     template_name = "bookkeeper/tasks/details.html"
     login_url = reverse_lazy("users:login")
@@ -83,6 +87,14 @@ class TaskUpdateView(
         context.setdefault("title", f"Task - {task.title}")
 
         return context
+
+    def test_func(self) -> bool | None:
+        task_object = self.get_object()
+        bookkeeper = self.request.user.bookkeeper_related.get()
+        if bookkeeper in task_object.job.bookkeeper.filter():
+            return True
+        else:
+            return False
 
     def get_form_kwargs(self):
         """Return the keyword arguments for instantiating the form."""

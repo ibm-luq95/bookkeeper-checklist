@@ -715,19 +715,22 @@ document.addEventListener("DOMContentLoaded", (ev) => {
             }
           });
         }
-        // check if the tasks one or more than one input
-        if (currentTarget["tasks"].constructor.name === "HTMLInputElement") {
-          // one input
-          if (currentTarget["tasks"].checked === true) {
-            checkedTasks.push(currentTarget["tasks"].value);
-          }
-        } else if (currentTarget["tasks"].constructor.name === "RadioNodeList") {
-          // two inputs
-          currentTarget["tasks"].forEach((e) => {
-            if (e.checked === true) {
-              checkedTasks.push(e.value);
+        // check if tasks exists
+        if (currentTarget["tasks"]) {
+          // check if the tasks one or more than one input
+          if (currentTarget["tasks"].constructor.name === "HTMLInputElement") {
+            // one input
+            if (currentTarget["tasks"].checked === true) {
+              checkedTasks.push(currentTarget["tasks"].value);
             }
-          });
+          } else if (currentTarget["tasks"].constructor.name === "RadioNodeList") {
+            // two inputs
+            currentTarget["tasks"].forEach((e) => {
+              if (e.checked === true) {
+                checkedTasks.push(e.value);
+              }
+            });
+          }
         }
 
         // console.log("checkedTasks: ", checkedTasks);

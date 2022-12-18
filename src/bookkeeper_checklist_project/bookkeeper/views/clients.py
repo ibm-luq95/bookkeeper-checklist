@@ -1,10 +1,8 @@
 import traceback
 
-import faker
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
-from django.views.generic.base import TemplateView
 
 from client.models import Client
 from core.utils import get_formatted_logger
@@ -42,7 +40,9 @@ class ClientsListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
             raise Exception(str(ex))
 
 
-class ClientsDetailsView(LoginRequiredMixin, BookkeeperAccessMixin, DetailView):
+class ClientsDetailsView(
+    LoginRequiredMixin, BookkeeperAccessMixin, UserPassesTestMixin, DetailView
+):
     template_name = "bookkeeper/clients/details.html"
     login_url = reverse_lazy("users:login")
     model = Client
@@ -51,16 +51,16 @@ class ClientsDetailsView(LoginRequiredMixin, BookkeeperAccessMixin, DetailView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", self.get_object().name)
-        acc_and_services = list()
-        fake = faker.Faker()
-        for _ in range(35):
-            acc_and_services.append(
-                {
-                    "id": fake.pyint(),
-                    "url": fake.url(),
-                    "username": fake.user_name(),
-                    "password": fake.password(),
-                }
-            )
-        context.setdefault("fake_data", acc_and_services)
         return context
+
+    def test_func(self) -> bool | None:
+        bookkeepers_list = []
+        client = self.get_object()
+        bookkeeper = self.request.user.bookkeeper_related.get()
+        for job in client.jobs.filter():
+            for bookk in job.bookkeeper.filter():
+                bookkeepers_list.append(bookk)
+        if bookkeeper in bookkeepers_list:
+            return True
+        else:
+            return False

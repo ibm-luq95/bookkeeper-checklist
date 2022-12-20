@@ -42,7 +42,7 @@
                                     <header class="mb-5">
                                         <p class="title is-3">Client</p>
                                         <p class="subtitle is-4">
-                                            <a href="">{{ object.client }}</a>
+                                            <a href="{% url 'bookkeeper:client:details' object.client.pk %}" target="_blank">{{ object.client }}</a>
                                         </p>
                                     </header>
                                     <hr />
@@ -191,13 +191,20 @@
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <strong>Bookkeeper</strong>
+                                            <strong>Bookkeeper(s)</strong>
                                             <!-- <small>@johnsmith</small> <small>31m</small> -->
                                             <br>
-                                            <a>{{ object.bookkeeper }}</a>
+                                            
+                                            {% for bookkeeper in object.bookkeeper.filter %}
+                                                <a class="is-block" target="_blank">{{ bookkeeper.user.fullname }}</a>
+                                            {% empty %}
+                                                No Bookkeeper(s)
+                                            {% endfor %}
+                                                
+                                            
                                         </p>
                                     </div>
-
+        
                                 </div>
 
                             </article>

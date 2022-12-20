@@ -20,10 +20,13 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     the browser fully loaded HTML, and the DOM tree is built, but external resources like pictures <img> and stylesheets may not yet have loaded.
     */
   const managerAddTaskBtn = document.querySelector("button#managerAddTaskBtn");
-  const taskViewBtn = document.querySelectorAll("button.taskViewBtn");
+  const taskViewBtn = document.querySelectorAll(".taskViewBtn");
   const taskDeleteBtn = document.querySelectorAll("button.taskDeleteBtn");
   const managerAddNoteToJobBtn = document.querySelector("button#managerAddNoteToJobBtn");
   const managerAddDocumentToJobBtn = document.querySelector("button#managerAddDocumentToJobBtn");
+  const managerAddNewTaskForm = document.querySelector("form#managerAddNewTaskForm");
+  const noteElements = document.querySelectorAll("a.noteElement");
+  const documentElements = document.querySelectorAll("a.documentElement");
   const clientsTable = $("#managerJobTasksTable").DataTable({
     autoWidth: true,
     processing: true,
@@ -50,8 +53,132 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     showMicroModal("tasks-form-modal");
   });
 
+  // show note elements
+  if (noteElements) {
+    const managerUpdateNoteForm = document.querySelector("form#managerUpdateNoteForm");
+    noteElements.forEach((element) => {
+      element.addEventListener("click", (event) => {
+        event.preventDefault();
+        const currentTarget = event.currentTarget;
+        const dataset = currentTarget.dataset;
+        const noteId = dataset["noteId"];
+        const url = window.localStorage.getItem("retrieveNoteUrl");
+        //update-note-form-modal
+        const requestOptions = {
+          method: "POST",
+          dataToSend: { noteId: noteId },
+          url: url,
+        };
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            const noteData = data["note"];
+            // console.log(noteData);
+            const callBacks = {
+              onOpenCallBack: () => {
+                managerUpdateNoteForm.elements["id"].value = noteData["id"];
+                managerUpdateNoteForm.elements["title"].value = noteData["title"];
+                managerUpdateNoteForm.elements["body"].value = noteData["body"];
+                managerUpdateNoteForm.elements["client"].value = noteData["client"];
+                managerUpdateNoteForm.elements["note_section"].value = noteData["note_section"];
+              },
+              onCloseCallback: () => {
+                managerUpdateNoteForm.elements["title"].value = "";
+                managerUpdateNoteForm.elements["id"].value = "";
+                managerUpdateNoteForm.elements["body"].value = "";
+                managerUpdateNoteForm.elements["client"].value = "";
+                managerUpdateNoteForm.elements["note_section"].value = "";
+              },
+            };
+            const modlaHandler = new MicroModalHandler("update-note-form-modal", callBacks);
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          });
+      });
+    });
+
+    managerUpdateNoteForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const currentTarget = event.currentTarget;
+      const fullUrl = event.currentTarget.action;
+      const formData = formInputSerializer(currentTarget);
+      const requestOptions = {
+        method: "PUT",
+        dataToSend: formData,
+        url: fullUrl,
+      };
+      const request = sendRequest(requestOptions);
+      request
+        .then((data) => {
+          showToastNotification("Note updated", "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        })
+        .catch((error) => {
+          console.error(error);
+          showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+        })
+        .finally(() => {
+          console.warn("Finally");
+        });
+    });
+  }
+
+  // show document elements
+  /* if (documentElements) {
+    documentElements.forEach((element) => {
+      element.addEventListener("click", (event) => {
+        event.preventDefault();
+        const currentTarget = event.currentTarget;
+        const dataset = currentTarget.dataset;
+        const documentId = dataset["documentId"];
+        //update-note-form-modal
+      });
+    });
+  } */
+  // add new task form
+  managerAddNewTaskForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const currentTarget = event.currentTarget;
+    const fieldset = currentTarget.querySelector("fieldset");
+    fieldset.disabled = true;
+    const formData = formInputSerializer(currentTarget);
+    Array.from(currentTarget.elements).forEach((element) => {
+      element.classList.remove("is-danger");
+    });
+    const requestOptions = {
+      method: "POST",
+      dataToSend: formData,
+      url: currentTarget.action,
+    };
+    const request = sendRequest(requestOptions);
+    request
+      .then((data) => {
+        showToastNotification("Task created successfully", "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      })
+      .catch((error) => {
+        console.error(error);
+        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+        fieldset.disabled = false;
+        const userErrors = error["user_error_msg"];
+        for (const key in userErrors) {
+          if (Object.hasOwnProperty.call(userErrors, key)) {
+            const element = userErrors[key];
+            currentTarget[key].classList.add(...["is-danger"]);
+          }
+        }
+      });
+  });
+
   taskViewBtn.forEach((btn) => {
     btn.addEventListener("click", (ev) => {
+      ev.preventDefault();
       const currentTarget = ev.currentTarget;
       const taskId = currentTarget.dataset["taskId"];
       alert(taskId);

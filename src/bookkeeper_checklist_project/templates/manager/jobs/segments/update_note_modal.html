@@ -1,0 +1,38 @@
+{% load crispy_forms_tags %}
+<div class="modal micromodal-slide" id="update-note-form-modal" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
+            aria-labelledby="update-note-form-modal-title">
+            <header class="modal__header">
+                <h2 class="modal__title" id="update-note-form-modal-title">
+                    Update Note
+                </h2>
+
+                <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+                </button>
+            </header>
+            <main class="modal__content" id="update-note-form-modal-content">
+                <form action="{% url 'notes:api:manager:update-note' %}" method="POST"
+                    id="managerUpdateNoteForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="user" value="{{ request.user.pk }}" />
+                    <input type="hidden" name="job" value="{{ object.pk }}" />
+                    <input type="hidden" name="id" value="" />
+                    <fieldset form="managerUpdateNoteForm">
+                        {{ note_form|crispy }}
+                    </fieldset>
+                    
+                </form>
+            </main>
+            <footer class="modal__footer">
+                <button type="submit" form="managerUpdateNoteForm"
+                    class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
+                    Update
+                </button>
+                <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+                    Close
+                </button>
+            </footer>
+        </div>
+    </div>
+</div>

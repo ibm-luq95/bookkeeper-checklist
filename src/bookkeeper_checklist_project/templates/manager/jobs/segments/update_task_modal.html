@@ -1,29 +1,29 @@
 {% load crispy_forms_tags %}
-<div class="modal micromodal-slide" id="tasks-form-modal" aria-hidden="true">
+<div class="modal micromodal-slide" id="update-tasks-form-modal" aria-hidden="true">
     <div class="modal__overlay" tabindex="-1">
         <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-            aria-labelledby="tasks-form-modal-title">
+            aria-labelledby="update-tasks-form-modal-title">
             <header class="modal__header">
-                <h2 class="modal__title" id="tasks-form-modal-title">
-                    New task
+                <h2 class="modal__title" id="update-tasks-form-modal-title">
+                    Update task
                 </h2>
 
                 <button class="modal__close" aria-label="Close modal" data-micromodal-close>
                 </button>
             </header>
-            <main class="modal__content" id="tasks-form-modal-content">
+            <main class="modal__content" id="update-tasks-form-modal-content">
                 <form action="{% url 'task:api:manager:create' %}" method="POST"
-                    id="managerAddNewTaskForm">
+                    id="managerUpdateTaskForm">
                     {% csrf_token %}
-                    <fieldset form="managerAddNewTaskForm">
+                    <fieldset form="managerUpdateTaskForm">
                         {{ task_form|crispy }}
                     </fieldset>
                 </form>
             </main>
             <footer class="modal__footer">
-                <button type="submit" form="managerAddNewTaskForm"
+                <button type="submit" form="managerUpdateTaskForm"
                     class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
-                    Add
+                    Update
                 </button>
                 <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
                     Close

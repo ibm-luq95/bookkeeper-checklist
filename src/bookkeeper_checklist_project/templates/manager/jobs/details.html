@@ -95,6 +95,7 @@
                                            id="managerJobTasksTable">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Title</th>
                                                 <th>Status</th>
                                                 <th>Due Date</th>
@@ -103,6 +104,7 @@
                                         </thead>
                                         <tfoot>
                                             <tr>
+                                                <th></th>
                                                 <th>Title</th>
                                                 <th>Status</th>
                                                 <th>Due Date</th>
@@ -115,7 +117,12 @@
                                             {% for task in object.tasks.all %}
                                                 <tr>
                                                     <td>
-                                                        <a href="">{{ task.title }}</a>
+                                                        <label class="checkbox">
+                                                            <input type="checkbox" />
+                                                          </label>
+                                                    </td>
+                                                    <td>
+                                                        <a data-task-id="{{ object.pk }}" class="taskViewBtn">{{ task.title }}</a>
                                                     </td>
                                                     <td>{{ object.get_status_display }}</td>
                                                     <td>{{ object.due_date }}</td>
@@ -200,10 +207,17 @@
                         <div class="media-content">
                             <div class="content">
                                 <p>
-                                    <strong>Bookkeeper</strong>
+                                    <strong>Bookkeeper(s)</strong>
                                     <!-- <small>@johnsmith</small> <small>31m</small> -->
                                     <br>
-                                    <a>{{ object.bookkeeper.get.user.fullname }}</a>
+                                    
+                                    {% for bookkeeper in object.bookkeeper.filter %}
+                                        <a class="is-block" target="_blank" href="{% url 'manager:bookkeeper:details' bookkeeper.slug %}">{{ bookkeeper.user.fullname }}</a>
+                                    {% empty %}
+                                        No Bookkeeper(s)
+                                    {% endfor %}
+                                        
+                                    
                                 </p>
                             </div>
 
@@ -233,7 +247,7 @@
                         </div>
  
                         {% for document in object.documents.filter %}
-                            <a class="panel-block is-active documentElement"
+                            <a class="panel-block is-active documentElement" href="{{ document.document_file.url  }}" target="_blank"
                                data-document-id="{{ document.pk }}">
                                 <span class="panel-icon">
                                     <i class="fas fa-book"
@@ -299,14 +313,34 @@
 <!-- Start Task Form -->
 {% include 'manager/jobs/segments/add_task_modal.html' %}
 <!-- End Task Form -->
+<!-- Start Update Task Form -->
+{% include 'manager/jobs/segments/update_task_modal.html' %}
+<!-- End Update Task Form -->
 <!-- Start Document Form -->
 {% include 'manager/jobs/segments/add_document_modal.html' %}
 <!-- End Document Form -->
+<!-- Start Update Document Form -->
+{% include 'manager/jobs/segments/update_document_modal.html' %}
+<!-- End Update Document Form -->
 <!-- Start Note Form -->
 {% include 'manager/jobs/segments/add_note_modal.html' %}
 <!-- End Note Form -->
+<!-- Start Update Note Form -->
+{% include 'manager/jobs/segments/update_note_modal.html' %}
+<!-- End Update Note Form -->
 {% endblock dashboard_content %}
 
 {% block externaljs %}
+<script defer>
+    window.localStorage.setItem("retrieveNoteUrl", "{% url 'notes:api:manager:retrieve-note-manager' %}");
+    window.localStorage.setItem("UpdateNoteUrl", "{% url 'notes:api:manager:update-note' %}");
+    window.localStorage.setItem("DeleteNoteUrl", "{% url 'notes:api:manager:delete-note' %}");
+    window.localStorage.setItem("DeleteDocumentUrl", "{% url 'documents:api:manager_api:delete-document' %}");
+    window.localStorage.setItem("RetrieveJobUrl", "{% url 'jobs:api:manager:retrieve' %}");
+    window.localStorage.setItem("DeleteJobUrl", "{% url 'jobs:api:manager:delete' %}");
+    window.localStorage.setItem("RetrieveTaskUrl", "{% url 'task:api:manager:retrieve' %}");
+    window.localStorage.setItem("DeleteTaskUrl", "{% url 'task:api:manager:delete' %}");
+    window.localStorage.setItem("origin", "{{ origin }}");
+  </script>
     <script src="{% static 'js/manager/jobs/details.js' %}" defer type="module"></script>
 {% endblock externaljs %}

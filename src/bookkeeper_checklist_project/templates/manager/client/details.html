@@ -206,7 +206,7 @@
                             <tr>
 
                               <td data-label="Title">
-                                <a href="">{{ job.title }}</a>
+                                <a href="{% url 'manager:jobs:details' job.pk %}" target="_blank">{{ job.title }}</a>
                               </td>
 
                               <td data-label="Bookkeeper(s)">

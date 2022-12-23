@@ -12,7 +12,7 @@ from .client import (
     ClientUpdateView,
     ClientDeleteView,
 )
-from .jobs import JobListView, JobCreateView, JobDetailsView
+from .jobs import JobListView, JobCreateView, JobDetailsView, JobUpdateView
 from .client_account import (
     ClientAccountCreateView,
     ClientAccountListView,

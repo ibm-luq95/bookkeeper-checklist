@@ -27,6 +27,14 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const managerAddNewTaskForm = document.querySelector("form#managerAddNewTaskForm");
   const noteElements = document.querySelectorAll("a.noteElement");
   const documentElements = document.querySelectorAll("a.documentElement");
+  const managerUpdateTaskForm = document.querySelector("form#managerUpdateTaskForm");
+  const managerTaskCheckboxInputs = document.querySelectorAll("input.managerTaskCheckboxInput");
+  const managerDeleteDocumentBtns = document.querySelectorAll(".managerDeleteDocumentBtn");
+  const managerDeleteNotesBtns = document.querySelectorAll(".managerDeleteNotesBtns");
+  const allCheckedTasks = new Array();
+  const managerTaskParentCheckboxInput = document.querySelector(
+    "input#managerTaskParentCheckboxInput",
+  );
   const clientsTable = $("#managerJobTasksTable").DataTable({
     autoWidth: true,
     processing: true,
@@ -42,15 +50,101 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     fixedHeader: true,
     responsive: true,
     dom: "Bfrtip",
-    buttons: [
-      // "copy",
-      "csv",
-      "pdf",
-    ],
+    buttons: ["Update", "csv", "pdf"],
   });
 
   managerAddTaskBtn.addEventListener("click", (ev) => {
     showMicroModal("tasks-form-modal");
+  });
+
+  // delete task buttons from tasks table
+  managerDeleteNotesBtns.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const currentTarget = event.currentTarget;
+      const noteId = currentTarget.dataset["noteId"];
+      const noteTitle = currentTarget.dataset["noteTitle"];
+      const msg = confirm(`Do you want to delete note ${noteTitle}?`);
+      const url = window.localStorage.getItem("DeleteNoteUrl");
+      if (msg) {
+        const requestOptions = {
+          method: "DELETE",
+          dataToSend: { noteId: noteId },
+          url: url,
+        };
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            showToastNotification("Note deleted", "success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          });
+      }
+    });
+  });
+
+  // delete document button
+  managerDeleteDocumentBtns.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const currentTarget = event.currentTarget;
+      const documentId = currentTarget.dataset["documentId"];
+      const documentTitle = currentTarget.dataset["documentTitle"];
+      const msg = confirm(`Do you want to delete ${documentTitle}?`);
+      const url = window.localStorage.getItem("DeleteDocumentUrl");
+      if (msg) {
+        const requestOptions = {
+          method: "DELETE",
+          dataToSend: { documentId: documentId },
+          url: url,
+        };
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            showToastNotification("Document deleted successfully", "success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          });
+      }
+    });
+  });
+
+  if (managerTaskParentCheckboxInput) {
+    managerTaskParentCheckboxInput.addEventListener("change", (ev) => {
+      const checked = ev.currentTarget.checked;
+      if (checked === true) {
+        managerTaskCheckboxInputs.forEach((input) => {
+          input.checked = true;
+        });
+      } else {
+        managerTaskCheckboxInputs.forEach((input) => {
+          input.checked = false;
+        });
+      }
+    });
+  }
+
+  managerTaskCheckboxInputs.forEach((input) => {
+    input.addEventListener("change", (event) => {
+      const currentTarget = event.currentTarget;
+      const taskId = currentTarget.value;
+      if (event.currentTarget.checked === true) {
+        allCheckedTasks.push(taskId);
+      } else {
+        const idx = allCheckedTasks.indexOf(taskId);
+        // delete allCheckedTasks[idx];
+        allCheckedTasks.splice(idx);
+      }
+      // console.log(allCheckedTasks);
+    });
   });
 
   // show note elements
@@ -128,14 +222,32 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   }
 
   // show document elements
-  /* if (documentElements) {
+  /*   if (documentElements) {
     documentElements.forEach((element) => {
       element.addEventListener("click", (event) => {
         event.preventDefault();
         const currentTarget = event.currentTarget;
         const dataset = currentTarget.dataset;
         const documentId = dataset["documentId"];
-        //update-note-form-modal
+        const url = window.localStorage.getItem("RetrieveDocumentUrl");
+        const requestOptions = {
+          method: "POST",
+          dataToSend: { documentId: documentId },
+          url: url,
+        };
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            console.log(data);
+            new MicroModalHandler("update-document-form-modal", {});
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          })
+          .finally(() => {
+            console.warn("Finally");
+          });
       });
     });
   } */
@@ -176,19 +288,119 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       });
   });
 
+  managerUpdateTaskForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const currentTarget = event.currentTarget;
+    const formData = formInputSerializer(currentTarget);
+    const url = currentTarget.action;
+    const fieldset = currentTarget.querySelector("fieldset");
+    fieldset.disabled = true;
+    const requestOptions = {
+      method: "PUT",
+      dataToSend: formData,
+      url: url,
+    };
+    const request = sendRequest(requestOptions);
+    request
+      .then((data) => {
+        console.log(data);
+        showToastNotification(`${JSON.stringify(data["msg"])}`, "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      })
+      .catch((error) => {
+        console.error(error);
+        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+        const userErrors = error["user_error_msg"];
+        for (const key in userErrors) {
+          if (Object.hasOwnProperty.call(userErrors, key)) {
+            const element = userErrors[key];
+            currentTarget[key].classList.add(...["is-danger"]);
+          }
+        }
+      })
+      .finally(() => {
+        fieldset.disabled = false;
+      });
+  });
+
   taskViewBtn.forEach((btn) => {
     btn.addEventListener("click", (ev) => {
       ev.preventDefault();
       const currentTarget = ev.currentTarget;
       const taskId = currentTarget.dataset["taskId"];
-      alert(taskId);
+      const url = window.localStorage.getItem("RetrieveTaskUrl");
+      //update-tasks-form-modal
+      const callBacks = {
+        onOpenCallBack: () => {
+          const requestOptions = {
+            method: "POST",
+            dataToSend: { taskId: taskId },
+            url: url,
+          };
+          const request = sendRequest(requestOptions);
+          request
+            .then((data) => {
+              const taskObject = data["task"];
+              // console.log(taskObject);
+              managerUpdateTaskForm["job"].value = taskObject["job"];
+              managerUpdateTaskForm["taskId"].value = taskObject["id"];
+              managerUpdateTaskForm["title"].value = taskObject["title"];
+              managerUpdateTaskForm["task_type"].value = taskObject["task_type"];
+              managerUpdateTaskForm["task_status"].value = taskObject["task_status"];
+              managerUpdateTaskForm["hints"].value = taskObject["hints"];
+              managerUpdateTaskForm["additional_notes"].value = taskObject["additional_notes"];
+              managerUpdateTaskForm["start_date"].value = taskObject["start_date"];
+              managerUpdateTaskForm["due_date"].value = taskObject["due_date"];
+              if (taskObject["is_completed"] === true) {
+                managerUpdateTaskForm["is_completed"].checked = true;
+              } else {
+                managerUpdateTaskForm["is_completed"].checked = false;
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+            })
+            .finally(() => {
+              // jobsFormFieldset.disabled = false;
+              // managerJobsLoaderBtn.hidden = true;
+            });
+        },
+        onCloseCallback: () => {},
+      };
+      const modlaHandler = new MicroModalHandler("update-tasks-form-modal", callBacks);
     });
   });
   taskDeleteBtn.forEach((btn) => {
     btn.addEventListener("click", (ev) => {
       const currentTarget = ev.currentTarget;
       const taskId = currentTarget.dataset["taskId"];
-      alert(taskId);
+      const taskTitle = currentTarget.dataset["taskTitle"];
+      const msg = confirm(`Do you want delete task ${taskTitle}?`);
+      const url = window.localStorage.getItem("DeleteTaskUrl");
+      if (msg) {
+        const requestOptions = {
+          method: "DELETE",
+          dataToSend: { taskId: taskId },
+          url: url,
+        };
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            console.log(data);
+            showToastNotification(`${JSON.stringify(data["msg"])}`, "success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          })
+          .finally(() => {});
+      }
     });
   });
 

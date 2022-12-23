@@ -12,10 +12,11 @@
                 </button>
             </header>
             <main class="modal__content" id="update-tasks-form-modal-content">
-                <form action="{% url 'task:api:manager:create' %}" method="POST"
-                    id="managerUpdateTaskForm">
+                <form action="{% url 'task:api:manager:update' %}" method="PUT" id="managerUpdateTaskForm">
                     {% csrf_token %}
                     <fieldset form="managerUpdateTaskForm">
+                        <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
+                        <input type="hidden" name="taskId" id="taskId" value="" />
                         {{ task_form|crispy }}
                     </fieldset>
                 </form>

@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
+from django.utils import timezone
 
 from bookkeeper.models import Bookkeeper
 from client.models import Client
@@ -81,3 +82,10 @@ class Job(BaseModelMixin):
     def get_all_not_completed_tasks(self):
         filtered = filter(lambda task: task.is_completed is False, self.tasks.all())
         return tuple(filtered)
+
+    def is_job_pass_due(self) -> bool:
+        now = timezone.now().date()
+        if self.due_date > now:
+            return True
+        else:
+            return False

@@ -8,7 +8,7 @@ from important_contact.forms import ImportantContactForm
 class ClientForm(BaseModelFormMixin):
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
-        self.fields.pop("important_contact")
+        # self.fields.pop("important_contact")
 
     class Meta(BaseModelFormMixin.Meta):
         model = Client

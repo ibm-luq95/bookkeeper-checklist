@@ -1,0 +1,24 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-update-important-contact-form">
+    <div class="box">
+        <form method="post" id="update-important-contact-form">
+            {% csrf_token %}
+            <legend class="title has-text-black">Update contact to {{ object.client.name }}</legend>
+            <hr>
+            <fieldset form="update-important-contact-form">
+                {{form| crispy}}
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info
+                        is-fullwidth">Update</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

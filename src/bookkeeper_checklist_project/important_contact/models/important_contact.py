@@ -21,6 +21,8 @@ class ImportantContact(BaseModelMixin):
         on_delete=models.CASCADE,
         related_name="important_contacts",
         db_index=True,
+        null=True,
+        blank=True
     )
     contact_label = models.CharField(
         _("contact label"),

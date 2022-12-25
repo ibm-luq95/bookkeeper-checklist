@@ -101,6 +101,9 @@ class SiteSettings(BaseModelMixin):
         help_text=HELP_MESSAGES.get("instagram"),
     )
 
+    def __str__(self):
+        return f"Settings for {self.slug}"
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.slug)
         super(SiteSettings, self).save(*args, **kwargs)

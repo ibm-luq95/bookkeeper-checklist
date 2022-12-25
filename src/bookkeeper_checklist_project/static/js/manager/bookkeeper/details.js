@@ -110,7 +110,7 @@ document.addEventListener("readystatechange", (ev) => {
         // "copy",
         "csv",
         "pdf",
-        {
+        /* {
           text: "Add New Client",
           className: "is-success",
           action: (e, dt, node, config) => {
@@ -119,7 +119,7 @@ document.addEventListener("readystatechange", (ev) => {
             // dt.data.reload();
             showMicroModal("client-form-modal");
           },
-        },
+        }, */
       ],
     });
 
@@ -142,7 +142,7 @@ document.addEventListener("readystatechange", (ev) => {
         // "copy",
         "csv",
         "pdf",
-        {
+        /* {
           text: "Add New Task",
           className: "is-success",
           action: (e, dt, node, config) => {
@@ -151,7 +151,7 @@ document.addEventListener("readystatechange", (ev) => {
             // dt.data.reload();
             showMicroModal("tasks-form-modal");
           },
-        },
+        }, */
       ],
     });
 

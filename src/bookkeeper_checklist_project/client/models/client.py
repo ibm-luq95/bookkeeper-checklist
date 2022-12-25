@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-#
 from PIL import Image
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from core.models import BaseModelMixin
-from important_contact.models import ImportantContact
 
 
 class Client(BaseModelMixin):
@@ -14,19 +14,12 @@ class Client(BaseModelMixin):
         BaseModelMixin (models.Model): Django base model mixin
     """
 
-    important_contact = models.OneToOneField(
-        to=ImportantContact,
-        on_delete=models.RESTRICT,
-        null=True,
-        related_name="client",
-        blank=True,
-    )
     name = models.CharField(_("name"), max_length=50, null=True)
     email = models.EmailField(_("email"), max_length=50, null=True)
     industry = models.CharField(_("industry"), max_length=50, null=True)
-    is_active = models.BooleanField(_("is_active"), default=True)
+    is_active = models.BooleanField(_("is active"), default=True)
     company_logo = models.ImageField(
-        _("company_logo"),
+        _("company logo"),
         upload_to="logos/",
         null=True,
         blank=True,
@@ -58,4 +51,4 @@ class Client(BaseModelMixin):
             return 0
         for job in self.jobs.all():
             all_tasks_count.append(job.tasks.count())
-        return sum(all_tasks_count)
+        return sum(all_tasks_count)  # TODO: check if sum or len to use

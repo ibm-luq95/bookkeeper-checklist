@@ -7,9 +7,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
 from client.models import Client
-from core.utils import debugging_print
+from core.utils import debugging_print, get_trans_txt
 from .mixins import ManagerAccessMixin
-from client.forms import ClientCreationMultiForm
+from client.forms import ClientForm
 from important_contact.forms import ImportantContactForm
 from documents.forms import DocumentForm
 from notes.forms import NoteForm
@@ -35,27 +35,28 @@ class ClientCreateView(
 ):
     login_url = reverse_lazy("users:login")
     template_name = "manager/client/create.html"
-    form_class = ClientCreationMultiForm
+    form_class = ClientForm
     success_message = "Client created successfully"
     success_url = reverse_lazy("manager:client:list")
+
     # template_name_suffix = "_create_client"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = "Create client"
+        context.setdefault("title", get_trans_txt("Create client"))
         return context
 
-    def form_valid(self, form):
-        """If the form is valid, save the associated model."""
-        self.object = form.save()
-        # Save the user first, because the profile needs a user before it
-        # can be saved.
-        client = form["client"].save(commit=False)
-        important_contact = form["important_contact"].save()
-        client.important_contact = important_contact
-        client.save()
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     """If the form is valid, save the associated model."""
+    #     self.object = form.save()
+    #     # Save the user first, because the profile needs a user before it
+    #     # can be saved.
+    #     client = form["client"].save(commit=False)
+    #     important_contact = form["important_contact"].save()
+    #     client.important_contact = important_contact
+    #     client.save()
+    #     return super().form_valid(form)
 
 
 class ClientDetailView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
@@ -67,9 +68,13 @@ class ClientDetailView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         client = self.get_object()
-        context["title"] = f"Client - {client.name}"
+        important_contacts = client.important_contacts.filter().select_related()
+        context.setdefault("title", f"Client - {client.name}")
+        # important_contact_form = ImportantContactForm(
+        #     instance=client.important_contact, is_readonly=False
+        # )  # OLD, Before refactoring the important contact
         important_contact_form = ImportantContactForm(
-            instance=client.important_contact, is_readonly=False
+            is_readonly=True, remove_client_field=True
         )
         company_services_form = CompanyServiceForm(client=client)
         jobs_form = JobForm(client=client)
@@ -82,6 +87,7 @@ class ClientDetailView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         context.setdefault("company_services_form", company_services_form)
         context.setdefault("jobs_form", jobs_form)
         context.setdefault("tasks_form", tasks_form)
+        context.setdefault("important_contacts", important_contacts)
         origin = self.request.get_host()
         context.setdefault("origin", origin)
         return context
@@ -94,7 +100,7 @@ class ClientUpdateView(
     template_name = "manager/client/update.html"
     model = Client
     template_name_suffix = "_update_form"
-    form_class = ClientCreationMultiForm
+    form_class = ClientForm
     success_url = reverse_lazy("manager:client:list")
     success_message = "Update successfully"
 
@@ -108,15 +114,15 @@ class ClientUpdateView(
         # context.setdefault("important_contact_form", important_contact_form)
         return context
 
-    def get_form_kwargs(self):
-        kwargs = super(ClientUpdateView, self).get_form_kwargs()
-        kwargs.update(
-            instance={
-                "client": self.object,
-                "important_contact": self.object.important_contact,
-            }
-        )
-        return kwargs
+    # def get_form_kwargs(self):
+    #     kwargs = super(ClientUpdateView, self).get_form_kwargs()
+    #     kwargs.update(
+    #         instance={
+    #             "client": self.object,
+    #             "important_contact": self.object.important_contact,
+    #         }
+    #     )
+    #     return kwargs
 
 
 class ClientDeleteView(

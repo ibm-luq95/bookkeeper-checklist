@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 
 from client.models import Client
 from core.utils import get_formatted_logger
+from important_contact.forms import ImportantContactForm
 from jobs.models import Job
 from .mixins import BookkeeperAccessMixin
 
@@ -46,11 +47,17 @@ class ClientsDetailsView(
     template_name = "bookkeeper/clients/details.html"
     login_url = reverse_lazy("users:login")
     model = Client
+    http_method_names = ["get"]
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context.setdefault("title", self.get_object().name)
+        client = self.get_object()
+        important_contact_form = ImportantContactForm(
+            is_readonly=True, remove_client_field=True
+        )
+        context.setdefault("title", client.name)
+        context.setdefault("important_contact_form", important_contact_form)
         return context
 
     def test_func(self) -> bool | None:

@@ -7,3 +7,4 @@ from .bank_account import AccountType
 from .company_services import ServiceNameEnum
 from .documents import DocumentTypesEnum
 from .notes import NoteTypesEnum
+from .important_contact import ImportantContactLabelsEnum

@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const clientsTable = $("#managerJobTasksTable").DataTable({
     autoWidth: true,
     processing: true,
-    // "info": false,
+    info: false,
     // "paging": false,
     // stateSave: true,
     stateSaveCallback: function (settings, data) {
@@ -50,7 +50,22 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     fixedHeader: true,
     responsive: true,
     dom: "Bfrtip",
-    buttons: ["Update", "csv", "pdf"],
+    // buttons: ["Update", "csv", "pdf"],
+    buttons: [
+      {
+        text: "Done",
+        action: (e, dt, node, config) => {
+          // @audit
+          if (allCheckedTasks.length <= 0) {
+            alert("No tasks checked");
+          } else {
+            console.log(allCheckedTasks);
+          }
+        },
+      },
+      "csv",
+      "pdf",
+    ],
   });
 
   managerAddTaskBtn.addEventListener("click", (ev) => {
@@ -129,6 +144,10 @@ document.addEventListener("DOMContentLoaded", (ev) => {
           input.checked = false;
         });
       }
+      const changeEvent = new Event("change");
+      managerTaskCheckboxInputs.forEach((input) => {
+        input.dispatchEvent(changeEvent);
+      });
     });
   }
 

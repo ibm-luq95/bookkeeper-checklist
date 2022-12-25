@@ -6,6 +6,7 @@ import {
   formInputSerializer,
   sendRequest,
   UploadFileRequest,
+  setFormInputValues,
 } from "../../utils/helpers.js";
 import { getCookie } from "../../utils/cookie.js";
 import {
@@ -17,9 +18,9 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   /*
     the browser fully loaded HTML, and the DOM tree is built, but external resources like pictures <img> and stylesheets may not yet have loaded.
     */
-  const managerShowClientImportantContactBtn = document.querySelector(
+  /* const managerShowClientImportantContactBtn = document.querySelector(
     "button#managerShowClientImportantContactBtn",
-  );
+  ); */
   const addDocumentFormWrapper = document.querySelector("div#addDocumentFormWrapper");
   const addDocumentForm = addDocumentFormWrapper.querySelector("form#addDocumentForm");
   const addDocumentFormFieldSet = addDocumentForm.querySelector("fieldset");
@@ -47,6 +48,9 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const managerJobsLoaderBtn = document.querySelector("button#managerJobsLoaderBtn");
   const jobsForm = jobsFormWrapper.querySelector("form#jobsForm");
   const jobsFormFieldset = jobsForm.querySelector("fieldset");
+  const managerViewImportantContactBtns = document.querySelectorAll(
+    "button.managerViewImportantContactBtn",
+  );
 
   const managerAddTasksBtn = document.querySelector("button#managerAddTasksBtn");
   const tasksCreateFormWrapper = document.querySelector("div#tasksCreateFormWrapper");
@@ -58,10 +62,46 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const managerViewTaskBtn = document.querySelectorAll("button.managerViewTaskBtn");
   const managerDeleteTaskBtn = document.querySelectorAll("button.managerDeleteTaskBtn");
   const tasksUpdateForm = document.querySelector("form#tasksUpdateForm");
-  const updateImportantContactForm = document.querySelector("form#updateImportantContactForm");
+  // const updateImportantContactForm = document.querySelector("form#updateImportantContactForm");
+
+  // retrive important contact button event
+  if (managerViewImportantContactBtns) {
+    managerViewImportantContactBtns.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        const currentTarget = event.currentTarget;
+        const importantContactId = currentTarget.dataset["importantContactId"];
+        const url = window.localStorage.getItem("RetrieveImportantContactUrl");
+        const callBacks = {
+          onOpenCallBack: () => {
+            const requestOptions = {
+              method: "POST",
+              dataToSend: { importantContactId: importantContactId },
+              url: url,
+            };
+            //updateImportantContactForm
+            const request = sendRequest(requestOptions);
+            request
+              .then((data) => {
+                const importantContactObject = data["important_contact"];
+                setFormInputValues(updateImportantContactForm, importantContactObject);
+              })
+              .catch((error) => {
+                console.error(error);
+                showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+              })
+              .finally(() => {
+                // console.warn("Finally");
+              });
+          },
+          onCloseCallback: () => {},
+        };
+        new MicroModalHandler("important-contact-form-modal", callBacks);
+      });
+    });
+  }
 
   // update important contact form
-  updateImportantContactForm.addEventListener("submit", (event) => {
+  /* updateImportantContactForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const currentTarget = event.currentTarget;
     const fieldset = updateImportantContactForm.querySelector("fieldset");
@@ -89,7 +129,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
         fieldset.disabled = false;
         console.warn("Finally");
       });
-  });
+  }); */
 
   if (managerAddDocumentBtn) {
     managerAddDocumentBtn.addEventListener("click", (e) => {
@@ -106,9 +146,9 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   managerAddCompanyServiceBtn.addEventListener("click", (event) => {
     showMicroModal("company-services-form-modal");
   });
-  managerShowClientImportantContactBtn.addEventListener("click", (ev) => {
+  /* managerShowClientImportantContactBtn.addEventListener("click", (ev) => {
     showMicroModal("important-contact-form-modal");
-  });
+  }); */
   managerAddNoteBtn.addEventListener("click", (event) => {
     showMicroModal("notes-form-modal");
   });

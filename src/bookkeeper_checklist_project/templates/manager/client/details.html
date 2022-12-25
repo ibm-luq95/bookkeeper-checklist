@@ -41,10 +41,6 @@
               {{ object.industry }}
             </p>
             <p class="my-3">
-              <i class="fa fa-home fa-fw w3-margin-right w3-text-teal"></i>
-              London, UK
-            </p>
-            <p class="my-3">
               <i class="fa fa-envelope fa-fw w3-margin-right w3-text-teal"></i>
               {{ object.email }}
             </p>
@@ -55,116 +51,132 @@
 
             <p class="w3-large mb-2">
 
-              <h5 class="title is-4">
-                <i class="fa fa-building fa-fw mr-1 is-inline-block w3-text-teal"></i>
-                Important Contact
-                <button class="button is-small mx-3" type="button" id="managerShowClientImportantContactBtn">
-                  <i class="fa-solid fa-eye"></i>
-                </button>
-              </h5>
-            </p>
-            <div class="list has-visible-pointer-controls">
-              <div class="list-item">
-                <div class="list-item-content">
-                  <div class="list-item-title">Contact Name</div>
-                  <div class="list-item-description">{{ object.important_contact.contact_fullname }}</div>
-                </div>
-
-                {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
+              
+                <h5 class="title is-4">
+                  <i class="fa fa-building fa-fw mr-1 is-inline-block w3-text-teal"></i>
+                  Important Contact ({{ important_contacts.count }})
+                  <a href="{% url 'manager:important_contact:create' %}?client={{ object.pk }}" target="_blank" title="Create new contact" class="button is-small mx-3">
+                    <i class="fa-solid fa-plus"></i>
+                  </a>
+                </h5>
+              </p>
+              
+              {% for contact in important_contacts %}
+              <section class="manager-client-important-contact-block">
+                <div class="list has-visible-pointer-controls">
+                  <div class="list-item">
+                    <div class="list-item-content">
+                      <div class="list-item-title">Label</div>
+                      <div class="list-item-description">{{ contact.get_contact_label_display }}</div>
+                    </div>
+    
+                    <div class="list-item-controls">
+                      <div class="buttons is-right">
+                        <button class="button is-small managerViewImportantContactBtn" data-important-contact-id="{{ contact.pk }}" type="button" title="View all details related to contact">
+                          <span class="icon is-small">
+                            <i class="fa-solid fa-eye"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                {% endcomment %}
-              </div>
 
-              <div class="list-item">
-                <div class="list-item-content">
-                  <div class="list-item-title">Label</div>
-                  <div class="list-item-description">{{ object.important_contact.contact_label }}</div>
-                </div>
-
-                {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
+                  <div class="list-item">
+                    <div class="list-item-content">
+                      <div class="list-item-title">Company Name</div>
+                      <div class="list-item-description">
+                        {{ contact.company_name }}
+                      </div>
+                    </div>
+    
+                    {% comment %}
+                    <div class="list-item-controls">
+                      <div class="buttons is-right">
+                        <button class="button">
+                          <span class="icon is-small">
+                            <i class="fas fa-ellipsis-h"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    {% endcomment %}
                   </div>
-                </div>
-                {% endcomment %}
-              </div>
-
-              <div class="list-item">
-                <div class="list-item-content">
-                  <div class="list-item-title">Phone</div>
-                  <div class="list-item-description">{{ object.important_contact.contact_phone }}</div>
-                </div>
-
-                {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
+    
+                  <div class="list-item">
+                    <div class="list-item-content">
+                      <div class="list-item-title">Phone</div>
+                      <div class="list-item-description">
+                        {{ contact.contact_phone }}
+                      </div>
+                    </div>
+    
+                    {% comment %}
+                    <div class="list-item-controls">
+                      <div class="buttons is-right">
+                        <button class="button">
+                          <span class="icon is-small">
+                            <i class="fas fa-ellipsis-h"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    {% endcomment %}
                   </div>
-                </div>
-                {% endcomment %}
-              </div>
-
-              <div class="list-item">
-                <div class="list-item-content">
-                  <div class="list-item-title">Email Contact</div>
-                  <div class="list-item-description">{{ object.important_contact.contact_email }}</div>
-                </div>
-
-                {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
+    
+                  <div class="list-item">
+                    <div class="list-item-content">
+                      <div class="list-item-title">Email Contact</div>
+                      <div class="list-item-description">
+                        <a href="mailto:{{ contact.contact_email }}">
+                          {{ contact.contact_email }}
+                        </a>
+                      </div>
+                    </div>
+    
+                    {% comment %}
+                    <div class="list-item-controls">
+                      <div class="buttons is-right">
+                        <button class="button">
+                          <span class="icon is-small">
+                            <i class="fas fa-ellipsis-h"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    {% endcomment %}
                   </div>
-                </div>
-                {% endcomment %}
-              </div>
-
-              <div class="list-item">
-                <div class="list-item-content">
-                  <div class="list-item-title">Website URL</div>
-                  <div class="list-item-description">{{ object.important_contact.contact_website }}</div>
-                </div>
-
-                {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
+    
+                  <div class="list-item">
+                    <div class="list-item-content">
+                      <div class="list-item-title">Website URL</div>
+                      <div class="list-item-description">
+                        <a href="{{ contact.contact_website }}" target="_blank">
+                          {{ contact.contact_website }}
+                        </a>
+                      </div>
+                    </div>
+    
+                    {% comment %}
+                    <div class="list-item-controls">
+                      <div class="buttons is-right">
+                        <button class="button">
+                          <span class="icon is-small">
+                            <i class="fas fa-ellipsis-h"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    {% endcomment %}
                   </div>
+    
+    
+    
                 </div>
-                {% endcomment %}
-              </div>
-
-
-
-            </div>
-            <br />
-
-            <br />
+              </section>
+              <hr />
+              {% empty %}
+              <div class="notification is-warning mb-5">No contact(s) for this client</div>
+              {% endfor %}
           </div>
         </div>
         <br />
@@ -770,7 +782,7 @@
       </header>
       <main class="modal__content" id="important-contact-form-modal-content">
 
-        <form action="{% url 'important_contact:api:manager:update' %}" method="PUT" id="updateImportantContactForm">
+        <form action="" id="updateImportantContactForm">
           <fieldset form="updateImportantContactForm">
             {% csrf_token %}
           <input type="hidden" name="client" value="{{ object.pk }}" />
@@ -780,9 +792,13 @@
 
       </main>
       <footer class="modal__footer">
+        
+        {% comment %}
         <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="updateImportantContactForm">
           Update
         </button>
+        {% endcomment %}
+          
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
           Close
         </button>
@@ -1184,6 +1200,7 @@
   window.localStorage.setItem("DeleteJobUrl", "{% url 'jobs:api:manager:delete' %}");
   window.localStorage.setItem("RetrieveTaskUrl", "{% url 'task:api:manager:retrieve' %}");
   window.localStorage.setItem("DeleteTaskUrl", "{% url 'task:api:manager:delete' %}");
+  window.localStorage.setItem("RetrieveImportantContactUrl", "{% url 'important_contact:api:manager:retrieve' %}");
   window.localStorage.setItem("origin", "{{ origin }}");
 </script>
 <script src="{% static 'js/manager/client/details.js' %}" defer type="module"></script>

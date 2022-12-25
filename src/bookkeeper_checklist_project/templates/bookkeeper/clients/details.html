@@ -1,5 +1,6 @@
 {% extends "core/layouts/dashboard.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% load bookkeeper_tags %}
 {% block externalcss %}
   <link rel="stylesheet"
@@ -26,103 +27,141 @@
             </div>
             <div class="w3-container my-4">
               <p class="my-3">
-                <i class="fa fa-briefcase fa-fw w3-margin-right w3-text-teal"></i>Designer
+                <i class="fa fa-briefcase fa-fw w3-margin-right w3-text-teal"></i> {{ object.industry }}
               </p>
-              <p class="my-3">
+              <!-- <p class="my-3">
                 <i class="fa fa-home fa-fw w3-margin-right w3-text-teal"></i>London, UK
-              </p>
+              </p> -->
               <p class="my-3">
-                <i class="fa fa-envelope fa-fw w3-margin-right w3-text-teal"></i>ex@mail.com
+                <i class="fa fa-envelope fa-fw w3-margin-right w3-text-teal"></i>{{ object.email }}
               </p>
-              <p class="my-3">
+              <!-- <p class="my-3">
                 <i class="fa fa-phone fa-fw w3-margin-right w3-text-teal"></i>1224435534
-              </p>
+              </p> -->
               <hr />
-
-              <p class="w3-large mb-2">
-                <b>
-                  <i class="fa fa-building fa-fw mr-1 is-inline-block w3-text-teal"></i>
-                  Important Contact
-                </b>
-              </p>
+              <h5 class="title is-4">
+                <i class="fa fa-building fa-fw mr-1 is-inline-block w3-text-teal"></i>
+                Important Contact ({{ object.important_contacts.count }})
+               
+              </h5>
+            </p>
+            
+            {% for contact in object.important_contacts.select_related.filter %}
+            <section class="bookkeeper-client-important-contact-block">
               <div class="list has-visible-pointer-controls">
                 <div class="list-item">
                   <div class="list-item-content">
-                    <div class="list-item-title">Phone</div>
-                    <div class="list-item-description">{{ object.important_contact.contact_phone }}</div>
+                    <div class="list-item-title">Label</div>
+                    <div class="list-item-description">{{ contact.get_contact_label_display }}</div>
                   </div>
-
-                  {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
+  
+                  <div class="list-item-controls">
+                    <div class="buttons is-right">
+                      <button class="button is-small bookkeeperViewImportantContactBtn" data-important-contact-id="{{ contact.pk }}" type="button" title="View all details related to contact">
+                        <span class="icon is-small">
+                          <i class="fa-solid fa-eye"></i>
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
+
+                <div class="list-item">
+                  <div class="list-item-content">
+                    <div class="list-item-title">Company Name</div>
+                    <div class="list-item-description">
+                      {{ contact.company_name }}
+                    </div>
+                  </div>
+  
+                  {% comment %}
+                  <div class="list-item-controls">
+                    <div class="buttons is-right">
+                      <button class="button">
+                        <span class="icon is-small">
+                          <i class="fas fa-ellipsis-h"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
                   {% endcomment %}
                 </div>
-
+  
+                <div class="list-item">
+                  <div class="list-item-content">
+                    <div class="list-item-title">Phone</div>
+                    <div class="list-item-description">
+                      {{ contact.contact_phone }}
+                    </div>
+                  </div>
+  
+                  {% comment %}
+                  <div class="list-item-controls">
+                    <div class="buttons is-right">
+                      <button class="button">
+                        <span class="icon is-small">
+                          <i class="fas fa-ellipsis-h"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  {% endcomment %}
+                </div>
+  
+                <div class="list-item">
+                  <div class="list-item-content">
+                    <div class="list-item-title">Email Contact</div>
+                    <div class="list-item-description">
+                      <a href="mailto:{{ contact.contact_email }}">
+                        {{ contact.contact_email }}
+                      </a>
+                    </div>
+                  </div>
+  
+                  {% comment %}
+                  <div class="list-item-controls">
+                    <div class="buttons is-right">
+                      <button class="button">
+                        <span class="icon is-small">
+                          <i class="fas fa-ellipsis-h"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  {% endcomment %}
+                </div>
+  
                 <div class="list-item">
                   <div class="list-item-content">
                     <div class="list-item-title">Website URL</div>
-                    <div class="list-item-description">{{ object.important_contact.contact_website }}</div>
+                    <div class="list-item-description">
+                      <a href="{{ contact.contact_website }}" target="_blank">
+                        {{ contact.contact_website }}
+                      </a>
+                    </div>
                   </div>
+  
                   {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
+                  <div class="list-item-controls">
+                    <div class="buttons is-right">
+                      <button class="button">
+                        <span class="icon is-small">
+                          <i class="fas fa-ellipsis-h"></i>
+                        </span>
+                      </button>
+                    </div>
                   </div>
-                </div>
                   {% endcomment %}
                 </div>
-
-                <div class="list-item">
-                  <div class="list-item-content">
-                    <div class="list-item-title">Label</div>
-                    <div class="list-item-description">{{ object.important_contact.contact_label }}</div>
-                  </div>
-
-                  {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
-                  </div>
-                </div>
-                  {% endcomment %}
-                </div>
-                <div class="list-item">
-                  <div class="list-item-content">
-                    <div class="list-item-title">Email</div>
-                    <div class="list-item-description">{{ object.important_contact.contact_email }}</div>
-                  </div>
-
-                  {% comment %}
-                <div class="list-item-controls">
-                  <div class="buttons is-right">
-                    <button class="button">
-                      <span class="icon is-small">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
-                    </button>
-                  </div>
-                </div>
-                  {% endcomment %}
-                </div>
+  
+  
+  
               </div>
-              <br />
-
-              <br />
+            </section>
+            <hr />
+            {% empty %}
+            <div class="notification is-warning mb-5">No contact(s) for this client</div>
+            {% endfor %}
             </div>
           </div>
           <br />
@@ -1307,6 +1346,47 @@ Password
 </div>
 {% comment %} Task Details Modal {% endcomment %}
 
+<!-- Start Important Contact Form -->
+<div class="modal micromodal-slide" id="important-contact-form-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
+      aria-labelledby="important-contact-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="important-contact-form-modal-title">
+          Important Contact
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="important-contact-form-modal-content">
+
+        <form action="" id="updateImportantContactForm">
+          <fieldset form="updateImportantContactForm">
+            {% csrf_token %}
+          <input type="hidden" name="client" value="{{ object.pk }}" />
+          {{ important_contact_form|crispy }}
+          </fieldset>
+        </form>
+
+      </main>
+      <footer class="modal__footer">
+        
+        {% comment %}
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="updateImportantContactForm">
+          Update
+        </button>
+        {% endcomment %}
+          
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+<!-- End Important Contact Form -->
+
 {% endblock dashboard_content %}
 
 {% block externaljs %}
@@ -1314,6 +1394,7 @@ Password
   window.localStorage.setItem("fetchJobsUrl", "{% url 'jobs:api:bookkeeper:fetch' %}");
   window.localStorage.setItem("setTaskCompletedUrl", "{% url 'task:api:bookkeeper:set-task-completed' %}");
   window.localStorage.setItem("retrieveTaskUrl", "{% url 'task:api:bookkeeper:retrieve' %}");
+  window.localStorage.setItem("RetrieveImportantContactUrl", "{% url 'important_contact:api:bookkeeper:retrieve' %}");
 </script>
-  <script src="{% static 'js/bookkeeper/dashboard/client_details.js' %}" defer type="module"></script>
+  <script src="{% static 'js/bookkeeper/client/details.js' %}" defer type="module"></script>
 {% endblock externaljs %}

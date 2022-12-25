@@ -1,6 +1,6 @@
 "use strict";
 
-import { isDisabledCssClass } from "./constants.js";
+import { DEBUG, isDisabledCssClass } from "./constants.js";
 import { getCookie } from "./cookie.js";
 import { showToastNotification } from "./notifications.js";
 
@@ -285,6 +285,29 @@ const formInputSerializer = (formElement, excludedFields) => {
   return serializedObject;
 };
 
+/**
+ * This function will set html form elements with values
+ * @param {HTMLFormElement} formElement Form element which will set the values
+ * @param {Object} objectOfValues Object of values to set
+ */
+const setFormInputValues = (formElement, objectOfValues) => {
+  for (const name in objectOfValues) {
+    try {
+      if (Object.hasOwnProperty.call(objectOfValues, name)) {
+        const element = objectOfValues[name];
+        formElement.elements[name].value = element;
+      }
+    } catch (error) {
+      if (error instanceof TypeError) {
+        // in case the input or element not exists
+        if (DEBUG === true) {
+          console.warn(`The element ${name} not exists in the form ${formElement.id}`);
+        }
+      }
+    }
+  }
+};
+
 export {
   enableInputsOnLoad,
   sendRequest,
@@ -293,4 +316,5 @@ export {
   UploadFileRequest,
   sendGetRequest,
   formInputSerializer,
+  setFormInputValues,
 };

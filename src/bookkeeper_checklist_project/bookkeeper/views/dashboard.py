@@ -51,18 +51,22 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
                 get_quote_object = get_quote_object.first()
                 quote_text = get_quote_object.quote_text
             else:
-                quote_choice = random.choice(quote_keywords)
-                quote_url = f"https://zenquotes.io/api/random/{quote_choice}"
-                quote_req = requests.get(quote_url)
-                quote_item = quote_req.json()[0]
-                quote_object = Quote()
-                quote_object.quote_choice = quote_choice
-                quote_object.author = quote_item.get("a")
-                quote_object.quote_text = quote_item.get("q")
-                quote_object.full_quote_object = quote_item
-                quote_object.user = self.request.user  # TODO: Enable it after fix auth
-                quote_object.save()
-                quote_text = quote_object.quote_text
+                try:
+
+                    quote_choice = random.choice(quote_keywords)
+                    quote_url = f"https://zenquotes.io/api/random/{quote_choice}"
+                    quote_req = requests.get(quote_url)
+                    quote_item = quote_req.json()[0]
+                    quote_object = Quote()
+                    quote_object.quote_choice = quote_choice
+                    quote_object.author = quote_item.get("a")
+                    quote_object.quote_text = quote_item.get("q")
+                    quote_object.full_quote_object = quote_item
+                    quote_object.user = self.request.user  # TODO: Enable it after fix auth
+                    quote_object.save()
+                    quote_text = quote_object.quote_text
+                except requests.exceptions.ConnectionError:
+                    pass
 
             context["title"] = "Bookkeeper - Dashboard"
             context.setdefault("quote_text", quote_text)
@@ -77,8 +81,7 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
             )
             context.setdefault("last_tasks", bookkeeper_helper.get_last_tasks())
             return context
-        except requests.exceptions.ConnectionError:
-            return None
+
         except Exception as ex:
             logger.error(ex)
             raise

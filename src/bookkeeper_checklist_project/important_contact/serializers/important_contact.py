@@ -10,4 +10,4 @@ class ImportantContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImportantContact
         exclude = EXCLUDED_FIELDS
-        depth = 1
+        # depth = 1

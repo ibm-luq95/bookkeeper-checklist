@@ -18,3 +18,4 @@ from .client_account import (
     ClientAccountListView,
     ClientAccountDetailView,
 )
+from .task import TasksListView, TaskCreateView, TaskUpdateView, TaskDeleteView

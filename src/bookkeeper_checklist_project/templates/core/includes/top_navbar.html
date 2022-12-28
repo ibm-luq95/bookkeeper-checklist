@@ -103,8 +103,11 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a class="navbar-item">
+                        <a href="{% url 'manager:task:list' %}" class="navbar-item">
                             List all tasks
+                        </a>
+                        <a href="{% url 'manager:task:create' %}" class="navbar-item">
+                            Create task
                         </a>
                         
                     </div>

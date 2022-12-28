@@ -12,7 +12,7 @@
                 </button>
             </header>
             <main class="modal__content" id="tasks-form-modal-content">
-                <form action="" method="POST"
+                <form action="{% url 'task:api:manager:create' %}" method="POST"
                     id="managerAddNewTaskForm">
                     {% csrf_token %}
                     <fieldset form="managerAddNewTaskForm">

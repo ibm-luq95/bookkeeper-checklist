@@ -16,98 +16,9 @@
     <div class="box">
         <div class="columns">
             <div class="container profile">
-                <div class="modal" id="edit-preferences-modal">
-                    <div class="modal-background"></div>
-                    <div class="modal-card">
-                        <header class="modal-card-head">
-                            <p class="modal-card-title">Edit Preferences</p>
-                            <button class="delete"></button>
-                        </header>
-                        <section class="modal-card-body">
-                            <div class="field">
-                                <label class="label">First Name</label>
-                                <p class="control">
-                                    <input class="input" value="{{ object.user.first_name }}" placeholder="Text input"
-                                        type="text" />
-                                </p>
-                            </div>
-
-                            <div class="field">
-                                <label class="label">Last Name</label>
-                                <p class="control has-icon has-icon-right">
-                                    <input class="input" placeholder="Text input" value="{{ object.user.last_name }}"
-                                        type="text" />
-                                </p>
-                            </div>
-
-                            <div class="field">
-                                <label class="label">Email</label>
-                                <p class="control has-icon has-icon-right">
-                                    <input class="input" placeholder="Email input" type="email"
-                                        value="{{ object.user.email }}" />
-                                    <!-- <i class="fa fa-warning"></i>
-                                    <span class="help is-danger">This email is invalid</span> -->
-                                </p>
-                            </div>
-
-                            <div class="field">
-                                <label class="label">Date of Birth</label>
-                                <div class="control">
-                                    <span class="select">
-                                        <select>
-                                            <option>
-                                                Month
-                                            </option>
-                                            <option>
-                                                With options
-                                            </option>
-                                        </select>
-                                    </span>
-                                    <span class="select">
-                                        <select>
-                                            <option>
-                                                Day
-                                            </option>
-                                            <option>
-                                                With options
-                                            </option>
-                                        </select>
-                                    </span>
-                                    <span class="select">
-                                        <select>
-                                            <option>
-                                                Year
-                                            </option>
-                                            <option>
-                                                With options
-                                            </option>
-                                        </select>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label class="label">Bio</label>
-                                <p class="control">
-                                    <textarea class="textarea"
-                                        placeholder="Describe Yourself!">{{object.bio}}</textarea>
-                                </p>
-                            </div>
-
-                            <div class="field">
-                                <label class="label">Phone Number</label>
-                                <p class="control has-icon has-icon-right">
-                                    <input class="input" placeholder="Text input" type="text" value="+1 *** *** 0535" />
-                                </p>
-                            </div>
-
-
-                        </section>
-                        <footer class="modal-card-foot">
-                            <a class="button is-primary modal-save">Save changes</a>
-                            <a class="button modal-cancel">Cancel</a>
-                        </footer>
-                    </div>
-                </div>
+                <!-- Start update modal -->
+                {% include 'manager/bookkeeper/segments/update_bookkeeper_modal.html' with object=object %}
+                <!-- End update modal -->
                 <div class="section profile-heading">
                     <div class="columns is-mobile is-multiline">
                         <div class="column is-2">
@@ -144,7 +55,7 @@
                             <p class="stat-key">Tasks</p>
                         </div>
                         <div class="column is-2-tablet is-4-mobile has-text-centered">
-                            <p class="stat-val">{{ object.clients.count }}</p>
+                            <p class="stat-val">{{ bookkeeper_helper.get_clients.count }}</p>
                             <p class="stat-key">Clients</p>
                         </div>
                     </div>
@@ -154,7 +65,7 @@
                         <ul>
                             <li class="is-active" data-tab="1">
                                 <a>
-                                    <span class="icon is-small"><i class="fa-solid fa-list"></i></span>
+                                    <span class="icon is-small"><i class="fa-solid fa-briefcase"></i></span>
                                     <span>Jobs</span>
                                 </a>
                             </li>
@@ -164,16 +75,16 @@
                                     <span>Clients</span>
                                 </a>
                             </li>
-                            <li data-tab="3">
+                            <!-- <li data-tab="3">
                                 <a>
                                     <span class="icon is-small"><i class="fa-solid fa-solid fa-key"></i></span>
                                     <span>Accounts & Services</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <li data-tab="4">
                                 <a>
-                                    <span class="icon is-small"><i class="fa-sharp fa-solid fa-notes"></i></span>
-                                    <span>Notes</span>
+                                    <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
+                                    <span>Tasks</span>
                                 </a>
                             </li>
 
@@ -277,7 +188,7 @@
                         <section data-content="2">
                             <div id="clientsTabWrapper">
 
-                                {% if object.clients.count > 0 %}
+                                {% if bookkeeper_helper.get_clients.count > 0 %}
                                 <table class="table is-fullwidth table-100" id="managerClientsTable">
                                     <thead>
                                         <tr>
@@ -285,18 +196,16 @@
                                                 Name
                                             </th>
                                             <th>
-                                                Account Name
-                                            </th>
-                                            <th>
                                                 Email
                                             </th>
                                             <th>
-                                                Username
+                                                Industry
                                             </th>
                                             <th>
-                                                Password
+                                                Jobs
                                             </th>
-                                            <!-- <th></th> -->
+                                            
+                                            <th>Created AT</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -305,37 +214,40 @@
                                                 Name
                                             </th>
                                             <th>
-                                                Account Name
-                                            </th>
-                                            <th>
                                                 Email
                                             </th>
                                             <th>
-                                                Username
+                                                Industry
                                             </th>
                                             <th>
-                                                Password
+                                                Jobs
                                             </th>
-                                            <!-- <th></th> -->
+                                           
+                                            <th>Created AT</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for client in object.clients.all %}
+                                        {% for client in bookkeeper_helper.get_clients.select_related.filter %}
                                         <tr>
                                             <td>
-                                                {{ client.name }}
+                                                <a href="{% url 'manager:client:details' client.pk %}" target="_blank">
+                                                    {{ client.name }}
+                                                </a>
                                             </td>
                                             <td>
-                                                {{ client.client_account.account_name }}
+                                                <a href="mailto:{{ client.email }}">
+                                                    {{ client.email }}
+                                                </a>
                                             </td>
                                             <td>
-                                                {{ client.client_account.account_email }}
+                                                {{ client.industry }}
                                             </td>
                                             <td>
-                                                {{ client.client_account.account_username }}
+                                                {{ client.jobs.select_related.count }}
                                             </td>
+                                            
                                             <td>
-                                                {{ client.client_account.account_password }}
+                                                {{ client.created_at|date }}
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -351,7 +263,7 @@
 
                             </div>
                         </section>
-                        <section data-content="3">
+                        <!-- <section data-content="3">
 
                             <div id="accountsAndServicesTabWrapper">
 
@@ -380,7 +292,6 @@
                                             <th class="has-text-centered">
                                                 Completed
                                             </th>
-                                            <!-- <th></th> -->
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -406,7 +317,6 @@
                                             <th class="has-text-centered">
                                                 Completed
                                             </th>
-                                            <!-- <th></th> -->
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -418,10 +328,108 @@
                                 
 
                             </div>
-                        </section>
+                        </section> -->
 
                         <section data-content="4">
-                            Notes
+                            <div id="tasksTabWrapper">
+                                {% if bookkeeper_helper.get_last_tasks|length > 0 %}
+                                <table class="table is-fullwidth table-100" id="managerTasksTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Title
+                                            </th>
+                                            <th>
+                                                Job
+                                            </th>
+                                            <th>
+                                                Task Type
+                                            </th>
+                                            <th>
+                                                Task Status
+                                            </th>
+                                            <th>
+                                                Completed
+                                            </th>
+                                            <th>
+                                                Start Date
+                                            </th>
+                                            <th>
+                                                Due Date
+                                            </th>
+                                            <th>Created AT</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>
+                                                Title
+                                            </th>
+                                            <th>
+                                                Job
+                                            </th>
+                                            <th>
+                                                Task Type
+                                            </th>
+                                            <th>
+                                                Task Status
+                                            </th>
+                                            <th>
+                                                Completed
+                                            </th>
+                                            <th>
+                                                Start Date
+                                            </th>
+                                            <th>
+                                                Due Date
+                                            </th>
+                                            <th>Created AT</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for task in bookkeeper_helper.get_last_tasks %}
+                                        <tr>
+                                            <td>
+                                                {{ task.title }}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'manager:jobs:details' task.job.pk %}" target="_blank">
+                                                    {{ task.job.title }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ task.get_task_type_display }}
+                                            </td>
+                                            <td>
+                                                {{ task.get_task_status_display }}
+                                            </td>
+                                            
+                                            <td>
+                                                {{ task.get_is_completed_label }}
+                                            </td>
+
+                                            <td>
+                                                {{ task.start_date }}
+                                            </td>
+                                            <td>
+                                                {{ task.due_date }}
+                                            </td>
+                                            <td>
+                                                {{ task.created_at|date }}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <div class="notification is-warning">
+                                    <!-- <button class="delete"></button> -->
+                                    No tasks
+                                </div>
+                                {% endif %}
+                                
+
+                            </div>
                         </section>
 
                     </div>

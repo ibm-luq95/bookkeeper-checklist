@@ -5,7 +5,7 @@ import {
   eyeIconHTMLCode,
 } from "../../utils/constants.js";
 import { showMicroModal, MicroModalHandler } from "../../utils/model-box.js";
-import { enableInputsOnLoad, sendRequest, sendGetRequest } from "../../utils/helpers.js";
+import { enableInputsOnLoad, sendRequest, sendGetRequest, setFormInputValues } from "../../utils/helpers.js";
 import { showToastNotification } from "../../utils/notifications.js";
 
 document.addEventListener("readystatechange", (ev) => {
@@ -35,6 +35,44 @@ document.addEventListener("readystatechange", (ev) => {
     const weeklyTasksInputs = document.querySelectorAll(".monthly-task-checkbox");
     const weeklyTasksSubmitBtn = document.querySelector("#weeklyTasksSubmitBtn");
     const updateTaskBookkeeperBtn = document.querySelector("button#updateTaskBookkeeperBtn");
+    const bookkeeperViewImportantContactBtns = document.querySelectorAll(
+      "button.bookkeeperViewImportantContactBtn",
+    );
+
+    // bookkeeper view important contact buttons event
+    bookkeeperViewImportantContactBtns.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        const currentTarget = event.currentTarget;
+        const importantContactId = currentTarget.dataset["importantContactId"];
+        const url = window.localStorage.getItem("RetrieveImportantContactUrl");
+        const callBacks = {
+          onOpenCallBack: () => {
+            const requestOptions = {
+              method: "POST",
+              dataToSend: { importantContactId: importantContactId },
+              url: url,
+            };
+            //updateImportantContactForm
+            const request = sendRequest(requestOptions);
+            request
+              .then((data) => {
+                const importantContactObject = data["important_contact"];
+                setFormInputValues(updateImportantContactForm, importantContactObject);
+              })
+              .catch((error) => {
+                console.error(error);
+                showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+              })
+              .finally(() => {
+                // console.warn("Finally");
+              });
+          },
+          onCloseCallback: () => {},
+        };
+
+        new MicroModalHandler("important-contact-form-modal", callBacks);
+      });
+    });
 
     // bookkeeper add new task button
     const bookkeeperAddNewTaskBtn = document.querySelector("#bookkeeperAddNewTaskBtn");

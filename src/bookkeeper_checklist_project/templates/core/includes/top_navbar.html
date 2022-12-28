@@ -75,8 +75,8 @@
                         <a class="navbar-item" href="{% url 'manager:client_account:list' %}">
                             Client accounts
                         </a>
-                        <a class="navbar-item" href="{% url 'manager:client_account:list' %}">
-                            Client services
+                        <a class="navbar-item" href="{% url 'manager:important_contact:list' %}">
+                            Client contact
                         </a>
                     </div>
                 </div>
@@ -95,6 +95,21 @@
                         <a class="navbar-item" href="">
                            Templates
                         </a>
+                    </div>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Tasks
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a href="{% url 'manager:task:list' %}" class="navbar-item">
+                            List all tasks
+                        </a>
+                        <a href="{% url 'manager:task:create' %}" class="navbar-item">
+                            Create task
+                        </a>
+                        
                     </div>
                 </div>
                 <div class="navbar-item has-dropdown is-hoverable">

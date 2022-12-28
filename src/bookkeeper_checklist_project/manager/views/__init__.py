@@ -12,9 +12,10 @@ from .client import (
     ClientUpdateView,
     ClientDeleteView,
 )
-from .jobs import JobListView, JobCreateView, JobDetailsView
+from .jobs import JobListView, JobCreateView, JobDetailsView, JobUpdateView
 from .client_account import (
     ClientAccountCreateView,
     ClientAccountListView,
     ClientAccountDetailView,
 )
+from .task import TasksListView, TaskCreateView, TaskUpdateView, TaskDeleteView

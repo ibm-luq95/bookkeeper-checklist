@@ -1,9 +1,11 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from bookkeeper.models import Bookkeeper
 from core.forms import BaseModelFormMixin
 from jobs.models import Job
-from task.models import Task
 
 
 class JobForm(BaseModelFormMixin):
@@ -18,11 +20,21 @@ class JobForm(BaseModelFormMixin):
             self.fields["client"].widget.attrs.update({"class": "readonly-select"})
 
     bookkeeper = forms.ModelMultipleChoiceField(
-        queryset=Bookkeeper.objects.all(), widget=forms.CheckboxSelectMultiple
+        queryset=Bookkeeper.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
     )
-    # tasks = forms.ModelMultipleChoiceField(
-    #     queryset=Task.objects.all(), widget=forms.CheckboxSelectMultiple, required=False
-    # )
+
+    def clean_due_date(self):
+        data = self.cleaned_data["due_date"]
+        now = timezone.now().date()
+
+        if data < now:
+            raise ValidationError(_("Due date not valid!"), code="invalid")
+
+        # Always return a value to use as the new cleaned data, even if
+        # this method didn't change it.
+        return data
 
     class Meta(BaseModelFormMixin.Meta):
         model = Job

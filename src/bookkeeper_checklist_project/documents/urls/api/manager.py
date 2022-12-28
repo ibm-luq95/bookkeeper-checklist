@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-#
 from django.urls import path
 
-from documents.views.api import CreateDocumentManagerApiView, DeleteDocumentManagerApiView
+from documents.views.api import (
+    CreateDocumentManagerApiView,
+    DeleteDocumentManagerApiView,
+    RetrieveManagerDocumentView,
+)
 
 app_name = "manager_api"
 
@@ -12,4 +16,5 @@ urlpatterns = [
         name="create-document-manager",
     ),
     path("delete", DeleteDocumentManagerApiView.as_view(), name="delete-document"),
+    path("retrieve", RetrieveManagerDocumentView.as_view(), name="retrieve"),
 ]

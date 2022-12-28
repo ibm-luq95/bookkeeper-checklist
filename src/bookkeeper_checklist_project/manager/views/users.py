@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
@@ -40,14 +41,26 @@ class UserCreateView(
         context["title"] = "Create User"
         return context
 
-    # def get_form(self, form_class=None):
-    #     """Return an instance of the form to be used in this view."""
-    #     if form_class is None:
-    #         user_type = self.request.GET.get("user_type", None)
-    #         form_class = self.get_form_class()
-    #         if user_type:
-    #             form_class.fields["user_type"]
-    #     return form_class(**self.get_form_kwargs())
+    # def get_success_url(self):
+    #     """Return the URL to redirect to after processing a valid form."""
+    #     if self.success_url:
+    #         # debugging_print("IN IF")
+    #         url = self.success_url.format(**self.object.__dict__)
+    #     else:
+    #         try:
+    #             url = self.object.get_absolute_url()
+    #             new_user = self.object
+    #             if new_user.user_type == "bookkeeper":
+    #                 url = reverse_lazy(
+    #                     "manager:bookkeeper:details", kwargs={"slug": self.object.slug}
+    #                 )
+    #         except AttributeError:
+    #             raise ImproperlyConfigured(
+    #                 "No URL to redirect to.  Either provide a url or define"
+    #                 " a get_absolute_url method on the Model."
+    #             )
+    #     return url
+
     def get_initial(self):
         """
         Returns the initial data to use for forms on this view.

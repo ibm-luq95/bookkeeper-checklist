@@ -313,6 +313,7 @@ backup
 docs
 src/.env
 src/bookkeeper_checklist_project/maintenance_mode_state.txt
+src/frontend/**
 
 # Ignore Django Migrations in Development if you are working on team
 # Only for Development only

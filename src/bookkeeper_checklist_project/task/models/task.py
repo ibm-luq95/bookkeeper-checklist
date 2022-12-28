@@ -48,3 +48,9 @@ class Task(BaseModelMixin, UserForeignKeyMixin):
 
     def get_absolute_url(self):
         return reverse("bookkeeper:tasks:details", kwargs={"pk": self.pk})
+
+    def get_is_completed_label(self) -> str:
+        if self.is_completed is True:
+            return "Completed"
+        else:
+            return "Not completed"

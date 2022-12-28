@@ -14,4 +14,10 @@ urlpatterns = [
         name="client-account-urls",
     ),
     path("jobs/", include("manager.urls.jobs"), name="jobs-urls"),
+    path("task/", include("manager.urls.task"), name="task-urls"),
+    path(
+        "important_contact/",
+        include("manager.urls.important_contact"),
+        name="important-contact-urls",
+    ),
 ]

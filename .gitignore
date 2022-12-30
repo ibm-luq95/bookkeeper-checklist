@@ -320,3 +320,4 @@ src/frontend/**
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
+.pylintrc

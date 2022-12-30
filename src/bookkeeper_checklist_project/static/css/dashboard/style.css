@@ -270,3 +270,8 @@ nav.navbar {
 .modal-max-width {
   max-width: 100% !important;
 }
+
+table#companyServicesTable td, table#companyServicesTable th{
+  vertical-align: middle;
+  text-align: center;
+}

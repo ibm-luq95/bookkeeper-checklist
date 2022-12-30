@@ -11,6 +11,7 @@ INSTALLED_APPS = INSTALLED_APPS + [
 
 MIDDLEWARE = MIDDLEWARE + [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "django_session_timeout.middleware.SessionTimeoutMiddleware"
 ]
 
 # Database configurations

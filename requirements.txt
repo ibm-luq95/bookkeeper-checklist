@@ -8,6 +8,7 @@ crispy-bulma
 cryptography
 Django
 django-betterforms
+django-session-timeout
 django-debug-toolbar
 django-extensions
 django-filter
@@ -34,6 +35,7 @@ psycopg2-binary
 pydot
 pygraphviz
 pylama
+pylint-django
 pylint-common
 pypika
 pytest-django

@@ -64,10 +64,10 @@ def create_groups(sender, instance, created, **kwargs):
 
 @receiver(user_logged_in)
 def log_user_login(sender, request, user, **kwargs):
-    if user.user_type == "manager":
-        site_settings = SiteSettings.objects.select_related().filter(slug="web-app").first()
-        if site_settings:
-            CacheHandler.set_item(WEB_APP_SETTINGS_KEY, site_settings)
+    # if user.user_type == "manager":
+    site_settings = SiteSettings.objects.select_related().filter(slug="web-app").first()
+    if site_settings:
+        CacheHandler.set_item(WEB_APP_SETTINGS_KEY, site_settings)
 
 
 @receiver(user_logged_out)

@@ -34,7 +34,10 @@ class BookkeeperMiddleware:
                 or request.user.user_type == "assistants"
             ):
                 site_settings = CacheHandler.get_item(WEB_APP_SETTINGS_KEY)
-                if site_settings.can_bookkeepers_login is False:
+                if (
+                    site_settings.can_bookkeepers_login is False
+                    or site_settings.can_assistants_login is False
+                ):
                     messages.error(
                         request,
                         "You not allowed to login, please contact the administrator",

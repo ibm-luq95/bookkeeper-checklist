@@ -19,3 +19,9 @@ from .client_account import (
     ClientAccountDetailView,
 )
 from .task import TasksListView, TaskCreateView, TaskUpdateView, TaskDeleteView
+from .company_service import (
+    CompanyServicesListView,
+    CompanyServicesDeleteView,
+    CompanyServicesCreateView,
+    CompanyServicesUpdateView,
+)

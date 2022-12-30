@@ -1,45 +1,47 @@
-<aside class="menu is-hidden-mobile">
-    <p class="menu-label">General</p>
-    <ul class="menu-list">
-        <li>
-            <a class="is-active" href="{% url 'manager:dashboard' %}">Dashboard</a>
-        </li>
-        <li>
-            <a href="{% url 'manager:bookkeeper:list' %}">Bookkeepers</a>
-        </li>
-        <li>
-            <a href="{% url 'manager:client:list' %}">Clients</a>
-        </li>
-        <li>
-            <a href="{% url 'manager:jobs:list' %}">Jobs</a>
-        </li>
-    </ul>
-    <p class="menu-label">Administration</p>
-    <ul class="menu-list">
-        <li>
-            <a>Site Settings</a>
-        </li>
-        <li>
-            <a>Manage Your Team</a>
-            <ul>
-                <li>
-                    <a>Members</a>
-                </li>
-            </ul>
-        </li>
-        
-    </ul>
-    <p class="menu-label">Transactions</p>
-    <ul class="menu-list">
-        <li>
-            <a>Payments</a>
-        </li>
-        <li>
-            <a>Balance</a>
-        </li>
-        <li>
-            <a>Reports</a>
-        </li>
-    </ul>
- 
-</aside>
+<div class="box">
+    <aside class="menu is-hidden-mobile">
+        <p class="menu-label">General</p>
+        <ul class="menu-list">
+            <li>
+                <a class="is-active" href="{% url 'manager:dashboard' %}">Dashboard</a>
+            </li>
+            <li>
+                <a href="{% url 'manager:bookkeeper:list' %}">Bookkeepers</a>
+            </li>
+            <li>
+                <a href="{% url 'manager:client:list' %}">Clients</a>
+            </li>
+            <li>
+                <a href="{% url 'manager:jobs:list' %}">Jobs</a>
+            </li>
+        </ul>
+        <p class="menu-label">Administration</p>
+        <ul class="menu-list">
+            <li>
+                <a>Site Settings</a>
+            </li>
+            <li>
+                <a>Manage Your Team</a>
+                <ul>
+                    <li>
+                        <a>Members</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+        <p class="menu-label">Transactions</p>
+        <ul class="menu-list">
+            <li>
+                <a>Payments</a>
+            </li>
+            <li>
+                <a>Balance</a>
+            </li>
+            <li>
+                <a>Reports</a>
+            </li>
+        </ul>
+
+    </aside>
+</div>

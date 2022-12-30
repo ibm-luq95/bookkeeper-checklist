@@ -1,0 +1,32 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-update-company-services-form">
+    <div class="box">
+        <form method="post" id="update-company-services-form">
+            {% csrf_token %}
+            <legend class="title has-text-black">Update company services</legend>
+            <hr>
+            <fieldset form="update-company-services-form">
+                {{form| crispy}}
+                <div class="block" style="word-wrap: break-word;">
+                    <span class="is-size-6 is-inline-block">
+                        Current Password:
+                    </span>
+                    <h6 class="is-size-7 is-family-code has-text-weight-semibold">
+                        {{ object.decrypted_password }}
+                    </h6>
+                </div>
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info
+                        is-fullwidth">Update</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

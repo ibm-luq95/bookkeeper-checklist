@@ -72,6 +72,9 @@ DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": show_toolbar,
 }
 
+# ENCRYPT_KEY
+ENCRYPT_KEY = bytes(os.environ.get("ENCRYPT_KEY"), "ascii")
+
 if DEBUG:
     import mimetypes
 

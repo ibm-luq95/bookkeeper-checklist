@@ -1,14 +1,15 @@
-from client.models import Client
-from company_services.models import CompanyService
-from core.choices import AssistantTypeEnum, CustomUserStatusEnum
-from core.models import BaseModelMixin
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
+from client.models import Client
+from company_services.models import CompanyService
+from core.choices import AssistantTypeEnum, CustomUserStatusEnum
+from core.models import BaseModelMixin, UserForeignKeyMixin
 
-class Assistant(BaseModelMixin):
+
+class Assistant(BaseModelMixin, UserForeignKeyMixin):
     """Assistant models
 
     Args:
@@ -17,7 +18,7 @@ class Assistant(BaseModelMixin):
 
     slug = models.SlugField(_("slug"), max_length=250, null=True)
     profile_picture = models.ImageField(
-        _("profile_picture"), upload_to="profile_pictures/", null=True, blank=True
+        _("profile picture"), upload_to="profile_pictures/", null=True, blank=True
     )
     status = models.CharField(
         _("status"),
@@ -25,23 +26,21 @@ class Assistant(BaseModelMixin):
         choices=CustomUserStatusEnum.choices,
         default=CustomUserStatusEnum.ENABLED,
     )
-    user = models.OneToOneField(
-        to=get_user_model(),
-        null=True,
-        on_delete=models.PROTECT,
-        related_name="assistant",
-    )
     assistant_type = models.CharField(
-        _("assistant_type"),
+        _("assistant type"),
         max_length=15,
         choices=AssistantTypeEnum.choices,
         default=AssistantTypeEnum.ALL,
     )
     company_services = models.ForeignKey(
-        to=CompanyService, on_delete=models.PROTECT, null=True, related_name="assistant"
+        to=CompanyService,
+        on_delete=models.PROTECT,
+        null=True,
+        related_name="assistant",
+        blank=True,
     )
-    clients = models.ManyToManyField(to=Client)
-    bio = models.TextField(_('bio'), null=True, blank=True)
+    clients = models.ManyToManyField(to=Client, blank=True)
+    bio = models.TextField(_("bio"), null=True, blank=True)
 
     class Meta(BaseModelMixin.Meta):
         permissions = [
@@ -50,6 +49,9 @@ class Assistant(BaseModelMixin):
             ("can_edit_bookkeeper", _("Can edit bookkeeper account details")),
             ("can_access_client", _("Can access client(s) account details")),
         ]
+
+    def __str__(self) -> str:
+        return f"Assistant - {self.user.first_name} {self.user.last_name}"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.fullname)

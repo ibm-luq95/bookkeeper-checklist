@@ -41,7 +41,7 @@ class Bookkeeper(BaseModelMixin, UserForeignKeyMixin):
     bio = models.TextField(_("bio"), null=True, blank=True)
 
     def __str__(self) -> str:
-        return f"{self.user.first_name} {self.user.last_name}"
+        return f"Bookkeeper - {self.user.first_name} {self.user.last_name}"
 
     class Meta(BaseModelMixin.Meta):
         permissions = [

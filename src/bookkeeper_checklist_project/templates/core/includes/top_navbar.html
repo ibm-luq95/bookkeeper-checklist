@@ -41,7 +41,7 @@
                         <a class="navbar-item" href="{% url 'manager:bookkeeper:list' %}">
                             List all bookkeepers
                         </a>
-                        <a class="navbar-item" href="{% url 'manager:users:create' %}">
+                        <a class="navbar-item" href="{% url 'manager:users:create' %}?user_type=bookkeeper">
                             Create new bookkeeper
                         </a>
                     </div>
@@ -52,10 +52,10 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a class="navbar-item">
+                        <a href="{% url 'manager:assistant:list' %}" class="navbar-item">
                             List all assistants
                         </a>
-                        <a class="navbar-item">
+                        <a href="{% url 'manager:users:create' %}?user_type=assistant" class="navbar-item">
                             Create new assistant
                         </a>
                     </div>

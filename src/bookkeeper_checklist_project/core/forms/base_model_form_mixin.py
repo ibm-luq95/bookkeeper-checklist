@@ -1,4 +1,5 @@
 from django import forms
+from core.constants.form import EXCLUDED_FIELDS
 from crispy_forms.helper import FormHelper
 
 
@@ -10,9 +11,4 @@ class BaseModelFormMixin(forms.ModelForm):
 
     class Meta:
         # pass
-        exclude = [
-            "metadata",
-            "is_deleted",
-            "slug",
-            "deleted_at"
-        ]
+        exclude = EXCLUDED_FIELDS

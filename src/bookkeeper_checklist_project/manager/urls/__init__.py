@@ -7,6 +7,7 @@ urlpatterns = [
     path("dashboard/", include("manager.urls.dashboard"), name="dashboard-urls"),
     path("users/", include("manager.urls.users"), name="users-urls"),
     path("bookkeeper/", include("manager.urls.bookkeeper"), name="bookkeeper-urls"),
+    path("assistant/", include("manager.urls.assistant"), name="assistant-urls"),
     path("client/", include("manager.urls.client"), name="clients-urls"),
     path(
         "client_account/",

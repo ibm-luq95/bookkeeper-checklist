@@ -1,0 +1,35 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+<section id="manager-update-assistant-detail">
+    <div class="box">
+        
+        <header>
+            <h2 class="title is-3">Update assistant</h2>
+        </header>
+        <hr />
+        <section>
+            <form method="post" id="update-assistant-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset form="update-assistant-form">
+                    {{ form| crispy }}
+                    <hr />
+                    <!-- <h4 class="title is-4">Client contact info</h4> -->
+                </fieldset>
+                <hr />
+                
+
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info is-fullwidth">
+                        Update 
+                        <!-- <i class="fa fa-sign-in" aria-hidden="true"></i> -->
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

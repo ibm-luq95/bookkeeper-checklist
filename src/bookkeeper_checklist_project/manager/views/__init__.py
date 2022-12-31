@@ -25,3 +25,9 @@ from .company_service import (
     CompanyServicesCreateView,
     CompanyServicesUpdateView,
 )
+from .assistant import (
+    AssistantListView,
+    AssistantDetailsView,
+    AssistantDeleteView,
+    AssistantUpdateView,
+)

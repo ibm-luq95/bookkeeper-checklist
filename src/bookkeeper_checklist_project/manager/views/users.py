@@ -68,7 +68,8 @@ class UserCreateView(
         initial = super().get_initial()
         user_type = self.request.GET.get("user_type", None)
         if user_type:
-            initial["user_type"] = user_type
+            if user_type in ["bookkeeper", "assistant"]:
+                initial["user_type"] = user_type
 
         return initial
 

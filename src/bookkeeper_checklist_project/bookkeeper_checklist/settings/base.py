@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "notes.apps.NotesConfig",
     "jobs.apps.JobsConfig",
     "task.apps.TaskConfig",
+    "special_assignment.apps.SpecialAssignmentConfig"
 ]
 
 MIDDLEWARE = [

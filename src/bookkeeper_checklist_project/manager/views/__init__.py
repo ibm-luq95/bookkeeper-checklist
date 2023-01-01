@@ -31,3 +31,9 @@ from .assistant import (
     AssistantDeleteView,
     AssistantUpdateView,
 )
+from .special_assignment import (
+    SpecialAssignmentListView,
+    SpecialAssignmentCreateView,
+    SpecialAssignmentUpdateView,
+    SpecialAssignmentDeleteView,
+)

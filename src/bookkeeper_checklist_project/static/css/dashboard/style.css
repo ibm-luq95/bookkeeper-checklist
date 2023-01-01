@@ -271,7 +271,12 @@ nav.navbar {
   max-width: 100% !important;
 }
 
-table#companyServicesTable td, table#companyServicesTable th{
+table.table-list-component td,
+table.table-list-component th {
   vertical-align: middle;
   text-align: center;
+}
+
+.small-fa-fonts {
+  font-size: 10px !important;
 }

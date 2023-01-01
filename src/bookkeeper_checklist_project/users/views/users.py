@@ -71,12 +71,11 @@ class LoginView(SuccessMessageMixin, CacheViewMixin, FormView):
             return super().form_invalid(form)
         
         # Check if next url exists
-        next_url = self.request.session.get("next", None)
+        next_url = self.request.session.get("next", None)  # TODO: added to the end
         if next_url:
             return redirect(next_url)
         
         site_settings_object = self.cmx_get_item("web_app_settings")
-        print(site_settings_object)
         if user_type == "assistant":
             # check if assistants allowed to log in from site settings
             if site_settings_object.can_assistants_login is False:
@@ -103,5 +102,4 @@ class LoginView(SuccessMessageMixin, CacheViewMixin, FormView):
         elif user_type == "manager":
             return redirect("manager:dashboard")
 
-        # messages.success(self.request, "Login Success")
         return super().form_valid(form)

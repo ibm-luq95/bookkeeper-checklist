@@ -13,7 +13,7 @@
     <hr />
     {% if object_list.count > 0 %}
     <!-- Start jobs table -->
-    <table class="table is-fullwidth is-bordered is-striped is-narrow" id="companyServicesTable">
+    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="companyServicesTable">
         <thead>
             <tr>
                 <th>Client</th>
@@ -98,10 +98,10 @@
                 <td class="has-text-right">
                     <div class="buttons are-small justify-center">
                        
-                        <a href="{% url 'manager:company_services:update' object.pk %}" class="button is-success is-light is-small is-responsive">
+                        <a href="{% url 'manager:company_services:update' object.pk %}" class="button is-success is-light is-small is-responsive small-fa-fonts">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
-                        <a href="{% url 'manager:company_services:delete' object.pk %}" class="button is-danger is-light is-small is-responsive">
+                        <a href="{% url 'manager:company_services:delete' object.pk %}" class="button is-danger is-light is-small is-responsive small-fa-fonts">
                             <i class="fa-solid fa-trash"></i>
                         </a>
                     </div>

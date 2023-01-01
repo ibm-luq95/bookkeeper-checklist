@@ -1,6 +1,6 @@
 {% if request.user.is_authenticated %}
 <nav class="navbar is-white">
-    <div class="container">
+    <div class="container is-fluid">
         <div class="navbar-brand">
             {% if request.user.user_type == "bookkeeper" %}
             <a class="navbar-item brand-text" href="{% url 'bookkeeper:dashboard' %}"> 
@@ -122,6 +122,21 @@
                             Create task
                         </a>
                         
+                    </div>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Special Assignment
+                        <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">8</span>
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a href="{% url 'manager:special_assignment:list' %}" class="navbar-item">
+                            List all assignments
+                        </a>
+                        <a href="{% url 'manager:special_assignment:create" class="navbar-item">
+                            Create new assignment
+                        </a>
                     </div>
                 </div>
                 <div class="navbar-item has-dropdown is-hoverable">

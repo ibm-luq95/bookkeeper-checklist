@@ -26,4 +26,9 @@ urlpatterns = [
         include("manager.urls.important_contact"),
         name="important-contact-urls",
     ),
+    path(
+        "special_assignment/",
+        include("manager.urls.special_assignment"),
+        name="special-assignment-urls",
+    ),
 ]

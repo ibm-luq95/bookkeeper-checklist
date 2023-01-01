@@ -1,0 +1,24 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-update-special-assignment-form">
+    <div class="box">
+        <form method="post" id="update-special-assignment-form">
+            {% csrf_token %}
+            <legend class="title has-text-black">Update special assignment</legend>
+            <hr>
+            <fieldset form="update-special-assignment-form">
+                {{form| crispy}}
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info
+                        is-fullwidth">update</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

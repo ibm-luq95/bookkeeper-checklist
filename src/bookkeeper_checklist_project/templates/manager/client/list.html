@@ -1,7 +1,7 @@
 {% extends 'core/layouts/dashboard.html' %}
 {% load static %}
 {% block dashboard_content %}
-    <section id="manager-clients-list">
+    <section id="manager-clients-list" class="box">
         <header>
             <h3 class="title is-3">
                 Clients <a class="button is-primary mx-2"
@@ -11,9 +11,9 @@
         </h3>
     </header>
     <hr />
-    <div class="box">
+    <div>
         {% if object_list.count > 0 %}
-            <table class="table is-fullwidth table-100"
+            <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component"
                    id="managerClientsTable">
                 <thead>
                     <tr>
@@ -53,7 +53,7 @@
                             <td>{{ object.get_total_tasks_for_all_jobs }}</td>
                             <td>{{ object.created_at|date }}</td>
                             <td>
-                                <div class="buttons are-small">
+                                <div class="buttons are-small justify-center">
                                     <a href="{% url 'manager:client:details' object.pk %}"
                                        class="button is-info is-light">
                                         <i class="fa-solid fa-eye"></i>

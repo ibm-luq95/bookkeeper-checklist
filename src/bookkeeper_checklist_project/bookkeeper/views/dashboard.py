@@ -26,6 +26,8 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
         # Call the base implementation first to get a context
         try:
             context = super().get_context_data(**kwargs)
+            groups = self.request.user.groups.all()
+            # debugging_print(groups)
             today = datetime.now()
             quote_text = ""
             quote_keywords = (
@@ -71,8 +73,10 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
             context["title"] = "Bookkeeper - Dashboard"
             context.setdefault("quote_text", quote_text)
             context["bookkeeper_name"] = self.request.user.fullname
-            bookkeeper = self.request.user.bookkeeper_related.get()
-            # debugging_print(bookkeeper)
+            bookkeeper = self.request.user.bookkeeper
+            debugging_print("#################################")
+            debugging_print(self.request.user.bookkeeper)
+            debugging_print("#################################")
             context.setdefault("bookkeeper", bookkeeper)
             bookkeeper_helper = BookkeeperHelper(bookkeeper)
             context.setdefault("clients", bookkeeper_helper.get_clients())

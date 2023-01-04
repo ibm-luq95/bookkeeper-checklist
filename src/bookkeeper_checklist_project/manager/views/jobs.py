@@ -2,7 +2,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from core.utils import get_trans_txt
 from jobs.forms import JobForm
@@ -73,4 +73,21 @@ class JobUpdateView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context["title"] = get_trans_txt("Update Job")
+        return context
+
+
+class JobDeleteView(
+    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
+):
+    model = Job
+    template_name = "manager/jobs/delete.html"
+    form_class = JobForm
+    http_method_names = ["post", "get"]
+    success_message: str = get_trans_txt("Job deleted successfully")
+    success_url = reverse_lazy("manager:jobs:list")
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["title"] = get_trans_txt("Delete job")
         return context

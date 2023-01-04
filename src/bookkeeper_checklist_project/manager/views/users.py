@@ -23,16 +23,16 @@ class UserCreateView(
     http_method_names = ["post", "get"]
     success_message = "User created successfully!"
 
-    def form_valid(self, form):
-        """If the form is valid, save the associated model."""
-        self.object = form.save()
-        user_object = self.object
-        user_type = form.cleaned_data.get("user_type")
-        if user_type == "bookkeeper":
-            bookkeeper_object = Bookkeeper.objects.create(user=user_object)
-        elif user_type == "assistant":
-            assistant_object = Assistant.objects.create(user=user_object)
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     """If the form is valid, save the associated model."""
+    #     self.object = form.save()
+    #     user_object = self.object
+    #     user_type = form.cleaned_data.get("user_type")
+    #     if user_type == "bookkeeper":
+    #         bookkeeper_object = Bookkeeper.objects.create(user=user_object)
+    #     elif user_type == "assistant":
+    #         assistant_object = Assistant.objects.create(user=user_object)
+    #     return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

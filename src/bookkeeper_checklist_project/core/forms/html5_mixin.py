@@ -26,5 +26,8 @@ class Html5Mixin:
                 elif isinstance(field, forms.DateField):
                     self.fields[name].widget.input_type = "date"
                     self.fields[name].widget.attrs.update({"class": "input"})
+                elif isinstance(field, forms.DateTimeField):
+                    self.fields[name].widget.input_type = "datetime-local"
+                    self.fields[name].widget.attrs.update({"class": "input"})
                 if field.required:
                     self.fields[name].widget.attrs["required"] = ""

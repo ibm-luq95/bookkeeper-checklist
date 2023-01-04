@@ -22,15 +22,15 @@ class ClientsListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", "All Clients")
-        bookkeeper = self.request.user.bookkeeper_related.get()
+        bookkeeper = self.request.user.bookkeeper
         # cpprint(self.request.user.groups.all())
-        # cpprint(self.request.user.bookkeeper_related.get())
+        # cpprint(self.request.user.bookkeeper.get())
 
         return context
 
     def get_queryset(self):
         try:
-            bookkeeper = self.request.user.bookkeeper_related.get()
+            bookkeeper = self.request.user.bookkeeper
             jobs = Job.objects.all()
             jobs_queryset = jobs.filter(bookkeeper=bookkeeper).values_list("client")
             jobs_queryset = [pk[0] for pk in jobs_queryset]
@@ -63,7 +63,7 @@ class ClientsDetailsView(
     def test_func(self) -> bool | None:
         bookkeepers_list = []
         client = self.get_object()
-        bookkeeper = self.request.user.bookkeeper_related.get()
+        bookkeeper = self.request.user.bookkeeper
         for job in client.jobs.filter():
             for bookk in job.bookkeeper.filter():
                 bookkeepers_list.append(bookk)

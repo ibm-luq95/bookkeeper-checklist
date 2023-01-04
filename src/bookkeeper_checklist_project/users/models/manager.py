@@ -1,12 +1,18 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext as _
 
+from core.models import BaseQuerySetMixin
+
 
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
     """
+
+    def get_queryset(self) -> BaseQuerySetMixin:
+        queryset = BaseQuerySetMixin(self.model, using=self._db).filter(is_deleted=False)
+        return queryset
 
     def create_user(self, email, password, **extra_fields):
         """

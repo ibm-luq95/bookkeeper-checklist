@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
 
 from assistant.models import Assistant
 from assistant.forms import AssistantForm
@@ -33,6 +33,23 @@ class AssistantDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         assistant_fullname = self.get_object().user.fullname
         context["title"] = f"{assistant_fullname}"
         # print(context["jobs_form"].data)
+        return context
+
+
+class AssistantCreateView(
+    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
+):
+    login_url = reverse_lazy("users:login")
+    template_name: str = "manager/assistant/create.html"
+    model = Assistant
+    success_url = get_trans_txt("Assistant created successfully")
+    form_class = AssistantForm
+    success_url = reverse_lazy("manager:assistant:list")
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["title"] = get_trans_txt("Create bookkeepers")
         return context
 
 

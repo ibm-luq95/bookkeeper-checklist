@@ -1,0 +1,28 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-create-bookkeeper-form">
+    <div class="box">
+        <form method="post" id="create-bookkeeper-form">
+            {% csrf_token %}
+            <legend class="title has-text-black">
+                Create new bookkeeper
+            </legend>
+            <hr>
+            <fieldset form="create-bookkeeper-form">
+                {{ form| crispy }}
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info is-fullwidth">
+                        Create
+                    </button>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

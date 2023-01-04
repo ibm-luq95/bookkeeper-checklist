@@ -27,7 +27,7 @@ class JobListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
 
     def get_queryset(self):
         try:
-            bookkeeper = self.request.user.bookkeeper_related.get()
+            bookkeeper = self.request.user.bookkeeper
             jobs_list = []
             jobs = Job.objects.all()
             for job in jobs:
@@ -59,7 +59,7 @@ class JobDetailView(
     def test_func(self) -> bool | None:
         job = self.get_object()
         bookkeepers_list = []
-        bookkeeper = self.request.user.bookkeeper_related.get()
+        bookkeeper = self.request.user.bookkeeper
         for book_keeper in job.bookkeeper.filter():
             bookkeepers_list.append(book_keeper)
         if bookkeeper in bookkeepers_list:

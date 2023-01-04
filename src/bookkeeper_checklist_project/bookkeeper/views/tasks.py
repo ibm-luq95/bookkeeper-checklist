@@ -34,7 +34,7 @@ class TaskListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
         The return value must be an iterable and may be an instance of
         `QuerySet` in which case `QuerySet` specific behavior will be enabled.
         """
-        bookkeeper = self.request.user.bookkeeper_related.get()
+        bookkeeper = self.request.user.bookkeeper
         tasks_list = []
         if self.queryset is not None:
             queryset = self.queryset
@@ -90,7 +90,7 @@ class TaskUpdateView(
 
     def test_func(self) -> bool | None:
         task_object = self.get_object()
-        bookkeeper = self.request.user.bookkeeper_related.get()
+        bookkeeper = self.request.user.bookkeeper
         if bookkeeper in task_object.job.bookkeeper.filter():
             return True
         else:

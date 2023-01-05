@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-#
 from documents.models import Documents
-from core.forms import BaseModelFormMixin
+from core.constants.form import EXCLUDED_FIELDS
+from core.forms import BaseModelFormMixin, Html5Mixin
 
 
-class DocumentForm(BaseModelFormMixin):
+class DocumentForm(BaseModelFormMixin, Html5Mixin):
     # auto_id = "doct_"
 
     def __init__(self, document_section=None, client=None, *args, **kwargs):
@@ -19,4 +20,4 @@ class DocumentForm(BaseModelFormMixin):
 
     class Meta(BaseModelFormMixin.Meta):
         model = Documents
-        exclude = ["user", "is_deleted", "metadata", "deleted_at"]
+        exclude = EXCLUDED_FIELDS + ["user"]

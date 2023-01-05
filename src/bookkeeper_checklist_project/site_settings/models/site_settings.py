@@ -16,7 +16,11 @@ class SiteSettings(BaseModelMixin):
     """
 
     slug = models.SlugField(
-        _("slug"), help_text=HELP_MESSAGES.get("slug"), unique=True, db_index=True
+        _("slug"),
+        help_text=HELP_MESSAGES.get("slug"),
+        unique=True,
+        db_index=True,
+        editable=False,
     )
     name = models.CharField(_("name"), max_length=70, help_text=HELP_MESSAGES.get("name"))
     email = models.EmailField(_("email address"), help_text=HELP_MESSAGES.get("email"))

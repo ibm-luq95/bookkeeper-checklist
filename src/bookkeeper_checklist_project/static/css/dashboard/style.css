@@ -270,3 +270,13 @@ nav.navbar {
 .modal-max-width {
   max-width: 100% !important;
 }
+
+table.table-list-component td,
+table.table-list-component th {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.small-fa-fonts {
+  font-size: 10px !important;
+}

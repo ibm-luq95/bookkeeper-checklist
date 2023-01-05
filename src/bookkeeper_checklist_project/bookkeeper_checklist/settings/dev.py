@@ -11,8 +11,8 @@ INSTALLED_APPS = INSTALLED_APPS + [
 
 MIDDLEWARE = MIDDLEWARE + [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "django_session_timeout.middleware.SessionTimeoutMiddleware"
 ]
-
 
 # Database configurations
 DATABASES = {
@@ -45,7 +45,7 @@ CACHES = {
     "default": {
         "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
         "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
-        "TIMEOUT": None
+        "TIMEOUT": None,
     }
 }
 # Djagno Debug Toolbar
@@ -84,6 +84,9 @@ GRAPH_MODELS = {
     "all_applications": True,
     "group_models": True,
 }
+
+# ENCRYPT_KEY
+ENCRYPT_KEY = bytes(os.environ.get("ENCRYPT_KEY"), "ascii")
 
 if DEBUG:
     import mimetypes

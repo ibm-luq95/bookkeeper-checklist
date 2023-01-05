@@ -1,6 +1,6 @@
 {% if request.user.is_authenticated %}
 <nav class="navbar is-white">
-    <div class="container">
+    <div class="container is-fluid">
         <div class="navbar-brand">
             {% if request.user.user_type == "bookkeeper" %}
             <a class="navbar-item brand-text" href="{% url 'bookkeeper:dashboard' %}"> 
@@ -41,7 +41,7 @@
                         <a class="navbar-item" href="{% url 'manager:bookkeeper:list' %}">
                             List all bookkeepers
                         </a>
-                        <a class="navbar-item" href="{% url 'manager:users:create' %}">
+                        <a class="navbar-item" href="{% url 'manager:bookkeeper:create' %}">
                             Create new bookkeeper
                         </a>
                     </div>
@@ -52,10 +52,10 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a class="navbar-item">
+                        <a href="{% url 'manager:assistant:list' %}" class="navbar-item">
                             List all assistants
                         </a>
-                        <a class="navbar-item">
+                        <a href="{% url 'manager:assistant:create' %}" class="navbar-item">
                             Create new assistant
                         </a>
                     </div>
@@ -78,6 +78,18 @@
                         <a class="navbar-item" href="{% url 'manager:important_contact:list' %}">
                             Client contact
                         </a>
+                    </div>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Company Services
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="{% url 'manager:company_services:list' %}">
+                            List all services
+                        </a>
+                        
                     </div>
                 </div>
                 <div class="navbar-item has-dropdown is-hoverable">
@@ -110,6 +122,21 @@
                             Create task
                         </a>
                         
+                    </div>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Special Assignment
+                        <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">8</span>
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a href="{% url 'manager:special_assignment:list' %}" class="navbar-item">
+                            List all assignments
+                        </a>
+                        <a href="{% url 'manager:special_assignment:create" class="navbar-item">
+                            Create new assignment
+                        </a>
                     </div>
                 </div>
                 <div class="navbar-item has-dropdown is-hoverable">

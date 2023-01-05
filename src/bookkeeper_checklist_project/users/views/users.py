@@ -24,6 +24,8 @@ class LoginView(SuccessMessageMixin, CacheViewMixin, FormView):
 
     def get(self, request, *args, **kwargs):
         """Handle GET requests: instantiate a blank version of the form."""
+        if self.request.GET.get("next"):
+            self.request.session.setdefault("next", self.request.GET.get("next"))
         # check if user authenticated
         if self.request.user.is_authenticated:
             user_type = self.request.user.user_type
@@ -67,6 +69,12 @@ class LoginView(SuccessMessageMixin, CacheViewMixin, FormView):
         else:
             messages.error(self.request, "User credentials not correct!")
             return super().form_invalid(form)
+        
+        # Check if next url exists
+        next_url = self.request.session.get("next", None)  # TODO: added to the end
+        if next_url:
+            return redirect(next_url)
+        
         site_settings_object = self.cmx_get_item("web_app_settings")
         if user_type == "assistant":
             # check if assistants allowed to log in from site settings
@@ -94,5 +102,4 @@ class LoginView(SuccessMessageMixin, CacheViewMixin, FormView):
         elif user_type == "manager":
             return redirect("manager:dashboard")
 
-        # messages.success(self.request, "Login Success")
         return super().form_valid(form)

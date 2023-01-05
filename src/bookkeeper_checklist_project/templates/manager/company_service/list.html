@@ -1,0 +1,128 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<div class="block box">
+    <header>
+        <h3 class="title is-3">
+            Company Services <a class="button is-primary mx-2" href="{% url 'manager:company_services:create' %}">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </h3>
+    </header>
+    <hr />
+    {% if object_list.count > 0 %}
+    <!-- Start jobs table -->
+    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="companyServicesTable">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Service Name</th>
+                <th>Label</th>
+                <th>URL</th>
+                <th>Email/Username</th>
+                <th>Password</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Client</th>
+                <th>Service Name</th>
+                <th>Label</th>
+                <th>URL</th>
+                <th>Email/Username</th>
+                <th>Password</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <!-- has-background-danger-light,  has-background-success-light   -->
+            {% for object in object_list %}
+    
+            <tr>
+                <td>
+                    <a target="_blank" href="{% url 'manager:client:details' object.client.pk %}">
+                        {{ object.client }}
+                    </a>
+                </td>
+                <td>
+                    {{ object.get_service_name_display }}
+                </td>
+                <td>
+                    {{ object.label }}
+                </td>
+                <td>
+                    <a href="{{ object.url }}" target="_blank">
+                        {{ object.url }}
+                    </a>
+                </td>
+                <td>
+                    <div class="field has-addons justify-center">
+                        <div class="control">
+                            <input class="input is-small" readonly="readonly"
+                                   type="email" id="email-{{ object.pk }}"
+                                   value="{{ object.email }}"/>
+                        </div>
+                        <div class="control">
+                            <button type="button" class="button is-small managerCSCopyEmailBtn" data-text-type="username" data-email-value="{{ object.email }}">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="field has-addons justify-center">
+                        <div class="control">
+                            <button type="button" class="button is-small managerCSShowPasswordBtn copyBtn" data-input-id="password-{{ object.pk }}" data-is-visible="0">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="control">
+                            <input class="input is-small" readonly="readonly"
+                                   type="password" id="password-{{ object.pk }}"
+                                   value="{{ object.decrypted_password }}"/>
+                        </div>
+                        <div class="control">
+                            <button type="button" class="button is-small has-tooltip-multiline managerCSCopyPasswordBtn" data-text-type="password" data-tooltip="Copy password, you have to reveal the password to copy it" data-input-id="password-{{ object.pk }}">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    {{ object.created_at|date }}
+                </td>
+                <td class="has-text-right">
+                    <div class="buttons are-small justify-center">
+                       
+                        <a href="{% url 'manager:company_services:update' object.pk %}" class="button is-success is-light is-small is-responsive small-fa-fonts">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
+                        <a href="{% url 'manager:company_services:delete' object.pk %}" class="button is-danger is-light is-small is-responsive small-fa-fonts">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+    
+                </td>
+            </tr>
+            {% endfor %}
+    
+    
+    
+        </tbody>
+    </table>
+    <!-- End jobs table -->
+    {% else %}
+    <div class="notification is-warning">
+        No company services
+    </div>
+    {% endif %}
+</div>
+
+{% endblock dashboard_content %}
+{% block externaljs %}
+<script src="{% static 'js/manager/company_service/list.js' %}" defer type="module"></script>
+{% endblock externaljs %}

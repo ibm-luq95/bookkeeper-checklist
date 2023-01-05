@@ -1,0 +1,106 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+
+
+{% block dashboard_content %}
+
+    <section id="manager-assistant-list" class="block box">
+        <header>
+            <h3 class="title is-3">
+                        Assistants <a class="button is-primary mx-2"
+    href="{% url 'manager:users:create' %}">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </h3>
+    </header>
+    <hr />
+    <div>
+        {% if object_list.count > 0 %}
+            <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="managerAssistantTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Client(s)</th>
+                        <th>Special Assignment</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <!-- <th>Slug</th> -->
+                        <th>Created AT</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Client(s)</th>
+                        <th>Special Assignment</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <!-- <th>Slug</th> -->
+                        <th>Created AT</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody>
+ 
+                    {% for object in object_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'manager:assistant:details' object.pk %}">{{ object.user.fullname }}</a>
+                            </td>
+                            <td>
+                                <a href="mailto:{{ object.user.email }}">
+                                    {{ object.user.email }}
+                                </a>
+                            </td>
+                            <td class="has-text-centered">
+                                
+                                {{ object.clients.count }}
+                            </td>
+                            <td class="has-text-centered">
+                                IN PROGRESS
+                            </td>
+                            <td>{{ object.get_assistant_type_display }}</td>
+                            <td>{{ object.status|title }}</td>
+                            <!-- <td>{{ object.slug }}</td> -->
+                            <td>{{ object.created_at|date:"SHORT_DATE_FORMAT" }}</td>
+                            <td>
+                                <div class="buttons are-small justify-center">
+                                    <a href="{% url 'manager:assistant:details' object.pk %}"
+                                       class="button is-info is-light">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'manager:assistant:update' object.pk %}"
+                                       class="button is-success is-light">
+                                        <i class="fa-solid fa-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'manager:assistant:delete' object.pk %}"
+                                       class="button is-danger is-light">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+ 
+                </tbody>
+            </table>
+        {% else %}
+            <div class="notification is-warning">
+                <!-- <button class="delete"></button> -->
+            No assistant(s)
+                <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
+                   href="{% url 'manager:users:create' %}">
+                Create new assistant
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock dashboard_content %}
+
+{% block externaljs %}
+    <script src="{% static 'js/manager/assistant/list.js' %}" defer type="module"></script>
+{% endblock externaljs %}

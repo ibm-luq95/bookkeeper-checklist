@@ -1,8 +1,12 @@
-from core.choices import ServiceNameEnum
-from core.models import BaseModelMixin
+# -*- coding: utf-8 -*-#
 from django.db import models
 from django.utils.translation import gettext as _
+
 from client.models import Client
+from company_services.helpers import PasswordHasher
+from core.choices import ServiceNameEnum
+from core.models import BaseModelMixin
+from core.utils import debugging_print
 
 
 class CompanyService(BaseModelMixin):
@@ -17,11 +21,27 @@ class CompanyService(BaseModelMixin):
         on_delete=models.PROTECT,
         null=True,
         related_name="company_services",
+        db_index=True,
     )
     service_name = models.CharField(
-        _("service name"), max_length=35, choices=ServiceNameEnum.choices
+        _("service name"), max_length=35, choices=ServiceNameEnum.choices, db_index=True
     )
     label = models.CharField(_("label"), max_length=30, null=True)
     url = models.URLField(_("URL"), null=True, blank=True)
     email = models.EmailField(_("email"), max_length=60, null=False)
-    password = models.CharField(_("password"), max_length=250, null=False)
+    password = models.TextField(_("password"), null=True, blank=True)
+
+    def __str__(self):
+        return f"Service for {self.client.name}, labeled: {self.label}"
+
+    # def save(self, *args, **kwargs):
+    #     self.password = PasswordHasher.encrypt(self.password)
+    #     super(CompanyService, self).save(*args, **kwargs)
+
+    @property
+    def decrypted_password(self) -> str | None:
+        if not self.password:
+            return None
+        else:
+            # debugging_print(self.password)
+            return PasswordHasher.decrypt(self.password)

@@ -1,7 +1,8 @@
 from users.models import CustomUser
+from core.models import StaffMemberMixin, BaseModelMixin
 
 
-class Manager(CustomUser):
+class Manager(BaseModelMixin, StaffMemberMixin):
     """Manager model represents the manager of the app
 
     Args:
@@ -9,7 +10,7 @@ class Manager(CustomUser):
     """
 
     class Meta:
-        proxy = True
+        # proxy = True
         permissions = [
             ("manager_user", "Manager User"),
         ]

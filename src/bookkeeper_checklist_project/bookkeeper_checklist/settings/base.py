@@ -64,12 +64,14 @@ INSTALLED_APPS = [
     "notes.apps.NotesConfig",
     "jobs.apps.JobsConfig",
     "task.apps.TaskConfig",
+    "special_assignment.apps.SpecialAssignmentConfig"
 ]
 
 MIDDLEWARE = [
     # "django.middleware.cache.UpdateCacheMiddleware",  # new for the cache
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django_session_timeout.middleware.SessionTimeoutMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -205,6 +207,7 @@ MESSAGE_TAGS = {
 
 LOGIN_REDIRECT_URL = ""
 LOGOUT_REDIRECT_URL = "/"
+LOGIN_URL = "users:login"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bulma"
 
@@ -251,6 +254,20 @@ MAINTENANCE_MODE_IGNORE_ADMIN_SITE = True
 
 # if True the superuser will not see the maintenance-mode page
 MAINTENANCE_MODE_IGNORE_SUPERUSER = False
+
+# Session configs
+SESSION_EXPIRE_SECONDS = int(os.environ.get("SESSION_EXPIRE_SECONDS"))  # 1 hour
+SESSION_EXPIRE_AT_BROWSER_CLOSE = bool(
+    os.environ.get("SESSION_EXPIRE_AT_BROWSER_CLOSE")
+)  # Invalid session
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = bool(
+    os.environ.get("SESSION_EXPIRE_AFTER_LAST_ACTIVITY")
+)
+
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+
+# SESSION_TIMEOUT_REDIRECT = "/"
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60 # group by minute
 
 # check if cache enabled
 if bool(os.environ.get("IS_CACHE_ENABLED")):

@@ -26,7 +26,3 @@ class TaskForm(BaseModelFormMixin):
 
     class Meta(BaseModelFormMixin.Meta):
         model = Task
-        widgets = {
-            "start_date": forms.DateInput(attrs={"class": "input", "type": "date"}),
-            "due_date": forms.DateInput(attrs={"class": "input", "type": "date"}),
-        }

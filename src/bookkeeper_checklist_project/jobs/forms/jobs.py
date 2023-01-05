@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from bookkeeper.models import Bookkeeper
-from core.forms import BaseModelFormMixin
+from core.forms import BaseModelFormMixin, Html5Mixin
 from jobs.models import Job
 
 
@@ -39,6 +39,5 @@ class JobForm(BaseModelFormMixin):
     class Meta(BaseModelFormMixin.Meta):
         model = Job
         widgets = {
-            "due_date": forms.DateInput(attrs={"class": "input", "type": "date"}),
             "note": forms.TextInput(),
         }

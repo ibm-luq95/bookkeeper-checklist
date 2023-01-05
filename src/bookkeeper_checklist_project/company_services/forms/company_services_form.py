@@ -10,7 +10,6 @@ class CompanyServiceForm(BaseModelFormMixin):
     def __init__(self, client=None, is_update=False, updated_object=None, *args, **kwargs):
         super(CompanyServiceForm, self).__init__(*args, **kwargs)
         # debugging_print(self.fields)
-        self.fields["url"].widget.attrs.update({"class": "input", "type": "url"})
         self.is_update = is_update
         self.updated_object = updated_object
         if client is not None:

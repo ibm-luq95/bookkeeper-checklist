@@ -20,6 +20,7 @@ class CompanyServicesListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     template_name = "manager/company_service/list.html"
     model = CompanyService
     http_method_names = ["get"]
+    # queryset = CompanyService.objects.all().values("email", "client", "service_name", "label")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -27,15 +28,15 @@ class CompanyServicesListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
         context["title"] = get_trans_txt("Company Services")
         return context
 
-    def get_queryset(self) -> BaseQuerySetMixin:
-        """
-        Return the list of items for this view.
-        The return value must be an iterable and may be an instance of
-        `QuerySet` in which case `QuerySet` specific behavior will be enabled.
-        """
-        queryset = super(CompanyServicesListView, self).get_queryset()
-        queryset = CompanyService.objects.select_related().only("email", "client", "service_name", "label")
-        return queryset
+    # def get_queryset(self) -> BaseQuerySetMixin:
+    #     """
+    #     Return the list of items for this view.
+    #     The return value must be an iterable and may be an instance of
+    #     `QuerySet` in which case `QuerySet` specific behavior will be enabled.
+    #     """
+    #     queryset = super(CompanyServicesListView, self).get_queryset()
+    #     queryset = CompanyService.objects.select_related().only("email", "client", "service_name", "label")
+    #     return queryset
 
 
 class CompanyServicesCreateView(

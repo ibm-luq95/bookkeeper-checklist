@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-#
 from client.models import Client
-from core.forms import BaseModelFormMixin
+from core.forms import BaseModelFormMixin, Html5Mixin
 from important_contact.models import ImportantContact
 
 
-class ImportantContactForm(BaseModelFormMixin):
+class ImportantContactForm(BaseModelFormMixin, Html5Mixin):
     # auto_id = "important_contact_%s"
 
     def __init__(
@@ -18,9 +18,7 @@ class ImportantContactForm(BaseModelFormMixin):
     ):
         super(ImportantContactForm, self).__init__(*args, **kwargs)
         # print(is_creating)
-        self.fields["contact_website"].widget.attrs.update(
-            {"class": "input", "type": "url"}
-        )
+
         if is_readonly is True:
             for field in self.fields:
                 self.fields[field].widget.attrs.update({"readonly": "readonly"})

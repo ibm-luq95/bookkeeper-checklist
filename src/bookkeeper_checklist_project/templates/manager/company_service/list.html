@@ -41,7 +41,6 @@
         <tbody>
             <!-- has-background-danger-light,  has-background-success-light   -->
             {% for object in object_list %}
-    
             <tr>
                 <td>
                     <a target="_blank" href="{% url 'manager:client:details' object.client.pk %}">
@@ -97,7 +96,7 @@
                 </td>
                 <td class="has-text-right">
                     <div class="buttons are-small justify-center">
-                       
+
                         <a href="{% url 'manager:company_services:update' object.pk %}" class="button is-success is-light is-small is-responsive small-fa-fonts">
                             <i class="fa-solid fa-pencil"></i>
                         </a>
@@ -105,13 +104,13 @@
                             <i class="fa-solid fa-trash"></i>
                         </a>
                     </div>
-    
+
                 </td>
             </tr>
             {% endfor %}
-    
-    
-    
+
+
+
         </tbody>
     </table>
     <!-- End jobs table -->

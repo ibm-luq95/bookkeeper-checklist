@@ -15,14 +15,17 @@ class Html5Mixin:
             first_field = None
 
             for name, field in self.fields.items():
+                # self.fields[name].widget.attrs.update({"class": "input"})
                 # Autofocus first non-hidden field
                 if not first_field and not field.widget.is_hidden:
                     first_field = field
                     first_field.widget.attrs["autofocus"] = ""
+
                 if isinstance(field, forms.EmailField):
                     self.fields[name].widget.input_type = "email"
                 elif isinstance(field, forms.URLField):
                     self.fields[name].widget.input_type = "url"
+                    self.fields[name].widget.attrs.update({"class": "input"})
                 elif isinstance(field, forms.DateField):
                     self.fields[name].widget.input_type = "date"
                     self.fields[name].widget.attrs.update({"class": "input"})

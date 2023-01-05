@@ -6,7 +6,6 @@ from client.models import Client
 from company_services.helpers import PasswordHasher
 from core.choices import ServiceNameEnum
 from core.models import BaseModelMixin
-from core.utils import debugging_print
 
 
 class CompanyService(BaseModelMixin):
@@ -20,6 +19,7 @@ class CompanyService(BaseModelMixin):
         to=Client,
         on_delete=models.PROTECT,
         null=True,
+        blank=True,
         related_name="company_services",
         db_index=True,
     )
@@ -28,7 +28,7 @@ class CompanyService(BaseModelMixin):
     )
     label = models.CharField(_("label"), max_length=30, null=True)
     url = models.URLField(_("URL"), null=True, blank=True)
-    email = models.EmailField(_("email"), max_length=60, null=False)
+    email = models.CharField(_("email"), max_length=60, null=False, db_index=True)
     password = models.TextField(_("password"), null=True, blank=True)
 
     def __str__(self):

@@ -3,10 +3,10 @@ from django.utils.translation import gettext as _
 
 from client.models import Client
 from core.choices import AssistantTypeEnum
-from core.models import StaffMemberMixin
+from core.models import StaffMemberMixin, BaseModelMixin
 
 
-class Assistant(StaffMemberMixin):
+class Assistant(BaseModelMixin, StaffMemberMixin):
     """Assistant models
 
     Args:
@@ -21,7 +21,7 @@ class Assistant(StaffMemberMixin):
     )
     clients = models.ManyToManyField(to=Client, blank=True)
 
-    class Meta(StaffMemberMixin.Meta):
+    class Meta:
         # proxy = True
         permissions = [
             ("assistant_user", "Assistant User"),

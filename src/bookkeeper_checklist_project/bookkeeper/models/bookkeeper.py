@@ -1,26 +1,18 @@
 from django.db import models
-from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
-from client.models import Client
-from company_services.models import CompanyService
-from core.choices import CustomUserStatusEnum
-from core.models import BaseModelMixin, UserForeignKeyMixin
-from core.models import StaffMemberMixin
-from core.utils import debugging_print
+
+from core.models import BaseModelMixin, StaffMemberMixin
 
 
-# from jobs.models import Job
-
-
-class Bookkeeper(StaffMemberMixin):
+class Bookkeeper(BaseModelMixin, StaffMemberMixin):
     """Bookkeeper model
 
     Args:
         BaseModelMixin (models.Model): Django base model mixin
     """
 
-    class Meta(StaffMemberMixin.Meta):
+    class Meta:
         # proxy = True
         permissions = [
             ("bookkeeper_user", "Bookkeeper User"),

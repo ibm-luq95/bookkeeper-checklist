@@ -9,7 +9,7 @@ from core.choices import CustomUserStatusEnum
 from core.models import BaseModelMixin, SoftDeleteManager
 
 
-class StaffMemberMixin(BaseModelMixin):
+class StaffMemberMixin(models.Model):
     user = models.OneToOneField(
         to=get_user_model(), on_delete=models.CASCADE, related_name="%(class)s"
     )
@@ -35,7 +35,7 @@ class StaffMemberMixin(BaseModelMixin):
 
     objects = SoftDeleteManager()
 
-    class Meta(BaseModelMixin.Meta):
+    class Meta:
         # db_table = "staff_member"
         abstract = True
 

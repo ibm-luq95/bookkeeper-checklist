@@ -58,10 +58,12 @@
             <main class="container is-fluid">
                   <div class="columns">
                         {% if request.user.user_type == "manager" %}
+                              {% if perms.manager.manager_user %}
+                                <!-- START LEFT SIDE -->
+                                <div class="column is-2">{% include "core/includes/left_side.html" %}</div>
+                                <!-- END LEFT SIDE -->
+                              {% endif %}
 
-                        <!-- START LEFT SIDE -->
-                        <div class="column is-2">{% include "core/includes/left_side.html" %}</div>
-                        <!-- END LEFT SIDE -->
                         {% endif %}
 
                         <!-- START CONTENT -->

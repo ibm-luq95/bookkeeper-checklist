@@ -99,7 +99,7 @@ class Command(BaseCommand):
                 for group in self.groups_names:
                     group_obj = Group.objects.filter(name=group)
                     if group_obj.count() <= 0:
-                        self.stdout("error", f"Group {group} not exists!")
+                        self.stdout_output("error", f"Group {group} not exists!")
                         pass
                     else:
                         group_obj = group_obj.first()

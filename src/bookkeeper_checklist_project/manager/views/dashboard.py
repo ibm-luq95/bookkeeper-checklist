@@ -19,7 +19,8 @@ class DashboardHomeView(LoginRequiredMixin, ManagerAccessMixin, TemplateView):
         context["title"] = "Management"
         # Individual permissions
         # all_permissions = Permission.objects.filter(user=self.request.user)
-
+        # cpprint(sorted(self.request.user.get_all_permissions()))
+        # cpprint(self.request.user.has_perm("manager.manager_user"))
         # Permissions that the user has via a group
         # all_permissions = Permission.objects.filter(group__user=self.request.user)
         # cpprint(all_permissions)

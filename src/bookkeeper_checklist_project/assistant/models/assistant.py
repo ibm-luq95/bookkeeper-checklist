@@ -30,5 +30,6 @@ class Assistant(BaseModelMixin, StaffMemberMixin):
             ("can_access_client", _("Can access client(s) account details")),
         ]
 
-    # def __str__(self) -> str:
-    #     return f"Assistant - {self.user.first_name} {self.user.last_name}"
+    def __str__(self) -> str:
+        # return f"Assistant - {self.user.first_name} {self.user.last_name}"
+        return f"{self.user.fullname}"

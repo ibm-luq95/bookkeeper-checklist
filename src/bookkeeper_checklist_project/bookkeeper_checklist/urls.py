@@ -1,8 +1,9 @@
-from core.utils import get_trans_txt
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
+
+from core.utils import get_trans_txt
 from core.views import js_settings
 
 static_and_media_path_urls = static(
@@ -21,6 +22,11 @@ urlpatterns = [
     path("manager/", include("manager.urls"), name="manager-urls"),
     path("documents/", include("documents.urls"), name="documents-urls"),
     path("notes/", include("notes.urls"), name="notes-urls"),
+    path(
+        "special_assignment/",
+        include("special_assignment.urls"),
+        name="special_assignment-urls",
+    ),
     path("task/", include("task.urls"), name="task-urls"),
     path("jobs/", include("jobs.urls"), name="jobs-urls"),
     path(

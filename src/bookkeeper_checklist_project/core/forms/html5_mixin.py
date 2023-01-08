@@ -20,7 +20,7 @@ class Html5Mixin:
                 if not first_field and not field.widget.is_hidden:
                     first_field = field
                     first_field.widget.attrs["autofocus"] = ""
-
+                # self.fields[name].widget.attrs.update({"class": "bkchlst-input"})
                 if isinstance(field, forms.EmailField):
                     self.fields[name].widget.input_type = "email"
                 elif isinstance(field, forms.URLField):

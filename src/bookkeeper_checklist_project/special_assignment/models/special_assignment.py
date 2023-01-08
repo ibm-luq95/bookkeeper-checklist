@@ -4,15 +4,14 @@ from typing import Union
 from django.db import models
 from django.utils.translation import gettext as _
 
-from assistant.models import Assistant
-from bookkeeper.models import Bookkeeper
+
 from client.models import Client
 from core.choices.special_assignment import SpecialAssignmentStatusEnum
-from core.models import BaseModelMixin, UserForeignKeyMixin
-from manager.models import Manager
+from core.models import BaseModelMixin, TeamMembersMixin
+from .managers import SpecialAssignmentsManager
 
 
-class SpecialAssignment(BaseModelMixin):
+class SpecialAssignment(BaseModelMixin, TeamMembersMixin):
     client = models.ForeignKey(
         to=Client, on_delete=models.PROTECT, related_name="special_assignments"
     )
@@ -31,37 +30,11 @@ class SpecialAssignment(BaseModelMixin):
     due_date = models.DateField(_("due date"))
     notes = models.TextField(_("notes"), null=True, blank=True)
     is_seen = models.BooleanField(_("is_seen"), default=False)
-    assistant = models.ForeignKey(
-        to=Assistant,
-        on_delete=models.PROTECT,
-        related_name="special_assignments",
-        null=True,
-        blank=True,
-    )
-    bookkeeper = models.ForeignKey(
-        to=Bookkeeper,
-        on_delete=models.PROTECT,
-        related_name="special_assignments",
-        null=True,
-        blank=True,
-    )
-    manager = models.ForeignKey(
-        to=Manager,
-        on_delete=models.PROTECT,
-        related_name="special_assignments",
-        null=True,
-        blank=True,
-    )
 
-    def get_managed_user(self) -> Union[Bookkeeper, Assistant, Manager, None]:
-        if self.bookkeeper:
-            return self.bookkeeper
-        elif self.assistant:
-            return self.assistant
-        elif self.manager:
-            return self.manager
-        else:
-            return None
+    objects = SpecialAssignmentsManager()
+
+    def __str__(self) -> str:
+        return f"{self.title}"
 
     def get_is_seen_label(self) -> str:
         if self.is_seen is True:

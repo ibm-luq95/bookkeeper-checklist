@@ -45,13 +45,17 @@
 
                     {% for object in object_list %}
                         <tr>
-                            <td>{{ object.client }}</td>
+                            <td>
+                              <a href="{% url 'manager:client:details' object.client.pk %}" target="_blank">
+                                {{ object.client }} <i class="fas fa-external-link-alt is-small"></i>
+                              </a>
+                            </td>
                             <td>{{ object.account_name }}</td>
                             <td>{{ object.account_email }}</td>
                             <td>{{ object.account_url }}</td>
                             <td>{{ object.account_username }}</td>
                             <td>
- 
+
                                 <div class="field has-addons">
                                     <div class="control">
                                         <input class="input is-small"

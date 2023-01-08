@@ -50,11 +50,13 @@
                                 <a href="{% url 'manager:jobs:details' object.pk %}">{{ object.title }}</a>
                             </td>
                             <td>
-                                <a href="{% url 'manager:client:details' object.client.pk %}">{{ object.client }}</a>
+                                <a href="{% url 'manager:client:details' object.client.pk %}">
+                                  {{ object.client }} <i class="fas fa-external-link-alt is-small"></i>
+                                </a>
                             </td>
                             <td>
-                                
-                                
+
+
                                 {% for bookkeeper in object.bookkeeper.filter %}
                                     <a href="{% url 'manager:bookkeeper:details' bookkeeper.pk %}" target="_blank" class="is-block has-text-justified">{{ bookkeeper }}</a>
                                 {% empty %}
@@ -62,8 +64,8 @@
                                     No bookkeeper for this job
                                 </p>
                                 {% endfor %}
-                                    
-                                    
+
+
                             </td>
 
                             <td>{{ object.tasks.count }}</td>

@@ -280,3 +280,7 @@ table.table-list-component th {
 .small-fa-fonts {
   font-size: 10px !important;
 }
+
+.textarea[rows] {
+  height: unset !important;
+}

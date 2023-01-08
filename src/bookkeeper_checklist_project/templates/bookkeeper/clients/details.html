@@ -42,121 +42,47 @@
               <h5 class="title is-4">
                 <i class="fa fa-building fa-fw mr-1 is-inline-block w3-text-teal"></i>
                 Important Contact ({{ object.important_contacts.count }})
-               
+
               </h5>
             </p>
-            
+
             {% for contact in object.important_contacts.select_related.filter %}
             <section class="bookkeeper-client-important-contact-block">
-              <div class="list has-visible-pointer-controls">
-                <div class="list-item">
-                  <div class="list-item-content">
-                    <div class="list-item-title">Label</div>
-                    <div class="list-item-description">{{ contact.get_contact_label_display }}</div>
-                  </div>
-  
-                  <div class="list-item-controls">
-                    <div class="buttons is-right">
-                      <button class="button is-small bookkeeperViewImportantContactBtn" data-important-contact-id="{{ contact.pk }}" type="button" title="View all details related to contact">
-                        <span class="icon is-small">
-                          <i class="fa-solid fa-eye"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
+              <div class="columns is-flex is-align-items-center">
+                <div class="column is-3">
+                  <h6 class="is-size-6 is-capitalized has-text-weight-bold has-text-dark">
+                    Label
+                  </h6>
+                </div>
+                <div class="column is-6">
+                  <h6 class="is-size-6 is-capitalized has-text-weight-bold has-text-dark">
+                    {{ contact.get_contact_label_display }}
+                  </h6>
+                </div>
+                <div class="column" style="vertical-align: middle">
+                  <button class="button is-small bookkeeperViewImportantContactBtn" data-important-contact-id="{{ contact.pk }}" type="button" title="View all details related to contact">
+                    <span class="icon is-small">
+                      <i class="fa-solid fa-eye"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <hr />
+              <div class="columns is-flex is-align-items-center">
+                <div class="column is-4">
+                  <h6 class="is-size-6 is-capitalized has-text-weight-bold has-text-dark">
+                    Company Name
+                  </h6>
+                </div>
+                <div class="column is-7">
+                  <h6 class="is-size-6 is-capitalized has-text-weight-bold has-text-dark">
+                    {{ contact.company_name }}
+                  </h6>
+
                 </div>
 
-                <div class="list-item">
-                  <div class="list-item-content">
-                    <div class="list-item-title">Company Name</div>
-                    <div class="list-item-description">
-                      {{ contact.company_name }}
-                    </div>
-                  </div>
-  
-                  {% comment %}
-                  <div class="list-item-controls">
-                    <div class="buttons is-right">
-                      <button class="button">
-                        <span class="icon is-small">
-                          <i class="fas fa-ellipsis-h"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  {% endcomment %}
-                </div>
-  
-                <div class="list-item">
-                  <div class="list-item-content">
-                    <div class="list-item-title">Phone</div>
-                    <div class="list-item-description">
-                      {{ contact.contact_phone }}
-                    </div>
-                  </div>
-  
-                  {% comment %}
-                  <div class="list-item-controls">
-                    <div class="buttons is-right">
-                      <button class="button">
-                        <span class="icon is-small">
-                          <i class="fas fa-ellipsis-h"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  {% endcomment %}
-                </div>
-  
-                <div class="list-item">
-                  <div class="list-item-content">
-                    <div class="list-item-title">Email Contact</div>
-                    <div class="list-item-description">
-                      <a href="mailto:{{ contact.contact_email }}">
-                        {{ contact.contact_email }}
-                      </a>
-                    </div>
-                  </div>
-  
-                  {% comment %}
-                  <div class="list-item-controls">
-                    <div class="buttons is-right">
-                      <button class="button">
-                        <span class="icon is-small">
-                          <i class="fas fa-ellipsis-h"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  {% endcomment %}
-                </div>
-  
-                <div class="list-item">
-                  <div class="list-item-content">
-                    <div class="list-item-title">Website URL</div>
-                    <div class="list-item-description">
-                      <a href="{{ contact.contact_website }}" target="_blank">
-                        {{ contact.contact_website }}
-                      </a>
-                    </div>
-                  </div>
-  
-                  {% comment %}
-                  <div class="list-item-controls">
-                    <div class="buttons is-right">
-                      <button class="button">
-                        <span class="icon is-small">
-                          <i class="fas fa-ellipsis-h"></i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  {% endcomment %}
-                </div>
-  
-  
-  
               </div>
+
             </section>
             <hr />
             {% empty %}
@@ -253,12 +179,12 @@
 
                           <td data-label="Title">{{ past_due.title }}</td>
                           <td data-label="Status">
-                            
+
                             <span class="tag is-danger has-text-weight-bold">
                               {{ past_due.get_status_display }}
                             </span>
-                              
-                            
+
+
                           </td>
 
                           <td data-label="Created">
@@ -296,8 +222,8 @@
                           </td>
                         </tr>
                         {% endfor %}
-                          
-                       
+
+
                       </tbody>
                     </table>
                   </div>
@@ -360,7 +286,7 @@
 
                           <td data-label="Title">{{ weekly_job.title }}</td>
                           <td data-label="Status">
-                            
+
                             {% if weekly_job.status == "past_due" %}
                             <span class="tag is-danger has-text-weight-bold">
                               {{ weekly_job.get_status_display }}
@@ -386,8 +312,8 @@
                               {{ weekly_job.get_status_display }}
                             </span>
                             {% endif %}
-                              
-                            
+
+
                           </td>
 
                           <td data-label="Created">
@@ -425,8 +351,8 @@
                           </td>
                         </tr>
                         {% endfor %}
-                          
-                       
+
+
                       </tbody>
                     </table>
                   </div>
@@ -489,7 +415,7 @@
 
                           <td data-label="Title">{{ monthly_job.title }}</td>
                           <td data-label="Status">
-                            
+
                             {% if monthly_job.status == "past_due" %}
                             <span class="tag is-danger has-text-weight-bold">
                               {{ monthly_job.get_status_display }}
@@ -514,10 +440,10 @@
                             <span class="tag is-link has-text-weight-bold">
                               {{ monthly_job.get_status_display }}
                             </span>
-                            
+
                             {% endif %}
-                              
-                            
+
+
                           </td>
 
                           <td data-label="Created">
@@ -555,8 +481,8 @@
                           </td>
                         </tr>
                         {% endfor %}
-                          
-                       
+
+
                       </tbody>
                     </table>
                   </div>
@@ -618,7 +544,7 @@
 
                           <td data-label="Title">{{ quarterly_job.title }}</td>
                           <td data-label="Status">
-                            
+
                             {% if quarterly_job.status == "past_due" %}
                             <span class="tag is-danger has-text-weight-bold">
                               {{ quarterly_job.get_status_display }}
@@ -644,8 +570,8 @@
                               {{ quarterly_job.get_status_display }}
                             </span>
                             {% endif %}
-                              
-                            
+
+
                           </td>
 
                           <td data-label="Created">
@@ -683,8 +609,8 @@
                           </td>
                         </tr>
                         {% endfor %}
-                          
-                       
+
+
                       </tbody>
                     </table>
                   </div>
@@ -746,7 +672,7 @@
 
                           <td data-label="Title">{{ yearly.title }}</td>
                           <td data-label="Status">
-                            
+
                             {% if yearly.status == "past_due" %}
                             <span class="tag is-danger has-text-weight-bold">
                               {{ yearly.get_status_display }}
@@ -772,8 +698,8 @@
                               {{ yearly.get_status_display }}
                             </span>
                             {% endif %}
-                              
-                            
+
+
                           </td>
 
                           <td data-label="Created">
@@ -811,8 +737,8 @@
                           </td>
                         </tr>
                         {% endfor %}
-                          
-                       
+
+
                       </tbody>
                     </table>
                   </div>
@@ -857,7 +783,7 @@
             </div>
 
             <div id="accounts-and-services-tab" class="tabcontent2">
-              
+
               {% if object.company_services.count > 0 %}
               <table class="table is-fullwidth" id="clientsAccountAndServicesTable">
                 <thead>
@@ -985,15 +911,15 @@ Password
                 No accounts
               </div>
               {% endif %}
-                
-             
+
+
 
             </div>
             <div class="tabcontent2" id="notes-tab">
               <div class="list has-visible-pointer-controls">
-                
+
                 {% if object.notes.count > 0 %}
-                  
+
                   {% for note in object.notes.all %}
                   <div class="list-item">
 
@@ -1005,7 +931,7 @@ Password
                         {{ note.body }}
                       </div>
                     </div>
-  
+
                     <div class="list-item-controls">
                       <div class="buttons is-right">
                         <button class="button bkchlst-input is-disabled open-note-item-btn"
@@ -1015,12 +941,12 @@ Password
                             <i class="fa-solid fa-pencil"></i>
                           </span>
                         </button>
-  
+
                       </div>
                     </div>
                   </div>
                   {% endfor %}
-                    
+
                 {% else %}
                 <div class="notification">
                   No Notes
@@ -1036,7 +962,7 @@ Password
                     <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
                       <thead>
                         <tr>
-                      
+
                           <th>Title</th>
                           <th>Document Section</th>
                           <th>Download</th>
@@ -1047,8 +973,8 @@ Password
                       <tbody>
                         <!-- has-background-danger-light,  has-background-success-light -->
                         {% for document in object.documents.all %}
-                 
-                        
+
+
                         <tr>
 
                           <td data-label="Title">
@@ -1069,21 +995,21 @@ Password
                           </td>
                         </tr>
                         {% endfor %}
-                          
-                       
+
+
                       </tbody>
                     </table>
                   </div>
                 </div>
-                 
-                    
+
+
                 {% else %}
                 <div class="notification">
                   No Documents
                 </div>
                 {% endif %}
-                
-              
+
+
               </div>
 
             </div>
@@ -1186,8 +1112,8 @@ Password
             </table>
           </div>
         </div>
-      
-      
+
+
       </div>
       </main>
       <footer class="modal__footer">
@@ -1263,7 +1189,7 @@ Password
          aria-labelledby="taskDetailsModalTitle">
       <header class="modal__header">
         <h2 class="modal__title" id="taskDetailsModalTitle">
-        
+
         </h2>
 
         <button class="modal__close" aria-label="Close modal" data-micromodal-close>
@@ -1371,13 +1297,13 @@ Password
 
       </main>
       <footer class="modal__footer">
-        
+
         {% comment %}
         <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="updateImportantContactForm">
           Update
         </button>
         {% endcomment %}
-          
+
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
           Close
         </button>

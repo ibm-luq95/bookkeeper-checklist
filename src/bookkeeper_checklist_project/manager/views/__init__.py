@@ -32,11 +32,12 @@ from .assistant import (
     AssistantDetailsView,
     AssistantDeleteView,
     AssistantUpdateView,
-    AssistantCreateView
+    AssistantCreateView,
 )
 from .special_assignment import (
     SpecialAssignmentListView,
     SpecialAssignmentCreateView,
     SpecialAssignmentUpdateView,
     SpecialAssignmentDeleteView,
+    SpecialAssignmentDetailsView,
 )

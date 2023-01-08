@@ -39,7 +39,7 @@
         <tbody>
             <!-- has-background-danger-light,  has-background-success-light   -->
             {% for object in object_list %}
-    
+
             <tr>
                 <td>
                     <a href="{% url 'manager:task:update' object.pk %}">
@@ -47,7 +47,9 @@
                     </a>
                 </td>
                 <td>
-                    <a href="">{{ object.job }}</a>
+                    <a href="">
+                      {{ object.job }} <i class="fas fa-external-link-alt is-small"></i>
+                    </a>
                 </td>
                 <td>
                     {{ object.get_task_type_display }}
@@ -73,13 +75,13 @@
                             <i class="fa-solid fa-trash"></i>
                         </a>
                     </div>
-    
+
                 </td>
             </tr>
             {% endfor %}
-    
-    
-    
+
+
+
         </tbody>
     </table>
     <!-- End jobs table -->

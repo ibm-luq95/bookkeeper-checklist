@@ -10,6 +10,11 @@ class BaseModelFormMixin(Html5Mixin, forms.ModelForm):
         super(BaseModelFormMixin, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         # self.helper.form_horizontal = True
+        # for field, widget in self.fields.items():
+        #     print(self.fields[field].widget.attrs)
+        #     self.fields[field].widget.attrs.update({
+        #         "class": ""
+        #     })
 
     class Meta:
         exclude = EXCLUDED_FIELDS

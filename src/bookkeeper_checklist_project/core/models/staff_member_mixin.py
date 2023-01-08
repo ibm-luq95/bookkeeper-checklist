@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 
 from company_services.models import CompanyService
 from core.choices import CustomUserStatusEnum
-from core.models import BaseModelMixin, SoftDeleteManager
+from core.models import SoftDeleteManager
 
 
 class StaffMemberMixin(models.Model):
@@ -33,7 +33,7 @@ class StaffMemberMixin(models.Model):
     )
     bio = models.TextField(_("bio"), null=True, blank=True)
 
-    objects = SoftDeleteManager()
+    # objects = SoftDeleteManager()
 
     class Meta:
         # db_table = "staff_member"
@@ -54,3 +54,6 @@ class StaffMemberMixin(models.Model):
             return "Active"
         else:
             return "Deactivate"
+
+    def get_not_seen_special_assignments(self):
+        return self.special_assignments.select_related().filter(is_seen=False)

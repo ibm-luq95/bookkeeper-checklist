@@ -19,7 +19,8 @@ class Bookkeeper(BaseModelMixin, StaffMemberMixin):
         ]
 
     def __str__(self):
-        return f"Bookkeeper -> {self.user.fullname}"
+        # return f"Bookkeeper -> {self.user.fullname}"
+        return f"{self.user.fullname}"
 
     def get_tasks_count(self):
         all_tasks = []
@@ -35,3 +36,4 @@ class Bookkeeper(BaseModelMixin, StaffMemberMixin):
         for job in jobs:
             total_list.add(str(job.client.pk))
         return len(total_list)
+

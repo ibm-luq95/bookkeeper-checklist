@@ -39,7 +39,7 @@
                             <article>
                                 <header class="mb-5">
                                     <p class="title is-3">Client</p>
-                                    
+
                                     {% if object.client %}
                                     <p class="subtitle is-4">
                                         <a href="{% url 'manager:client:details' object.client.pk %}"
@@ -48,8 +48,8 @@
                                     {% else %}
                                         No client
                                     {% endif %}
-                                        
-                                    
+
+
                                 </header>
                                 <hr />
 
@@ -240,7 +240,7 @@
 
                                         {% for bookkeeper in object.bookkeeper.filter %}
                                         <a class="is-block" target="_blank"
-                                            href="{% url 'manager:bookkeeper:details' bookkeeper.pk %}">{{ bookkeeper.fullname }}</a>
+                                            href="{% url 'manager:bookkeeper:details' bookkeeper.pk %}">{{ bookkeeper.user.fullname }}</a>
                                         {% empty %}
                                         No Bookkeeper(s)
                                         {% endfor %}
@@ -325,7 +325,7 @@
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
-                            
+
                             {% empty %}
                             <div class="notification is-warning panel-block">
                                 No note(s)

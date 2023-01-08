@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from .mixins import BookkeeperAccessMixin
+from prettyprinter import cpprint
 from bookkeeper.helpers import BookkeeperHelper
 
 # TODO: remove the custom logger before push (only for development)
@@ -74,9 +75,12 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
             context.setdefault("quote_text", quote_text)
             context["bookkeeper_name"] = self.request.user.fullname
             bookkeeper = self.request.user.bookkeeper
-            debugging_print("#################################")
-            debugging_print(self.request.user.bookkeeper)
-            debugging_print("#################################")
+            # debugging_print("#################################")
+            # debugging_print(self.request.user.bookkeeper.special_assignments.select_related())
+            # debugging_print(self.request.user.bookkeeper)
+            # cpprint(sorted(self.request.user.get_all_permissions()))
+            # cpprint(self.request.user.has_perm("bookkeeper.bookkeeper_user"))
+            # debugging_print("#################################")
             context.setdefault("bookkeeper", bookkeeper)
             bookkeeper_helper = BookkeeperHelper(bookkeeper)
             context.setdefault("clients", bookkeeper_helper.get_clients())

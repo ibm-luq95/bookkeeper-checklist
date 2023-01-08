@@ -4,3 +4,4 @@ from .mixins import BaseModelMixin
 from .mixins import UserForeignKeyMixin
 from .quote import Quote
 from .staff_member_mixin import StaffMemberMixin
+from .team_members_mixin import TeamMembersMixin

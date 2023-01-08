@@ -1,167 +1,190 @@
 {% if request.user.is_authenticated %}
+
+{% comment %}
+{{ perms.manager.manager_user }}
+{{ perms.bookkeeper.bookkeeper_user }}
+{{ perms.assistant.assistant_user }}
+{% endcomment %}
+
 <nav class="navbar is-white">
-    <div class="container is-fluid">
-        <div class="navbar-brand">
-            {% if request.user.user_type == "bookkeeper" %}
-            <a class="navbar-item brand-text" href="{% url 'bookkeeper:dashboard' %}"> 
-                Bookkeeper
+  <div class="container is-fluid">
+    <div class="navbar-brand">
+      {% if request.user.user_type == "bookkeeper" %}
+      <a class="navbar-item brand-text" href="{% url 'bookkeeper:dashboard' %}">Bookkeeper</a>
+      {% elif request.user.user_type == "assistant" %}
+      <a class="navbar-item brand-text" href="{% url 'assistant:dashboard' %}">Bookkeeper</a>
+      {% elif request.user.user_type == "manager" %}
+      <a class="navbar-item brand-text" href="{% url 'manager:dashboard' %}">Bookkeeper</a>
+      {% endif %}
+
+      <div class="navbar-burger burger" data-target="navMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div id="navMenu" class="navbar-menu">
+      <div class="navbar-start">
+
+        {% if request.user.user_type == "bookkeeper" %}
+        <a class="navbar-item" href="{% url 'bookkeeper:client:list' %}">Clients</a>
+        <a class="navbar-item" href="{% url 'bookkeeper:job:list' %}">Jobs</a>
+        <a class="navbar-item" href="{% url 'bookkeeper:tasks:list' %}">Tasks</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Special Assignment
+            <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">
+              {{ request.user.bookkeeper.special_assignments.count }}
+            </span>
+          </a>
+
+          <div class="navbar-dropdown">
+            <a href="" class="navbar-item">
+              List all assignments
             </a>
-            {% elif request.user.user_type == "assistant" %}
-            <a class="navbar-item brand-text" href="{% url 'assistant:dashboard' %}"> 
-                Bookkeeper
+            <a href="" class="navbar-item">
+              Create new assignment
             </a>
-            {% elif request.user.user_type == "manager" %}
-            <a class="navbar-item brand-text" href="{% url 'manager:dashboard' %}"> 
-                Bookkeeper
-            </a>
-            {% endif %}
-            
-            <div class="navbar-burger burger" data-target="navMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+          </div>
         </div>
-        <div id="navMenu" class="navbar-menu">
-            <div class="navbar-start">
+        {% elif request.user.user_type == "assistant" %}
+        <a class="navbar-item" href="{% url 'assistant:bookkeeper-list-url' %}">Bookkeepers</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Special Assignment
+            <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">
+              {{ request.user.assistant.get_not_seen_special_assignments.count }}
+            </span>
+          </a>
 
-                {% if request.user.user_type == "bookkeeper" %}
-                <a class="navbar-item" href="{% url 'bookkeeper:client:list' %}"> Clients </a>
-                <a class="navbar-item" href="{% url 'bookkeeper:job:list' %}"> Jobs </a>
-                <a class="navbar-item" href="{% url 'bookkeeper:tasks:list' %}"> Tasks </a>
-                {% elif request.user.user_type == "assistant" %}
-                <a class="navbar-item" href="{% url 'assistant:bookkeeper-list-url' %}"> Bookkeepers </a>
-                {% elif request.user.user_type == "manager" %}
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Bookkeepers
-                    </a>
+          <div class="navbar-dropdown">
+            <a href="" class="navbar-item">
+              List all assignments
+            </a>
+            <a href="" class="navbar-item">
+              Create new assignment
+            </a>
+          </div>
+        </div>
+        {% elif request.user.user_type == "manager" %}
 
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="{% url 'manager:bookkeeper:list' %}">
-                            List all bookkeepers
-                        </a>
-                        <a class="navbar-item" href="{% url 'manager:bookkeeper:create' %}">
-                            Create new bookkeeper
-                        </a>
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Assistants
-                    </a>
+        {% if perms.manager.manager_user %}
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Managers</a>
 
-                    <div class="navbar-dropdown">
-                        <a href="{% url 'manager:assistant:list' %}" class="navbar-item">
-                            List all assistants
-                        </a>
-                        <a href="{% url 'manager:assistant:create' %}" class="navbar-item">
-                            Create new assistant
-                        </a>
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Clients
-                    </a>
+          <div class="navbar-dropdown">
+            <a href="" class="navbar-item">List all managers</a>
+            <a href="" class="navbar-item">Create new manager</a>
+          </div>
+        </div>
+        {% endif %}
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Bookkeepers</a>
 
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="{% url 'manager:client:list' %}">
-                            List all clients
-                        </a>
-                        <a class="navbar-item" href="{% url 'manager:client:create' %}">
-                            Create new client
-                        </a>
-                        <a class="navbar-item" href="{% url 'manager:client_account:list' %}">
-                            Client accounts
-                        </a>
-                        <a class="navbar-item" href="{% url 'manager:important_contact:list' %}">
-                            Client contact
-                        </a>
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Company Services
-                    </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'manager:bookkeeper:list' %}">List all bookkeepers</a>
+            <a class="navbar-item" href="{% url 'manager:bookkeeper:create' %}">Create new bookkeeper</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Assistants</a>
 
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="{% url 'manager:company_services:list' %}">
-                            List all services
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Jobs
-                    </a>
+          <div class="navbar-dropdown">
+            <a href="{% url 'manager:assistant:list' %}" class="navbar-item">List all assistants</a>
+            <a href="{% url 'manager:assistant:create' %}" class="navbar-item">Create new assistant</a>
+          </div>
+        </div>
 
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="{% url 'manager:jobs:list' %}">
-                            List all jobs
-                        </a>
-                        <a class="navbar-item" href="{% url 'manager:jobs:create' %}">
-                            Create new job
-                        </a>
-                        <a class="navbar-item" href="">
-                           Templates
-                        </a>
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Tasks
-                    </a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Clients</a>
 
-                    <div class="navbar-dropdown">
-                        <a href="{% url 'manager:task:list' %}" class="navbar-item">
-                            List all tasks
-                        </a>
-                        <a href="{% url 'manager:task:create' %}" class="navbar-item">
-                            Create task
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Special Assignment
-                        <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">8</span>
-                    </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'manager:client:list' %}">List all clients</a>
+            <a class="navbar-item" href="{% url 'manager:client:create' %}">Create new client</a>
+            <a class="navbar-item" href="{% url 'manager:client_account:list' %}">Client accounts</a>
+            <a class="navbar-item" href="{% url 'manager:important_contact:list' %}">Client contact</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Company Services</a>
 
-                    <div class="navbar-dropdown">
-                        <a href="{% url 'manager:special_assignment:list' %}" class="navbar-item">
-                            List all assignments
-                        </a>
-                        <a href="{% url 'manager:special_assignment:create" class="navbar-item">
-                            Create new assignment
-                        </a>
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Site Settings
-                    </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'manager:company_services:list' %}">List all services</a>
 
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="{% url 'site_settings:web-app-settings' %}">
-                            Web App Settings
-                        </a>
-                        <!-- <a class="navbar-item" href="">
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Jobs
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'manager:jobs:list' %}">
+              List all jobs
+            </a>
+            <a class="navbar-item" href="{% url 'manager:jobs:create' %}">
+              Create new job
+            </a>
+            <a class="navbar-item" href="">
+              Templates
+            </a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Tasks
+          </a>
+
+          <div class="navbar-dropdown">
+            <a href="{% url 'manager:task:list' %}" class="navbar-item">
+              List all tasks
+            </a>
+            <a href="{% url 'manager:task:create' %}" class="navbar-item">
+              Create task
+            </a>
+
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Special Assignment
+            <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">
+              {{ request.user.manager.get_not_seen_special_assignments.count }}
+            </span>
+          </a>
+
+          <div class="navbar-dropdown">
+            <a href="{% url 'manager:special_assignment:list' %}" class="navbar-item">
+              List all assignments
+            </a>
+            <a href="{% url 'manager:special_assignment:create' %}" class="navbar-item">
+              Create new assignment
+            </a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Site Settings
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'site_settings:web-app-settings' %}">
+              Web App Settings
+            </a>
+            <!-- <a class="navbar-item" href="">
                             Update settings
                         </a> -->
-                        
-                    </div>
-                </div>
 
-                {% endif %}
-
-            </div>
+          </div>
         </div>
 
-        <div class="navbar-end">
-            <!-- <div class="navbar-item">
+        {% endif %}
+
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <!-- <div class="navbar-item">
                 <div class="buttons">
                     <a class="button is-primary">
                         <strong>Sign up</strong>
@@ -171,41 +194,42 @@
                     </a>
                 </div>
             </div> -->
-            <div class="navbar-item">
-                <div class="dropdown is-hoverable">
-                    <div class="dropdown-trigger">
-                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
+      <div class="navbar-item">
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
 
-                            <span>
-                                <i class="fa-solid fa-user"></i>
-                                {{ request.user.fullname }}
-                                <!-- <span title="Badge top right" class="badge">8</span> -->
-                            </span>
-                            <span class="icon is-small">
-                                <i class="fas fa-angle-down" aria-hidden="true"></i>
-                            </span>
-                        </button>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-                        <div class="dropdown-content">
-                            <a href="#" class="dropdown-item">
-                                Profile
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                Modifiers
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="{% url 'users:logout' %}" class="dropdown-item">
-                                Logout
-                            </a>
-                        </div>
-                    </div>
-                </div>
+              <span>
+                <i class="fa-solid fa-user"></i>
+                {{ request.user.fullname }}
+                <!-- <span title="Badge top right"
+       class="badge">8</span> -->
+              </span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item">
+                Profile
+              </a>
+              <a href="#" class="dropdown-item">
+                Modifiers
+              </a>
+              <hr class="dropdown-divider">
+              <a href="{% url 'users:logout' %}" class="dropdown-item">
+                Logout
+              </a>
             </div>
-
+          </div>
         </div>
-
+      </div>
 
     </div>
+
+
+  </div>
 </nav>
 {% endif %}

@@ -4,7 +4,7 @@
 {% block dashboard_content %}
 {% if object_list.count > 0 %}
 <!-- Start jobs table -->
-<table class="table is-fullwidth" id="tasksTable">
+<table class="table is-fullwidth" id="bookkeeperTasksTable">
     <thead>
         <tr>
             <th>Title</th>
@@ -73,5 +73,5 @@
 
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/bookkeeper/dashboard/tasks_list.js' %}" defer type="module"></script>
+<script src="{% static 'js/bookkeeper/tasks/list.js' %}" defer type="module"></script>
 {% endblock externaljs %}

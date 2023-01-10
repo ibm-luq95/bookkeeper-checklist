@@ -3,100 +3,100 @@
 
 {% block dashboard_content %}
 <section class="block box">
-    <header>
-        <h3 class="title is-3">
-            Tasks
-            <a class="button is-primary mx-1" href="{% url 'manager:task:create' %}">
-                <i class="fa-solid fa-plus"></i>
+  <header>
+    <h3 class="title is-3">
+      Tasks
+      <a class="button is-primary mx-1" href="{% url 'manager:task:create' %}">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+      <a class="button is-info" href="{% url 'manager:task:archive' %}" title="Tasks archive">
+        <i class="fa-solid fa-box-archive"></i>
+      </a>
+    </h3>
+  </header>
+  <hr />
+  {% if object_list.count > 0 %}
+  <!-- Start jobs table -->
+  <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="managerTasksTable">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Job</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Start Date</th>
+        <th>Due Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Job</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Start Date</th>
+        <th>Due Date</th>
+        <th></th>
+      </tr>
+    </tfoot>
+    <tbody>
+      <!-- has-background-danger-light,  has-background-success-light   -->
+      {% for object in object_list %}
+
+      <tr>
+        <td>
+          <a href="{% url 'manager:task:update' object.pk %}">
+            {{ object.title }}
+          </a>
+        </td>
+        <td>
+          <a href="">
+            {{ object.job }} <i class="fas fa-external-link-alt is-small"></i>
+          </a>
+        </td>
+        <td>
+          {{ object.get_task_type_display }}
+        </td>
+        <td>
+          {{ object.get_task_status_display }}
+        </td>
+        <td>
+          {{ object.start_date|date }}
+        </td>
+        <td>
+          {{ object.due_date|date }}
+        </td>
+        <td>
+          <div class="buttons are-small justify-center">
+            <a href="{% url 'manager:task:update' object.pk %}" class="button is-info is-light">
+              <i class="fa-solid fa-eye"></i>
             </a>
-            <a class="button is-info" href="{% url 'manager:task:archive' %}" title="Tasks archive">
-              <i class="fa-solid fa-box-archive"></i>
+            <a href="{% url 'manager:task:update' object.pk %}" class="button is-success is-light">
+              <i class="fa-solid fa-pencil"></i>
             </a>
-        </h3>
-    </header>
-    <hr />
-    {% if object_list.count > 0 %}
-    <!-- Start jobs table -->
-    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="tasksTable">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Job</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Start Date</th>
-                <th>Due Date</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Job</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Start Date</th>
-                <th>Due Date</th>
-                <th></th>
-            </tr>
-        </tfoot>
-        <tbody>
-            <!-- has-background-danger-light,  has-background-success-light   -->
-            {% for object in object_list %}
+            <a href="{% url 'manager:task:delete' object.pk %}" class="button is-danger is-light">
+              <i class="fa-solid fa-trash"></i>
+            </a>
+          </div>
 
-            <tr>
-                <td>
-                    <a href="{% url 'manager:task:update' object.pk %}">
-                        {{ object.title }}
-                    </a>
-                </td>
-                <td>
-                    <a href="">
-                      {{ object.job }} <i class="fas fa-external-link-alt is-small"></i>
-                    </a>
-                </td>
-                <td>
-                    {{ object.get_task_type_display }}
-                </td>
-                <td>
-                    {{ object.get_task_status_display }}
-                </td>
-                <td>
-                    {{ object.start_date|date }}
-                </td>
-                <td>
-                    {{ object.due_date|date }}
-                </td>
-                <td>
-                    <div class="buttons are-small justify-center">
-                        <a href="{% url 'manager:task:update' object.pk %}" class="button is-info is-light">
-                            <i class="fa-solid fa-eye"></i>
-                        </a>
-                        <a href="{% url 'manager:task:update' object.pk %}" class="button is-success is-light">
-                            <i class="fa-solid fa-pencil"></i>
-                        </a>
-                        <a href="{% url 'manager:task:delete' object.pk %}" class="button is-danger is-light">
-                            <i class="fa-solid fa-trash"></i>
-                        </a>
-                    </div>
-
-                </td>
-            </tr>
-            {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
 
 
 
-        </tbody>
-    </table>
-    <!-- End jobs table -->
-    {% else %}
-    <div class="notification">
-        You have no tasks
-    </div>
-    {% endif %}
+    </tbody>
+  </table>
+  <!-- End jobs table -->
+  {% else %}
+  <div class="notification">
+    You have no tasks
+  </div>
+  {% endif %}
 </section>
 
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/bookkeeper/dashboard/tasks_list.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/tasks/list.js' %}" defer type="module"></script>
 {% endblock externaljs %}

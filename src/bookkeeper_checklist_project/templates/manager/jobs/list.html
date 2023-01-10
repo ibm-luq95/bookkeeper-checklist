@@ -19,7 +19,7 @@
   <hr />
   <div>
     {% if object_list.count > 0 %}
-    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="managerClientsTable">
+    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="managerJobsTable">
       <thead>
         <tr>
           <th>Job Title</th>
@@ -123,5 +123,5 @@
   {% endblock dashboard_content %}
 
   {% block externaljs %}
-  <script src="{% static 'js/manager/client/list.js' %}" defer type="module"></script>
+  <script src="{% static 'js/manager/jobs/list.js' %}" defer type="module"></script>
   {% endblock externaljs %}

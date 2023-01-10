@@ -5,7 +5,7 @@
 
 {% if object_list.count > 0 %}
 <!-- Start jobs table -->
-<table class="table is-fullwidth" id="jobsTable">
+<table class="table is-fullwidth" id="bookkeeperJobsTable">
     <thead>
         <tr>
             <th>Title</th>
@@ -72,5 +72,5 @@
 
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/bookkeeper/dashboard/jobs_list.js' %}" defer type="module"></script>
+<script src="{% static 'js/bookkeeper/jobs/list.js' %}" defer type="module"></script>
 {% endblock externaljs %}

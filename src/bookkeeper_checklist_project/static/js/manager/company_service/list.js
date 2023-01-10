@@ -4,14 +4,23 @@ import {
   eyeSlashIconHTMLCode,
   eyeIconHTMLCode,
 } from "../../utils/constants.js";
+import { DataTableHelper } from "../../utils/datatable-helper.js";
 import { showToastNotification } from "../../utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", (readyEvent) => {
   const clipboardJs = new ClipboardJS(".copyBtn");
-  const companyServicesTable = document.querySelector("table#companyServicesTable");
-  const managerCSShowPasswordBtns = document.querySelectorAll("button.managerCSShowPasswordBtn");
-  const managerCSCopyPasswordBtns = document.querySelectorAll("button.managerCSCopyPasswordBtn");
-  const managerCSCopyEmailBtns = document.querySelectorAll("button.managerCSCopyEmailBtn");
+  const companyServicesTable = document.querySelector(
+    "table#companyServicesTable"
+  );
+  const managerCSShowPasswordBtns = document.querySelectorAll(
+    "button.managerCSShowPasswordBtn"
+  );
+  const managerCSCopyPasswordBtns = document.querySelectorAll(
+    "button.managerCSCopyPasswordBtn"
+  );
+  const managerCSCopyEmailBtns = document.querySelectorAll(
+    "button.managerCSCopyEmailBtn"
+  );
 
   // copy email buttons
   if (managerCSCopyEmailBtns) {
@@ -30,7 +39,9 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       btn.addEventListener("click", (event) => {
         const currentTarget = event.currentTarget;
         const inputId = currentTarget.dataset["inputId"];
-        const passwordInput = companyServicesTable.querySelector(`input#${inputId}`);
+        const passwordInput = companyServicesTable.querySelector(
+          `input#${inputId}`
+        );
         navigator.clipboard.writeText(passwordInput.value);
         showToastNotification("Password copied successfully!", "success");
       });
@@ -43,7 +54,9 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         const currentTarget = event.currentTarget;
         const isVisible = Boolean(parseInt(currentTarget.dataset["isVisible"]));
         const inputId = currentTarget.dataset["inputId"];
-        const passwordInput = companyServicesTable.querySelector(`input#${inputId}`);
+        const passwordInput = companyServicesTable.querySelector(
+          `input#${inputId}`
+        );
         if (isVisible === true) {
           currentTarget.innerHTML = eyeIconHTMLCode;
           currentTarget.dataset["isVisible"] = 0;
@@ -66,7 +79,10 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     const textType = element.dataset["textType"];
     switch (textType) {
       case "username":
-        showToastNotification(`Username ${copiedText} copied successfully`, "success");
+        showToastNotification(
+          `Username ${copiedText} copied successfully`,
+          "success"
+        );
         break;
 
       case "password":
@@ -78,28 +94,8 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     }
   });
 
-  const clientsTable = $("#companyServicesTable").DataTable({
-    autoWidth: true,
-    processing: true,
-    // "info": false,
-    // "paging": false,
-    // stateSave: true,
-    stateSaveCallback: function (settings, data) {
-      localStorage.setItem("DataTables_" + settings.sInstance, JSON.stringify(data));
-    },
-    stateLoadCallback: function (settings) {
-      return JSON.parse(localStorage.getItem("DataTables_" + settings.sInstance));
-    },
-    fixedHeader: true,
-    responsive: true,
-    dom: "Bfrtip",
-    columnDefs: [{ orderable: false, targets: 7 }],
-    order: [[6, "desc"]],
-    // ordering: false,
-    buttons: [
-      // "copy",
-      "csv",
-      "pdf",
-    ],
+  // data table js object
+  new DataTableHelper({
+    tableID: "companyServicesTable",
   });
 });

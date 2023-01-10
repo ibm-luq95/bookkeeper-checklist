@@ -5,13 +5,15 @@ from manager.views import (
     ClientCreateView,
     ClientDetailView,
     ClientUpdateView,
-    ClientDeleteView
+    ClientDeleteView,
+    ClientArchiveListView,
 )
 
 app_name = "client"
 
 urlpatterns = [
     path("", ClientListView.as_view(), name="list"),
+    path("archive", ClientArchiveListView.as_view(), name="archive"),
     path("create", ClientCreateView.as_view(), name="create"),
     path("<uuid:pk>", ClientDetailView.as_view(), name="details"),
     path("update/<uuid:pk>", ClientUpdateView.as_view(), name="update"),

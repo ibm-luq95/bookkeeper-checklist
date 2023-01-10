@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-#
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
@@ -14,6 +15,20 @@ class TasksListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     login_url = reverse_lazy("users:login")
     template_name = "manager/task/list.html"
     model = Task
+    queryset = Task.objects.select_related().filter(~Q(task_status="archive"))
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["title"] = get_trans_txt("All tasks")
+        return context
+
+
+class TasksArchiveListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
+    login_url = reverse_lazy("users:login")
+    template_name = "manager/task/archive_list.html"
+    model = Task
+    queryset = Task.objects.select_related().filter(Q(task_status="archive"))
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.db.models import Q
 from django.views.generic import DeleteView, DetailView, ListView, CreateView, UpdateView
 
 from bookkeeper.helpers import BookkeeperHelper
 from bookkeeper.models import Bookkeeper
-from bookkeeper.forms import BookkeeperForm
+from bookkeeper.forms import BookkeeperForm, BookkeeperUpdateForm
 from client.forms import ClientForm
 from core.utils import get_trans_txt
 from jobs.forms import JobForm
@@ -17,6 +18,30 @@ class BookkeepersListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     login_url = reverse_lazy("users:login")
     template_name: str = "manager/bookkeeper/list.html"
     model = Bookkeeper
+    queryset = (
+        Bookkeeper.objects.select_related()
+        .filter(~Q(status="archive"))
+        .order_by("-created_at")
+    )
+
+    # paginate_by: int = 10
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["title"] = get_trans_txt("All bookkeepers")
+        return context
+
+
+class BookkeepersArchiveView(LoginRequiredMixin, ManagerAccessMixin, ListView):
+    login_url = reverse_lazy("users:login")
+    template_name: str = "manager/bookkeeper/archive_list.html"
+    model = Bookkeeper
+    queryset = (
+        Bookkeeper.objects.select_related()
+        .filter(Q(status="archive"))
+        .order_by("-created_at")
+    )
 
     # paginate_by: int = 10
 
@@ -51,7 +76,7 @@ class BookkeeperUpdateView(
     template_name: str = "manager/bookkeeper/update.html"
     model = Bookkeeper
     success_url = get_trans_txt("Bookkeeper updated successfully")
-    form_class = BookkeeperForm
+    form_class = BookkeeperUpdateForm
     success_url = reverse_lazy("manager:bookkeeper:list")
 
     def get_context_data(self, **kwargs):
@@ -59,6 +84,12 @@ class BookkeeperUpdateView(
         context = super().get_context_data(**kwargs)
         context["title"] = get_trans_txt("Update bookkeepers")
         return context
+
+    def get_form_kwargs(self):
+        """Return the keyword arguments for instantiating the form."""
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"user": self.request.user})
+        return kwargs
 
 
 class BookkeepersDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):

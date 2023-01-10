@@ -7,6 +7,7 @@ class TaskStatusEnum(models.TextChoices):
     NOT_STARTED = "not_started", _("Not Started")
     IN_PROGRESS = "in_progress", _("In Progress")
     COMPLETED = "completed", _("Completed")
+    ARCHIVE = "archive", _("Archive")
 
 
 class TaskTypeEnum(models.TextChoices):

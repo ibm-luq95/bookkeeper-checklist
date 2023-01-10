@@ -1,27 +1,44 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ImproperlyConfigured
-from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
-from django.views.generic.edit import FormView
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import ImproperlyConfigured
+from django.db.models import Q
 from django.urls import reverse_lazy
-from client.models import Client
-from core.utils import debugging_print, get_trans_txt
-from .mixins import ManagerAccessMixin
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.views.generic.edit import FormView
+
 from client.forms import ClientForm
-from important_contact.forms import ImportantContactForm
-from documents.forms import DocumentForm
-from notes.forms import NoteForm
+from client.models import Client
 from company_services.forms import CompanyServiceForm
+from core.utils import debugging_print, get_trans_txt
+from documents.forms import DocumentForm
+from important_contact.forms import ImportantContactForm
 from jobs.forms import JobForm
+from notes.forms import NoteForm
 from task.forms import TaskForm
+
+from .mixins import ManagerAccessMixin
 
 
 class ClientListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     login_url = reverse_lazy("users:login")
     template_name = "manager/client/list.html"
     model = Client
+    queryset = Client.objects.select_related().filter(~Q(status="archive"))
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["title"] = "All clients"
+        return context
+
+
+class ClientArchiveListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
+    login_url = reverse_lazy("users:login")
+    template_name = "manager/client/archive_list.html"
+    model = Client
+    queryset = Client.objects.select_related().filter(Q(status="archive"))
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

@@ -4,12 +4,8 @@
 <section id="manager-clients-list" class="box">
   <header>
     <h3 class="title is-3">
-      Clients
-      <a class="button is-primary mx-1" href="{% url 'manager:client:create' %}">
+      Clients <a class="button is-primary mx-2" href="{% url 'manager:client:create' %}">
         <i class="fa-solid fa-plus"></i>
-      </a>
-      <a class="button is-info" href="{% url 'manager:client:archive' %}" title="Clients archive">
-        <i class="fa-solid fa-box-archive"></i>
       </a>
     </h3>
   </header>
@@ -52,7 +48,7 @@
           </td>
           <td>
             <span
-              class="tag is-light is-medium {% if object.status == 'enabled' %} is-success {% else %} is-danger {% endif %}">
+              class="tag is-light is-medium">
               {{ object.get_status_display }}
             </span>
           </td>
@@ -80,9 +76,7 @@
     {% else %}
     <div class="notification is-warning">
       <!-- <button class="delete"></button> -->
-      No client(s)
-      <a class="is-primary is-inverted is-hoverable is-hovered mx-1" href="{% url 'manager:client:create' %}">Create new
-        client</a>
+      No archive client(s)
     </div>
     {% endif %}
   </div>

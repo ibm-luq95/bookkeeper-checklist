@@ -7,12 +7,8 @@
 <section id="manager-bookkeepers-list" class="box">
   <header>
     <h3 class="title is-3">
-      Bookkeepers
-      <a class="button is-primary mx-1" href="{% url 'manager:bookkeeper:create' %}">
+      Bookkeepers <a class="button is-primary mx-2" href="{% url 'manager:bookkeeper:create' %}">
         <i class="fa-solid fa-plus"></i>
-      </a>
-      <a class="button is-info" href="{% url 'manager:bookkeeper:archive' %}" title="Bookkeepers archive">
-        <i class="fa-solid fa-box-archive"></i>
       </a>
     </h3>
   </header>
@@ -90,10 +86,8 @@
     {% else %}
     <div class="notification is-warning">
       <!-- <button class="delete"></button> -->
-      No bookkeeper(s)
-      <a class="is-primary is-inverted is-hoverable is-hovered mx-1" href="{% url 'manager:bookkeeper:create' %}">
-        Create new bookkeeper
-      </a>
+      No archived bookkeeper(s)
+
     </div>
     {% endif %}
   </div>

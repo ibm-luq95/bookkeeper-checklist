@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-#
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
@@ -17,6 +18,11 @@ class JobListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     login_url = reverse_lazy("users:login")
     template_name = "manager/jobs/list.html"
     model = Job
+    queryset = (
+        Job.objects.select_related()
+        .filter(~Q(status__in=["archive", "complete"]))
+        .order_by("-created_at")
+    )
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -90,4 +96,21 @@ class JobDeleteView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context["title"] = get_trans_txt("Delete job")
+        return context
+
+
+class JobArchiveListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
+    login_url = reverse_lazy("users:login")
+    template_name = "manager/jobs/archive_list.html"
+    model = Job
+    queryset = (
+        Job.objects.select_related()
+        .filter(Q(status__in=["archive", "complete"]))
+        .order_by("-created_at")
+    )
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["title"] = "All jobs"
         return context

@@ -27,7 +27,7 @@ class JobListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = "All jobs"
+        context["title"] = get_trans_txt("All jobs")
         return context
 
 

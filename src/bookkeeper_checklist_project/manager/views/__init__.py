@@ -28,6 +28,8 @@ from .client_account import (
     ClientAccountCreateView,
     ClientAccountListView,
     ClientAccountDetailView,
+    ClientAccountUpdateView,
+    ClientAccountDeleteView,
 )
 from .task import (
     TasksListView,

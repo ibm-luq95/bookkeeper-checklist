@@ -1,0 +1,99 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-bookkeepers-list" class="box">
+  <header>
+    <h3 class="title is-3">
+      Bookkeepers <a class="button is-primary mx-2" href="{% url 'manager:bookkeeper:create' %}">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+    </h3>
+  </header>
+  <hr />
+  <div>
+    {% if object_list.count > 0 %}
+    <table class="table is-fullwidth table-100 table-list-component is-bordered is-striped is-narrow"
+      id="managerBookkeepersTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Client(s) Count</th>
+          <th>Task(s) Count</th>
+          <th>Active</th>
+          <th>Status</th>
+          <th>Slug</th>
+          <th>Created AT</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Client(s) Count</th>
+          <th>Task(s) Count</th>
+          <th>Active</th>
+          <th>Status</th>
+          <th>Slug</th>
+          <th>Created AT</th>
+          <th>Actions</th>
+        </tr>
+      </tfoot>
+      <tbody>
+
+        {% for object in object_list %}
+        <tr>
+          <td>
+            <a href="{% url 'manager:bookkeeper:details' object.pk %}">{{ object.user.fullname }}</a>
+          </td>
+          <td>
+            <a href="mailto:{{ object.user.email }}">
+              {{ object.user.email }}
+            </a>
+          </td>
+          <td class="has-text-centered">
+
+            {{ object.get_clients_total }}
+          </td>
+          <td class="has-text-centered">{{ object.get_tasks_count }}</td>
+          <td>{{ object.is_active_labeled }}</td>
+          <td>{{ object.status|title }}</td>
+          <td>{{ object.slug }}</td>
+          <td>{{ object.created_at|date:"SHORT_DATE_FORMAT" }}</td>
+          <td>
+            <div class="buttons are-small justify-center">
+              <a href="{% url 'manager:bookkeeper:update' object.pk %}"
+                class="button is-info is-light is-small is-responsive small-fa-fonts">
+                <i class="fa-solid fa-pencil"></i>
+              </a>
+              <a href="{% url 'manager:bookkeeper:details' object.pk %}" class="button is-success is-light">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+              <a href="{% url 'manager:bookkeeper:delete' object.pk %}" class="button is-danger is-light">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+    {% else %}
+    <div class="notification is-warning">
+      <!-- <button class="delete"></button> -->
+      No archived bookkeeper(s)
+
+    </div>
+    {% endif %}
+  </div>
+
+  {% endblock dashboard_content %}
+
+  {% block externaljs %}
+  <script src="{% static 'js/manager/bookkeeper/list.js' %}" defer type="module"></script>
+  {% endblock externaljs %}

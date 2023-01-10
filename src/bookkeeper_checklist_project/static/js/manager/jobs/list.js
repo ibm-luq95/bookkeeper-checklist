@@ -2,8 +2,8 @@
 
 import { DataTableHelper } from "../../utils/datatable-helper.js";
 
-document.addEventListener("readystatechange", (ev) => {
+document.addEventListener("DOMContentLoaded", (readyEvent) => {
   new DataTableHelper({
-    tableID: "bookkeeperClientsJobsTable",
+    tableID: "managerJobsTable",
   });
 });

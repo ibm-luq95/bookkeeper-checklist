@@ -6,6 +6,7 @@ from .bookkeeper import (
     BookkeeperDeleteView,
     BookkeeperCreateView,
     BookkeeperUpdateView,
+    BookkeepersArchiveView,
 )
 from .client import (
     ClientListView,
@@ -13,14 +14,28 @@ from .client import (
     ClientDetailView,
     ClientUpdateView,
     ClientDeleteView,
+    ClientArchiveListView,
 )
-from .jobs import JobListView, JobCreateView, JobDetailsView, JobUpdateView, JobDeleteView
+from .jobs import (
+    JobListView,
+    JobCreateView,
+    JobDetailsView,
+    JobUpdateView,
+    JobDeleteView,
+    JobArchiveListView,
+)
 from .client_account import (
     ClientAccountCreateView,
     ClientAccountListView,
     ClientAccountDetailView,
 )
-from .task import TasksListView, TaskCreateView, TaskUpdateView, TaskDeleteView
+from .task import (
+    TasksListView,
+    TaskCreateView,
+    TaskUpdateView,
+    TaskDeleteView,
+    TasksArchiveListView,
+)
 from .company_service import (
     CompanyServicesListView,
     CompanyServicesDeleteView,

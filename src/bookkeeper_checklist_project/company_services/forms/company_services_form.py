@@ -31,7 +31,7 @@ class CompanyServiceForm(BaseModelFormMixin):
                 data = PasswordHasher.encrypt(self.updated_object.decrypted_password)
             else:
                 data = PasswordHasher.encrypt(data)
-            debugging_print(data)
+            # debugging_print(data)
         else:
             data = PasswordHasher.encrypt(data)
         # Always return a value to use as the new cleaned data, even if

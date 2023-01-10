@@ -8,3 +8,4 @@ from .company_services import ServiceNameEnum
 from .documents import DocumentTypesEnum
 from .notes import NoteTypesEnum
 from .important_contact import ImportantContactLabelsEnum
+from .client import ClientStatusEnum

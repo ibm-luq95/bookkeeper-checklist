@@ -84,6 +84,8 @@
           <div class="navbar-dropdown">
             <a class="navbar-item" href="{% url 'manager:bookkeeper:list' %}">List all bookkeepers</a>
             <a class="navbar-item" href="{% url 'manager:bookkeeper:create' %}">Create new bookkeeper</a>
+            <hr class="dropdown-divider" />
+            <a class="navbar-item" href="{% url 'manager:bookkeeper:archive' %}">Bookkeepers archive</a>
           </div>
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
@@ -103,6 +105,8 @@
             <a class="navbar-item" href="{% url 'manager:client:create' %}">Create new client</a>
             <a class="navbar-item" href="{% url 'manager:client_account:list' %}">Client accounts</a>
             <a class="navbar-item" href="{% url 'manager:important_contact:list' %}">Client contact</a>
+            <hr class="dropdown-divider" />
+            <a class="navbar-item" href="{% url 'manager:client:archive' %}">Clients archive</a>
           </div>
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
@@ -128,6 +132,10 @@
             <a class="navbar-item" href="">
               Templates
             </a>
+            <hr class="dropdown-divider" />
+            <a class="navbar-item" href="{% url 'manager:jobs:archive' %}">
+              Jobs archive
+            </a>
           </div>
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
@@ -141,6 +149,10 @@
             </a>
             <a href="{% url 'manager:task:create' %}" class="navbar-item">
               Create task
+            </a>
+            <hr class="dropdown-divider" />
+            <a href="{% url 'manager:task:archive' %}" class="navbar-item">
+              Tasks archive
             </a>
 
           </div>

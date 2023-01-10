@@ -1,0 +1,16 @@
+cryptography
+Django
+crispy-bulma
+django-betterforms
+django-crispy-forms
+django-filter
+django-maintenance-mode
+django-session-timeout
+djangorestframework
+hiredis
+mysql-connector-python
+mysqlclient
+Pillow
+psycopg2-binary
+python-dotenv
+redis

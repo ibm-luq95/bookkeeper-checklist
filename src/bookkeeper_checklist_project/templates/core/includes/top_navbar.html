@@ -73,8 +73,12 @@
           <a class="navbar-link">Managers</a>
 
           <div class="navbar-dropdown">
-            <a href="" class="navbar-item">List all managers</a>
-            <a href="" class="navbar-item">Create new manager</a>
+            <a href="{% url 'manager:manager:list' %}" class="navbar-item">List all managers</a>
+            <a href="{% url 'manager:manager:create' %}" class="navbar-item">Create new manager</a>
+            <hr class="dropdown-divider" />
+            <a href="{% url 'manager:manager:archive' %}" class="navbar-item">
+              Managers archive
+            </a>
           </div>
         </div>
         {% endif %}

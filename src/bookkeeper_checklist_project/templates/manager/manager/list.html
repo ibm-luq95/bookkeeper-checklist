@@ -1,45 +1,46 @@
 {% extends 'core/layouts/dashboard.html' %}
 {% load static %}
 
-
 {% block dashboard_content %}
-
-<section id="manager-assistant-list" class="block box">
+<section class="box block" id="manager-manager-list">
   <header>
     <h3 class="title is-3">
-      Assistants <a class="button is-primary mx-1" href="{% url 'manager:assistant:create' %}">
+      Managers
+      <a class="button is-primary mx-1" href="{% url 'manager:manager:create' %}">
         <i class="fa-solid fa-plus"></i>
+      </a>
+      <a class="button is-info" href="{% url 'manager:manager:archive' %}" title="Managers archive">
+        <i class="fa-solid fa-box-archive"></i>
       </a>
     </h3>
   </header>
   <hr />
   <div>
     {% if object_list.count > 0 %}
-    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="managerAssistantTable">
+    <table class="table is-fullwidth table-100 table-list-component is-bordered is-striped is-narrow"
+      id="managerManagersTable">
       <thead>
         <tr>
           <th>Name</th>
           <th>Email</th>
-          <th>Client(s)</th>
           <th>Special Assignment</th>
-          <th>Type</th>
+          <th>Active</th>
           <th>Status</th>
           <!-- <th>Slug</th> -->
           <th>Created AT</th>
-          <th></th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tfoot>
         <tr>
           <th>Name</th>
           <th>Email</th>
-          <th>Client(s)</th>
           <th>Special Assignment</th>
-          <th>Type</th>
+          <th>Active</th>
           <th>Status</th>
           <!-- <th>Slug</th> -->
           <th>Created AT</th>
-          <th></th>
+          <th>Actions</th>
         </tr>
       </tfoot>
       <tbody>
@@ -47,7 +48,7 @@
         {% for object in object_list %}
         <tr>
           <td>
-            <a href="{% url 'manager:assistant:details' object.pk %}">{{ object.user.fullname }}</a>
+            <a href="#">{{ object.user.fullname }}</a>
           </td>
           <td>
             <a href="mailto:{{ object.user.email }}">
@@ -56,28 +57,26 @@
           </td>
           <td class="has-text-centered">
 
-            {{ object.clients.count }}
+            {{ object.special_assignments.count }}
           </td>
-          <td class="has-text-centered">
-            IN PROGRESS
-          </td>
-          <td>{{ object.get_assistant_type_display }}</td>
+          <td>{{ object.is_active_labeled }}</td>
           <td>{{ object.status|title }}</td>
-          <!-- <td>{{ object.slug }}</td> -->
+
+          {% comment %}
+          <td>{{ object.slug }}</td>
+          {% endcomment %}
+
           <td>{{ object.created_at|date:"SHORT_DATE_FORMAT" }}</td>
           <td>
             <div class="buttons are-small justify-center">
               <a href="{% url 'manager:users:update' %}?user={{ object.user.pk }}"
-                class="button is-link is-light is-small is-responsive small-fa-fonts" title="Edit user credentials">
+                class="button is-info is-light is-small is-responsive small-fa-fonts" title="Edit user credentials">
                 <i class="fa-solid fa-user-pen"></i>
               </a>
-              <a href="{% url 'manager:assistant:details' object.pk %}" class="button is-info is-light">
-                <i class="fa-solid fa-eye"></i>
-              </a>
-              <a href="{% url 'manager:assistant:update' object.pk %}" class="button is-success is-light">
+              <a href="{% url 'manager:manager:update' object.pk %}" class="button is-success is-light" title="Edit manager">
                 <i class="fa-solid fa-pencil"></i>
               </a>
-              <a href="{% url 'manager:assistant:delete' object.pk %}" class="button is-danger is-light">
+              <a href="{% url 'manager:manager:delete' object.pk %}" class="button is-danger is-light">
                 <i class="fa-solid fa-trash"></i>
               </a>
             </div>
@@ -90,16 +89,16 @@
     {% else %}
     <div class="notification is-warning">
       <!-- <button class="delete"></button> -->
-      No assistant(s)
-      <a class="is-primary is-inverted is-hoverable is-hovered mx-1" href="{% url 'manager:users:create' %}">
-        Create new assistant
+      No manager(s)
+      <a class="is-primary is-inverted is-hoverable is-hovered mx-1" href="{% url 'manager:manager:create' %}">
+        Create new manager
       </a>
     </div>
     {% endif %}
   </div>
+</section>
 
-  {% endblock dashboard_content %}
-
-  {% block externaljs %}
-  <script src="{% static 'js/manager/assistant/list.js' %}" defer type="module"></script>
-  {% endblock externaljs %}
+{% endblock dashboard_content %}
+{% block externaljs %}
+<script src="{% static 'js/manager/manager/list.js' %}" defer type="module"></script>
+{% endblock externaljs %}

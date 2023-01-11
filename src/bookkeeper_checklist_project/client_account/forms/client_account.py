@@ -24,7 +24,7 @@ class ClientAccountForm(BaseModelFormMixin):
         data = self.cleaned_data["account_password"]
         if self.is_update is True:
             if not data:
-                debugging_print("No password")
+                # debugging_print("No password")
                 data = PasswordHasher.encrypt(
                     self.updated_object.decrypted_account_password
                 )

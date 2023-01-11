@@ -1,5 +1,5 @@
 from .dashboard import DashboardHomeView
-from .users import UserCreateView, UserDetailsView
+from .users import UserCreateView, UserDetailsView, UserUpdateView
 from .bookkeeper import (
     BookkeepersListView,
     BookkeepersDetailsView,
@@ -57,4 +57,12 @@ from .special_assignment import (
     SpecialAssignmentUpdateView,
     SpecialAssignmentDeleteView,
     SpecialAssignmentDetailsView,
+)
+
+from .manager import (
+    ManagerListView,
+    ManagerCreateView,
+    ManagerDeleteView,
+    ManagerArchiveView,
+    ManagerUpdateView,
 )

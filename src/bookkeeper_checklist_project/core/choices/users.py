@@ -14,3 +14,4 @@ class CustomUserStatusEnum(models.TextChoices):
     PENDING = "pending", _("Pending")
     CANCELED = "canceled", _("Canceled")
     DISABLED = "disabled", _("Disabled")
+    ARCHIVE = "archive", _("Archive")

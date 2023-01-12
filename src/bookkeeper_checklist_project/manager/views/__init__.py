@@ -1,11 +1,12 @@
 from .dashboard import DashboardHomeView
-from .users import UserCreateView, UserDetailsView
+from .users import UserCreateView, UserDetailsView, UserUpdateView
 from .bookkeeper import (
     BookkeepersListView,
     BookkeepersDetailsView,
     BookkeeperDeleteView,
     BookkeeperCreateView,
     BookkeeperUpdateView,
+    BookkeepersArchiveView,
 )
 from .client import (
     ClientListView,
@@ -13,14 +14,30 @@ from .client import (
     ClientDetailView,
     ClientUpdateView,
     ClientDeleteView,
+    ClientArchiveListView,
 )
-from .jobs import JobListView, JobCreateView, JobDetailsView, JobUpdateView, JobDeleteView
+from .jobs import (
+    JobListView,
+    JobCreateView,
+    JobDetailsView,
+    JobUpdateView,
+    JobDeleteView,
+    JobArchiveListView,
+)
 from .client_account import (
     ClientAccountCreateView,
     ClientAccountListView,
     ClientAccountDetailView,
+    ClientAccountUpdateView,
+    ClientAccountDeleteView,
 )
-from .task import TasksListView, TaskCreateView, TaskUpdateView, TaskDeleteView
+from .task import (
+    TasksListView,
+    TaskCreateView,
+    TaskUpdateView,
+    TaskDeleteView,
+    TasksArchiveListView,
+)
 from .company_service import (
     CompanyServicesListView,
     CompanyServicesDeleteView,
@@ -32,11 +49,20 @@ from .assistant import (
     AssistantDetailsView,
     AssistantDeleteView,
     AssistantUpdateView,
-    AssistantCreateView
+    AssistantCreateView,
 )
 from .special_assignment import (
     SpecialAssignmentListView,
     SpecialAssignmentCreateView,
     SpecialAssignmentUpdateView,
     SpecialAssignmentDeleteView,
+    SpecialAssignmentDetailsView,
+)
+
+from .manager import (
+    ManagerListView,
+    ManagerCreateView,
+    ManagerDeleteView,
+    ManagerArchiveView,
+    ManagerUpdateView,
 )

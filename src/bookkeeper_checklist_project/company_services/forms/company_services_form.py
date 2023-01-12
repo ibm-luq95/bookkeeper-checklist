@@ -25,13 +25,13 @@ class CompanyServiceForm(BaseModelFormMixin):
     def clean_password(self):
         data = self.cleaned_data["password"]
         if self.is_update is True:
-            debugging_print("Update")
+            # debugging_print("Update")
             if not data:
-                debugging_print("No password")
+                # debugging_print("No password")
                 data = PasswordHasher.encrypt(self.updated_object.decrypted_password)
             else:
                 data = PasswordHasher.encrypt(data)
-            debugging_print(data)
+            # debugging_print(data)
         else:
             data = PasswordHasher.encrypt(data)
         # Always return a value to use as the new cleaned data, even if

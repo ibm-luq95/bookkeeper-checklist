@@ -4,100 +4,162 @@
 
 {% block dashboard_content %}
 
-    <section id="manager-clients-list">
-        <header>
-            <h3 class="title is-3">
-            Client Account <a class="button is-primary mx-2"
-    href="{% url 'manager:client_account:create' %}">
-                <i class="fa-solid fa-plus"></i>
+<section id="manager-clients-account-list" class="box block">
+  <header>
+    <h3 class="title is-3">
+      Client Account <a class="button is-primary mx-2" href="{% url 'manager:client_account:create' %}">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+    </h3>
+  </header>
+  <hr />
+  <div>
+    {% if object_list.count > 0 %}
+    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component"
+      id="managerClientAccountTable">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Account Name</th>
+          <th>Account Email</th>
+          <th>URL</th>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Status</th>
+          <th>Created At</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Client</th>
+          <th>Account Name</th>
+          <th>Account Email</th>
+          <th>URL</th>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Status</th>
+          <th>Created At</th>
+          <th></th>
+        </tr>
+      </tfoot>
+      <tbody>
+
+        {% for object in object_list %}
+        <tr>
+          <td>
+            <a href="{% url 'manager:client:details' object.client.pk %}" target="_blank">
+              {{ object.client }} <i class="fas fa-external-link-alt is-small"></i>
             </a>
-        </h3>
-    </header>
-    <hr />
-    <div class="box">
-        {% if object_list.count > 0 %}
-            <table class="table is-fullwidth table-100" id="managerClientAccountTable">
-                <thead>
-                    <tr>
-                        <th>Client</th>
-                        <th>Account Name</th>
-                        <th>Account Email</th>
-                        <th>URL</th>
-                        <th>Account Username</th>
-                        <th>Account Password</th>
-                        <th>Last Modified Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>Client</th>
-                        <th>Account Name</th>
-                        <th>Account Email</th>
-                        <th>URL</th>
-                        <th>Account Username</th>
-                        <th>Account Password</th>
-                        <th>Last Modified Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </tfoot>
-                <tbody>
+          </td>
+          <td>
 
-                    {% for object in object_list %}
-                        <tr>
-                            <td>{{ object.client }}</td>
-                            <td>{{ object.account_name }}</td>
-                            <td>{{ object.account_email }}</td>
-                            <td>{{ object.account_url }}</td>
-                            <td>{{ object.account_username }}</td>
-                            <td>
- 
-                                <div class="field has-addons">
-                                    <div class="control">
-                                        <input class="input is-small"
-                                               type="password"
-                                               value="{{ object.account_password }}"/>
-                                    </div>
-                                    <div class="control">
-                                        <button type="button" class="button is-small">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ object.last_modified_date }}</td>
-                            <td>
-                                <div class="buttons are-small">
-                                    <a href="" class="button is-info is-light">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </a>
-                                    <a href="" class="button is-success is-light">
-                                        <i class="fa-solid fa-pencil"></i>
-                                    </a>
-                                    <a href="" class="button is-danger is-light">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-
-                </tbody>
-            </table>
-        {% else %}
-            <div class="notification is-warning">
-                <!-- <button class="delete"></button> -->
-            No client(s)
-                <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
-                   href="{% url 'manager:client_account:create' %}">
-                Create new client account
-                </a>
+            <a href="{% url 'manager:client_account:update' object.pk %}">
+              {{ object.account_name }}
+            </a>
+          </td>
+          <td>
+            <div class="field has-addons justify-center">
+              <div class="control">
+                <input class="input is-small" readonly="readonly" type="email" id="email-{{ object.pk }}"
+                  value="{{ object.account_email }}" />
+              </div>
+              <div class="control">
+                <button type="button" class="button is-small managerCACopyEmailBtn" data-text-type="username"
+                  data-email-value="{{ object.account_email }}">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
             </div>
-        {% endif %}
+          </td>
+          <td>
+            <div class="field has-addons justify-center">
+              <div class="control">
+                <input class="input is-small" readonly="readonly" type="url" id="account-url-{{ object.pk }}"
+                  value="{{ object.account_url }}" />
+              </div>
+              <div class="control">
+                <button type="button" class="button is-small managerCACopyURLBtn" data-text-type="url"
+                  data-url-value="{{ object.account_url }}">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="field has-addons justify-center">
+              <div class="control">
+                <input class="input is-small" readonly="readonly" type="text" id="account-username-{{ object.pk }}"
+                  value="{{ object.account_username }}" />
+              </div>
+              <div class="control">
+                <button type="button" class="button is-small managerCACopyUsernameBtn" data-text-type="username"
+                  data-username-value="{{ object.account_username }}">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </td>
+          <td>
+
+            <div class="field has-addons justify-center">
+              <div class="control">
+                <button type="button" class="button is-small managerCAShowPasswordBtn copyBtn"
+                  data-input-id="password-{{ object.pk }}" data-is-visible="0">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+              <div class="control">
+                <input class="input is-small" readonly="readonly" type="password" id="password-{{ object.pk }}"
+                  value="{{ object.decrypted_account_password }}" />
+              </div>
+              <div class="control">
+                <button type="button" class="button is-small has-tooltip-multiline managerCACopyPasswordBtn"
+                  data-text-type="password" data-tooltip="Copy password" data-input-id="password-{{ object.pk }}">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="tag">
+              {{ object.get_status_display }}
+            </span>
+          </td>
+          <td>{{ object.created_at|date }}</td>
+          <td>
+            <div class="buttons are-small">
+              <!-- <a href="" class="button is-info is-light">
+                <i class="fa-solid fa-eye"></i>
+              </a> -->
+              <a href="{% url 'manager:client_account:update' object.pk %}" class="button is-success is-light">
+                <i class="fa-solid fa-pencil"></i>
+              </a>
+              <a href="{% url 'manager:client_account:delete' object.pk %}" class="button is-danger is-light">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+    {% else %}
+    <div class="notification is-warning">
+      <!-- <button class="delete"></button> -->
+      No client account
+      <a class="is-primary is-inverted is-hoverable is-hovered mx-1" href="{% url 'manager:client_account:create' %}">
+        Create new client account
+      </a>
     </div>
+    {% endif %}
+  </div>
+
+</section>
 
 {% endblock dashboard_content %}
 
 {% block externaljs %}
-    <script src="{% static 'js/manager/client/list.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/client_account/list.js' %}" defer type="module"></script>
 {% endblock externaljs %}

@@ -39,19 +39,21 @@
                         <tr>
                             <td>
                                 <a target="_blank"
-                                   href="{% url 'manager:client:details' object.client.pk %}">{{ object.client.name }}</a>
+                                   href="{% url 'manager:client:details' object.client.pk %}">
+                                   {{ object.client.name }} <i class="fas fa-external-link-alt is-small"></i>
+                                  </a>
                             </td>
                             <td>
                                 <span class="tag is-medium has-text-weight-bold">{{ object.get_contact_label_display }}</span>
                             </td>
-                            
+
                             <td>{{ object.created_at|date:"SHORT_DATE_FORMAT" }}</td>
-                                
-                            
+
+
                             {% comment %}
                             <td>{{ object.created_at|date:"D d M Y" }}</td>
                             {% endcomment %}
-                                
+
                             <td class="has-text-centered">
                                 <div class="buttons are-small">
                                     <a href="{% url 'manager:important_contact:update' object.pk %}"

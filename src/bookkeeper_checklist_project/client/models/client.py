@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from core.models import BaseModelMixin
+from core.choices import ClientStatusEnum
 
 
 class Client(BaseModelMixin):
@@ -23,6 +24,12 @@ class Client(BaseModelMixin):
         upload_to="logos/",
         null=True,
         blank=True,
+    )
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        default=ClientStatusEnum.ENABLED,
+        choices=ClientStatusEnum.choices,
     )
 
     def __str__(self) -> str:

@@ -26,6 +26,12 @@
         </div>
         <div class="tile is-parent">
             <article class="tile is-child box">
+                <p class="title">{{ bookkeeper.special_assignments.count }}</p>
+                <p class="subtitle is-capitalized">special assignment</p>
+            </article>
+        </div>
+        <div class="tile is-parent">
+            <article class="tile is-child box">
                 <p class="title has-text-danger">{{ total_past_due_total }}</p>
                 <p class="subtitle has-text-danger-dark">Past Due</p>
             </article>
@@ -108,9 +114,9 @@
                     {% else %}
                     <div class="notification is-warning">No Task(s).</div>
                     {% endif %}
-                    
 
-                  
+
+
                 </div>
             </div>
             <footer class="card-footer">

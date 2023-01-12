@@ -1,0 +1,86 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+{% block dashboard_content %}
+<section id="manager-clients-list" class="box">
+  <header>
+    <h3 class="title is-3">
+      Clients <a class="button is-primary mx-2" href="{% url 'manager:client:create' %}">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+    </h3>
+  </header>
+  <hr />
+  <div>
+    {% if object_list.count > 0 %}
+    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="managerClientsTable">
+      <thead>
+        <tr>
+          <th>Client Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Industry</th>
+          <th>Jobs</th>
+          <th>Tasks</th>
+          <th>Created AT</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Client Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Industry</th>
+          <th>Jobs</th>
+          <th>Tasks</th>
+          <th>Created AT</th>
+          <th>Actions</th>
+        </tr>
+      </tfoot>
+      <tbody>
+        {% for object in object_list %}
+        <tr>
+          <td>
+            <a href="{% url 'manager:client:details' object.pk %}">{{ object.name }}</a>
+          </td>
+          <td>
+            <a href="mailto:{{ object.email }}">{{ object.email }}</a>
+          </td>
+          <td>
+            <span
+              class="tag is-light is-medium">
+              {{ object.get_status_display }}
+            </span>
+          </td>
+          <td>{{ object.industry }}</td>
+          <td>{{ object.jobs.count }}</td>
+          <td>{{ object.get_total_tasks_for_all_jobs }}</td>
+          <td>{{ object.created_at|date }}</td>
+          <td>
+            <div class="buttons are-small justify-center">
+              <a href="{% url 'manager:client:details' object.pk %}" class="button is-info is-light">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+              <a href="{% url 'manager:client:update' object.pk %}" class="button is-success is-light">
+                <i class="fa-solid fa-pencil"></i>
+              </a>
+              <a href="{% url 'manager:client:delete' object.pk %}" class="button is-danger is-light">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="notification is-warning">
+      <!-- <button class="delete"></button> -->
+      No archive client(s)
+    </div>
+    {% endif %}
+  </div>
+  {% endblock dashboard_content %}
+  {% block externaljs %}
+  <script src="{% static 'js/manager/client/list.js' %}" defer type="module"></script>
+  {% endblock externaljs %}

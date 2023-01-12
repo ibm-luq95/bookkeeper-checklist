@@ -1,15 +1,21 @@
+from typing import Dict
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
-from django.urls import reverse_lazy
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy, reverse
+from django.shortcuts import redirect
+from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic.edit import FormView
 
 from assistant.models import Assistant
 from bookkeeper.models import Bookkeeper
 from core.utils import debugging_print
-from users.forms import CustomUserCreationForm
+from core.utils.utils import get_trans_txt
+from users.forms import CustomUserCreationForm, UpdateUserForm
 from .mixins import ManagerAccessMixin
 
 
@@ -38,7 +44,7 @@ class UserCreateView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context["title"] = "Create User"
+        context["title"] = get_trans_txt("Create User")
         return context
 
     # def get_success_url(self):
@@ -84,3 +90,66 @@ class UserDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Detail User"
         return context
+
+
+class UserUpdateView(LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, FormView):
+    login_url = reverse_lazy("users:login")
+    template_name = "manager/users/update.html"
+    http_method_names = ["post", "get"]
+    form_class = UpdateUserForm
+    user_object = None
+
+    def get(self, request, *args, **kwargs):
+        """Handle GET requests: instantiate a blank version of the form."""
+        # this will handle if there is no ?user value in the url
+        user_pk = self.request.GET.get("user")
+        if not user_pk:
+            return redirect(reverse_lazy("manager:manager:list"))
+        return self.render_to_response(self.get_context_data())
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["title"] = get_trans_txt("Update User")
+        return context
+
+    # def get_object(self):
+    #     user_pk = self.request.GET.get("user")
+    #     user = get_user_model().objects.get(pk=user_pk)
+    #     return user
+
+    def get_form_kwargs(self):
+        """Return the keyword arguments for instantiating the form."""
+        kwargs = super().get_form_kwargs()
+        user_pk = self.request.GET.get("user")
+        self.user_object = get_user_model().objects.get(pk=user_pk)
+        kwargs.update({"instance": self.user_object})
+        return kwargs
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        # self.object = form.save()
+        password = form.cleaned_data.get("password")
+        confirm_password = form.cleaned_data.get("confirm_password")
+        if password != "":
+            if confirm_password == "":
+                form.add_error("confirm_password", "Password confirmation required!")
+                messages.error(self.request, "Password confirmation required!")
+                return self.form_invalid(form)
+            elif confirm_password != password:
+                form.add_error("confirm_password", "Password confirmation not match!")
+                messages.error(self.request, "Password confirmation not match!")
+                return self.form_invalid(form)
+            else:
+                self.user_object.set_password(password)
+                self.user_object.save()
+
+        form.save()
+        messages.success(self.request, "User updated successfully!")
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self) -> str:
+        view_name = self.request.resolver_match.view_name
+        pk = self.request.GET.get("user")
+        url = reverse_lazy(view_name) + f"?user={pk}"
+        return url

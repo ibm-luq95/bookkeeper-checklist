@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-#
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm, PasswordChangeForm
 
 from bookkeeper.models import Bookkeeper
-from core.constants.form import CREATE_FORM_FIELDS
+from core.constants.form import CREATE_FORM_FIELDS, EXCLUDED_FIELDS
 from core.forms import BaseModelFormMixin
 from core.utils import debugging_print
 
@@ -28,3 +28,12 @@ class BookkeeperForm(BaseModelFormMixin, UserCreationForm):
             user.save()
         Bookkeeper.objects.create(user=user)
         return user
+
+
+class BookkeeperUpdateForm(BaseModelFormMixin):
+    def __init__(self, user=None, *args, **kwargs):
+        super(BookkeeperUpdateForm, self).__init__(*args, **kwargs)
+
+    class Meta(BaseModelFormMixin.Meta):
+        model = Bookkeeper
+        exclude = EXCLUDED_FIELDS + ["last_login", "user", "company_services"]

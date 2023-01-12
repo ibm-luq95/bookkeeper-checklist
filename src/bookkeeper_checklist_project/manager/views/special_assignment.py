@@ -2,10 +2,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView, CreateView, UpdateView
+from django.views.generic import ListView, DeleteView, CreateView, UpdateView, DetailView
 
 from core.utils import get_trans_txt
-from special_assignment.forms import SpecialAssignmentForm
+from special_assignment.forms import SpecialAssignmentForm, DiscussionForm
 from special_assignment.models import SpecialAssignment
 from .mixins import ManagerAccessMixin
 
@@ -79,3 +79,34 @@ class SpecialAssignmentDeleteView(
     template_name = "manager/special_assignment/delete.html"
     success_message: str = get_trans_txt("Special assignment deleted successfully!")
     success_url = reverse_lazy("manager:special_assignment:list")
+
+
+class SpecialAssignmentDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
+    login_url = reverse_lazy("users:login")
+    template_name = "manager/special_assignment/details.html"
+    model = SpecialAssignment
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        status = {
+            "not_started": get_trans_txt("Not Started"),
+            "in_progress": get_trans_txt("In Progress"),
+            "completed": get_trans_txt("Completed"),
+            "rejected": get_trans_txt("Rejected"),
+        }
+        special_assignment = self.get_object()
+        if special_assignment.is_seen is False:
+            special_assignment_user = special_assignment.get_managed_user().user
+            current_user = self.request.user
+            if special_assignment_user == current_user:
+                special_assignment.is_seen = True
+                special_assignment.save()
+
+        context.setdefault("title", get_trans_txt(special_assignment.title))
+        discussion_form = DiscussionForm(
+            special_assignment=special_assignment, discussion_user=self.request.user
+        )
+        context.setdefault("status", status)
+        context.setdefault("discussion_form", discussion_form)
+        return context

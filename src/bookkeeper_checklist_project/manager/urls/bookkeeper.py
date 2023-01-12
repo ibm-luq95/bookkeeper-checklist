@@ -6,6 +6,7 @@ from manager.views import (
     BookkeeperDeleteView,
     BookkeeperCreateView,
     BookkeeperUpdateView,
+    BookkeepersArchiveView,
 )
 
 app_name = "bookkeeper"
@@ -13,6 +14,7 @@ app_name = "bookkeeper"
 urlpatterns = [
     # path("api/", include("manager.urls.api"), name="manager-bookkeeper-api-urls"),
     path("", BookkeepersListView.as_view(), name="list"),
+    path("archive", BookkeepersArchiveView.as_view(), name="archive"),
     path("create", BookkeeperCreateView.as_view(), name="create"),
     path("update/<uuid:pk>", BookkeeperUpdateView.as_view(), name="update"),
     path("<uuid:pk>", BookkeepersDetailsView.as_view(), name="details"),

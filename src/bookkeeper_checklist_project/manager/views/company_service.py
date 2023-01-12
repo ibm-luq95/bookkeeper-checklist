@@ -20,7 +20,8 @@ class CompanyServicesListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     template_name = "manager/company_service/list.html"
     model = CompanyService
     http_method_names = ["get"]
-    # queryset = CompanyService.objects.all().values("email", "client", "service_name", "label")
+    # queryset = CompanyService.objects.all().values("pk", "email", "client", "service_name", "label", "url")
+    # queryset = CompanyService.objects.prefetch_related("client").only("password").values("pk", "client", "label", "url", "service_name")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

@@ -1,0 +1,285 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block dashboard_content %}
+<section class="box block">
+  <div class="columns is-flex is-justify-content-space-between pt-5">
+    <header class="">
+      <h5 class="title is-size-5">{{ object|capfirst }}</h5>
+    </header>
+    <div class="">
+
+      {% if object.status == "rejected" %}
+      <span class="tag is-danger is-light is-medium">{{ object.get_status_display|capfirst }}</span>
+      {% elif object.status == "completed" %}
+      <span class="tag is-success is-light is-medium">{{ object.get_status_display|capfirst }}</span>
+      {% else %}
+      <span class="tag is-medium">
+        {{ object.get_status_display|capfirst }}
+      </span>
+      {% endif %}
+
+
+    </div>
+  </div>
+  <hr>
+  <br>
+  <section class="container">
+    <section id="special-assignment-block" class="mb-5">
+      <article class="media">
+        <figure class="media-left">
+          <p class="image is-64x64">
+            {% if object.get_managed_user.profile_picture %}
+            <img src="{{ object.get_managed_user.profile_picture }}" alt="{{ object.get_managed_user.fullname }}" />
+            {% else %}
+            <img src="{% static 'imgs/avatar.jpg' %}" alt="{{ object.get_managed_user.fullname }}" />
+            {% endif %}
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="content">
+            <div class="columns is-flex">
+              <div class="column is-9">
+                <p>
+                  <strong>{{ object.title|capfirst }}</strong> <small><a
+                      href="">@{{ object.get_managed_user }}</a></small>
+                  <small>{{ object.created_at|naturaltime }}</small>
+                  <br>
+                  {{ object.body|capfirst }}
+                </p>
+                <nav class="level is-mobile">
+                  <div class="level-left">
+                    <!-- <a class="level-item">
+                        <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                      </a> -->
+                    <!-- <a class="level-item">
+                        <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                      </a> -->
+                    <!-- <a class="level-item">
+                        <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                      </a> -->
+
+                    {% if object.attachment %}
+                    <a class="level-item has-tooltip-arrow has-tooltipl-multiline has-tooltip-text-centered"
+                      title="There is attachment file" download="{{ object.attachment.url }}" target="_blank"
+                      href="{{ object.attachment.url }}">
+                      <span class="icon is-small">
+                        <i class="fa-solid fa-paperclip"></i>
+                      </span>
+                    </a>
+
+                    {% endif %}
+
+
+                  </div>
+                </nav>
+                <hr />
+                <article>
+                  <h6 class="title is-size-6 mb-2">Notes</h6>
+                  <p>
+
+                    {% if object.notes %}
+                    {{ object.notes }}
+                    {% else %}
+                      <div class="notification">
+                        No notes
+                      </div>
+                    {% endif %}
+
+                  </p>
+                </article>
+              </div>
+              <div class="column">
+
+                <div>
+                  <h5 class="title is-size-5 mb-5 is-inline">Client: </h5>
+                  <h2 class="title subtitle is-size-6 is-inline">
+                    <a href="{% url 'bookkeeper:client:details' object.client.pk %}" target="_blank">{{ object.client.name }}</a>
+                  </h2>
+                </div>
+                <hr />
+                <section>
+                  <form action="{% url 'special_assignment:api:special_assignment:bookkeeper:update-status' %}"
+                    method="PUT" id="updateSpecialAssignmentStatusForm">
+                    <fieldset form="updateSpecialAssignmentStatusForm">
+                      {% csrf_token %}
+
+
+
+                      <input type="hidden" name="special_assignment" value="{{ object.pk }}" />
+                      <div class="field">
+                        <label class="label" for="status">Status</label>
+                        <div class="control">
+                          <div class="select is-small is-fullwidth">
+                            <select name="status" id="status">
+                              {% for key,value in status.items %}
+
+                              {% if key == object.status %}
+                              <option selected value="{{ key }}">{{ value }}</option>
+                              {% else %}
+                              <option value="{{ key }}">{{ value }}</option>
+                              {% endif %}
+
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="field ">
+                        <div class="control">
+                          <button class="button is-link is-fullwidth is-light is-small" type="submit">Update</button>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </form>
+                </section>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        <!-- <div class="media-right">
+            <button class="delete"></button>
+          </div> -->
+      </article>
+    </section>
+    <hr />
+    <!-- Start Discussion -->
+    <!-- Start Reply Form -->
+    <article class="media">
+      <figure class="media-left">
+        <p class="image is-64x64">
+        </p>
+      </figure>
+      <div class="media-content">
+        <form action="{% url 'special_assignment:api:discussion:bookkeeper:create' %}" method="POST"
+          id="bookkeeperAddReplyForm" enctype="multipart/form-data">
+          <fieldset form="bookkeeperAddReplyForm">
+            {% csrf_token %}
+            <legend class="is-size-5 mb-2">Add reply</legend>
+            {{discussion_form| crispy}}
+            <!-- <div class="field">
+                <p class="control">
+                  <textarea class="textarea" placeholder="Add a comment..."></textarea>
+                </p>
+              </div> -->
+
+            <div class="field">
+              <p class="control">
+                <button class="button is-fullwidth my-5 is-info bkchlst-input" disabled="disabled" type="submit"
+                  form="bookkeeperAddReplyForm">Post reply</button>
+              </p>
+            </div>
+          </fieldset>
+
+
+        </form>
+
+
+      </div>
+    </article>
+    <!-- End Reply Form -->
+
+    {% for reply in object.discussions.select_related.get_only_discussion %}
+
+    <article class="media">
+      <figure class="media-left">
+        <p class="image is-64x64">
+          {% if reply.get_managed_user.profile_picture %}
+          <img src="{{ reply.get_managed_user.profile_picture }}" alt="{{ reply.get_managed_user.fullname }}" />
+          {% else %}
+          <img src="{% static 'imgs/avatar.jpg' %}" alt="{{ reply.get_managed_user.fullname }}" />
+          {% endif %}
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong>{{ reply.get_managed_user }}</strong>
+            <br>
+            {{ reply.body|capfirst }}
+            <br>
+            <small>
+              {% if reply.attachment %}
+              <a class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-text-centered"
+                title="There is attachment file" download="{{ reply.attachment.url }}" target="_blank"
+                href="{{ reply.attachment.url }}">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-paperclip"></i>
+                </span>
+              </a>
+              ·
+              {% endif %}  {{ reply.created_at|naturaltime }}</small>
+          </p>
+        </div>
+        {% if reply.discussion_replies.select_related.filter %}
+
+        {% for discussion_reply in reply.discussion_replies.select_related.filter %}
+        <article class="media">
+          <figure class="media-left">
+            <p class="image is-48x48">
+              {% if discussion_reply.get_managed_user.profile_picture %}
+              <img src="{{ discussion_reply.get_managed_user.profile_picture }}"
+                alt="{{ discussion_reply.get_managed_user.fullname }}" />
+              {% else %}
+              <img src="{% static 'imgs/avatar.jpg' %}" alt="{{ discussion_reply.get_managed_user.fullname }}" />
+              {% endif %}
+            </p>
+          </figure>
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong>{{ discussion_reply.get_managed_user }}</strong>
+                <br>
+                {{ discussion_reply.body|capfirst }}
+                <br>
+                <small>
+                  {% if discussion_reply.attachment %}
+                  <a class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-text-centered"
+                    title="There is attachment file" download="{{ discussion_reply.attachment.url }}" target="_blank"
+                    href="{{ discussion_reply.attachment.url }}">
+                    <span class="icon is-small">
+                      <i class="fa-solid fa-paperclip"></i>
+                    </span>
+                  </a>
+                  .
+                  {% endif %} {{ discussion_reply.created_at|naturaltime }}</small>
+              </p>
+            </div>
+
+            <!-- <article class="media">
+              Vivamus quis semper metus, non tincidunt dolor. Vivamus in mi eu lorem cursus ullamcorper sit amet nec
+              massa.
+            </article> -->
+          </div>
+        </article>
+        {% endfor %}
+
+
+        {% endif %}
+
+
+
+
+      </div>
+    </article>
+
+
+    {% empty %}
+    <div class="notification is-warning has-text-weight-bold my-3">
+      No replies
+    </div>
+    {% endfor %}
+
+
+    <!-- End Discussion -->
+  </section>
+</section>
+
+{% endblock dashboard_content %}
+{% block externaljs %}
+<script src="{% static 'js/bookkeeper/special_assignment/details.js' %}" defer type="module"></script>
+{% endblock externaljs %}

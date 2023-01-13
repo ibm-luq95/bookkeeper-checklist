@@ -34,12 +34,12 @@
           <a class="navbar-link">
             Special Assignment
             <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">
-              {{ request.user.bookkeeper.special_assignments.count }}
+              {{ request.user.bookkeeper.get_not_seen_special_assignments.count }}
             </span>
           </a>
 
           <div class="navbar-dropdown">
-            <a href="#" class="navbar-item">
+            <a href="{% url 'bookkeeper:special_assignment:list' %}" class="navbar-item">
               List all assignments
             </a>
             <a href="#" class="navbar-item">

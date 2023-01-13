@@ -1,5 +1,6 @@
 {% extends 'core/layouts/dashboard.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block dashboard_content %}
 <section id="manager-clients-list" class="box">
   <header>
@@ -15,6 +16,55 @@
   </header>
   <hr />
   <div>
+    <form action="{% url 'manager:client:list' %}" method="GET" id="managerClientFilterForm">
+      <fieldset id="managerClientFilterForm">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <!-- <label class="label">Label</label> -->
+              <div class="control">
+                <!-- <input class="input" type="text" placeholder="Text input"> -->
+                {{ filter_form.name__icontains|as_crispy_field }}
+              </div>
+              <!-- <p class="help">This is a help text</p> -->
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <!-- <label class="label">Label</label> -->
+              <div class="control">
+                {{ filter_form.industry__icontains|as_crispy_field }}
+              </div>
+              <!-- <p class="help">This is a help text</p> -->
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <!-- <label class="label">Label</label> -->
+              <div class="control">
+
+                {{ filter_form.important_contacts__company_name__icontains|as_crispy_field }}
+              </div>
+              <!-- <p class="help">This is a help text</p> -->
+            </div>
+          </div>
+        </div>
+        <div class="field is-grouped is-grouped-right">
+          <p class="control">
+            <button type="submit" class="button">Filter</button>
+          </p>
+          <a href="{% url 'manager:client:list' %}" class="button is-danger is-light">Reset</a>
+        </div>
+
+        {% comment %}
+        {% crispy filter_form %}
+        {% endcomment %}
+
+
+
+      </fieldset>
+    </form>
+    <hr />
     {% if object_list.count > 0 %}
     <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="managerClientsTable">
       <thead>
@@ -23,6 +73,7 @@
           <th>Email</th>
           <th>Status</th>
           <th>Industry</th>
+          <th>Contacts</th>
           <th>Jobs</th>
           <th>Tasks</th>
           <th>Created AT</th>
@@ -35,6 +86,7 @@
           <th>Email</th>
           <th>Status</th>
           <th>Industry</th>
+          <th>Contacts</th>
           <th>Jobs</th>
           <th>Tasks</th>
           <th>Created AT</th>
@@ -57,6 +109,17 @@
             </span>
           </td>
           <td>{{ object.industry }}</td>
+          <td>
+
+            {% for contact in object.important_contacts.select_related.all %}
+            <a href="{% url 'manager:important_contact:update' contact.pk %}" target="_blank">
+              {{ contact }}
+            </a><br />
+            {% empty %}
+            No contact
+            {% endfor %}
+
+          </td>
           <td>{{ object.jobs.count }}</td>
           <td>{{ object.get_total_tasks_for_all_jobs }}</td>
           <td>{{ object.created_at|date }}</td>

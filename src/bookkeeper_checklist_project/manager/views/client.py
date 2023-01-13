@@ -17,6 +17,7 @@ from important_contact.forms import ImportantContactForm
 from jobs.forms import JobForm
 from notes.forms import NoteForm
 from task.forms import TaskForm
+from client.filters import ClientFilter
 
 from .mixins import ManagerAccessMixin
 
@@ -30,8 +31,15 @@ class ClientListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = "All clients"
+        context["title"] = get_trans_txt("All clients")
+        context.setdefault("filter_form", self.filterset.form)
+        # debugging_print(self.filterset.form["name"])
         return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = ClientFilter(self.request.GET, queryset=queryset)
+        return self.filterset.qs
 
 
 class ClientArchiveListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
@@ -43,7 +51,7 @@ class ClientArchiveListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = "All clients"
+        context["title"] = get_trans_txt("All archived clients")
         return context
 
 
@@ -104,7 +112,7 @@ class ClientDetailView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         context.setdefault("company_services_form", company_services_form)
         context.setdefault("jobs_form", jobs_form)
         context.setdefault("tasks_form", tasks_form)
-        context.setdefault("important_contacts", important_contacts)
+        # context.setdefault("important_contacts", important_contacts)
         origin = self.request.get_host()
         context.setdefault("origin", origin)
         return context

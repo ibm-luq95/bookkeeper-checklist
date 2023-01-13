@@ -4,7 +4,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from client.models import Client
+# from client.models import Client
 from core.choices import ImportantContactLabelsEnum
 from core.models import BaseModelMixin
 
@@ -16,14 +16,14 @@ class ImportantContact(BaseModelMixin):
         BaseModelMixin (models.Model): Django base model mixin
     """
 
-    client = models.ForeignKey(
-        to=Client,
-        on_delete=models.CASCADE,
-        related_name="important_contacts",
-        db_index=True,
-        null=True,
-        blank=True
-    )
+    # client = models.ForeignKey(
+    #     to=Client,
+    #     on_delete=models.CASCADE,
+    #     related_name="important_contacts",
+    #     db_index=True,
+    #     null=True,
+    #     blank=True
+    # )
     contact_label = models.CharField(
         _("contact label"),
         max_length=20,
@@ -49,7 +49,8 @@ class ImportantContact(BaseModelMixin):
     contact_notes = models.TextField(_("notes"), null=True, blank=True)
 
     def __str__(self):
-        return f"Contact {self.contact_label} for client {self.client}"
+        # return f"Contact {self.contact_label} for client {self.client}"
+        return f"{self.get_contact_label_display()} - {self.company_name}"
 
     def get_absolute_url(self):
         return reverse("manager:important_contact:update", kwargs={"pk": self.pk})

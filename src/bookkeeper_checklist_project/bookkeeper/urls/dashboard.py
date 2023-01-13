@@ -8,4 +8,9 @@ urlpatterns = [
     path("clients/", include("bookkeeper.urls.clients"), name="clients-urls"),
     path("jobs/", include("bookkeeper.urls.jobs"), name="jobs-urls"),
     path("tasks/", include("bookkeeper.urls.tasks"), name="tasks-urls"),
+    path(
+        "special_assignment/",
+        include("bookkeeper.urls.special_assignment"),
+        name="special-assignment-urls",
+    ),
 ]

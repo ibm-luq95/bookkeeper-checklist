@@ -9,5 +9,10 @@ urlpatterns = [
         include("special_assignment.urls.api.discussion.manager"),
         name="manager-discussion-api-urls",
     ),
+    path(
+        "bookkeeper/",
+        include("special_assignment.urls.api.discussion.bookkeeper"),
+        name="bookkeeper-discussion-api-urls",
+    ),
 
 ]

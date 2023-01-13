@@ -9,4 +9,9 @@ urlpatterns = [
         include("special_assignment.urls.api.special_assignment.manager"),
         name="manager-special-assignment-api-urls",
     ),
+    path(
+        "bookkeeper/",
+        include("special_assignment.urls.api.special_assignment.bookkeeper"),
+        name="bookkeeper-special-assignment-api-urls",
+    ),
 ]

@@ -8,7 +8,7 @@
     <div class="box">
         <form method="post" id="create-important-contact-form">
             {% csrf_token %}
-            <legend class="title has-text-black">Create contact</legend>
+            <legend class="title has-text-black">{{ title }}</legend>
             <hr>
             <fieldset form="create-important-contact-form">
                 {{form| crispy}}

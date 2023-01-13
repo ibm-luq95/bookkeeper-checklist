@@ -25,14 +25,14 @@ class ImportantContactForm(BaseModelFormMixin, Html5Mixin):
             self.fields["contact_label"].widget.attrs.update({"class": "readonly-select"})
 
         # check if the client passed in the arguments
-        if client_pk is not None:
-            self.fields["client"].initial = (
-                Client.objects.select_related().filter(pk=client_pk).first()
-            )
+        # if client_pk is not None:
+        #     self.fields["client"].initial = (
+        #         Client.objects.select_related().filter(pk=client_pk).first()
+        #     )
 
         # remove client input
-        if remove_client_field is True:
-            self.fields.pop("client")
+        # if remove_client_field is True:
+        #     self.fields.pop("client")
 
     class Meta(BaseModelFormMixin.Meta):
         model = ImportantContact

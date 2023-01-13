@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 
 from core.models import BaseModelMixin
 from core.choices import ClientStatusEnum
+from important_contact.models import ImportantContact
 
 
 class Client(BaseModelMixin):
@@ -30,6 +31,9 @@ class Client(BaseModelMixin):
         max_length=10,
         default=ClientStatusEnum.ENABLED,
         choices=ClientStatusEnum.choices,
+    )
+    important_contacts = models.ManyToManyField(
+        to=ImportantContact, related_name="client", blank=True
     )
 
     def __str__(self) -> str:

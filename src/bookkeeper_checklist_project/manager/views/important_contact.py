@@ -41,9 +41,7 @@ class ImportantContactCreateView(
         client_pk = self.request.GET.get("client")
         if client_pk is not None:
             client_obj = Client.objects.select_related().filter(pk=client_pk).first()
-            context.setdefault(
-                "title", get_trans_txt(f"New contact for {client_obj.name}")
-            )
+            context.setdefault("title", get_trans_txt(f"New contact for {client_obj.name}"))
         else:
             context.setdefault("title", get_trans_txt("Create new contact"))
 
@@ -55,6 +53,16 @@ class ImportantContactCreateView(
         if client_pk is not None:
             kwargs.update({"client_pk": client_pk})
         return kwargs
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        client_pk = self.request.GET.get("client")
+        if client_pk is not None:
+            client_obj = Client.objects.select_related().filter(pk=client_pk).first()
+            client_obj.important_contacts.add(self.object)
+            client_obj.save()
+        return super().form_valid(form)
 
 
 class ImportantContactUpdateView(

@@ -24,9 +24,10 @@
         <div class="w3-white w3-text-grey w3-card-4">
           <div class="w3-display-container has-text-centered pt-3">
             {% if object.company_logo %}
-            <img src="{{ object.company_logo.url }}" style="height: 150px" alt="{{ object.name }}" />
+            <img src="{{ object.company_logo.url }}" loading="lazy" style="height: 150px" alt="{{ object.name }}" />
             {% else %}
-            <img src="{% static 'imgs/default_client.jpg' %}" style="height: 150px" alt="{{ object.name }}" />
+            <img src="{% static 'imgs/default_client.jpg' %}" loading="lazy" style="height: 150px"
+              alt="{{ object.name }}" />
             {% endif %}
 
             <div class="w3-display-bottomleft w3-container w3-text-black" style="position: relative">
@@ -51,132 +52,73 @@
 
             <p class="w3-large mb-2">
 
-              
-                <h5 class="title is-4">
-                  <i class="fa fa-building fa-fw mr-1 is-inline-block w3-text-teal"></i>
-                  Important Contact ({{ important_contacts.count }})
-                  <a href="{% url 'manager:important_contact:create' %}?client={{ object.pk }}" target="_blank" title="Create new contact" class="button is-small mx-3">
-                    <i class="fa-solid fa-plus"></i>
-                  </a>
-                </h5>
-              </p>
-              
-              {% for contact in important_contacts %}
-              <section class="manager-client-important-contact-block">
-                <div class="list has-visible-pointer-controls">
-                  <div class="list-item">
-                    <div class="list-item-content">
-                      <div class="list-item-title">Label</div>
-                      <div class="list-item-description">{{ contact.get_contact_label_display }}</div>
-                    </div>
-    
-                    <div class="list-item-controls">
-                      <div class="buttons is-right">
-                        <button class="button is-small managerViewImportantContactBtn" data-important-contact-id="{{ contact.pk }}" type="button" title="View all details related to contact">
-                          <span class="icon is-small">
-                            <i class="fa-solid fa-eye"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="list-item">
-                    <div class="list-item-content">
-                      <div class="list-item-title">Company Name</div>
-                      <div class="list-item-description">
-                        {{ contact.company_name }}
-                      </div>
-                    </div>
-    
-                    {% comment %}
-                    <div class="list-item-controls">
-                      <div class="buttons is-right">
-                        <button class="button">
-                          <span class="icon is-small">
-                            <i class="fas fa-ellipsis-h"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    {% endcomment %}
-                  </div>
-    
-                  <div class="list-item">
-                    <div class="list-item-content">
-                      <div class="list-item-title">Phone</div>
-                      <div class="list-item-description">
-                        {{ contact.contact_phone }}
-                      </div>
-                    </div>
-    
-                    {% comment %}
-                    <div class="list-item-controls">
-                      <div class="buttons is-right">
-                        <button class="button">
-                          <span class="icon is-small">
-                            <i class="fas fa-ellipsis-h"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    {% endcomment %}
-                  </div>
-    
-                  <div class="list-item">
-                    <div class="list-item-content">
-                      <div class="list-item-title">Email Contact</div>
-                      <div class="list-item-description">
-                        <a href="mailto:{{ contact.contact_email }}">
-                          {{ contact.contact_email }}
-                        </a>
-                      </div>
-                    </div>
-    
-                    {% comment %}
-                    <div class="list-item-controls">
-                      <div class="buttons is-right">
-                        <button class="button">
-                          <span class="icon is-small">
-                            <i class="fas fa-ellipsis-h"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    {% endcomment %}
-                  </div>
-    
-                  <div class="list-item">
-                    <div class="list-item-content">
-                      <div class="list-item-title">Website URL</div>
-                      <div class="list-item-description">
-                        <a href="{{ contact.contact_website }}" target="_blank">
-                          {{ contact.contact_website }}
-                        </a>
-                      </div>
-                    </div>
-    
-                    {% comment %}
-                    <div class="list-item-controls">
-                      <div class="buttons is-right">
-                        <button class="button">
-                          <span class="icon is-small">
-                            <i class="fas fa-ellipsis-h"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    {% endcomment %}
-                  </div>
-    
-    
-    
-                </div>
-              </section>
-              <hr />
-              {% empty %}
-              <div class="notification is-warning mb-5">No contact(s) for this client</div>
-              {% endfor %}
+              <h5 class="title is-4">
+                <i class="fa fa-building fa-fw mr-1 is-inline-block w3-text-teal"></i>
+                Important Contact ({{ object.important_contacts.select_related.count }})
+                <a href="{% url 'manager:important_contact:create' %}?client={{ object.pk }}" target="_blank"
+                  title="Create new contact" class="button is-small mx-3">
+                  <i class="fa-solid fa-plus"></i>
+                </a>
+              </h5>
+            </p>
+            <section class="manager-client-important-contact-block">
+              <div class="table-container">
+                <table class="table is-fullwidth">
+                  <tbody>
+                    {% for contact in object.important_contacts.select_related.filter.filter %}
+                    <tr class="">
+                      <td>
+                        <h6 class="title is-size-6 has-text-weight-bold">
+                          Label
+                        </h6>
+                      </td>
+                      <td>
+                        <p style="padding-top: 9px;">
+                          {{ contact.get_contact_label_display }}
+                        </p>
+                      </td>
+                      <td>
+                        <div class="buttons is-right">
+                          <button class="button is-small managerViewImportantContactBtn"
+                            data-important-contact-id="{{ contact.pk }}" type="button"
+                            title="View all details related to contact">
+                            <span class="icon is-small">
+                              <i class="fa-solid fa-eye"></i>
+                            </span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <h6 class="title is-size-6 has-text-weight-bold">
+                          Company Name
+                        </h6>
+                      </td>
+                      <td>
+                        <p style="padding-top: 9px;">
+                          {{ contact.company_name }}
+                        </p>
+                      </td>
+                      <td>
+
+                      </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                      <td>
+                        <div class="notification is-warning mb-5">No contact(s) for this client</div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+
+
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <hr />
           </div>
         </div>
         <br />
@@ -222,13 +164,13 @@
                               </td>
 
                               <td data-label="Bookkeeper(s)">
-                                
+
                                 {% for bookkeeper in job.bookkeeper.all %}
-                                  <a href="">
-                                    {{ bookkeeper.user.fullname }}
-                                  </a> <br />
+                                <a href="">
+                                  {{ bookkeeper.user.fullname }}
+                                </a> <br />
                                 {% endfor %}
-                                  
+
                               </td>
                               <td data-label="Tasks">{{ job.tasks.count }}</td>
                               <td data-label="Status">
@@ -257,14 +199,16 @@
                               <td class="is-actions-cell">
                                 <div class="buttons is-right">
                                   <button
-                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled managerViewJobBtn" data-job-id="{{ job.pk }}"
-                                    disabled type="button" data-tooltip="View items">
+                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled managerViewJobBtn"
+                                    data-job-id="{{ job.pk }}" disabled type="button" data-tooltip="View items">
                                     <span class="icon">
                                       <i class="fa-solid fa-eye"></i>
                                     </span>
                                   </button>
-                                  <button class="button is-small is-danger bkchlst-input is-disabled managerDeleteJobBtn" data-job-id="{{ job.pk }}" data-job-title="{{ job.title }}" disabled
-                                    type="button" data-tooltip="Delete job">
+                                  <button
+                                    class="button is-small is-danger bkchlst-input is-disabled managerDeleteJobBtn"
+                                    data-job-id="{{ job.pk }}" data-job-title="{{ job.title }}" disabled type="button"
+                                    data-tooltip="Delete job">
                                     <span class="icon">
                                       <i class="fa-solid fa-trash"></i>
                                     </span>
@@ -308,7 +252,7 @@
                 <div class="message-body-content">
                   <div class="container">
                     <div class="b-table">
-                      
+
                       <div class="table-wrapper has-mobile-cards">
                         <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
                           <thead>
@@ -330,9 +274,9 @@
                             </tr>
                           </thead>
                           <tbody>
-                            
+
                             {% for job in object.jobs.all %}
-                              
+
                             {% for task in job.tasks.all %}
                             <tr>
                               <td>
@@ -350,14 +294,16 @@
                               <td class="is-actions-cell">
                                 <div class="buttons is-right">
                                   <button
-                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled managerViewTaskBtn" data-task-id="{{ task.pk }}"
-                                    disabled type="button" data-tooltip="View items">
+                                    class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled managerViewTaskBtn"
+                                    data-task-id="{{ task.pk }}" disabled type="button" data-tooltip="View items">
                                     <span class="icon">
                                       <i class="fa-solid fa-eye"></i>
                                     </span>
                                   </button>
-                                  <button class="button is-small is-danger bkchlst-input is-disabled managerDeleteTaskBtn" data-task-id="{{ task.pk }}" disabled
-                                    type="button" data-tooltip="Delete task" data-task-title="{{ task.title }}">
+                                  <button
+                                    class="button is-small is-danger bkchlst-input is-disabled managerDeleteTaskBtn"
+                                    data-task-id="{{ task.pk }}" disabled type="button" data-tooltip="Delete task"
+                                    data-task-title="{{ task.title }}">
                                     <span class="icon">
                                       <i class="fa-solid fa-trash"></i>
                                     </span>
@@ -366,8 +312,8 @@
                               </td>
                             </tr>
                             {% endfor %}
-                              
-                          {% endfor %}
+
+                            {% endfor %}
 
                           </tbody>
                         </table>
@@ -402,7 +348,7 @@
                 <div class="message-body-content">
                   <div class="container">
                     <div class="b-table">
-                      
+
                       <div class="table-wrapper has-mobile-cards">
                         <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
                           <thead>
@@ -506,12 +452,12 @@
                         URL
                         </th> -->
                         <th>
-                        Username / Email
+                          Username / Email
                         </th>
                         <th>
-                        Password
+                          Password
                         </th>
-    
+
                       </tr>
                     </thead>
                     <tfoot>
@@ -526,23 +472,23 @@
                               URL
                         </th> -->
                         <th id="footerUsername">
-    Username / Email
+                          Username / Email
                         </th>
                         <th id="footerPassword">
-    Password
+                          Password
                         </th>
                       </tr>
                     </tfoot>
                     <tbody>
                       {% for service in object.company_services.all %}
-                        <tr>
-                          <td>
-                            {{ service.label }}
-                          </td>
-                          <td>
-                            {{ service.get_service_name_display }}
-                          </td>
-                          <!-- <td>
+                      <tr>
+                        <td>
+                          {{ service.label }}
+                        </td>
+                        <td>
+                          {{ service.get_service_name_display }}
+                        </td>
+                        <!-- <td>
                             <div class="account-service-item account-service-url">
                               <div class="field has-addons">
                                 <div class="control">
@@ -563,70 +509,60 @@
                               </div>
                             </div>
                           </td> -->
-                          <td>
-                            <div class="account-service-item account-service-username">
-                              <div class="field has-addons">
-                                <div class="control">
-                                  <input class="input is-small"
-                                         type="text"
-                                         value="{{ service.email }}"
-                                         id="ac-username-{{ service.id }}"
-                                         readonly/>
-                                </div>
-                                <div class="control">
-                                  <button class="button copyASUsernameBtn copyBtn is-small"
-                                          data-tooltip="Copy Username"
-                                          data-clipboard-target="#ac-username-{{ service.id }}"
-                                          data-text-type="username">
-                                    <i class="fas fa-copy"></i>
-                                  </button>
-                                </div>
+                        <td>
+                          <div class="account-service-item account-service-username">
+                            <div class="field has-addons">
+                              <div class="control">
+                                <input class="input is-small" type="text" value="{{ service.email }}"
+                                  id="ac-username-{{ service.id }}" readonly />
+                              </div>
+                              <div class="control">
+                                <button class="button copyASUsernameBtn copyBtn is-small" data-tooltip="Copy Username"
+                                  data-clipboard-target="#ac-username-{{ service.id }}" data-text-type="username">
+                                  <i class="fas fa-copy"></i>
+                                </button>
                               </div>
                             </div>
-                          </td>
-                          <td>
-                            <div class="account-service-item account-service-password">
-                              <div class="field has-addons">
-                                <p class="control">
-                                  <button class="button showASUPasswordBtn is-small"
-                                          data-tooltip="Show Password"
-                                          data-visibility-status="0"
-                                          data-password-input="as-password-{{ service.id }}">
-                                    <i class="fas fa-eye"></i>
-                                  </button>
-                                </p>
-                                <div class="control">
-                                  <input class="input is-small"
-                                         type="password"
-                                         value="{{ service.password }}"
-                                         id="as-password-{{ service.id }}"
-                                         readonly/>
-                                </div>
-                                <div class="control">
-                                  <button class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
-                                          data-tooltip="Copy password, you have to reveal the password to copy it"
-                                          data-clipboard-target="#as-password-{{ service.id }}"
-                                          data-text-type="password">
-                                    <i class="fas fa-copy"></i>
-                                  </button>
-    
-                                </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="account-service-item account-service-password">
+                            <div class="field has-addons">
+                              <p class="control">
+                                <button class="button showASUPasswordBtn is-small" data-tooltip="Show Password"
+                                  data-visibility-status="0" data-password-input="as-password-{{ service.id }}">
+                                  <i class="fas fa-eye"></i>
+                                </button>
+                              </p>
+                              <div class="control">
+                                <input class="input is-small" type="password" value="{{ service.password }}"
+                                  id="as-password-{{ service.id }}" readonly />
                               </div>
-    
-    
+                              <div class="control">
+                                <button
+                                  class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
+                                  data-tooltip="Copy password, you have to reveal the password to copy it"
+                                  data-clipboard-target="#as-password-{{ service.id }}" data-text-type="password">
+                                  <i class="fas fa-copy"></i>
+                                </button>
+
+                              </div>
                             </div>
-                          </td>
-    
-                        </tr>
+
+
+                          </div>
+                        </td>
+
+                      </tr>
                       {% empty %}
-                        <tr>
-                          <td colspan="3">
-                        No account and services
-                          </td>
-                        </tr>
+                      <tr>
+                        <td colspan="3">
+                          No account and services
+                        </td>
+                      </tr>
                       {% endfor %}
-    
-    
+
+
                     </tbody>
                   </table>
                 </div>
@@ -710,7 +646,8 @@
                                   </button> -->
                                   <button
                                     class="button is-small is-danger bkchlst-input is-disabled managerDeleteDocumentBtn"
-                                    disabled type="button" data-tooltip="Delete document" data-document-id="{{ document.pk }}" data-document-title="{{ document.title }}">
+                                    disabled type="button" data-tooltip="Delete document"
+                                    data-document-id="{{ document.pk }}" data-document-title="{{ document.title }}">
                                     <span class="icon">
                                       <i class="fa-solid fa-trash"></i>
                                     </span>
@@ -785,20 +722,21 @@
         <form action="" id="updateImportantContactForm">
           <fieldset form="updateImportantContactForm">
             {% csrf_token %}
-          <input type="hidden" name="client" value="{{ object.pk }}" />
-          {{ important_contact_form|crispy }}
+            <input type="hidden" name="client" value="{{ object.pk }}" />
+            {{ important_contact_form|crispy }}
           </fieldset>
         </form>
 
       </main>
       <footer class="modal__footer">
-        
+
         {% comment %}
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="updateImportantContactForm">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled
+          form="updateImportantContactForm">
           Update
         </button>
         {% endcomment %}
-          
+
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
           Close
         </button>
@@ -820,7 +758,7 @@
             Loading
           </button>
         </h2>
-        
+
         <button class="modal__close" aria-label="Close modal" data-micromodal-close>
         </button>
       </header>
@@ -972,7 +910,8 @@
       <main class="modal__content" id="company-services-form-modal-content">
 
         <div id="companyServicesFormWrapper" class="my-5">
-          <form method="POST" action="{% url 'company-services:api:manager:create-company-services' %}" id="companyServiceForm">
+          <form method="POST" action="{% url 'company-services:api:manager:create-company-services' %}"
+            id="companyServiceForm">
             <fieldset form="companyServiceForm">
               <legend>
                 Create Company Services
@@ -1047,7 +986,8 @@
 
 <!-- Start Jobs Update Form -->
 <div class="modal micromodal-slide" id="job-details-update-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1"> <!-- @audit -->
+  <div class="modal__overlay" tabindex="-1">
+    <!-- @audit -->
     <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
       aria-labelledby="job-details-update-modal-title">
       <header class="modal__header">
@@ -1076,7 +1016,7 @@
               {{ jobs_form| crispy }}
 
               <h4 class="has-text-weight-bold">Tasks</h4>
-              
+
             </fieldset>
           </form>
         </div>
@@ -1129,7 +1069,8 @@
 
       </main>
       <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" id="managerTasksCreateSubmitBtn" disabled form="tasksCreateForm">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" id="managerTasksCreateSubmitBtn"
+          disabled form="tasksCreateForm">
           Create
         </button>
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
@@ -1170,13 +1111,14 @@
               {% csrf_token %}
 
               {{ tasks_form| crispy }}
-            </fieldset> 
+            </fieldset>
           </form>
         </div>
 
       </main>
       <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" id="managerTasksUpdateSubmitBtn" disabled form="tasksUpdateForm">
+        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" id="managerTasksUpdateSubmitBtn"
+          disabled form="tasksUpdateForm">
           Update
         </button>
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
@@ -1202,6 +1144,7 @@
   window.localStorage.setItem("DeleteTaskUrl", "{% url 'task:api:manager:delete' %}");
   window.localStorage.setItem("RetrieveImportantContactUrl", "{% url 'important_contact:api:manager:retrieve' %}");
   window.localStorage.setItem("origin", "{{ origin }}");
+
 </script>
 <script src="{% static 'js/manager/client/details.js' %}" defer type="module"></script>
 {% endblock externaljs %}

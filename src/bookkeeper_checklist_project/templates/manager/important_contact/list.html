@@ -3,87 +3,87 @@
 
 {% block dashboard_content %}
 
-    <section id="manager-list-important-contact">
-        <div class="block box">
-            <header>
-                <h3 class="title is-3">
-            Client Contacts <a class="button is-primary mx-2"
-    href="{% url 'manager:important_contact:create' %}">
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-            </h3>
-        </header>
-        <hr>
-        {% if object_list.count > 0 %}
-            <table class="table is-fullwidth table-100"
-                   id="managerImportantContact">
-                <thead>
-                    <tr>
-                        <th>Client</th>
-                        <th>Label</th>
-                        <th>Created AT</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>Client</th>
-                        <th>Label</th>
-                        <th>Created AT</th>
-                        <th>Actions</th>
-                    </tr>
-                </tfoot>
-                <tbody>
+<section id="manager-list-important-contact">
+  <div class="block box">
+    <header>
+      <h3 class="title is-3">
+        Client Contacts <a class="button is-primary mx-2" href="{% url 'manager:important_contact:create' %}">
+          <i class="fa-solid fa-plus"></i>
+        </a>
+      </h3>
+    </header>
+    <hr>
+    {% if object_list.count > 0 %}
+    <table class="table is-fullwidth table-100 table is-fullwidth is-bordered is-striped is-narrow table-list-component"
+      id="managerImportantContact">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Label</th>
+          <th>Created AT</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Client</th>
+          <th>Label</th>
+          <th>Created AT</th>
+          <th>Actions</th>
+        </tr>
+      </tfoot>
+      <tbody>
 
-                    {% for object in object_list %}
-                        <tr>
-                            <td>
-                                <a target="_blank"
-                                   href="{% url 'manager:client:details' object.client.pk %}">
-                                   {{ object.client.name }} <i class="fas fa-external-link-alt is-small"></i>
-                                  </a>
-                            </td>
-                            <td>
-                                <span class="tag is-medium has-text-weight-bold">{{ object.get_contact_label_display }}</span>
-                            </td>
+        {% for object in object_list %}
+        <tr>
+          <td>
+            {{ object.client.get }}
+            {% comment %}
+            <a target="_blank" href="{% url 'manager:client:details' object.client.pk %}">
+              {{ object.client.name }} <i class="fas fa-external-link-alt is-small"></i>
+            </a>
+            {% endcomment %}
 
-                            <td>{{ object.created_at|date:"SHORT_DATE_FORMAT" }}</td>
+          </td>
+          <td>
+            <span class="tag is-medium has-text-weight-bold">{{ object.get_contact_label_display }}</span>
+          </td>
+
+          <td>{{ object.created_at|date:"SHORT_DATE_FORMAT" }}</td>
 
 
-                            {% comment %}
-                            <td>{{ object.created_at|date:"D d M Y" }}</td>
-                            {% endcomment %}
+          {% comment %}
+          <td>{{ object.created_at|date:"D d M Y" }}</td>
+          {% endcomment %}
 
-                            <td class="has-text-centered">
-                                <div class="buttons are-small">
-                                    <a href="{% url 'manager:important_contact:update' object.pk %}"
-                                       class="button is-success is-light">
-                                        <i class="fa-solid fa-pencil"></i>
-                                    </a>
-                                    <a href="{% url 'manager:important_contact:delete' object.pk %}"
-                                       class="button is-danger is-light">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-
-                </tbody>
-            </table>
-        {% else %}
-            <div class="notification is-warning">
-                <!-- <button class="delete"></button> -->
-            No contact(s)
-                <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
-                   href="{% url 'manager:important_contact:create' %}">Create contact</a>
+          <td class="has-text-centered">
+            <div class="buttons are-small justify-center">
+              <a href="{% url 'manager:important_contact:update' object.pk %}" class="button is-success is-light">
+                <i class="fa-solid fa-pencil"></i>
+              </a>
+              <a href="{% url 'manager:important_contact:delete' object.pk %}" class="button is-danger is-light">
+                <i class="fa-solid fa-trash"></i>
+              </a>
             </div>
-        {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+    {% else %}
+    <div class="notification is-warning">
+      <!-- <button class="delete"></button> -->
+      No contact(s)
+      <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
+        href="{% url 'manager:important_contact:create' %}">Create contact</a>
     </div>
+    {% endif %}
+  </div>
 </section>
 
 {% endblock dashboard_content %}
 
 {% block externaljs %}
-    <script src="{% static 'js/manager/important_contact/list.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/important_contact/list.js' %}" defer type="module"></script>
 {% endblock externaljs %}

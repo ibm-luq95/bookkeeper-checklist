@@ -6,7 +6,7 @@
   <header>
     <h3 class="title is-3">
       Special assignments
-      <a class="button is-primary mx-1" href="">
+      <a class="button is-primary mx-1" href="{% url 'bookkeeper:special_assignment:create' %}">
         <i class="fa-solid fa-plus"></i>
       </a>
       <a class="button is-info" href="" title="">
@@ -23,6 +23,7 @@
         <tr>
           <th>Title</th>
           <th>Client</th>
+          <th>Assigned by</th>
           <th>Reply(s)</th>
           <th>Status</th>
           <th>Seen</th>
@@ -35,6 +36,7 @@
         <tr>
           <th>Title</th>
           <th>Client</th>
+          <th>Assigned by</th>
           <th>Reply(s)</th>
           <th>Status</th>
           <th>Seen</th>
@@ -57,6 +59,9 @@
             <a href="{% url 'bookkeeper:client:details' object.client.pk %}" target="_blank">
               {{ object.client.name }} <i class="fas fa-external-link-alt is-small"></i>
             </a>
+          </td>
+          <td>
+            {{ object.assigned_by.fullname }}
           </td>
           <td>
             {{ object.discussions.count }}
@@ -104,14 +109,7 @@
                 class="button is-info is-light small-fa-fonts">
                 <i class="fa-solid fa-eye"></i>
               </a>
-              <a href=""
-                class="button small-fa-fonts is-success is-light">
-                <i class="fa-solid fa-pencil"></i>
-              </a>
-              <a href=""
-                class="button small-fa-fonts is-danger is-light">
-                <i class="fa-solid fa-trash"></i>
-              </a>
+
             </div>
 
           </td>
@@ -124,7 +122,7 @@
     </table>
     {% else %}
     <div class="notification">
-      You have no client(s)
+      You have no special assignments
     </div>
     {% endif %}
   </section>

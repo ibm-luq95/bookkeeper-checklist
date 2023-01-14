@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 
 from client.models import Client
-from core.utils import get_formatted_logger
+from core.utils import get_formatted_logger, debugging_print
 from important_contact.forms import ImportantContactForm
 from jobs.models import Job
 from .mixins import BookkeeperAccessMixin
@@ -60,13 +60,16 @@ class ClientsDetailsView(
         context.setdefault("important_contact_form", important_contact_form)
         return context
 
-    def test_func(self) -> bool | None:
+    def test_func(self) -> bool:
         bookkeepers_list = []
         client = self.get_object()
         bookkeeper = self.request.user.bookkeeper
+        special_assignments = bookkeeper.special_assignments.select_related().all()
         for job in client.jobs.filter():
             for bookk in job.bookkeeper.filter():
                 bookkeepers_list.append(bookk)
+        for sa in special_assignments:  # TODO: check if this correct to use
+            bookkeepers_list.append(sa.get_managed_user())
         if bookkeeper in bookkeepers_list:
             return True
         else:

@@ -30,14 +30,32 @@ document.addEventListener("readystatechange", (ev) => {
     });
 
     // Return an array of bulmaCollapsible instances (empty if no DOM node found)
-    const bulmaCollapsibleInstances = bulmaCollapsible.attach(".is-collapsible", {
-      expand: false
-    });
+    const bulmaCollapsibleInstances = bulmaCollapsible.attach(
+      ".is-collapsible",
+      {
+        expand: false,
+      }
+    );
 
     // Loop into instances
     /* bulmaCollapsibleInstances.forEach((bulmaCollapsibleInstance) => {
       // Check if current state is collapsed or not
       console.log(bulmaCollapsibleInstance.collapsed());
     }); */
+
+    // add is-active to left side a elements
+    const leftSideActiveElement = document.querySelector(
+      "a.left-side-item.is-active"
+    );
+    const leftSideElements = document.querySelectorAll("a.left-side-item");
+    // console.log(leftSideElements);
+    leftSideElements.forEach((element) => {
+      element.addEventListener("click", (event) => {
+        const currentTarget = event.currentTarget;
+        leftSideActiveElement.classList.remove("is-active")
+        // console.log("click");
+        currentTarget.classList.add("is-active");
+      });
+    });
   }
 });

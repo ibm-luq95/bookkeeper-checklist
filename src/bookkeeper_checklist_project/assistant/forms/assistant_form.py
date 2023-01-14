@@ -12,7 +12,7 @@ class AssistantForm(BaseModelFormMixin, UserCreationForm):
         super(AssistantForm, self).__init__(*args, **kwargs)
         self.fields["user_type"].initial = "assistant"
         self.fields["user_type"].widget.attrs.update(
-            {"readonly": "readonly", "class": "readonly-select"}
+            {"readonly": "readonly", "class": "readonly-select cursor-not-allowed"}
         )
 
     class Meta(BaseModelFormMixin.Meta):

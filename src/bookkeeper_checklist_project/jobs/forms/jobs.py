@@ -14,10 +14,10 @@ class JobForm(BaseModelFormMixin):
         if bookkeeper is not None:
             self.fields["bookkeeper"].initial = bookkeeper
             # self.fields["bookkeeper"].widget.attrs.update({"disabled": "disabled"})
-            self.fields["bookkeeper"].widget.attrs.update({"class": "readonly-select"})
+            self.fields["bookkeeper"].widget.attrs.update({"class": "readonly-select cursor-not-allowed"})
         if client is not None:
             self.fields["client"].initial = client
-            self.fields["client"].widget.attrs.update({"class": "readonly-select"})
+            self.fields["client"].widget.attrs.update({"class": "readonly-select cursor-not-allowed"})
 
     bookkeeper = forms.ModelMultipleChoiceField(
         queryset=Bookkeeper.objects.all(),

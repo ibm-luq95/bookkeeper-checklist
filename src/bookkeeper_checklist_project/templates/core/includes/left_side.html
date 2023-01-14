@@ -3,23 +3,22 @@
     <p class="menu-label">General</p>
     <ul class="menu-list">
       <li>
-        <a class="is-active"
-           href="{% url 'manager:dashboard' %}">Dashboard</a>
-      </li>
-        <li>
-          <a href="">Managers</a>
-        </li>
-      <li>
-        <a href="{% url 'manager:bookkeeper:list' %}">Bookkeepers</a>
+        <a class="left-side-item" href="{% url 'manager:dashboard' %}">Dashboard</a>
       </li>
       <li>
-        <a href="{% url 'manager:assistant:list' %}">Assistants</a>
+        <a class="left-side-item" href="{% url 'manager:manager:list' %}">Managers</a>
       </li>
       <li>
-        <a href="{% url 'manager:client:list' %}">Clients</a>
+        <a class="left-side-item" href="{% url 'manager:bookkeeper:list' %}">Bookkeepers</a>
       </li>
       <li>
-        <a href="{% url 'manager:jobs:list' %}">Jobs</a>
+        <a class="left-side-item" href="{% url 'manager:assistant:list' %}">Assistants</a>
+      </li>
+      <li>
+        <a class="left-side-item" href="{% url 'manager:client:list' %}">Clients</a>
+      </li>
+      <li>
+        <a class="left-side-item" href="{% url 'manager:jobs:list' %}">Jobs</a>
       </li>
     </ul>
     <p class="menu-label">Administration</p>

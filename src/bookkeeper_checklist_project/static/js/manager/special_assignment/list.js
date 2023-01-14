@@ -4,7 +4,7 @@ import { DataTableHelper } from "../../utils/datatable-helper.js";
 
 document.addEventListener("DOMContentLoaded", (readyEvent) => {
   new DataTableHelper({
-    tableID: "managerBookkeepersTable",
+    tableID: "managerSpecialAssignmentsTable",
     customColumnsWidthObj: [{ width: "30%", targets: 0 }],
   });
 });

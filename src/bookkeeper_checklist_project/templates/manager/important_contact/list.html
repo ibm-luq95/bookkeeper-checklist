@@ -38,11 +38,13 @@
         <tr>
           <td>
 
-            {% comment %}
-            <a target="_blank" href="{% url 'manager:client:details' object.client.pk %}">
-              {{ object.client.name }} <i class="fas fa-external-link-alt is-small"></i>
+            {% for client in object.client.filter %}
+            <a target="_blank" href="{% url 'manager:client:details' client.pk %}">
+              {{ client.name }} <i class="fas fa-external-link-alt is-small"></i>
             </a>
-            {% endcomment %}
+            {% empty %}
+            No client
+            {% endfor %}
 
           </td>
           <td>

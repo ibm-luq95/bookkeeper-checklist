@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView, DetailView
 
-from core.utils import get_trans_txt
+from core.utils import get_trans_txt, debugging_print
 from special_assignment.forms import SpecialAssignmentForm, DiscussionForm
 from special_assignment.models import SpecialAssignment
 from .mixins import ManagerAccessMixin
@@ -38,7 +38,14 @@ class SpecialAssignmentCreateView(
         context["title"] = get_trans_txt("Create special assignment")
         return context
 
+    def get_form_kwargs(self):
+        """Return the keyword arguments for instantiating the form."""
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"assigned_by": self.request.user})
+        return kwargs
+
     def form_valid(self, form):
+        debugging_print(form.cleaned_data)
         start_date = form.cleaned_data.get("start_date")
         due_date = form.cleaned_data.get("due_date")
         if start_date > due_date:
@@ -69,6 +76,20 @@ class SpecialAssignmentUpdateView(
             "manager:special_assignment:update", kwargs={"pk": self.get_object().pk}
         )
         return url
+
+    def get_form_kwargs(self):
+        """Return the keyword arguments for instantiating the form."""
+        assigned_by = self.get_object().assigned_by
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"assigned_by": assigned_by})
+        return kwargs
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        self.object.is_seen = False
+        self.object.save()
+        return super().form_valid(form)
 
 
 class SpecialAssignmentDeleteView(
@@ -110,3 +131,23 @@ class SpecialAssignmentDetailsView(LoginRequiredMixin, ManagerAccessMixin, Detai
         context.setdefault("status", status)
         context.setdefault("discussion_form", discussion_form)
         return context
+
+
+class RequestedSpecialAssignmentsListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
+    template_name = "manager/special_assignment/requested_assignments.html"
+    login_url = reverse_lazy("users:login")
+    model = SpecialAssignment
+    http_method_names = ["get"]
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context.setdefault("title", get_trans_txt("All requested special assignment"))
+
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        manager = self.request.user.manager
+        queryset = manager.user.requested_assignments.select_related().all()
+        return queryset

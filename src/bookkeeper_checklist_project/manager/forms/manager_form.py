@@ -12,7 +12,7 @@ class ManagerForm(BaseModelFormMixin, UserCreationForm):
         super(ManagerForm, self).__init__(*args, **kwargs)
         self.fields["user_type"].initial = "manager"
         self.fields["user_type"].widget.attrs.update(
-            {"readonly": "readonly", "class": "readonly-select"}
+            {"readonly": "readonly", "class": "readonly-select cursor-not-allowed"}
         )
 
     class Meta(BaseModelFormMixin.Meta):

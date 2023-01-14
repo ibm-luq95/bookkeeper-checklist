@@ -1,0 +1,36 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="bookkeeper-special-assignment-update-form">
+    <div class="box">
+        <form method="post" id="special-assignment-update-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="is-flex is-justify-content-space-between">
+              <div>
+                <legend class="title has-text-black">Update special assignment</legend>
+              </div>
+              <div>
+                <a href="{% url 'bookkeeper:special_assignment:details' object.pk %}"
+                  class="button is-info is-light" title="View assignment">
+                  <i class="fa-solid fa-eye"></i>
+                </a>
+              </div>
+            </div>
+            <hr>
+            <fieldset form="special-assignment-update-form">
+                {{ form| crispy }}
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info is-fullwidth">
+                        Update
+                    </button>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

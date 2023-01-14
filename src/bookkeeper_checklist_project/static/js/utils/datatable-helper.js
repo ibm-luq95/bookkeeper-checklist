@@ -37,6 +37,10 @@ class DataTableHelper {
    * This will init the data table js
    */
   initDataTable() {
+    const tmpCheckElement = document.querySelector(`table${this.tableID}`);
+    if (!tmpCheckElement) {
+      throw new Error(`No table element with ID ${this.tableID}`);
+    }
     this.tableOptions = {
       responsive: true,
       autoWidth: this.isAutoWidth,

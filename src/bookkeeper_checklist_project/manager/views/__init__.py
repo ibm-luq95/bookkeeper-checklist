@@ -57,6 +57,7 @@ from .special_assignment import (
     SpecialAssignmentUpdateView,
     SpecialAssignmentDeleteView,
     SpecialAssignmentDetailsView,
+    RequestedSpecialAssignmentsListView,
 )
 
 from .manager import (

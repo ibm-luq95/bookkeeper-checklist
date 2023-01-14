@@ -12,15 +12,17 @@
     <div class="">
 
       {% if object.status == "rejected" %}
-      <span class="tag is-danger is-light is-medium">{{ object.get_status_display|capfirst }}</span>
+      <span class="tag is-danger is-light is-medium mt-1">{{ object.get_status_display|capfirst }}</span>
       {% elif object.status == "completed" %}
-      <span class="tag is-success is-light is-medium">{{ object.get_status_display|capfirst }}</span>
+      <span class="tag is-success is-light is-medium mt-1">{{ object.get_status_display|capfirst }}</span>
       {% else %}
-      <span class="tag is-medium">
+      <span class="tag is-medium mt-1">
         {{ object.get_status_display|capfirst }}
       </span>
       {% endif %}
-
+      <a href="{% url 'manager:special_assignment:update' object.pk %}" title="Update assignment" class="button is-success">
+        <i class="fa-solid fa-pencil"></i>
+      </a>
 
     </div>
   </div>
@@ -60,7 +62,6 @@
                     <!-- <a class="level-item">
                         <span class="icon is-small"><i class="fas fa-heart"></i></span>
                       </a> -->
-
                     {% if object.attachment %}
                     <a class="level-item has-tooltip-arrow has-tooltipl-multiline has-tooltip-text-centered"
                       title="There is attachment file" download="{{ object.attachment.url }}" target="_blank"
@@ -83,9 +84,9 @@
                     {% if object.notes %}
                     {{ object.notes }}
                     {% else %}
-                      <div class="notification">
-                        No notes
-                      </div>
+                    <div class="notification">
+                      No notes
+                    </div>
                     {% endif %}
 
                   </p>
@@ -96,14 +97,34 @@
                 <div>
                   <h5 class="title is-size-5 mb-5 is-inline">Client: </h5>
                   <h2 class="title subtitle is-size-6 is-inline">
-                    <a href="{% url 'manager:client:details' object.client.pk %}" target="_blank">{{ object.client.name }}</a>
+                    <a href="{% url 'manager:client:details' object.client.pk %}"
+                      target="_blank">{{ object.client.name }}</a>
                   </h2>
                 </div>
                 <hr />
                 <div>
-                  <h5 class="title is-size-5 mb-5 is-inline">User: </h5>
+                  <h5 class="title is-size-5 mb-5 is-inline">Assigned by: </h5>
                   <h2 class="title subtitle is-size-6 is-inline">
-                    <a href="" target="_blank">{{ object.get_managed_user }}</a>
+                    <a href="#" target="_blank">{{ object.assigned_by.fullname }}</a>
+                  </h2>
+                </div>
+                <hr />
+                <div>
+                  <h5 class="title is-size-5 mb-5 is-inline">Assigned to: </h5>
+                  <h2 class="title subtitle is-size-6 is-inline">
+                    <a href="#" target="_blank">{{ object.get_managed_user }}</a>
+                  </h2>
+                </div>
+                <hr />
+                <div>
+                  <h5 class="title is-size-5 mb-5 is-inline">Seen: </h5>
+                  <h2 class="title subtitle is-size-6 is-inline mx-3">
+
+                    {% if object.is_seen is True %}
+                    <i title="Seen" class="fa-solid fa-eye"></i>
+                    {% else %}
+                    <i title="Not seen" class="fa-solid fa-eye-slash"></i>
+                    {% endif %}
                   </h2>
                 </div>
                 <hr />
@@ -219,7 +240,7 @@
                 </span>
               </a>
               ·
-              {% endif %}  {{ reply.created_at|naturaltime }}</small>
+              {% endif %} {{ reply.created_at|naturaltime }}</small>
           </p>
         </div>
         {% if reply.discussion_replies.select_related.filter %}

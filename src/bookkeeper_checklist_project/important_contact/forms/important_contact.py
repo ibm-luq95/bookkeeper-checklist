@@ -22,7 +22,7 @@ class ImportantContactForm(BaseModelFormMixin, Html5Mixin):
         if is_readonly is True:
             for field in self.fields:
                 self.fields[field].widget.attrs.update({"readonly": "readonly"})
-            self.fields["contact_label"].widget.attrs.update({"class": "readonly-select"})
+            self.fields["contact_label"].widget.attrs.update({"class": "readonly-select cursor-not-allowed"})
 
         # check if the client passed in the arguments
         # if client_pk is not None:

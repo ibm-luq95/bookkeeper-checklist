@@ -22,7 +22,7 @@ class TaskForm(BaseModelFormMixin):
         # this used in manager client details view, to pass only jobs for custom client
         if client is not None:
             self.fields["job"].queryset = Job.objects.filter(client=client)
-            # self.fields["client"].widget.attrs.update({"class": "readonly-select"})
+            # self.fields["client"].widget.attrs.update({"class": "cursor-not-allowed readonly-select"})
 
     class Meta(BaseModelFormMixin.Meta):
         model = Task

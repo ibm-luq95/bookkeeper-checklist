@@ -5,7 +5,7 @@
 <section class="box block" id="bookkeeper-special-assignment-list">
   <header>
     <h3 class="title is-3">
-      Special assignments
+      Requested special assignments
       <a class="button is-primary mx-1" href="{% url 'bookkeeper:special_assignment:create' %}">
         <i class="fa-solid fa-plus"></i>
       </a>
@@ -18,7 +18,7 @@
   <section class="block">
 
     {% if object_list.count > 0 %}
-    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="bookkeeperSpecialAssignmentsTable">
+    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="bookkeeperRequestedSpecialAssignmentsTable">
       <thead>
         <tr>
           <th>Title</th>
@@ -109,7 +109,14 @@
                 class="button is-info is-light small-fa-fonts">
                 <i class="fa-solid fa-eye"></i>
               </a>
-
+              <a href="{% url 'bookkeeper:special_assignment:update' object.pk %}"
+                class="button small-fa-fonts is-success is-light">
+                <i class="fa-solid fa-pencil"></i>
+              </a>
+              <a href=""
+                class="button small-fa-fonts is-danger is-light">
+                <i class="fa-solid fa-trash"></i>
+              </a>
             </div>
 
           </td>
@@ -122,7 +129,7 @@
     </table>
     {% else %}
     <div class="notification">
-      You have no special assignments
+      You have no requested special assignments
     </div>
     {% endif %}
   </section>

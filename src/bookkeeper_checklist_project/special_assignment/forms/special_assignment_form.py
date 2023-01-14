@@ -8,8 +8,12 @@ from special_assignment.models import SpecialAssignment
 
 
 class SpecialAssignmentForm(BaseModelFormMixin):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, assigned_by, *args, **kwargs):
         super(SpecialAssignmentForm, self).__init__(*args, **kwargs)
+        self.fields["assigned_by"].initial = assigned_by
+        self.fields["assigned_by"].widget.attrs.update(
+            {"class": "readonly-select cursor-not-allowed", "readonly": "readonly"}
+        )
 
     class Meta(BaseModelFormMixin.Meta):
         model = SpecialAssignment

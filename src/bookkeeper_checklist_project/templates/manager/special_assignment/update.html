@@ -5,20 +5,30 @@
 {% block dashboard_content %}
 
 <section id="manager-update-special-assignment-form">
-    <div class="box">
-        <form method="post" id="update-special-assignment-form">
-            {% csrf_token %}
-            <legend class="title has-text-black">Update special assignment</legend>
-            <hr>
-            <fieldset form="update-special-assignment-form">
-                {{form| crispy}}
-                <div class="has-text-right">
-                    <button type="submit" class="is-capitalized button is-info
+  <div class="box">
+    <form method="post" id="update-special-assignment-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="is-flex is-justify-content-space-between">
+        <div>
+          <legend class="title has-text-black">Update special assignment</legend>
+        </div>
+        <div>
+          <a href="{% url 'manager:special_assignment:details' object.pk %}"
+            class="button is-info is-light" title="View assignment">
+            <i class="fa-solid fa-eye"></i>
+          </a>
+        </div>
+      </div>
+      <hr>
+      <fieldset form="update-special-assignment-form">
+        {{form| crispy}}
+        <div class="has-text-right">
+          <button type="submit" class="is-capitalized button is-info
                         is-fullwidth">update</button>
-                </div>
-            </fieldset>
-        </form>
-    </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
 </section>
 
 {% endblock dashboard_content %}

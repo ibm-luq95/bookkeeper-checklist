@@ -10,4 +10,5 @@ class ClientFilter(django_filters.FilterSet):
             "name": ["icontains"],
             "industry": ["icontains"],
             "important_contacts__company_name": ["icontains"],
+            "important_contacts__contact_label": ["icontains"],
         }

@@ -28,7 +28,9 @@ class CompanyService(BaseModelMixin):
     )
     label = models.CharField(_("label"), max_length=30, null=True)
     url = models.URLField(_("URL"), null=True, blank=True)
-    email = models.CharField(_("email"), max_length=60, null=False, db_index=True)
+    username = models.CharField(
+        _("username"), max_length=100, null=False, db_index=True, default=None, blank=False
+    )
     password = models.TextField(_("password"), null=True, blank=True)
 
     def __str__(self):

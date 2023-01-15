@@ -8,3 +8,4 @@ class SpecialAssignmentStatusEnum(models.TextChoices):
     IN_PROGRESS = "in_progress", _("In Progress")
     COMPLETED = "completed", _("Completed")
     REJECTED = "rejected", _("Rejected")
+    ARCHIVE = "archive", _("Archive")

@@ -379,7 +379,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     const formData = {
       service_name: currentTarget["service_name"].value,
       label: currentTarget["label"].value,
-      email: currentTarget["email"].value,
+      username: currentTarget["username"].value,
       password: currentTarget["password"].value,
       client: currentTarget["client"].value,
       user: currentTarget["user"].value,

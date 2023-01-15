@@ -34,7 +34,7 @@ class ImportantContact(BaseModelMixin):
     contact_description = models.TextField(_("description"), null=True, blank=True)
     contact_first_name = models.CharField(_("first name"), max_length=50, null=False)
     contact_last_name = models.CharField(_("last name"), max_length=50, null=False)
-    contact_email = models.EmailField(_("contact email"), null=False)
+    contact_email = models.EmailField(_("contact email"), null=False, unique=True)
     contact_city = models.CharField(_("city"), max_length=50, null=True, blank=True)
     contact_state = models.CharField(_("state"), max_length=50, null=True, blank=True)
     contact_postcode = models.CharField(

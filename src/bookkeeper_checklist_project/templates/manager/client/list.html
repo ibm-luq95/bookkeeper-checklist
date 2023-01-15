@@ -48,6 +48,16 @@
               <!-- <p class="help">This is a help text</p> -->
             </div>
           </div>
+          <div class="column">
+            <div class="field">
+              <!-- <label class="label">Label</label> -->
+              <div class="control">
+
+                {{ filter_form.important_contacts__contact_label__icontains|as_crispy_field }}
+              </div>
+              <!-- <p class="help">This is a help text</p> -->
+            </div>
+          </div>
         </div>
         <div class="field is-grouped is-grouped-right">
           <p class="control">
@@ -70,7 +80,7 @@
       <thead>
         <tr>
           <th>Client Name</th>
-          <th>Email</th>
+          <th>Bookkeeper(s)</th>
           <th>Status</th>
           <th>Industry</th>
           <th>Contacts</th>
@@ -83,7 +93,7 @@
       <tfoot>
         <tr>
           <th>Client Name</th>
-          <th>Email</th>
+          <th>Bookkeeper(s)</th>
           <th>Status</th>
           <th>Industry</th>
           <th>Contacts</th>
@@ -95,12 +105,22 @@
       </tfoot>
       <tbody>
         {% for object in object_list %}
+
         <tr>
           <td>
             <a href="{% url 'manager:client:details' object.pk %}">{{ object.name }}</a>
           </td>
           <td>
-            <a href="mailto:{{ object.email }}">{{ object.email }}</a>
+
+            {% for bookkeeper in object.get_managed_bookkeepers %}
+              <a href="{% url 'manager:bookkeeper:details' bookkeeper.pk %}" target="_blank">
+                {{ bookkeeper }}
+              </a>
+              <br />
+            {% empty %}
+              No bookkeepers for this client
+            {% endfor %}
+
           </td>
           <td>
             <span

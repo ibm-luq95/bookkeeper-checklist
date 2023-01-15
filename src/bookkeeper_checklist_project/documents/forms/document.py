@@ -11,7 +11,7 @@ class DocumentForm(BaseModelFormMixin, Html5Mixin):
         super(DocumentForm, self).__init__(*args, **kwargs)
         if document_section is not None:
             self.fields["document_section"].initial = document_section
-            # self.fields["document_section"].widget.attrs.update({"class": "readonly-select"})
+            # self.fields["document_section"].widget.attrs.update({"class": "readonly-select cursor-not-allowed"})
             # self.fields.pop("task")
             self.fields.pop("job")
 

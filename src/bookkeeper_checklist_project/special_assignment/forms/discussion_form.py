@@ -29,7 +29,7 @@ class DiscussionForm(BaseModelFormMixin):
         if special_assignment:
             self.fields["special_assignment"].initial = special_assignment
             self.fields["special_assignment"].widget.attrs.update(
-                {"class": "readonly-select", "readonly": "readonly"}
+                {"class": "readonly-select cursor-not-allowed", "readonly": "readonly"}
             )
             self.fields["replies"].queryset = Discussion.objects.select_related().filter(
                 special_assignment=special_assignment
@@ -49,7 +49,9 @@ class DiscussionForm(BaseModelFormMixin):
             for field_name in ["bookkeeper", "assistant", "manager"]:
                 if field_name != user_type:
                     self.fields.pop(field_name)
-            self.fields[user_type].widget.attrs.update({"class": "readonly-select"})
+            self.fields[user_type].widget.attrs.update(
+                {"class": "readonly-select cursor-not-allowed"}
+            )
 
         # check if reply_object passed
         # if reply_object:

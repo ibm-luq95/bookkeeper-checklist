@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-#
-from typing import Union
 
 from django.db import models
 from django.utils.translation import gettext as _
-
+from django.contrib.auth import get_user_model
 
 from client.models import Client
 from core.choices.special_assignment import SpecialAssignmentStatusEnum
 from core.models import BaseModelMixin, TeamMembersMixin
+from core.utils import get_trans_txt
 from .managers import SpecialAssignmentsManager
 
 
@@ -30,14 +30,28 @@ class SpecialAssignment(BaseModelMixin, TeamMembersMixin):
     due_date = models.DateField(_("due date"))
     notes = models.TextField(_("notes"), null=True, blank=True)
     is_seen = models.BooleanField(_("is_seen"), default=False)
+    assigned_by = models.ForeignKey(
+        to=get_user_model(),
+        on_delete=models.CASCADE,
+        related_name="requested_assignments",
+        help_text=_("readonly, you cant modified it"),
+    )
 
     objects = SpecialAssignmentsManager()
+
+    class Meta(BaseModelMixin.Meta):
+        permissions = (
+            (
+                "bookkeeper_can_delete_special_assignment",
+                "Bookkeeper can delete special assignment",
+            ),
+        )
 
     def __str__(self) -> str:
         return f"{self.title}"
 
     def get_is_seen_label(self) -> str:
         if self.is_seen is True:
-            return "Seen"
+            return get_trans_txt("Seen")
         else:
-            return "Not seen"
+            return get_trans_txt("Not seen")

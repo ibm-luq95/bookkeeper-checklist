@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from client.models import Client
 from important_contact.models import ImportantContact
 from important_contact.forms import ImportantContactForm
+from important_contact.filters import ImportantContactFilter
 from core.utils import get_trans_txt, debugging_print
 from .mixins import ManagerAccessMixin
 
@@ -21,7 +22,14 @@ class ImportantContactListView(LoginRequiredMixin, ManagerAccessMixin, ListView)
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context["title"] = get_trans_txt("All important contacts")
+        context.setdefault("filter_form", self.filterset.form)
+        # print(self.filterset.form["contact_name"])
         return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = ImportantContactFilter(self.request.GET, queryset=queryset)
+        return self.filterset.qs
 
 
 class ImportantContactCreateView(

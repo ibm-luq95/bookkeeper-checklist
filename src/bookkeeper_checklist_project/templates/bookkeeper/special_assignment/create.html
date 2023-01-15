@@ -1,0 +1,28 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="bookkeeper-special-assignment-form">
+    <div class="box">
+        <form method="post" id="special-assignment-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <legend class="title has-text-black">
+                Create new special assignments
+            </legend>
+            <hr>
+            <fieldset form="special-assignment-form">
+                {{ form| crispy }}
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info is-fullwidth">
+                        Create
+                    </button>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

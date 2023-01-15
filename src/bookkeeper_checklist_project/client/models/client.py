@@ -63,3 +63,15 @@ class Client(BaseModelMixin):
         for job in self.jobs.all():
             all_tasks_count.append(job.tasks.count())
         return sum(all_tasks_count)  # TODO: check if sum or len to use
+
+    def get_managed_bookkeepers(self) -> list | None:
+        all_bookkeepers = []
+        jobs = self.jobs.select_related().filter()
+        if jobs:
+            for job in jobs:
+                # print(job)
+                for bookkeeper in job.bookkeeper.select_related().filter():
+                    all_bookkeepers.append(bookkeeper)
+            return all_bookkeepers
+        else:
+            return None

@@ -20,7 +20,8 @@
         {{ object.get_status_display|capfirst }}
       </span>
       {% endif %}
-      <a href="{% url 'manager:special_assignment:update' object.pk %}" title="Update assignment" class="button is-success">
+
+      <a href="{% url 'bookkeeper:special_assignment:update' object.pk %}" title="Update assignment" class="button is-success">
         <i class="fa-solid fa-pencil"></i>
       </a>
 
@@ -62,6 +63,7 @@
                     <!-- <a class="level-item">
                         <span class="icon is-small"><i class="fas fa-heart"></i></span>
                       </a> -->
+
                     {% if object.attachment %}
                     <a class="level-item has-tooltip-arrow has-tooltipl-multiline has-tooltip-text-centered"
                       title="There is attachment file" download="{{ object.attachment.url }}" target="_blank"
@@ -97,7 +99,7 @@
                 <div>
                   <h5 class="title is-size-5 mb-5 is-inline">Client: </h5>
                   <h2 class="title subtitle is-size-6 is-inline">
-                    <a href="{% url 'manager:client:details' object.client.pk %}"
+                    <a href="{% url 'bookkeeper:client:details' object.client.pk %}"
                       target="_blank">{{ object.client.name }}</a>
                   </h2>
                 </div>
@@ -116,6 +118,7 @@
                   </h2>
                 </div>
                 <hr />
+
                 <div>
                   <h5 class="title is-size-5 mb-5 is-inline">Seen: </h5>
                   <h2 class="title subtitle is-size-6 is-inline mx-3">
@@ -129,7 +132,7 @@
                 </div>
                 <hr />
                 <section>
-                  <form action="{% url 'special_assignment:api:special_assignment:manager:update-status' %}"
+                  <form action="{% url 'special_assignment:api:special_assignment:bookkeeper:update-status' %}"
                     method="PUT" id="updateSpecialAssignmentStatusForm">
                     <fieldset form="updateSpecialAssignmentStatusForm">
                       {% csrf_token %}
@@ -183,9 +186,9 @@
         </p>
       </figure>
       <div class="media-content">
-        <form action="{% url 'special_assignment:api:discussion:manager:create' %}" method="POST"
-          id="managerAddReplyForm" enctype="multipart/form-data">
-          <fieldset form="managerAddReplyForm">
+        <form action="{% url 'special_assignment:api:discussion:bookkeeper:create' %}" method="POST"
+          id="bookkeeperAddReplyForm" enctype="multipart/form-data">
+          <fieldset form="bookkeeperAddReplyForm">
             {% csrf_token %}
             <legend class="is-size-5 mb-2">Add reply</legend>
             {{discussion_form| crispy}}
@@ -198,7 +201,7 @@
             <div class="field">
               <p class="control">
                 <button class="button is-fullwidth my-5 is-info bkchlst-input" disabled="disabled" type="submit"
-                  form="managerAddReplyForm">Post reply</button>
+                  form="bookkeeperAddReplyForm">Post reply</button>
               </p>
             </div>
           </fieldset>
@@ -309,5 +312,5 @@
 
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/manager/special_assignment/details.js' %}" defer type="module"></script>
+<script src="{% static 'js/bookkeeper/special_assignment/details.js' %}" defer type="module"></script>
 {% endblock externaljs %}

@@ -1,0 +1,134 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<section class="box block" id="bookkeeper-special-assignment-list">
+  <header>
+    <h3 class="title is-3">
+      Special assignments
+      <a class="button is-primary mx-1" href="{% url 'bookkeeper:special_assignment:create' %}">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+      <a class="button is-info" href="" title="">
+        <i class="fa-solid fa-box-archive"></i>
+      </a>
+    </h3>
+  </header>
+  <hr />
+  <section class="block">
+
+    {% if object_list.count > 0 %}
+    <table class="table is-fullwidth is-bordered is-striped is-narrow table-list-component" id="bookkeeperSpecialAssignmentsTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Client</th>
+          <th>Assigned by</th>
+          <th>Reply(s)</th>
+          <th>Status</th>
+          <th>Seen</th>
+          <th>Start Date</th>
+          <th>Due Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Title</th>
+          <th>Client</th>
+          <th>Assigned by</th>
+          <th>Reply(s)</th>
+          <th>Status</th>
+          <th>Seen</th>
+          <th>Start Date</th>
+          <th>Due Date</th>
+          <th></th>
+        </tr>
+      </tfoot>
+      <tbody>
+        <!-- has-background-danger-light,  has-background-success-light   -->
+        {% for object in object_list %}
+
+        <tr>
+          <td>
+            <a href="{% url 'bookkeeper:special_assignment:details' object.pk %}">
+              {{ object.title }}
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'bookkeeper:client:details' object.client.pk %}" target="_blank">
+              {{ object.client.name }} <i class="fas fa-external-link-alt is-small"></i>
+            </a>
+          </td>
+          <td>
+            {{ object.assigned_by.fullname }}
+          </td>
+          <td>
+            {{ object.discussions.count }}
+          </td>
+          <td>
+
+            {% if object.status == "completed" %}
+            <span class="tag is-small is-success is-light has-text-weight-bold">
+              {{ object.get_status_display }}
+            </span>
+            {% elif object.status == "rejected" %}
+            <span class="tag is-small is-danger is-light has-text-weight-bold">
+              {{ object.get_status_display }}
+            </span>
+            {% elif object.status == "in_progress" %}
+            <span class="tag is-small is-info is-light has-text-weight-bold">
+              {{ object.get_status_display }}
+            </span>
+            {% else %}
+            <span class="tag is-small has-text-weight-bold">
+              {{ object.get_status_display }}
+            </span>
+            {% endif %}
+
+
+          </td>
+          <td>
+
+            {% if object.is_seen is True %}
+            <i class="fa-solid fa-check has-text-success"></i>
+            {% else %}
+            <i class="fas fa-times has-text-danger"></i>
+            {% endif %}
+
+          </td>
+          <td>
+            {{ object.start_date|date }}
+          </td>
+          <td>
+            {{ object.due_date|date }}
+          </td>
+          <td>
+            <div class="buttons are-small justify-center">
+              <a href="{% url 'bookkeeper:special_assignment:details' object.pk %}"
+                class="button is-info is-light small-fa-fonts">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+
+            </div>
+
+          </td>
+        </tr>
+        {% endfor %}
+
+
+
+      </tbody>
+    </table>
+    {% else %}
+    <div class="notification">
+      You have no special assignments
+    </div>
+    {% endif %}
+  </section>
+</section>
+
+{% endblock dashboard_content %}
+{% block externaljs %}
+<script src="{% static 'js/bookkeeper/special_assignment/list.js' %}" defer type="module"></script>
+{% endblock externaljs %}

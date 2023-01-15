@@ -9,10 +9,20 @@
 {% block dashboard_content %}
 
 <section id="manager-create-client-account-detail">
-  <div class="box">
-    <header>
-      <h2 class="title is-3">{{ object.name }}</h2>
-    </header>
+  <div class="box coloumns is-flex is-align-items-center">
+    <div>
+      <figure class="image is-64x64">
+        {% if object.company_logo %}
+        <img src="{{ object.company_logo.url }}" loading="lazy" alt="{{ object.name }}" />
+        {% else %}
+        <img src="{% static 'imgs/default_client.jpg' %}" loading="lazy" alt="{{ object.name }}" />
+        {% endif %}
+      </figure>
+
+    </div>
+    <div>
+      <h4 class="title is-size-4">{{ object.name }}</h4>
+    </div>
   </div>
   <hr />
   <!-- Page Container -->
@@ -22,20 +32,7 @@
       <!-- Left Column -->
       <div class="w3-third">
         <div class="w3-white w3-text-grey w3-card-4">
-          <div class="w3-display-container has-text-centered pt-3">
-            {% if object.company_logo %}
-            <img src="{{ object.company_logo.url }}" loading="lazy" style="height: 150px" alt="{{ object.name }}" />
-            {% else %}
-            <img src="{% static 'imgs/default_client.jpg' %}" loading="lazy" style="height: 150px"
-              alt="{{ object.name }}" />
-            {% endif %}
-
-            <div class="w3-display-bottomleft w3-container w3-text-black" style="position: relative">
-              <h2>{{ object.name }}</h2>
-            </div>
-            <!-- <hr /> -->
-          </div>
-          <div class="w3-container my-4">
+          <div class="w3-container pt-3">
             <p class="my-3">
               <i class="fa fa-briefcase fa-fw w3-margin-right w3-text-teal has-tooltip-arrow is-inline-block"
                 data-tooltip="Industry" title="Industry"></i>
@@ -65,18 +62,25 @@
             <section class="manager-client-important-contact-block">
               <div class="table-container">
                 <table class="table is-fullwidth">
+                  <thead>
+                    <tr>
+                      <th>Label</th>
+                      <th>Email</th>
+                      <th></th>
+                    </tr>
+                  </thead>
                   <tbody>
                     {% for contact in object.important_contacts.select_related.filter.filter %}
                     <tr class="">
                       <td>
-                        <h6 class="title is-size-6 has-text-weight-bold">
-                          Label
+                        <h6 class="has-text-weight-bold">
+                          {{ contact.get_contact_label_display }}
                         </h6>
                       </td>
                       <td>
-                        <p style="padding-top: 9px;">
-                          {{ contact.get_contact_label_display }}
-                        </p>
+                        <h6>
+                          <a href="mailto:{{ contact.contact_email }}">{{ contact.contact_email }}</a>
+                        </h6>
                       </td>
                       <td>
                         <div class="buttons is-right">
@@ -88,21 +92,6 @@
                             </span>
                           </button>
                         </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <h6 class="title is-size-6 has-text-weight-bold">
-                          Company Name
-                        </h6>
-                      </td>
-                      <td>
-                        <p style="padding-top: 9px;">
-                          {{ contact.company_name }}
-                        </p>
-                      </td>
-                      <td>
-
                       </td>
                     </tr>
                     {% empty %}
@@ -445,14 +434,14 @@
                         <th>
                           Label
                         </th>
-                        <th>
-                          Name
-                        </th>
                         <!-- <th>
-                        URL
+                          Name
                         </th> -->
                         <th>
-                          Username / Email
+                        URL
+                        </th>
+                        <th>
+                          Username
                         </th>
                         <th>
                           Password
@@ -465,14 +454,14 @@
                         <th>
                           Label
                         </th>
-                        <th>
+                        <!-- <th>
                           Name
-                        </th>
-                        <!-- <th id="footerURL">
-                              URL
                         </th> -->
+                        <th id="footerURL">
+                              URL
+                        </th>
                         <th id="footerUsername">
-                          Username / Email
+                          Username
                         </th>
                         <th id="footerPassword">
                           Password
@@ -485,10 +474,8 @@
                         <td>
                           {{ service.label }}
                         </td>
+
                         <td>
-                          {{ service.get_service_name_display }}
-                        </td>
-                        <!-- <td>
                             <div class="account-service-item account-service-url">
                               <div class="field has-addons">
                                 <div class="control">
@@ -508,12 +495,12 @@
                                 </div>
                               </div>
                             </div>
-                          </td> -->
+                          </td>
                         <td>
                           <div class="account-service-item account-service-username">
                             <div class="field has-addons">
                               <div class="control">
-                                <input class="input is-small" type="text" value="{{ service.email }}"
+                                <input class="input is-small" type="text" value="{{ service.username }}"
                                   id="ac-username-{{ service.id }}" readonly />
                               </div>
                               <div class="control">
@@ -535,7 +522,7 @@
                                 </button>
                               </p>
                               <div class="control">
-                                <input class="input is-small" type="password" value="{{ service.password }}"
+                                <input class="input is-small" type="password" value="{{ service.decrypted_password }}"
                                   id="as-password-{{ service.id }}" readonly />
                               </div>
                               <div class="control">
@@ -600,7 +587,7 @@
 
 
                   <div class="container">
-                    <div class="b-table">
+                    <div class="b-table p-5">
                       <div class="table-wrapper has-mobile-cards">
                         <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
                           <thead>
@@ -676,6 +663,80 @@
                       </button>
                     </p> -->
                     </div>
+                  </div>
+
+
+                </div>
+
+              </nav>
+
+            </div>
+
+            <div class="mt-5">
+              <nav class="panel">
+                <p class="panel-heading has-text-white" style="background-color: #4a4a4a;
+                    font-size: unset">
+                    Special assignments <a href="#special-assignment-collapsible-panel" data-action="collapse">Collapse/Expand</a>
+                </p>
+                <div id="special-assignment-collapsible-panel" class="is-collapsible">
+                  <!-- Wrapper Div to be able to collapse/expand Panel's content -->
+                  <!-- <div class="panel-block">
+                    <p class="control has-icons-left">
+                    <input class="input is-small" type="text" placeholder="search">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                    </p>
+                  </div> -->
+
+
+                  <div class="container">
+                    <div class="b-table p-5">
+                      <div class="table-wrapper has-mobile-cards">
+                        <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                          <thead>
+                            <tr>
+                              <th>
+                                Title
+                              </th>
+                              <th>
+                                Status
+                              </th>
+                              <th>
+                                Assigned by
+                              </th>
+                              <th>
+                                Assigned to
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for special_assignment in object.special_assignments.select_related.filter %}
+                            <tr>
+
+                              <td data-label="Title">
+                                <a target="_blank" href="{% url 'manager:special_assignment:details' special_assignment.pk %}">{{ special_assignment.title }}</a>
+                              </td>
+
+                              <td data-label="Status">
+                                <span class="tag"> {{ special_assignment.get_status_display }} </span>
+                              </td>
+                              <td data-label="Assigned by">
+                                {{ special_assignment.assigned_by.fullname }}
+                              </td>
+                              <td data-label="Assigned to">
+                                {{ special_assignment.get_managed_user.user.fullname }}
+                              </td>
+
+                            </tr>
+                            {% endfor %}
+
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
                   </div>
 
 

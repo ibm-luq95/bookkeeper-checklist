@@ -284,3 +284,17 @@ table.table-list-component th {
 .textarea[rows] {
   height: unset !important;
 }
+/* .cursor-not-allowed:has(div) {
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+} */
+div.select:has(select.cursor-not-allowed) {
+  cursor: not-allowed !important;
+}
+/* select.cursor-not-allowed{
+  pointer-events: none;
+} */

@@ -13,7 +13,7 @@ class BookkeeperForm(BaseModelFormMixin, UserCreationForm):
         super(BookkeeperForm, self).__init__(*args, **kwargs)
         self.fields["user_type"].initial = "bookkeeper"
         self.fields["user_type"].widget.attrs.update(
-            {"readonly": "readonly", "class": "readonly-select"}
+            {"readonly": "readonly", "class": "readonly-select cursor-not-allowed"}
         )
 
     class Meta(BaseModelFormMixin.Meta):

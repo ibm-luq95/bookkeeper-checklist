@@ -51,22 +51,29 @@
             <section class="manager-client-important-contact-block">
               <div class="table-container">
                 <table class="table is-fullwidth">
+                  <thead>
+                    <tr>
+                      <th>Label</th>
+                      <th>Email</th>
+                      <th></th>
+                    </tr>
+                  </thead>
                   <tbody>
-                    {% for contact in object.important_contacts.select_related.filter %}
+                    {% for contact in object.important_contacts.select_related.filter.filter %}
                     <tr class="">
                       <td>
-                        <h6 class="title is-size-6 has-text-weight-bold">
-                          Label
+                        <h6 class="has-text-weight-bold">
+                          {{ contact.get_contact_label_display }}
                         </h6>
                       </td>
                       <td>
-                        <p style="padding-top: 9px;">
-                          {{ contact.get_contact_label_display }}
-                        </p>
+                        <h6>
+                          <a href="mailto:{{ contact.contact_email }}">{{ contact.contact_email }}</a>
+                        </h6>
                       </td>
                       <td>
                         <div class="buttons is-right">
-                          <button class="button is-small bookkeeperViewImportantContactBtn"
+                          <button class="button is-small managerViewImportantContactBtn"
                             data-important-contact-id="{{ contact.pk }}" type="button"
                             title="View all details related to contact">
                             <span class="icon is-small">
@@ -74,21 +81,6 @@
                             </span>
                           </button>
                         </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <h6 class="title is-size-6 has-text-weight-bold">
-                          Company Name
-                        </h6>
-                      </td>
-                      <td>
-                        <p style="padding-top: 9px;">
-                          {{ contact.company_name }}
-                        </p>
-                      </td>
-                      <td>
-
                       </td>
                     </tr>
                     {% empty %}

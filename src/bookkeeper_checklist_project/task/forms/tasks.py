@@ -9,6 +9,7 @@ class TaskForm(BaseModelFormMixin):
     def __init__(self, client=None, is_disable_job=False, job=None, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields.pop("user")
+        self.fields.pop("is_completed")
         self.fields["job"].widget.attrs.update({"class": "input"})
 
         # check if job passed and set it to job input

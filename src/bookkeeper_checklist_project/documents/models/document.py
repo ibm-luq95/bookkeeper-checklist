@@ -14,15 +14,14 @@ from task.models import Task
 
 
 def saved_document_file_path(instance, filename):
-
     file_path = ""
     file_suffix = secrets.token_urlsafe(7)
     if instance.client:
-        file_path = f"documents/clients/{instance.client.name}/{file_suffix}_{filename}"
+        file_path = f"documents/clients/{instance.client.pk}/{file_suffix}_{filename}"
     if instance.task:
         file_path = f"documents/tasks/{instance.task.pk}/{file_suffix}_{filename}"
     if instance.job:
-        file_path = f"documents/jobs/{instance.job.title}/{file_suffix}_{filename}"
+        file_path = f"documents/jobs/{instance.job.pk}/{file_suffix}_{filename}"
 
     return file_path
 

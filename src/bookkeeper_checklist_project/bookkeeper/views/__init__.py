@@ -8,4 +8,5 @@ from .special_assignment import (
     SpecialAssignmentCreateView,
     RequestedSpecialAssignmentsListView,
     SpecialAssignmentUpdateView,
+    SpecialAssignmentDeleteView,
 )

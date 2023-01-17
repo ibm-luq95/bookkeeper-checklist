@@ -4,7 +4,7 @@ from django.urls import path
 from documents.views.api import (
     CreateDocumentManagerApiView,
     DeleteDocumentManagerApiView,
-    RetrieveManagerDocumentView,
+    RetrieveDocumentManagerView,
 )
 
 app_name = "manager_api"
@@ -16,5 +16,5 @@ urlpatterns = [
         name="create-document-manager",
     ),
     path("delete", DeleteDocumentManagerApiView.as_view(), name="delete-document"),
-    path("retrieve", RetrieveManagerDocumentView.as_view(), name="retrieve"),
+    path("retrieve", RetrieveDocumentManagerView.as_view(), name="retrieve"),
 ]

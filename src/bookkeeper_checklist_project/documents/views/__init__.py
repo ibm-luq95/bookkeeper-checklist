@@ -4,3 +4,4 @@ from .manager import (
     DetailsManagerDocumentView,
     ListManagerDocumentView,
 )
+from .bookkeeper import UpdateDocumentBookkeeperView

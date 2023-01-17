@@ -53,12 +53,15 @@ const sendRequest = (options) => {
       const controller = new AbortController(); // the AbortController
       const { signal } = controller;
       const headers = new Headers({
-        "Content-Type": options["contentType"] ?? "application/json;charset=utf-8",
+        "Content-Type":
+          options["contentType"] ?? "application/json;charset=utf-8",
         // "Content-Type": `Content-Type: application/pdf`,
         // "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest",
-        "X-CSRFToken": options["token"] ? options["token"] : getCookie("csrftoken"),
+        "X-CSRFToken": options["token"]
+          ? options["token"]
+          : getCookie("csrftoken"),
         // "Content-Disposition": "attachment; filename=upload.jpg",
       });
       // const formData = Object.fromEntries(options["dataToSend"].entries());
@@ -105,12 +108,15 @@ const sendGetRequest = (options) => {
       const controller = new AbortController(); // the AbortController
       const { signal } = controller;
       const headers = new Headers({
-        "Content-Type": options["contentType"] ?? "application/json;charset=utf-8",
+        "Content-Type":
+          options["contentType"] ?? "application/json;charset=utf-8",
         // "Content-Type": `Content-Type: application/pdf`,
         // "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest",
-        "X-CSRFToken": options["token"] ? options["token"] : getCookie("csrftoken"),
+        "X-CSRFToken": options["token"]
+          ? options["token"]
+          : getCookie("csrftoken"),
         // "Content-Disposition": "attachment; filename=upload.jpg",
       });
       // const formData = Object.fromEntries(options["dataToSend"].entries());
@@ -156,7 +162,13 @@ class UploadFileRequest {
    * @param {string} requestMethod request type, default POST
    * @param {boolean} isDebugging logging output
    */
-  constructor(url, formDataObject, csrfToken, requestMethod, isDebugging = false) {
+  constructor(
+    url,
+    formDataObject,
+    csrfToken,
+    requestMethod,
+    isDebugging = false
+  ) {
     this.url = url;
     this.formData = formDataObject;
     this.csrfToken = csrfToken;
@@ -200,7 +212,11 @@ class UploadFileRequest {
 
         if (this.isDebugging === true) {
           // this.ajaxObject.addEventListener("progress", this.uploadProgressHandler, false);
-          this.ajaxObject.upload.addEventListener("progress", this.uploadProgressHandler, false);
+          this.ajaxObject.upload.addEventListener(
+            "progress",
+            this.uploadProgressHandler,
+            false
+          );
           // set upload error handler
         }
 
@@ -223,7 +239,7 @@ class UploadFileRequest {
             console.warn("Load event!");
             console.log(event);
           },
-          false,
+          false
         );
         this.ajaxObject.send(this.formData);
         this.ajaxObject.addEventListener("readystatechange", (event) => {
@@ -280,7 +296,8 @@ class UploadFileRequest {
 const formInputSerializer = (formElement, excludedFields) => {
   const serializedObject = {};
   Array.from(formElement.elements).forEach((element) => {
-    serializedObject[element.name] = element.type === "checkbox" ? element.checked : element.value;
+    serializedObject[element.name] =
+      element.type === "checkbox" ? element.checked : element.value;
   });
   return serializedObject;
 };
@@ -291,6 +308,10 @@ const formInputSerializer = (formElement, excludedFields) => {
  * @param {Object} objectOfValues Object of values to set
  */
 const setFormInputValues = (formElement, objectOfValues) => {
+  // check the type of formElement is HTMLFormElement
+  if (formElement.constructor.name !== "HTMLFormElement") {
+    throw new Error("The element to set values not form element!!");
+  }
   for (const name in objectOfValues) {
     try {
       if (Object.hasOwnProperty.call(objectOfValues, name)) {
@@ -301,7 +322,9 @@ const setFormInputValues = (formElement, objectOfValues) => {
       if (error instanceof TypeError) {
         // in case the input or element not exists
         if (DEBUG === true) {
-          console.warn(`The element ${name} not exists in the form ${formElement.id}`);
+          console.warn(
+            `The element ${name} not exists in the form ${formElement.id}`
+          );
         }
       }
     }

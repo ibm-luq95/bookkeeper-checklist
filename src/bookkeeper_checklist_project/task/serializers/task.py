@@ -10,7 +10,7 @@ class TaskSerializer(serializers.ModelSerializer):
         exclude = (
             "metadata",
             "is_deleted",
-            "user",
+            # "user",
             "deleted_at",
             "updated_at",
         )

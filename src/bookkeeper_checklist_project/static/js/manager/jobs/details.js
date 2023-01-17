@@ -372,11 +372,11 @@ document.addEventListener("DOMContentLoaded", (ev) => {
               managerUpdateTaskForm["additional_notes"].value = taskObject["additional_notes"];
               managerUpdateTaskForm["start_date"].value = taskObject["start_date"];
               managerUpdateTaskForm["due_date"].value = taskObject["due_date"];
-              if (taskObject["is_completed"] === true) {
+             /*  if (taskObject["is_completed"] === true) {
                 managerUpdateTaskForm["is_completed"].checked = true;
               } else {
                 managerUpdateTaskForm["is_completed"].checked = false;
-              }
+              } */
             })
             .catch((error) => {
               console.error(error);

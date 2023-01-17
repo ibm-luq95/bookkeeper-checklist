@@ -7,7 +7,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 
 from core.utils import get_formatted_logger
+from documents.forms import DocumentForm
 from jobs.models import Job
+from notes.forms import NoteForm
+from task.forms import TaskForm
 from .mixins import BookkeeperAccessMixin
 
 logger = get_formatted_logger(__file__)
@@ -51,8 +54,15 @@ class JobDetailView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        job = self.get_object()
-        context.setdefault("title", f"Job - {job.title}")
+        job_object = self.get_object()
+        document_form = DocumentForm(document_section="job", client=job_object.client)
+        task_form = TaskForm(client=job_object.client, job=job_object)
+        note_form = NoteForm(client=job_object.client, note_section="job")
+        context["title"] = f"Job - {job_object.title}"
+        context.setdefault("task_form", task_form)
+        context.setdefault("document_form", document_form)
+        context.setdefault("note_form", note_form)
+        context.setdefault("title", f"Job - {job_object.title}")
 
         return context
 

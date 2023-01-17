@@ -5,3 +5,9 @@ from .manager import (
     UpdateNoteManagerApiView,
     DeleteNoteManagerApiView,
 )
+from .bookkeeper import (
+    CreateNoteBookkeeperApiView,
+    RetrieveNoteBookkeeperApiView,
+    UpdateNoteBookkeeperApiView,
+    DeleteNoteBookkeeperApiView,
+)

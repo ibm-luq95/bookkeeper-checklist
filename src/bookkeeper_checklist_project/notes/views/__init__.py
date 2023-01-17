@@ -4,3 +4,9 @@ from notes.views.api import (
     RetrieveNoteManagerApiView,
     UpdateNoteManagerApiView,
 )
+from notes.views.api import (
+    RetrieveNoteBookkeeperApiView,
+    CreateNoteBookkeeperApiView,
+    UpdateNoteBookkeeperApiView,
+    DeleteNoteBookkeeperApiView
+)

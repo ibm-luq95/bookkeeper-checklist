@@ -20,7 +20,6 @@ logger = get_formatted_logger(__name__)
 
 class CreateDocumentManagerApiView(APIView):
     parser_classes = [parsers.FormParser, parsers.MultiPartParser]
-    # parser_classes = [parsers.MultiPartParser]
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
     def post(self, request: Request, *args, **kwargs):
@@ -61,7 +60,7 @@ class CreateDocumentManagerApiView(APIView):
 
 
 class DeleteDocumentManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
 
     def delete(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -95,8 +94,8 @@ class DeleteDocumentManagerApiView(APIView):
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RetrieveManagerDocumentView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+class RetrieveDocumentManagerView(APIView):
+    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""

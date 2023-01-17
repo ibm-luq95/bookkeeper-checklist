@@ -4,7 +4,7 @@ import traceback
 
 from rest_framework import permissions
 from rest_framework import status
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, PermissionDenied
 from rest_framework import authentication
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -18,9 +18,10 @@ from documents.serializers import CreateDocumentSerializer
 logger = get_formatted_logger(__name__)
 
 
-class CreateDocumentManagerApiView(APIView):
+class CreateDocumentBookkeeperApiView(APIView):
     parser_classes = [parsers.FormParser, parsers.MultiPartParser]
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+    # parser_classes = [parsers.MultiPartParser]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -59,43 +60,8 @@ class CreateDocumentManagerApiView(APIView):
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DeleteDocumentManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
-
-    def delete(self, request: Request, *args, **kwargs):
-        serializer = ""
-        try:
-            data = request.data
-            document_id = data.get("documentId")
-            debugging_print(data)
-            document_object = Documents.objects.get(pk=document_id)
-            document_object.soft_delete()
-            return Response(
-                data={"msg": "Document deleted successfully!"},
-                status=status.HTTP_201_CREATED,
-            )
-        except APIException as ex:
-            # logger.error("API Exception")
-            logger.error(ex)
-            response_data = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as ex:
-            debugging_print(ex)
-            logger.error(traceback.format_exc())
-            response_data = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                "error": str(ex),
-                "user_error_msg": "Error while delete document!",
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-
-
-class RetrieveDocumentManagerView(APIView):
-    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+class RetrieveDocumentBookkeeperApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -124,5 +90,44 @@ class RetrieveDocumentManagerView(APIView):
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
                 "user_error_msg": "Error while retrieve document!",
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteDocumentBookkeeperApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request: Request, *args, **kwargs):
+        serializer = ""
+        try:
+            data = request.data
+            document_id = data.get("documentId")
+            user = request.user
+            document_object = Documents.objects.get(pk=document_id)
+            if document_object.user != user:
+                raise PermissionDenied(
+                    {"user_error_msg": "You dont have permission to delete!"}
+                )
+            document_object.soft_delete()
+            return Response(
+                data={"msg": "Document deleted successfully!"},
+                status=status.HTTP_201_CREATED,
+            )
+        except APIException as ex:
+            # logger.error("API Exception")
+            logger.error(ex)
+            response_data = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.error_messages,
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            debugging_print(ex)
+            logger.error(traceback.format_exc())
+            response_data = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                "error": str(ex),
+                "user_error_msg": "Error while delete document!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)

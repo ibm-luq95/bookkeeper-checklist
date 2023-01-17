@@ -30,8 +30,6 @@
               {% elif object.status == "not_complete" %}
               <span class="tag is-link is-medium">{{ object.get_status_display }}</span>
               {% endif %}
-
-
             </button>
           </header>
           <div class="card-content">
@@ -180,30 +178,7 @@
 
             </article>
           </div>
-          <hr />
-          <div
-            class="job-item-block mb-5 is-bordered has-border-bottom-width-1 {% if object.is_job_pass_due is True %} has-background-danger-light {% endif %} p-2">
-            <article class="media">
-              <figure class="media-left mr-5">
-                <p class="image is-16x16 is-rounded">
-                  <i class="fa-solid fa-2x fa-calendar has-text-success"></i>
-                </p>
-              </figure>
 
-              <div class="media-content">
-                <div class="content">
-                  <p>
-                    <strong>Due Date</strong>
-                    <!-- <small>@johnsmith</small> <small>31m</small> -->
-                    <br>
-                    <span>{{ object.due_date }}</span>
-                  </p>
-                </div>
-
-              </div>
-
-            </article>
-          </div>
           <div class="job-item-block mb-5 is-bordered has-border-bottom-width-1 p-2">
             <article class="media">
               <figure class="media-left mr-5">

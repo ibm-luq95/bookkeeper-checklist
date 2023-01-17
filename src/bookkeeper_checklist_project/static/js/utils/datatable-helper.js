@@ -10,6 +10,8 @@ class DataTableHelper {
    * @param {bool} isStateSave Save last state of order in the table
    * @param {bool} isAutoWidth Auto width table
    * @param {bool} disableDefaultOrder Disable auto order for data table js
+   * @param {Array} customColumnsWidthObj Array of custom columns width
+   * @param {Array} buttons Array of custom buttons
    */
   constructor({
     tableID,
@@ -17,6 +19,7 @@ class DataTableHelper {
     isAutoWidth = true,
     disableDefaultOrder = true,
     customColumnsWidthObj = null,
+    buttons = null,
   }) {
     this.tableID = `#${tableID}`;
     this.isAutoWidth = isAutoWidth;
@@ -28,6 +31,7 @@ class DataTableHelper {
     this.tableOptions = {};
     this.lastIndexThNumber = this.columnsThElements.length - 1;
     this.customColumnsWidthObj = customColumnsWidthObj;
+    this.buttons = buttons;
 
     // call initialize data table js method
     this.initDataTable();
@@ -48,11 +52,7 @@ class DataTableHelper {
       fixedHeader: true,
       fixedColumns: true,
       dom: "Bfrtip",
-      buttons: [
-        // "copy",
-        "csv",
-        "pdf",
-      ],
+
       columnDefs: [
         // { width: "1%", targets: 0 },
         { targets: this.lastIndexThNumber, orderable: false },
@@ -81,6 +81,16 @@ class DataTableHelper {
       for (const colWidth of this.customColumnsWidthObj) {
         this.tableOptions["columnDefs"].push(colWidth);
       }
+    }
+    // check if button passed
+    if (this.buttons) {
+      this.tableOptions["buttons"] = this.buttons;
+    } else {
+      this.tableOptions["buttons"] = [
+        // "copy",
+        "csv",
+        "pdf",
+      ];
     }
     // call DataTable object
     new DataTable(this.tableID, this.tableOptions);

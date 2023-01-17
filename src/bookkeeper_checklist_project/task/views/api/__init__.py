@@ -5,4 +5,10 @@ from .manager import (
     UpdateTaskManagerApiView,
     DeleteTaskManagerApiView,
 )
-from .bookkeeper import SetTaskCompletedBookkeeperApiView, TaskBookkeeperRetrieveAPIView
+from .bookkeeper import (
+    SetTaskCompletedBookkeeperApiView,
+    TaskBookkeeperRetrieveAPIView,
+    UpdateTaskBookkeeperApiView,
+    CreateTaskBookkeeperApiView,
+    DeleteTaskBookkeeperApiView,
+)

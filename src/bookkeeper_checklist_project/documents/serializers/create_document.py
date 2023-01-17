@@ -4,7 +4,15 @@ from documents.models import Documents
 
 
 class CreateDocumentSerializer(serializers.ModelSerializer):
+    # document_file = serializers.FileField(use_url=True, allow_empty_file=False)
+
     class Meta:
         model = Documents
-        exclude = ("metadata", "is_deleted",)
+        exclude = (
+            "metadata",
+            "is_deleted",
+            "updated_at",
+            "created_at",
+            "deleted_at",
+        )
         # depth = 1

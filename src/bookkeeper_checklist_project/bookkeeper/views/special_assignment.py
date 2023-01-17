@@ -4,7 +4,7 @@ import traceback
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from special_assignment.models import SpecialAssignment
 from core.utils import get_formatted_logger, get_trans_txt, debugging_print
@@ -162,3 +162,13 @@ class SpecialAssignmentUpdateView(
             "bookkeeper:special_assignment:update", kwargs={"pk": self.get_object().pk}
         )
         return url
+
+
+class SpecialAssignmentDeleteView(
+    LoginRequiredMixin, BookkeeperAccessMixin, SuccessMessageMixin, DeleteView
+):
+    login_url = reverse_lazy("users:login")
+    model = SpecialAssignment
+    template_name = "bookkeeper/special_assignment/delete.html"
+    success_message: str = get_trans_txt("Special assignment deleted successfully!")
+    success_url = reverse_lazy("bookkeeper:special_assignment:requested")

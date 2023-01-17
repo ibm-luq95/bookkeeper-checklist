@@ -21,9 +21,14 @@
       </span>
       {% endif %}
 
-      <a href="{% url 'bookkeeper:special_assignment:update' object.pk %}" title="Update assignment" class="button is-success">
+      {% if object.assigned_by == request.user %}
+      <a href="{% url 'bookkeeper:special_assignment:update' object.pk %}" title="Update assignment"
+        class="button is-success">
         <i class="fa-solid fa-pencil"></i>
       </a>
+      {% endif %}
+
+
 
     </div>
   </div>

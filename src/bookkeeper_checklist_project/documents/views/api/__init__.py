@@ -2,5 +2,10 @@
 from .manager import (
     CreateDocumentManagerApiView,
     DeleteDocumentManagerApiView,
-    RetrieveManagerDocumentView,
+    RetrieveDocumentManagerView,
+)
+from .bookkeeper import (
+    CreateDocumentBookkeeperApiView,
+    RetrieveDocumentBookkeeperApiView,
+    DeleteDocumentBookkeeperApiView,
 )

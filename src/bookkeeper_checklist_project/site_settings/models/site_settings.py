@@ -105,6 +105,9 @@ class SiteSettings(BaseModelMixin):
         help_text=HELP_MESSAGES.get("instagram"),
     )
 
+    class Meta(BaseModelMixin.Meta):
+        db_table = "site_settings"
+
     def __str__(self):
         return f"Settings for {self.slug}"
 

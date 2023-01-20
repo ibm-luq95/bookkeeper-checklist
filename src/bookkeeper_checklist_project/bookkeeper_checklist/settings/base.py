@@ -158,6 +158,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+WHITENOISE_MANIFEST_STRICT = ast.literal_eval(os.environ.get("WHITENOISE_MANIFEST_STRICT"))
 
 # STATIC_ROOT = (
 #     BASE_DIR

@@ -1,18 +1,19 @@
-import traceback
 import os
+import traceback
+
 from django.contrib.auth.models import Group
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
 
-from core.constants import BOOKKEEPER_GROUP_NAME, MANAGER_GROUP_NAME, ASSISTANT_GROUP_NAME
-from core.utils import ProjectError, debugging_print
-from core.utils import get_formatted_logger
-from users.models import CustomUser
 from core.cache import CacheHandler
-from site_settings.models import SiteSettings
+from core.constants import BOOKKEEPER_GROUP_NAME, MANAGER_GROUP_NAME, ASSISTANT_GROUP_NAME
 from core.constants.site_settings import WEB_APP_SETTINGS_KEY
+from core.utils import ProjectError
+from core.utils import get_formatted_logger
+from site_settings.models import SiteSettings
+from users.models import CustomUser
 
 # TODO: remove the custom logger before push (only for development)
 # ###### [Custom Logger] #########

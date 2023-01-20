@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-#
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 
 from client.models import Client
-from important_contact.models import ImportantContact
-from important_contact.forms import ImportantContactForm
+from core.utils import get_trans_txt
 from important_contact.filters import ImportantContactFilter
-from core.utils import get_trans_txt, debugging_print
+from important_contact.forms import ImportantContactForm
+from important_contact.models import ImportantContact
 from .mixins import ManagerAccessMixin
 
 

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
+import ast
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    # "django_extensions",
     "maintenance_mode",
     # "django.contrib.sites",
     "django_filters",
@@ -49,7 +51,6 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bulma",
     "betterforms",
-    # "crispy_bootstrap5",
     "core.apps.CoreConfig",
     "site_settings.apps.SiteSettingsConfig",
     "users.apps.UsersConfig",
@@ -65,12 +66,13 @@ INSTALLED_APPS = [
     "notes.apps.NotesConfig",
     "jobs.apps.JobsConfig",
     "task.apps.TaskConfig",
-    "special_assignment.apps.SpecialAssignmentConfig"
+    "special_assignment.apps.SpecialAssignmentConfig",
 ]
 
 MIDDLEWARE = [
     # "django.middleware.cache.UpdateCacheMiddleware",  # new for the cache
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django_session_timeout.middleware.SessionTimeoutMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -149,16 +151,22 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATIC_URL = "static/"
-
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-# STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATIC_ROOT = (
-    BASE_DIR
-    / "/home/ibrahim/bookkeeper-checklist/src/bookkeeper_checklist_project/staticfiles"
-)
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+# STATIC_ROOT = (
+#     BASE_DIR
+#     / "/home/ibrahim/bookkeeper-checklist/src/bookkeeper_checklist_project/staticfiles"
+# )
+# STATIC_ROOT = (
+#     BASE_DIR
+#     / "staticfiles"
+# )
 
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -190,9 +198,9 @@ AUTH_PASSWORD_VALIDATORS = [
             "min_length": 7,
         },
     },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
@@ -258,20 +266,61 @@ MAINTENANCE_MODE_IGNORE_SUPERUSER = False
 
 # Session configs
 SESSION_EXPIRE_SECONDS = int(os.environ.get("SESSION_EXPIRE_SECONDS"))  # 1 hour
-SESSION_EXPIRE_AT_BROWSER_CLOSE = bool(
+SESSION_EXPIRE_AT_BROWSER_CLOSE = ast.literal_eval(
     os.environ.get("SESSION_EXPIRE_AT_BROWSER_CLOSE")
 )  # Invalid session
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = bool(
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = ast.literal_eval(
     os.environ.get("SESSION_EXPIRE_AFTER_LAST_ACTIVITY")
 )
 
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-
 # SESSION_TIMEOUT_REDIRECT = "/"
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60 # group by minute
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60  # group by minute
 
+# LOGGING = {
+#     "version": 1,
+#     "handlers": {
+#         "console": {
+#             "level": "DEBUG",
+#             "class": "logging.StreamHandler",
+#             # "filename": BASE_DIR / "debug.log",
+#         },
+#     },
+#     "loggers": {
+#         "werkzeug": {
+#             "handlers": ["console"],
+#             "level": "DEBUG",
+#             "propagate": True,
+#         },
+#     },
+# }
+LOGGING = {
+    "version": 1,
+    # The version number of our log
+    "disable_existing_loggers": False,
+    # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
+    # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
+    "handlers": {
+        "file": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": BASE_DIR / "errors.log",
+        },
+    },
+    # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
+    "loggers": {
+        # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
+        "": {
+            "handlers": [
+                "file"
+            ],  # notice how file variable is called in handler which has been defined above
+            "level": "ERROR",
+            "propagate": True,
+        },
+
+    },
+}
 # check if cache enabled
-if bool(os.environ.get("IS_CACHE_ENABLED")):
+if ast.literal_eval(os.environ.get("IS_CACHE_ENABLED")) is True:
     CACHE_MIDDLEWARE_ALIAS = os.environ.get(
         "CACHE_MIDDLEWARE_ALIAS"
     )  # which cache alias to use

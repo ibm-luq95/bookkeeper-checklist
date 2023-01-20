@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-#
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ImproperlyConfigured
-from django.db.models import Q
-from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 
-from company_services.helpers import PasswordHasher
-from company_services.models import CompanyService
 from company_services.forms import CompanyServiceForm
-from core.models import BaseQuerySetMixin
-
-from core.utils import get_trans_txt, debugging_print
+from company_services.models import CompanyService
+from core.utils import get_trans_txt
 from .mixins import ManagerAccessMixin
 
 
@@ -20,6 +15,7 @@ class CompanyServicesListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     template_name = "manager/company_service/list.html"
     model = CompanyService
     http_method_names = ["get"]
+
     # queryset = CompanyService.objects.all().values("pk", "email", "client", "service_name", "label", "url")
     # queryset = CompanyService.objects.prefetch_related("client").only("password").values("pk", "client", "label", "url", "service_name")
 

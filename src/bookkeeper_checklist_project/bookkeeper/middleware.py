@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-#
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
-from core.utils import debugging_print
-from core.constants.site_settings import WEB_APP_SETTINGS_KEY
-from django.contrib.auth import logout
 from core.cache import CacheHandler
-from django.contrib import messages
-from django.shortcuts import redirect
+from core.constants.site_settings import WEB_APP_SETTINGS_KEY
 
 
 class BookkeeperMiddleware:

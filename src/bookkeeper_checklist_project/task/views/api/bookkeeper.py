@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-#
 import traceback
 
-from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.exceptions import APIException, PermissionDenied
@@ -9,7 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.utils import get_formatted_logger, debugging_print
+from core.utils import get_formatted_logger
 from task.models import Task
 from task.serializers import TaskSerializer, CreateTaskSerializer
 
@@ -40,7 +39,7 @@ class TaskBookkeeperRetrieveAPIView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -88,7 +87,7 @@ class SetTaskCompletedBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -124,7 +123,7 @@ class CreateTaskBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -150,7 +149,7 @@ class UpdateTaskBookkeeperApiView(APIView):
             serializer = CreateTaskSerializer(data=data, instance=task_object)
             if not serializer.is_valid():
                 raise APIException(serializer.errors)
-            debugging_print(serializer.validated_data)
+            # debugging_print(serializer.validated_data)
             serializer.save()
             return Response(
                 data={"msg": "Task updated successfully!"}, status=status.HTTP_200_OK
@@ -165,7 +164,7 @@ class UpdateTaskBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -203,7 +202,7 @@ class DeleteTaskBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,

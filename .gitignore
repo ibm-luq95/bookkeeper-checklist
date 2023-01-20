@@ -312,8 +312,14 @@ src/bookkeeper_checklist_project/media
 backup
 docs
 src/.env
+src/.env_development
 src/bookkeeper_checklist_project/maintenance_mode_state.txt
 src/frontend/**
+commands/**
+src/bookkeeper_checklist_project/staticfiles/**
+src/bookkeeper_checklist_project/certs/**
+deployment/**
+src/bookkeeper_checklist_project/stunnel/**
 
 # Ignore Django Migrations in Development if you are working on team
 # Only for Development only

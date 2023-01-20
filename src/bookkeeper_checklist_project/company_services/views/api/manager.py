@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from company_services.serializers import CreateCompanyServicesSerializer
-from core.utils import get_formatted_logger, debugging_print
+from core.utils import get_formatted_logger
 
 logger = get_formatted_logger(__name__)
 
@@ -27,7 +27,7 @@ class CreateCompanyServiceManagerApiView(APIView):
             # debugging_print(data)
             if not serializer.is_valid():
                 raise APIException(serializer.error_messages)
-            debugging_print(serializer.validated_data)
+            # debugging_print(serializer.validated_data)
             serializer.save()
             return Response(
                 data={"msg": "Services created successfully!"},
@@ -43,7 +43,7 @@ class CreateCompanyServiceManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,

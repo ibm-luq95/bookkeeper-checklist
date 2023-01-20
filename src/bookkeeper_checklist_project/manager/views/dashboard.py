@@ -1,15 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
-from prettyprinter import cpprint
 
 from .mixins import ManagerAccessMixin
+
 
 # from django.contrib.auth.models import Permission
 
 
 class DashboardHomeView(LoginRequiredMixin, ManagerAccessMixin, TemplateView):
-
     template_name: str = "manager/dashboard/home.html"
     login_url = reverse_lazy("users:login")
 

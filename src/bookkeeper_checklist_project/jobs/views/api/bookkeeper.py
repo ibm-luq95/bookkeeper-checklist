@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-#
 import traceback
-import json
 
 from rest_framework import permissions
 from rest_framework import status
@@ -9,9 +8,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.utils import get_formatted_logger
 from jobs.models import Job
 from jobs.serializers import JobSerializer
-from core.utils import get_formatted_logger, debugging_print
 
 logger = get_formatted_logger(__name__)
 
@@ -42,7 +41,7 @@ class FetchJobBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,

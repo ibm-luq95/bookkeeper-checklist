@@ -2,14 +2,14 @@ import random
 from datetime import datetime
 
 import requests
-from core.models import Quote
-from core.utils import get_formatted_logger, debugging_print
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
-from .mixins import BookkeeperAccessMixin
-from prettyprinter import cpprint
+
 from bookkeeper.helpers import BookkeeperHelper
+from core.models import Quote
+from core.utils import get_formatted_logger
+from .mixins import BookkeeperAccessMixin
 
 # TODO: remove the custom logger before push (only for development)
 # ###### [Custom Logger] #########

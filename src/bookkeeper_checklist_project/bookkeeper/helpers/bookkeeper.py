@@ -1,11 +1,12 @@
+import traceback
+
 from django.utils import timezone
 
 from bookkeeper.models import Bookkeeper
-import traceback
-from core.utils import ProjectError, get_formatted_logger, debugging_print
-from core.models import BaseQuerySetMixin
-from jobs.models import Job
 from client.models import Client
+from core.models import BaseQuerySetMixin
+from core.utils import ProjectError, get_formatted_logger
+from jobs.models import Job
 
 logger = get_formatted_logger(__file__)
 

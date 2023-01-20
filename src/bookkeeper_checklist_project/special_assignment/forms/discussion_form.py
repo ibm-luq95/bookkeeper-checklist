@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-#
-from typing import Optional, Union
+from typing import Optional
 
 from core.constants.form import EXCLUDED_FIELDS
 from core.forms import BaseModelFormMixin
-from core.utils import debugging_print, get_trans_txt
+from core.utils import get_trans_txt
 from special_assignment.models import Discussion, SpecialAssignment
 from users.models import CustomUser
 

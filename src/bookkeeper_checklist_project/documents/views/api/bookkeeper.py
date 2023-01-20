@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-#
-import json
 import traceback
 
+from rest_framework import parsers
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.exceptions import APIException, PermissionDenied
-from rest_framework import authentication
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import parsers
 
-from core.utils import get_formatted_logger, debugging_print
+from core.utils import get_formatted_logger
 from documents.models import Documents
 from documents.serializers import CreateDocumentSerializer
 
@@ -34,7 +32,7 @@ class CreateDocumentBookkeeperApiView(APIView):
             # debugging_print(data)
             if serializer.is_valid() is False:
                 raise APIException(serializer.error_messages)
-            debugging_print(serializer.validated_data)
+            # debugging_print(serializer.validated_data)
             serializer.save()
             return Response(
                 data={"msg": "Document created successfully!"},
@@ -50,7 +48,7 @@ class CreateDocumentBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -84,7 +82,7 @@ class RetrieveDocumentBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -123,7 +121,7 @@ class DeleteDocumentBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,

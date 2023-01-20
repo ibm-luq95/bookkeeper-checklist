@@ -8,7 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.utils import get_formatted_logger, debugging_print
+from core.utils import get_formatted_logger
 from task.models import Task
 from task.serializers import CreateTaskSerializer, TaskSerializer
 
@@ -41,7 +41,7 @@ class CreateTaskManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -72,7 +72,7 @@ class RetrieveTaskManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -109,7 +109,7 @@ class UpdateTaskManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -141,7 +141,7 @@ class DeleteTaskManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-#
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import QuerySet
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView
-from django.contrib import messages
 
-from core.utils import get_formatted_logger, debugging_print
+from core.utils import get_formatted_logger
 from task.forms import TaskForm
 from task.models import Task
 from .mixins import BookkeeperAccessMixin

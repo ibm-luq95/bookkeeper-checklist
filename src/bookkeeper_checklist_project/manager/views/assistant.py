@@ -3,9 +3,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
 
-from assistant.models import Assistant
 from assistant.forms import AssistantForm
-from core.utils import get_trans_txt, debugging_print
+from assistant.models import Assistant
+from core.utils import get_trans_txt
 from .mixins import ManagerAccessMixin
 
 

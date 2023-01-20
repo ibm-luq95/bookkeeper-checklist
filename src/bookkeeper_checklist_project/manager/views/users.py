@@ -1,19 +1,13 @@
-from typing import Dict
+from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
-from django.contrib import messages
-from django.core.exceptions import ImproperlyConfigured
-from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView
 from django.views.generic.edit import FormView
 
-from assistant.models import Assistant
-from bookkeeper.models import Bookkeeper
-from core.utils import debugging_print
 from core.utils.utils import get_trans_txt
 from users.forms import CustomUserCreationForm, UpdateUserForm
 from .mixins import ManagerAccessMixin

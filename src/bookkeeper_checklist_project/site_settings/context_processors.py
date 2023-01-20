@@ -2,9 +2,8 @@
 from typing import Union
 
 from core.cache import CacheHandler
-from core.utils import debugging_print
-from site_settings.models import SiteSettings
 from core.constants.site_settings import WEB_APP_SETTINGS_KEY
+from site_settings.models import SiteSettings
 
 
 def get_web_app_settings(request) -> Union[SiteSettings, None]:

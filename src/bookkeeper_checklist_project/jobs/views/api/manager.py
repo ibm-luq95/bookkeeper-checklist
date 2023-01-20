@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-#
-import traceback
 import json
+import traceback
 
-from prettyprinter import cpprint
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -10,9 +9,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from jobs.serializers import CreateJobSerializer, JobSerializer
+from core.utils import get_formatted_logger
 from jobs.models import Job
-from core.utils import get_formatted_logger, debugging_print
+from jobs.serializers import CreateJobSerializer, JobSerializer
 from task.models import Task
 
 logger = get_formatted_logger(__name__)
@@ -48,7 +47,7 @@ class CreateJobManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -80,7 +79,7 @@ class RetrieveJobManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -131,7 +130,7 @@ class UpdateJobManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -153,7 +152,7 @@ class DeleteJobManagerApiView(APIView):
             }
             data = request.data
             job_object = Job.objects.get(pk=data.get("jobId"))
-            debugging_print(job_object.get_all_not_completed_tasks())
+            # debugging_print(job_object.get_all_not_completed_tasks())
             response_msg_data["not_completed_tasks"] = len(
                 job_object.get_all_not_completed_tasks()
             )
@@ -184,7 +183,7 @@ class DeleteJobManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,

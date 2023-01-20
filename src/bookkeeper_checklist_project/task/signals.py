@@ -2,13 +2,11 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from core.utils import debugging_print
 from task.models import Task
 
 
 @receiver(post_save, sender=Task)
 def update_job_status_when_add_task(sender, instance: Task, created, **kwargs):
-
     # if created:
     created_task_obj = instance
     job_object = created_task_obj.job

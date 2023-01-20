@@ -8,7 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.utils import get_formatted_logger, debugging_print
+from core.utils import get_formatted_logger
 from notes.models import Note
 from notes.serializers import CreateNoteSerializer, NoteSerializer
 
@@ -31,7 +31,7 @@ class CreateNoteManagerApiView(APIView):
             # debugging_print(data)
             if not serializer.is_valid():
                 raise APIException(serializer.error_messages)
-            debugging_print(serializer.validated_data)
+            # debugging_print(serializer.validated_data)
             serializer.save()
             return Response(
                 data={"msg": "Note created successfully!"}, status=status.HTTP_201_CREATED
@@ -46,7 +46,7 @@ class CreateNoteManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -77,7 +77,7 @@ class RetrieveNoteManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -112,7 +112,7 @@ class UpdateNoteManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
@@ -131,7 +131,6 @@ class DeleteNoteManagerApiView(APIView):
             data = request.data
             note_id = data.get("noteId")
             note_object = Note.objects.get(pk=note_id)
-            # note_object.soft_delete()
             note_object.delete()
 
             return Response(
@@ -147,7 +146,7 @@ class DeleteNoteManagerApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,

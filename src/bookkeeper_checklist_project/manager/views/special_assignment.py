@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView, DetailView
 
-from core.utils import get_trans_txt, debugging_print
+from core.utils import get_trans_txt
 from special_assignment.forms import SpecialAssignmentForm, DiscussionForm
 from special_assignment.models import SpecialAssignment
 from .mixins import ManagerAccessMixin
@@ -45,7 +45,7 @@ class SpecialAssignmentCreateView(
         return kwargs
 
     def form_valid(self, form):
-        debugging_print(form.cleaned_data)
+        # debugging_print(form.cleaned_data)
         start_date = form.cleaned_data.get("start_date")
         due_date = form.cleaned_data.get("due_date")
         if start_date > due_date:

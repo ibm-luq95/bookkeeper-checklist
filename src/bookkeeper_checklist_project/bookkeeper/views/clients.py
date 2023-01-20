@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 
 from client.models import Client
-from core.utils import get_formatted_logger, debugging_print
+from core.utils import get_formatted_logger
 from important_contact.forms import ImportantContactForm
 from jobs.models import Job
 from .mixins import BookkeeperAccessMixin

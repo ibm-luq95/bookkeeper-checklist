@@ -1,24 +1,20 @@
 # -*- coding: utf-8 -*-#
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
-from django.views.generic.edit import FormView
 
+from client.filters import ClientFilter
 from client.forms import ClientForm
 from client.models import Client
 from company_services.forms import CompanyServiceForm
-from core.utils import debugging_print, get_trans_txt
+from core.utils import get_trans_txt
 from documents.forms import DocumentForm
 from important_contact.forms import ImportantContactForm
 from jobs.forms import JobForm
 from notes.forms import NoteForm
 from task.forms import TaskForm
-from client.filters import ClientFilter
-
 from .mixins import ManagerAccessMixin
 
 

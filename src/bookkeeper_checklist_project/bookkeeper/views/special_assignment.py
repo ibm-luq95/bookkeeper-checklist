@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-#
-import traceback
 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from special_assignment.models import SpecialAssignment
-from core.utils import get_formatted_logger, get_trans_txt, debugging_print
+from core.utils import get_formatted_logger, get_trans_txt
 from special_assignment.forms import DiscussionForm, SpecialAssignmentForm
+from special_assignment.models import SpecialAssignment
 from .mixins import BookkeeperAccessMixin
 
 logger = get_formatted_logger(__file__)

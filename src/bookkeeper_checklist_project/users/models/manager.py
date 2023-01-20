@@ -1,10 +1,8 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.utils.translation import gettext as _
 from django.db import transaction
+from django.utils.translation import gettext as _
 
 from core.models import BaseQuerySetMixin
-from core.utils import debugging_print
-
 
 
 class CustomUserManager(BaseUserManager):
@@ -38,6 +36,7 @@ class CustomUserManager(BaseUserManager):
         """
         with transaction.atomic():
             from manager.models import Manager
+
             extra_fields.setdefault("is_staff", True)
             extra_fields.setdefault("is_superuser", True)
             extra_fields.setdefault("is_active", True)

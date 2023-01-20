@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-#
-import json
 import traceback
 
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.exceptions import APIException
-from rest_framework import authentication
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.utils import get_formatted_logger, debugging_print
+from core.utils import get_formatted_logger
 from important_contact.models import ImportantContact
 from important_contact.serializers import ImportantContactSerializer
 
@@ -46,7 +44,7 @@ class RetrieveImportantContactBookkeeperApiView(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
-            debugging_print(ex)
+            # debugging_print(ex)
             logger.error(traceback.format_exc())
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,

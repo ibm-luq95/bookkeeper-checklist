@@ -1,9 +1,9 @@
-from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.views.generic.base import TemplateView
 
 from .mixins import AssistantAccessMixin
-import faker
+
 
 class DashboardView(LoginRequiredMixin, AssistantAccessMixin, TemplateView):
     template_name = "assistant/dashboard/dashboard.html"
@@ -13,6 +13,4 @@ class DashboardView(LoginRequiredMixin, AssistantAccessMixin, TemplateView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context["title"] = "Assistant - Dashboard"
-        fake = faker.Faker()
-        context["assistant_fake_name"] = fake.name()
         return context

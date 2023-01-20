@@ -23,7 +23,7 @@ pip-chill
 pipdeptree
 prettyprinter
 prettytable
-prospector
+#prospector
 pycodestyle
 pydocstyle
 pygraphviz

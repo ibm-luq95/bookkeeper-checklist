@@ -1,113 +1,298 @@
 {% extends 'core/layouts/dashboard.html' %}
+{% load cache %}
 {% load static %}
 
 
 {% block dashboard_content %}
 
-<section id="manager-dashboard">
+  <section id="manager-dashboard">
     <section class="hero is-info welcome is-small">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title">
-                    Hello, Albert
-                </h1>
-                <h2 class="subtitle">
-                    {{ quote_text }}
-                </h2>
-            </div>
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Hello, {{ request.user.fullname }}</h1>
+          <h2 class="subtitle">{{ quote_text }}</h2>
         </div>
+      </div>
     </section>
 
-    <div class="columns is-mobile has-margin-top-10">
-        <div class="column">
-            <div class="card">
-                <header class="card-header">
-                    <p class="card-header-title has-text-black">
-                        Card header
-                    </p>
 
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <canvas id="clientChart" height="250"></canvas>
-                    </div>
+    {% comment %}
+  {% cache 500 manager_dashboard_widget %}
+    {% endcomment %}
+
+    <div class="columns is-flex is-mobile has-margin-top-10 mb-0">
+      <div class="column">
+        <div class="card manager-dashboard-card-widget">
+          <div class="card-content pl-1">
+            <div class="content">
+              <div class="columns">
+                <div class="column is-2">
+                  <i class="fa-solid fa-building-user fa-2x"></i>
                 </div>
-                <footer class="card-footer">
-                    <a href="#" class="card-footer-item has-text-black">All</a>
-                </footer>
+                <div class="column pl-4">
+                  <p class="title is-6 manager-dashboard-label-widget has-text-weight-normal pl-2">
+                                    Clients: <span class="is-inline-block has-text-weight-bold">{{ all_clients.count }}</span>
+                </p>
+              </div>
             </div>
+          </div>
         </div>
-        <div class="column">
-            <div class="card">
-                <header class="card-header">
-                    <p class="card-header-title has-text-black">
-                        Card header
-                    </p>
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <canvas id="tasksChart" height="250"></canvas>
-                    </div>
-                </div>
-                <footer class="card-footer">
-                    <a href="#" class="card-footer-item has-text-black">All</a>
-                </footer>
-            </div>
-        </div>
+      </div>
     </div>
-
-    <div class="columns is-mobile">
-        <div class="table-container column">
-            <div class="card">
-                <header class="card-header">
-                    <p class="card-header-title has-text-black">
-                        Component
-                    </p>
-
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <div class="table-container">
-                            <table class="table is-hoverable is-bordered is-striped">
-                                <thead>
-                                    <tr>
-                                        <th>One</th>
-                                        <th>Team</th>
-                                        <th>Two</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <footer class="card-footer">
-                    <a href="#" class="card-footer-item has-text-black">All</a>
-                </footer>
+    <div class="column">
+      <div class="card manager-dashboard-card-widget">
+        <div class="card-content pl-1">
+          <div class="content">
+            <div class="columns">
+              <div class="column is-2">
+                <i class="fa-solid fa-list-check fa-2x"></i>
+              </div>
+              <div class="column pl-4">
+                <p class="title is-6 manager-dashboard-label-widget has-text-weight-normal">
+                                  Tasks: <span class="is-inline-block has-text-weight-bold">{{ all_tasks.count }}</span>
+              </p>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  <div class="column">
+    <div class="card manager-dashboard-card-widget">
+      <div class="card-content pl-1">
+        <div class="content">
+          <div class="columns">
+            <div class="column is-2">
+              <i class="fa-solid fa-briefcase fa-2x"></i>
+            </div>
+            <div class="column pl-4">
+              <p class="title is-6 manager-dashboard-label-widget has-text-weight-normal">
+                                Jobs: <span class="is-inline-block has-text-weight-bold">{{ all_jobs.count }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="column">
+  <div class="card manager-dashboard-card-widget">
+    <div class="card-content pl-1">
+      <div class="content">
+        <div class="columns">
+          <div class="column is-2">
+            <i class="fa-solid fa-briefcase-clock fa-2x"></i>
+          </div>
+          <div class="column pl-4">
+            <p class="title is-6 manager-dashboard-label-widget has-text-weight-normal">
+                              Assignments: <span class="is-inline-block has-text-weight-bold">{{ all_special_assignments.count }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+{% comment %}
+  {% endcache %}
+{% endcomment %}
+
+
+<div class="columns is-mobile is-flex">
+  <div class="column is-3">
+    <div class="table-container">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title has-text-black is-size-5">Bookkeepers</p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <div class="table-container">
+              <table class="table is-hoverable is-bordered is-striped">
+                <!-- <thead>
+                    <tr>
+                      <th>Name</th>
+                    </tr>
+                  </thead> -->
+                <tbody>
+
+                  {% for bookkeeper in all_bookkeepers %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'manager:bookkeeper:details' bookkeeper.pk %}">{{ bookkeeper.user.fullname }}</a>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="2">No bookkeeper</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a href="{% url 'manager:bookkeeper:list' %}"
+             class="card-footer-item has-text-black">All</a>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div class="column is-3">
+    <div class="table-container">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title has-text-black is-size-5">Clients</p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <div class="table-container">
+              <table class="table is-hoverable is-bordered is-striped">
+                <!-- <thead>
+                    <tr>
+                      <th>Name</th>
+                    </tr>
+                  </thead> -->
+                <tbody>
+
+                  {% for client in all_clients|slice:5 %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'manager:client:details' client.pk %}">{{ client.name }}</a>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="2">No clients</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a href="{% url 'manager:client:list' %}"
+             class="card-footer-item has-text-black">All</a>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div class="column is-3">
+    <div class="table-container">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title has-text-black is-size-5">Special assignments</p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <div class="table-container">
+              <table class="table is-hoverable is-bordered is-striped is-narrow">
+
+                {% if all_special_assignments.count > 0 %}
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>User</th>
+                  </tr>
+                </thead>
+
+                {% endif %}
+
+                <tbody>
+
+                  {% for special_assignment in all_special_assignments|slice:5 %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'manager:special_assignment:details' special_assignment.pk %}">
+                          {{ special_assignment.title|truncatechars:20 }}
+                        </a>
+                      </td>
+                      <td>
+                        {{ special_assignment.get_managed_user }}
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="2">No special assignments</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a href="{% url 'manager:special_assignment:list' %}"
+             class="card-footer-item has-text-black">All</a>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div class="column is-3">
+    <div class="table-container">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title has-text-black is-size-5">Tasks</p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <div class="table-container">
+              <table class="table is-hoverable is-bordered is-striped is-narrow">
+
+                {% if all_tasks.count > 0 %}
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                {% endif %}
+
+                <tbody>
+
+                  {% for task in all_tasks|slice:5 %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'manager:task:update' task.pk %}">
+                          {{ task.title|truncatechars:20 }}
+                        </a>
+                      </td>
+                      <td>
+                        <span class="tag">{{ task.get_task_status_display }}</span>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="2">No tasks</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a href="{% url 'manager:task:list' %}"
+             class="card-footer-item has-text-black">All</a>
+        </footer>
+      </div>
+    </div>
+  </div>
+</div>
 </section>
 
 {% endblock dashboard_content %}
 
 
 {% block externaljs %}
-<script src="{% static 'js/manager/dashboard/home.js' %}"></script>
+  <script src="{% static 'js/manager/dashboard/home.js' %}"></script>
 {% endblock externaljs %}

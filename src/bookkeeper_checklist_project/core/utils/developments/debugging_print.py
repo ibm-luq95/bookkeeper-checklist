@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-#
+import ast
 import logging
+import os
 import traceback
 from typing import Any
 
-from prettyprinter import cpprint
-from termcolor import cprint
+if os.environ.get("STAGE_ENVIRONMENT") == "PRODUCTION":
+    from prettyprinter import cpprint
+    from termcolor import cprint
 
 logger = logging.getLogger(__name__)
 
-IS_DEBUGGING = True
+IS_DEBUGGING = ast.literal_eval(os.environ.get("DEBUG"))
 
 
 def debugging_print(txt_object, **kwargs):

@@ -301,9 +301,9 @@ LOGGING = {
     # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
     "handlers": {
         "file": {
-            "level": "DEBUG",
+            "level": "ERROR",
             "class": "logging.FileHandler",
-            "filename": BASE_DIR / "debug.log",
+            "filename": BASE_DIR / "errors.log",
         },
     },
     # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
@@ -313,7 +313,7 @@ LOGGING = {
             "handlers": [
                 "file"
             ],  # notice how file variable is called in handler which has been defined above
-            "level": "DEBUG",
+            "level": "ERROR",
             "propagate": True,
         },
 

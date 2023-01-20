@@ -13,7 +13,7 @@ static_and_media_path_urls = static(
 urlpatterns = [
     # path("admin/", admin.site.urls),  # TODO: add protection package to prevent admin access
     # path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
-    path("secret/", admin.site.urls),
+    # path("secret/", admin.site.urls),
     # path(r"^maintenance-mode/", include("maintenance_mode.urls")),
     path("api-auth/", include("rest_framework.urls")),
     path("js-settings/", js_settings, name="js_settings"),
@@ -46,6 +46,9 @@ admin.site.index_title = get_trans_txt("Bookkeeper Checklist")
 admin.site.site_header = get_trans_txt("Bookkeeper Checklist")
 admin.site.site_title = get_trans_txt("Bookkeeper Administrator")
 # print(settings.LOGGING)
-# if settings.DEBUG:
-#     urlpatterns += static_and_media_path_urls
-#     urlpatterns.append(path("__debug__/", include("debug_toolbar.urls")))
+if settings.DEBUG:
+    urlpatterns += static_and_media_path_urls
+    urlpatterns.append(path("__debug__/", include("debug_toolbar.urls")))
+    urlpatterns.append(path("admin/", admin.site.urls))
+else:
+    urlpatterns.append(path("secret/", admin.site.urls))

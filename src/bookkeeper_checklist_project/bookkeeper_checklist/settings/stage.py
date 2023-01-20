@@ -1,10 +1,8 @@
-import os
-
 from .base import *
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(", ")
 
-DEBUG = bool(os.environ.get("DEBUG"))
+DEBUG = ast.literal_eval(os.environ.get("DEBUG"))
 
 INSTALLED_APPS = INSTALLED_APPS + [
     "debug_toolbar",

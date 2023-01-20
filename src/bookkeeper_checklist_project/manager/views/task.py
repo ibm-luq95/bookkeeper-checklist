@@ -50,8 +50,15 @@ class TaskCreateView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = get_trans_txt("Create task")
+        context.setdefault("title", get_trans_txt("Create task"))
         return context
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class TaskUpdateView(

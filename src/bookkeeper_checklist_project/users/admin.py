@@ -14,4 +14,11 @@ class PermissionAdmin(admin.ModelAdmin):
 @admin.register(CustomUser)
 class CustomUserAdmin(BaseAdminModelMixin):
     list_filter = ("user_type", "created_at", "updated_at", "is_active")
-    # list_display = ("email",)
+    list_display = (
+        "email",
+        "first_name",
+        "last_name",
+        "user_type",
+        "is_active",
+        "created_at",
+    )

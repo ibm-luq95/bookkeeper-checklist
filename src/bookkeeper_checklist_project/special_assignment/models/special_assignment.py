@@ -8,7 +8,25 @@ from client.models import Client
 from core.choices.special_assignment import SpecialAssignmentStatusEnum
 from core.models import BaseModelMixin, TeamMembersMixin
 from core.utils import get_trans_txt
+from core.utils import FileValidator
 from .managers import SpecialAssignmentsManager
+
+file_validator = FileValidator(
+    max_size=1024 * 1000,
+    content_types=(
+        "image/png",
+        "image/jpeg",
+        "text/csv",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.oasis.opendocument.spreadsheet",
+        "application/pdf",
+        "text/plain",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.oasis.opendocument.text",
+    ),
+)
 
 
 class SpecialAssignment(BaseModelMixin, TeamMembersMixin):
@@ -24,7 +42,11 @@ class SpecialAssignment(BaseModelMixin, TeamMembersMixin):
         default=SpecialAssignmentStatusEnum.NOT_STARTED,
     )
     attachment = models.FileField(
-        _("attachment"), upload_to="special_assignment_attachments/", null=True, blank=True
+        _("attachment"),
+        upload_to="special_assignment_attachments/",
+        null=True,
+        blank=True,
+        validators=[file_validator],
     )
     start_date = models.DateField(_("start date"))
     due_date = models.DateField(_("due date"))

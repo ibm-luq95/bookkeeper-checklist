@@ -5,20 +5,26 @@
 {% block dashboard_content %}
 
 <section id="manager-update-task-form">
-    <div class="box">
-        <form method="post" id="update-task-form">
-            {% csrf_token %}
-            <legend class="title has-text-black">Update Task: {{ object.title }}</legend>
-            <hr>
-            <fieldset form="update-task-form">
-                {{form| crispy}}
-                <div class="has-text-right">
-                    <button type="submit" class="button is-info
+  <div class="box has-ribbon">
+
+    {% if object.user != request.user %}
+    <div class="ribbon is-medium is-warning">Not the owner</div>
+    {% endif %}
+
+
+    <form method="post" id="update-task-form">
+      {% csrf_token %}
+      <legend class="title has-text-black">Update Task: {{ object.title }}</legend>
+      <hr>
+      <fieldset form="update-task-form">
+        {{form| crispy}}
+        <div class="has-text-right">
+          <button type="submit" class="button is-info
                         is-fullwidth">Update</button>
-                </div>
-            </fieldset>
-        </form>
-    </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
 </section>
 
 {% endblock dashboard_content %}

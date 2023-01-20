@@ -298,3 +298,12 @@ div.select:has(select.cursor-not-allowed) {
 /* select.cursor-not-allowed{
   pointer-events: none;
 } */
+
+.manager-dashboard-label-widget {
+  /* margin-bottom: 25px !important; */
+  margin-top: 5px;
+}
+
+.manager-dashboard-card-widget {
+  /* width: max-content; */
+}

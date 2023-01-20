@@ -4,9 +4,18 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from core.models import BaseModelMixin
 from core.choices import ClientStatusEnum
+from core.models import BaseModelMixin
+from core.utils import FileValidator
 from important_contact.models import ImportantContact
+
+file_validator = FileValidator(
+    max_size=1024 * 1000,
+    content_types=(
+        "image/png",
+        "image/jpeg",
+    ),
+)
 
 
 class Client(BaseModelMixin):
@@ -25,6 +34,7 @@ class Client(BaseModelMixin):
         upload_to="logos/",
         null=True,
         blank=True,
+        validators=[file_validator],
     )
     status = models.CharField(
         _("status"),

@@ -4,6 +4,7 @@ from typing import Optional
 from core.constants.form import EXCLUDED_FIELDS
 from core.forms import BaseModelFormMixin
 from core.utils import get_trans_txt
+from jobs.models import Job
 from special_assignment.models import Discussion, SpecialAssignment
 from users.models import CustomUser
 
@@ -13,6 +14,7 @@ class DiscussionForm(BaseModelFormMixin):
         self,
         special_assignment: Optional[SpecialAssignment] = None,
         discussion_user: Optional[CustomUser] = None,
+        job: Optional[Job] = None,
         reply_object: Optional[Discussion] = None,
         *args,
         **kwargs,
@@ -34,6 +36,12 @@ class DiscussionForm(BaseModelFormMixin):
             self.fields["replies"].queryset = Discussion.objects.select_related().filter(
                 special_assignment=special_assignment
             )
+            self.fields.pop("job")
+
+        # Check if job passed
+        if job is not None:
+            self.fields["job"].initial = job
+            self.fields.pop("special_assignment")
 
         # check if the discussion_user passed
         if discussion_user:

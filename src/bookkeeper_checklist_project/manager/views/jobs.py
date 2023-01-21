@@ -9,6 +9,7 @@ from core.utils import get_trans_txt
 from jobs.forms import JobForm
 from jobs.models import Job
 from notes.forms import NoteForm
+from special_assignment.forms import DiscussionForm
 from task.forms import TaskForm
 from documents.forms import DocumentForm
 from .mixins import ManagerAccessMixin
@@ -55,6 +56,7 @@ class JobDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         job_object = self.get_object()
+        discussion_form = DiscussionForm(job=job_object)
         document_form = DocumentForm(document_section="job", client=job_object.client)
         task_form = TaskForm(client=job_object.client, job=job_object)
         note_form = NoteForm(client=job_object.client, note_section="job")
@@ -62,6 +64,7 @@ class JobDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         context.setdefault("task_form", task_form)
         context.setdefault("document_form", document_form)
         context.setdefault("note_form", note_form)
+        context.setdefault("discussion_form", discussion_form)
         return context
 
 

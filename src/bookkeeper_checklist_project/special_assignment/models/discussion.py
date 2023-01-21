@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 from core.models import BaseModelMixin, TeamMembersMixin
+from jobs.models import Job
 from .managers import RepliesManager
 from .special_assignment import SpecialAssignment
 from core.utils import FileValidator
@@ -35,6 +36,9 @@ class Discussion(BaseModelMixin, TeamMembersMixin):
         related_name="discussions",
         null=True,
         blank=True,
+    )
+    job = models.ForeignKey(
+        to=Job, on_delete=models.CASCADE, related_name="discussions", null=True, blank=True
     )
     title = models.CharField(_("title"), max_length=100, null=True, blank=True)
     body = models.TextField(_("body"))

@@ -9,13 +9,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.utils import get_formatted_logger
+from core.api.permissions import ManagerApiPermission
 from jobs.serializers import CreateJobSerializer
 
 logger = get_formatted_logger(__name__)
 
 
 class CreateJobToBookkeeper(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [
+        permissions.IsAdminUser,
+        permissions.IsAuthenticated,
+        ManagerApiPermission,
+    ]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""

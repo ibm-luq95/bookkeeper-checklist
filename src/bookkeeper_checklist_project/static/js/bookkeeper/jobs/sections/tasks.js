@@ -72,18 +72,21 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         const taskId = currentTarget.dataset["taskId"];
         const taskTitle = currentTarget.dataset["taskTitle"];
         const confirmMsg = confirm(`Do you want to delete task ${taskTitle}`);
+        const url = window.localStorage.getItem("BookkeeperTasksApiDeleteUrl");
+        const fullUrl = url + `/${taskId}`;
+        console.log(fullUrl);
         if (confirmMsg) {
           const requestOptions = {
             method: "DELETE",
             dataToSend: { taskId: taskId },
-            url: window.localStorage.getItem("BookkeeperTasksApiDeleteUrl"),
+            url: fullUrl,
           };
           const request = sendRequest(requestOptions);
           request
             .then((data) => {
               showToastNotification(data["msg"], "success");
               setTimeout(() => {
-                window.location.reload();
+                // window.location.reload();
               }, 500);
             })
             .catch((error) => {
@@ -109,10 +112,11 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
             if (allCheckedTasks.length <= 0) {
               alert("No tasks checked");
             } else {
+              const url = window.localStorage.getItem("BookkeeperTaskCompletedUrl");
               const requestOptions = {
                 method: "PUT",
                 dataToSend: { tasks: allCheckedTasks },
-                url: window.localStorage.getItem("BookkeeperTaskCompletedUrl"),
+                url: url,
               };
               const request = sendRequest(requestOptions);
               request
@@ -184,17 +188,20 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
             } else {
               taskModalSubmitBtn.hidden = true;
             }
-
+            const url = window.localStorage.getItem("BookkeeperTasksApiRetrieveUrl");
+            const fullUrl = url + `/${taskId}`;
             const requestOptions = {
-              method: "POST",
-              dataToSend: { taskId: taskId },
-              url: window.localStorage.getItem("BookkeeperTasksApiRetrieveUrl"),
+              method: "GET",
+              // dataToSend: { taskId: taskId },
+              url: url + `?task=${taskId}`,
             };
+            // console.log(fullUrl);
             const request = sendRequest(requestOptions);
             request
               .then((data) => {
+                console.log(data);
                 const taskData = data["task"];
-                setFormInputValues(taskModalForm, taskData);
+                setFormInputValues(taskModalForm, data);
               })
               .catch((error) => {
                 console.error(error);

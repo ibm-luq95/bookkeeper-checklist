@@ -9,6 +9,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.api.permissions import BookkeeperApiPermission
 from core.utils import get_formatted_logger
 from documents.models import Documents
 from documents.serializers import CreateDocumentSerializer
@@ -19,7 +20,7 @@ logger = get_formatted_logger(__name__)
 class CreateDocumentBookkeeperApiView(APIView):
     parser_classes = [parsers.FormParser, parsers.MultiPartParser]
     # parser_classes = [parsers.MultiPartParser]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, BookkeeperApiPermission]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -59,7 +60,7 @@ class CreateDocumentBookkeeperApiView(APIView):
 
 
 class RetrieveDocumentBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, BookkeeperApiPermission]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -93,7 +94,7 @@ class RetrieveDocumentBookkeeperApiView(APIView):
 
 
 class DeleteDocumentBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, BookkeeperApiPermission]
 
     def delete(self, request: Request, *args, **kwargs):
         serializer = ""

@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.utils import get_formatted_logger
+from core.api.permissions import BookkeeperApiPermission
 from notes.models import Note
 from notes.serializers import CreateNoteSerializer, NoteSerializer
 
@@ -16,9 +17,10 @@ logger = get_formatted_logger(__name__)
 
 
 class CreateNoteBookkeeperApiView(APIView):
-    permission_classes = [
+    permission_classes = (
         permissions.IsAuthenticated,
-    ]
+        BookkeeperApiPermission,
+    )
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -56,7 +58,10 @@ class CreateNoteBookkeeperApiView(APIView):
 
 
 class RetrieveNoteBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BookkeeperApiPermission,
+    )
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -87,7 +92,10 @@ class RetrieveNoteBookkeeperApiView(APIView):
 
 
 class UpdateNoteBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BookkeeperApiPermission,
+    )
 
     def put(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -128,7 +136,10 @@ class UpdateNoteBookkeeperApiView(APIView):
 
 
 class DeleteNoteBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BookkeeperApiPermission,
+    )
 
     def delete(self, request: Request, *args, **kwargs):
         serializer = ""

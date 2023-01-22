@@ -9,6 +9,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.api.permissions import ManagerApiPermission
 from core.utils import get_formatted_logger
 from documents.models import Documents
 from documents.serializers import CreateDocumentSerializer
@@ -18,7 +19,11 @@ logger = get_formatted_logger(__name__)
 
 class CreateDocumentManagerApiView(APIView):
     parser_classes = [parsers.FormParser, parsers.MultiPartParser]
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.IsAdminUser,
+        ManagerApiPermission,
+    ]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -58,7 +63,11 @@ class CreateDocumentManagerApiView(APIView):
 
 
 class DeleteDocumentManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+    permission_classes = [
+        permissions.IsAdminUser,
+        permissions.IsAuthenticated,
+        ManagerApiPermission,
+    ]
 
     def delete(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -93,7 +102,11 @@ class DeleteDocumentManagerApiView(APIView):
 
 
 class RetrieveDocumentManagerView(APIView):
-    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+    permission_classes = [
+        permissions.IsAdminUser,
+        permissions.IsAuthenticated,
+        ManagerApiPermission,
+    ]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""

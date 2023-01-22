@@ -22,6 +22,11 @@ urlpatterns = [
         TaskBookkeeperRetrieveAPIView.as_view(),
         name="retrieve",
     ),
+    # path(
+    #     "retrieve-task/<uuid:pk>",
+    #     TaskBookkeeperRetrieveAPIView.as_view(),
+    #     name="retrieve",
+    # ),
     path(
         "create",
         CreateTaskBookkeeperApiView.as_view(),
@@ -34,6 +39,11 @@ urlpatterns = [
     ),
     path(
         "delete",
+        DeleteTaskBookkeeperApiView.as_view(),
+        name="delete",
+    ),
+    path(
+        "delete/<uuid:pk>",
         DeleteTaskBookkeeperApiView.as_view(),
         name="delete",
     ),

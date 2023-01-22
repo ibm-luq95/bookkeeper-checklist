@@ -8,6 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.api.permissions import ManagerApiPermission
 from core.utils import get_formatted_logger
 from important_contact.models import ImportantContact
 from important_contact.serializers import ImportantContactSerializer
@@ -16,7 +17,11 @@ logger = get_formatted_logger(__name__)
 
 
 class UpdateImportantContactManagerApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.IsAdminUser,
+        ManagerApiPermission,
+    ]
 
     def put(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -59,7 +64,11 @@ class UpdateImportantContactManagerApiView(APIView):
 
 
 class RetrieveImportantContactManagerApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.IsAdminUser,
+        ManagerApiPermission,
+    ]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""

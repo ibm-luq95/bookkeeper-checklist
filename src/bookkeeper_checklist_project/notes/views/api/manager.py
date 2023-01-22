@@ -8,6 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.api.permissions import ManagerApiPermission
 from core.utils import get_formatted_logger
 from notes.models import Note
 from notes.serializers import CreateNoteSerializer, NoteSerializer
@@ -16,10 +17,11 @@ logger = get_formatted_logger(__name__)
 
 
 class CreateNoteManagerApiView(APIView):
-    permission_classes = [
+    permission_classes = (
         permissions.IsAdminUser,
         permissions.IsAuthenticated,
-    ]
+        ManagerApiPermission,
+    )
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -57,7 +59,11 @@ class CreateNoteManagerApiView(APIView):
 
 
 class RetrieveNoteManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAdminUser,
+        permissions.IsAuthenticated,
+        ManagerApiPermission,
+    )
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -88,7 +94,11 @@ class RetrieveNoteManagerApiView(APIView):
 
 
 class UpdateNoteManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAdminUser,
+        permissions.IsAuthenticated,
+        ManagerApiPermission,
+    )
 
     def put(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -123,7 +133,11 @@ class UpdateNoteManagerApiView(APIView):
 
 
 class DeleteNoteManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAdminUser,
+        permissions.IsAuthenticated,
+        ManagerApiPermission,
+    )
 
     def delete(self, request: Request, *args, **kwargs):
         serializer = ""

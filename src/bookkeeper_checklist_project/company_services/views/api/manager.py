@@ -9,13 +9,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from company_services.serializers import CreateCompanyServicesSerializer
+from core.api.permissions import ManagerApiPermission
 from core.utils import get_formatted_logger
 
 logger = get_formatted_logger(__name__)
 
 
 class CreateCompanyServiceManagerApiView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [
+        permissions.IsAdminUser,
+        permissions.IsAuthenticated,
+        ManagerApiPermission,
+    ]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""

@@ -7,6 +7,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.api.permissions import BookkeeperApiPermission
 from core.utils import get_formatted_logger
 from special_assignment.models import SpecialAssignment
 
@@ -14,7 +15,7 @@ logger = get_formatted_logger(__name__)
 
 
 class UpdateSpecialAssignmentBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, BookkeeperApiPermission]
 
     def put(self, request: Request, *args, **kwargs):
         serializer = ""

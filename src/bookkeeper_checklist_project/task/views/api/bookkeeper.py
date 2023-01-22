@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-#
 import traceback
+from pprint import pprint
 
-from rest_framework import permissions
+from django.urls import reverse_lazy
+from rest_framework import permissions, generics
 from rest_framework import status
 from rest_framework.exceptions import APIException, PermissionDenied
+from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.api.permissions import BookkeeperApiPermission, CheckOwnerPermission
 from core.utils import get_formatted_logger
 from task.models import Task
 from task.serializers import TaskSerializer, CreateTaskSerializer
@@ -15,42 +19,56 @@ from task.serializers import TaskSerializer, CreateTaskSerializer
 logger = get_formatted_logger(__name__)
 
 
-class TaskBookkeeperRetrieveAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class TaskBookkeeperRetrieveAPIView(generics.RetrieveAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+        BookkeeperApiPermission,
+    ]
+    serializer_class = TaskSerializer
+    queryset = Task.objects.select_related().all()
 
-    def post(self, request: Request, *args, **kwargs):
-        serializer = ""
-        try:
-            data = request.data
-            task_object = Task.objects.get(pk=data.get("taskId"))
-            task_serializer = TaskSerializer(instance=task_object)
-            # debugging_print(task_serializer.data)
-            return Response(
-                data={"task": task_serializer.data},
-                status=status.HTTP_201_CREATED,
-            )
-        except APIException as ex:
-            # logger.error("API Exception")
-            logger.error(ex)
-            response_data = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                # "user_error_msg": ex.detail,
-                "user_error_msg": str(ex),
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as ex:
-            # debugging_print(ex)
-            logger.error(traceback.format_exc())
-            response_data = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                "error": str(ex),
-                "user_error_msg": "Error while update task!",
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+    def get_object(self):
+        qs = self.get_queryset()
+        obj = get_object_or_404(queryset=qs, pk=self.request.GET.get("task"))
+        return obj
+
+    # def post(self, request: Request, *args, **kwargs):
+    #     serializer = ""
+    #     try:
+    #         data = request.data
+    #         print("@@@@@@@@@@@@@@@@@@@@@")
+    #         task_object = Task.objects.get(pk=data.get("taskId"))
+    #         task_serializer = TaskSerializer(instance=task_object)
+    #         # debugging_print(task_serializer.data)
+    #         return Response(
+    #             data={"task": task_serializer.data},
+    #             status=status.HTTP_201_CREATED,
+    #         )
+    #     except APIException as ex:
+    #         # logger.error("API Exception")
+    #         logger.error(ex)
+    #         response_data = {
+    #             "status": status.HTTP_400_BAD_REQUEST,
+    #             # "user_error_msg": ex.detail,
+    #             "user_error_msg": str(ex),
+    #         }
+    #         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+    #     except Exception as ex:
+    #         # debugging_print(ex)
+    #         logger.error(traceback.format_exc())
+    #         response_data = {
+    #             "status": status.HTTP_400_BAD_REQUEST,
+    #             "error": str(ex),
+    #             "user_error_msg": "Error while update task!",
+    #         }
+    #         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SetTaskCompletedBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BookkeeperApiPermission,
+    )
 
     def put(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -98,7 +116,10 @@ class SetTaskCompletedBookkeeperApiView(APIView):
 
 
 class CreateTaskBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BookkeeperApiPermission,
+    )
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -134,7 +155,10 @@ class CreateTaskBookkeeperApiView(APIView):
 
 
 class UpdateTaskBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BookkeeperApiPermission,
+    )
 
     def put(self, request: Request, *args, **kwargs):
         serializer = ""
@@ -174,12 +198,17 @@ class UpdateTaskBookkeeperApiView(APIView):
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DeleteTaskBookkeeperApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class DeleteTaskBookkeeperApiView(APIView, CheckOwnerPermission):
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BookkeeperApiPermission,
+        CheckOwnerPermission,
+    )
 
     def delete(self, request: Request, *args, **kwargs):
         serializer = ""
         try:
+            pprint(reverse_lazy("manager:bookkeeper:details"))
             data = request.data
             current_user = request.user
             task_object = Task.objects.get(pk=data.get("taskId"))
@@ -188,7 +217,7 @@ class DeleteTaskBookkeeperApiView(APIView):
                     {"user_error_msg": "You dont have permission to delete this task!"}
                 )
 
-            task_object.delete()
+            # task_object.delete()
             return Response(
                 data={"msg": "Task deleted successfully!"}, status=status.HTTP_200_OK
             )

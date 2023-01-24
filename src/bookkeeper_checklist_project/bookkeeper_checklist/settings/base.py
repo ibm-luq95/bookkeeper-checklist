@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 import ast
+from decouple import config
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
@@ -25,7 +26,8 @@ BASE_DIR = (
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -158,7 +160,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-WHITENOISE_MANIFEST_STRICT = ast.literal_eval(os.environ.get("WHITENOISE_MANIFEST_STRICT"))
+# WHITENOISE_MANIFEST_STRICT = ast.literal_eval(os.environ.get("WHITENOISE_MANIFEST_STRICT"))
+WHITENOISE_MANIFEST_STRICT = config("WHITENOISE_MANIFEST_STRICT", cast=bool)
 
 # STATIC_ROOT = (
 #     BASE_DIR
@@ -225,7 +228,8 @@ CRISPY_TEMPLATE_PACK = "bulma"
 
 AUTH_USER_MODEL = "users.CustomUser"
 
-SESSION_COOKIE_AGE = int(os.environ.get("SESSION_COOKIE_AGE"))
+# SESSION_COOKIE_AGE = int(os.environ.get("SESSION_COOKIE_AGE"))
+SESSION_COOKIE_AGE = config("SESSION_COOKIE_AGE", cast=int)
 
 REST_FRAMEWORK = {
     # "EXCEPTION_HANDLER": "core.errors.api_exception_handler",
@@ -266,13 +270,16 @@ MAINTENANCE_MODE_IGNORE_ADMIN_SITE = True
 MAINTENANCE_MODE_IGNORE_SUPERUSER = False
 
 # Session configs
-SESSION_EXPIRE_SECONDS = int(os.environ.get("SESSION_EXPIRE_SECONDS"))  # 1 hour
-SESSION_EXPIRE_AT_BROWSER_CLOSE = ast.literal_eval(
-    os.environ.get("SESSION_EXPIRE_AT_BROWSER_CLOSE")
-)  # Invalid session
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = ast.literal_eval(
-    os.environ.get("SESSION_EXPIRE_AFTER_LAST_ACTIVITY")
-)
+# SESSION_EXPIRE_SECONDS = int(os.environ.get("SESSION_EXPIRE_SECONDS"))  # 1 hour
+SESSION_EXPIRE_SECONDS = config("SESSION_EXPIRE_SECONDS", cast=int)  # 1 hour
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = ast.literal_eval(
+#     os.environ.get("SESSION_EXPIRE_AT_BROWSER_CLOSE")
+# )  # Invalid session
+SESSION_EXPIRE_AT_BROWSER_CLOSE = config("SESSION_EXPIRE_AT_BROWSER_CLOSE", cast=bool) # Invalid session
+# SESSION_EXPIRE_AFTER_LAST_ACTIVITY = ast.literal_eval(
+#     os.environ.get("SESSION_EXPIRE_AFTER_LAST_ACTIVITY")
+# )
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = config("SESSION_EXPIRE_AFTER_LAST_ACTIVITY", cast=bool)
 
 # SESSION_TIMEOUT_REDIRECT = "/"
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60  # group by minute
@@ -321,17 +328,21 @@ LOGGING = {
     },
 }
 # check if cache enabled
-if ast.literal_eval(os.environ.get("IS_CACHE_ENABLED")) is True:
-    CACHE_MIDDLEWARE_ALIAS = os.environ.get(
-        "CACHE_MIDDLEWARE_ALIAS"
-    )  # which cache alias to use
-    CACHE_MIDDLEWARE_SECONDS = int(
-        os.environ.get("CACHE_MIDDLEWARE_SECONDS")
-    )  # number of seconds to cache a page for (TTL)
+# if ast.literal_eval(os.environ.get("IS_CACHE_ENABLED")) is True:
+if config("IS_CACHE_ENABLED", cast=bool) is True:
+    # CACHE_MIDDLEWARE_ALIAS = os.environ.get(
+    #     "CACHE_MIDDLEWARE_ALIAS"
+    # )  # which cache alias to use
+    CACHE_MIDDLEWARE_ALIAS = config("CACHE_MIDDLEWARE_ALIAS", cast=str)  # which cache alias to use
+    # CACHE_MIDDLEWARE_SECONDS = int(
+    #     os.environ.get("CACHE_MIDDLEWARE_SECONDS")
+    # )  # number of seconds to cache a page for (TTL)
+    CACHE_MIDDLEWARE_SECONDS = config("CACHE_MIDDLEWARE_SECONDS", cast=int)  # number of seconds to cache a page for (TTL)
 
-    CACHE_MIDDLEWARE_KEY_PREFIX = os.environ.get(
-        "CACHE_MIDDLEWARE_KEY_PREFIX"
-    )  # should be used if the cache is shared across multiple sites that
+    # CACHE_MIDDLEWARE_KEY_PREFIX = os.environ.get(
+    #     "CACHE_MIDDLEWARE_KEY_PREFIX"
+    # )  # should be used if the cache is shared across multiple sites that
+    CACHE_MIDDLEWARE_KEY_PREFIX = config("CACHE_MIDDLEWARE_KEY_PREFIX", cast=str) # should be used if the cache is shared across multiple sites that
     # use the
     # same
     # Django instance

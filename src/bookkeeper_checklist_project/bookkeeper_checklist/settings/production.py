@@ -1,40 +1,41 @@
+from decouple import config
 from .base import *
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(", ")
-DEBUG = ast.literal_eval(os.environ.get("DEBUG"))
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(", ")
+DEBUG = config("DEBUG", cast=bool)
 
 # Database configurations
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("DB_ENGINE"),
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": os.environ.get("DB_HOST"),
-        "PORT": os.environ.get("DB_PORT"),
+        "ENGINE": config("DB_ENGINE", cast=str),
+        "NAME": config("DB_NAME", cast=str),
+        "USER": config("DB_USER", cast=str),
+        "PASSWORD": config("DB_PASSWORD", cast=str),
+        "HOST": config("DB_HOST", cast=str),
+        "PORT": config("DB_PORT", cast=str),
         "OPTIONS": {
-            "client_encoding": os.environ.get("DB_CLIENT_ENCODING"),
+            "client_encoding": config("DB_CLIENT_ENCODING", cast=str),
         },
     }
 }
 # Cache configurations
 CACHES = {
     "default": {
-        "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
-        "LOCATION": f"redis://{os.environ.get('REDIS_USER')}:{os.environ.get('REDIS_PASSWORD')}"
-        f"@{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
+        "BACKEND": config("CACHE_BACKEND_ENGINE", cast=str),
+        "LOCATION": f"redis://{config('REDIS_USER', cast=str)}:{config('REDIS_PASSWORD', cast=str)}"
+        f"@{config('REDIS_HOST', cast=str)}:{config('REDIS_PORT', cast=str)}",
         "TIMEOUT": None,
     }
 }
 
 # ENCRYPT_KEY
-ENCRYPT_KEY = bytes(os.environ.get("ENCRYPT_KEY"), "ascii")
+ENCRYPT_KEY = bytes(config("ENCRYPT_KEY", cast=str), "ascii")
 
 # Django production deployment settings
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-SECURE_HSTS_PRELOAD = True
-USE_X_FORWARDED_HOST = True
+CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", cast=bool)
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", cast=bool)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config("SECURE_HSTS_INCLUDE_SUBDOMAINS", cast=bool)
+SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", cast=bool)
+SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", cast=bool)
+SECURE_HSTS_PRELOAD = config("SECURE_HSTS_PRELOAD", cast=bool)
+USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST", cast=bool)

@@ -1,8 +1,11 @@
+from decouple import config
 from .base import *
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(", ")
+# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(", ")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(", ")
 
-DEBUG = ast.literal_eval(os.environ.get("DEBUG"))
+# DEBUG = ast.literal_eval(os.environ.get("DEBUG"))
+DEBUG = config("DEBUG", cast=bool)
 
 INSTALLED_APPS = INSTALLED_APPS + [
     "debug_toolbar",
@@ -17,12 +20,12 @@ MIDDLEWARE = MIDDLEWARE + [
 # Database configurations
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("DB_ENGINE"),
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": os.environ.get("DB_HOST"),
-        "PORT": os.environ.get("DB_PORT"),
+        "ENGINE": config("DB_ENGINE", cast=str),
+        "NAME": config("DB_NAME", cast=str),
+        "USER": config("DB_USER", cast=str),
+        "PASSWORD": config("DB_PASSWORD", cast=str),
+        "HOST": config("DB_HOST", cast=str),
+        "PORT": config("DB_PORT", cast=str),
         "OPTIONS": {
             "read_default_file": "/opt/lampp/etc/my.cnf",
             "init_command": "SET default_storage_engine=INNODB",
@@ -43,13 +46,16 @@ DATABASES = {
 # Cache Redis
 CACHES = {
     "default": {
-        "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
-        "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
+        # "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
+        "BACKEND": config("CACHE_BACKEND_ENGINE", cast=str),
+        # "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
+        "LOCATION": f"redis://:{config('REDIS_PASSWORD')}@{config('REDIS_HOST')}:{config('REDIS_PORT')}",
         "TIMEOUT": None,
     }
 }
 # Djagno Debug Toolbar
-INTERNAL_IPS = os.environ.get("INTERNAL_IPS").split(", ")
+# INTERNAL_IPS = os.environ.get("INTERNAL_IPS").split(", ")
+INTERNAL_IPS = config("INTERNAL_IPS", cast=str).split(", ")
 DISABLE_PANELS = {}
 
 DEBUG_TOOLBAR_PANELS = [
@@ -86,7 +92,8 @@ GRAPH_MODELS = {
 }
 
 # ENCRYPT_KEY
-ENCRYPT_KEY = bytes(os.environ.get("ENCRYPT_KEY"), "ascii")
+# ENCRYPT_KEY = bytes(os.environ.get("ENCRYPT_KEY"), "ascii")
+ENCRYPT_KEY = bytes(config("ENCRYPT_KEY"), "ascii")
 
 if DEBUG:
     import mimetypes

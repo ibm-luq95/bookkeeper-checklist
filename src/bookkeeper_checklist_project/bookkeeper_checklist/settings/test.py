@@ -1,5 +1,5 @@
 from .base import *
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(", ")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(", ")
 
-DEBUG = ast.literal_eval(os.environ.get("DEBUG"))
+DEBUG = config("DEBUG", cast=bool)

@@ -1,0 +1,28 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="assistant-update-client-form">
+    <div class="box">
+        <form method="post" id="update-client-form">
+            {% csrf_token %}
+            <legend class="title has-text-black">
+                Update new client
+            </legend>
+            <hr>
+            <fieldset form="update-client-form">
+                {{ form| crispy }}
+                <div class="has-text-right">
+                    <button type="submit" class="button is-info is-fullwidth">
+                        Update
+                    </button>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</section>
+
+{% endblock dashboard_content %}

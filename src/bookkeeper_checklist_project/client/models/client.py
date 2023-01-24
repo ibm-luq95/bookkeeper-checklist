@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-#
 from PIL import Image
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -45,10 +46,16 @@ class Client(BaseModelMixin):
     important_contacts = models.ManyToManyField(
         to=ImportantContact, related_name="client", blank=True
     )
+    created_by = models.ForeignKey(
+        to=get_user_model(),
+        on_delete=models.DO_NOTHING,
+        related_name="created_clients",
+        null=True,
+        blank=True,
+        editable=False,
+    )
 
     def __str__(self) -> str:
-        # return self.client_account
-        # return f"{self.email} - {self.client_account}"
         return self.name
 
     def save(self, *args, **kwargs):
@@ -70,11 +77,17 @@ class Client(BaseModelMixin):
         all_tasks_count = []
         if self.jobs.count() <= 0:
             return 0
-        for job in self.jobs.all():
+        for job in self.jobs.select_related().filter():
             all_tasks_count.append(job.tasks.count())
+
+        # print("#############")
+        # print(self.name)
+        # print(len(all_tasks_count))
+        # print(self.jobs.count())
+        # print("#############")
         return sum(all_tasks_count)  # TODO: check if sum or len to use
 
-    def get_managed_bookkeepers(self) -> list | None:
+    def get_managed_bookkeepers(self) -> set | None:
         all_bookkeepers = []
         jobs = self.jobs.select_related().filter()
         if jobs:
@@ -82,6 +95,6 @@ class Client(BaseModelMixin):
                 # print(job)
                 for bookkeeper in job.bookkeeper.select_related().filter():
                     all_bookkeepers.append(bookkeeper)
-            return all_bookkeepers
+            return set(all_bookkeepers)
         else:
             return None

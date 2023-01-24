@@ -4,7 +4,7 @@
     <section class="hero is-info welcome is-small">
         <div class="hero-body">
             <div class="container">
-                <h1 class="title">Hello, {{ assistant_fake_name }}</h1>
+                <h1 class="title">Hello, {{ request.user.fullname }}</h1>
                 <h2 class="subtitle">I hope you are having a great day!</h2>
             </div>
         </div>
@@ -14,19 +14,19 @@
             <div class="tile is-parent">
                 <article class="tile is-child box">
                     <p class="title">439k</p>
-                    <p class="subtitle">Clients</p>
+                    <p class="subtitle is-capitalized">Clients</p>
                 </article>
             </div>
             <div class="tile is-parent">
                 <article class="tile is-child box">
                     <p class="title">59k</p>
-                    <p class="subtitle">Customers</p>
+                    <p class="subtitle is-capitalized">special assignments</p>
                 </article>
             </div>
             <div class="tile is-parent">
                 <article class="tile is-child box">
                     <p class="title">3.4k</p>
-                    <p class="subtitle">Open Orders</p>
+                    <p class="subtitle is-capitalized">bookkeepers</p>
                 </article>
             </div>
             <div class="tile is-parent">

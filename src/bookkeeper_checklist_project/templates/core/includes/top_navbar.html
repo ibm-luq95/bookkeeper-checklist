@@ -12,9 +12,9 @@
       {% if request.user.user_type == "bookkeeper" %}
       <a class="navbar-item brand-text" href="{% url 'bookkeeper:dashboard' %}">Bookkeeper</a>
       {% elif request.user.user_type == "assistant" %}
-      <a class="navbar-item brand-text" href="{% url 'assistant:dashboard' %}">Bookkeeper</a>
+      <a class="navbar-item brand-text" href="{% url 'assistant:dashboard' %}">Assistant</a>
       {% elif request.user.user_type == "manager" %}
-      <a class="navbar-item brand-text" href="{% url 'manager:dashboard' %}">Bookkeeper</a>
+      <a class="navbar-item brand-text" href="{% url 'manager:dashboard' %}">Management</a>
       {% endif %}
 
       <div class="navbar-burger burger" data-target="navMenu">
@@ -52,7 +52,21 @@
           </div>
         </div>
         {% elif request.user.user_type == "assistant" %}
-        <a class="navbar-item" href="{% url 'assistant:bookkeeper-list-url' %}">Bookkeepers</a>
+        <a class="navbar-item" href="{% url 'assistant:bookkeeper:list' %}">Bookkeepers</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Clients
+          </a>
+
+          <div class="navbar-dropdown">
+            <a href="{% url 'assistant:client:list' %}" class="navbar-item">
+              List all clients
+            </a>
+            <a href="{% url 'assistant:important_contact:list' %}" class="navbar-item">
+              Client contacts
+            </a>
+          </div>
+        </div>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
             Special Assignment

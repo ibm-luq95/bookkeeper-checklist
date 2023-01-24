@@ -98,9 +98,11 @@
     </div>
     {% endif %}
   </div>
+</section>
 
-  {% endblock dashboard_content %}
 
-  {% block externaljs %}
-  <script src="{% static 'js/manager/bookkeeper/list.js' %}" defer type="module"></script>
-  {% endblock externaljs %}
+{% endblock dashboard_content %}
+
+{% block externaljs %}
+<script src="{% static 'js/manager/bookkeeper/list.js' %}" defer type="module"></script>
+{% endblock externaljs %}

@@ -57,7 +57,7 @@ class ClientCreateView(
     login_url = reverse_lazy("users:login")
     template_name = "manager/client/create.html"
     form_class = ClientForm
-    success_message = "Client created successfully"
+    success_message = get_trans_txt("Client created successfully")
     success_url = reverse_lazy("manager:client:list")
 
     # template_name_suffix = "_create_client"
@@ -67,6 +67,11 @@ class ClientCreateView(
         context = super().get_context_data(**kwargs)
         context.setdefault("title", get_trans_txt("Create client"))
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super(ClientCreateView, self).get_form_kwargs()
+        kwargs.update({"created_by": self.request.user})
+        return kwargs
 
     # def form_valid(self, form):
     #     """If the form is valid, save the associated model."""

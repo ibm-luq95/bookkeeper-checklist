@@ -1,97 +1,87 @@
 {% extends 'core/layouts/dashboard.html' %}
+{% load static %}
 
 
 
 {% block dashboard_content %}
-<h3 class="title is-3">Bookkeepers</h3>
-<div class="columns">
-    <div class="column">
-        <div class="list">
-            <div class="list-item box">
-                <div class="list-item-content">
-                    <div class="list-item-title">
-                        <a href="" class="has-text-dark">Bookkeeper Name</a>
-                    </div>
-                    <div class="list-item-description">Bookkeeper Name description</div>
-                </div>
-            </div>
+<section id="assistant-bookkeepers-list" class="box">
+  <header>
+    <h3 class="title is-3">
+      Bookkeepers
+    </h3>
+  </header>
+  <hr />
+  <div>
+    {% if object_list.count > 0 %}
+    <table class="table is-fullwidth table-100 table-list-component is-bordered is-striped is-narrow"
+      id="assistantBookkeepersTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Client(s)</th>
+          <th>Task(s)</th>
+          <th>Active</th>
+          <th>Status</th>
+          <th>Created AT</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Client(s)</th>
+          <th>Task(s)</th>
+          <th>Active</th>
+          <th>Status</th>
+          <th>Created AT</th>
+          <th>Actions</th>
+        </tr>
+      </tfoot>
+      <tbody>
 
-            <div class="list-item box">
-                <div class="list-item-content">
-                    <div class="list-item-title">
-                        <a href="" class="has-text-dark">Bookkeeper Name</a>
-                    </div>
-                    <div class="list-item-description">Bookkeeper Name description</div>
-                </div>
-            </div>
+        {% for object in object_list %}
+        <tr>
+          <td>
+            <a href="{% url 'assistant:bookkeeper:details' object.pk %}">{{ object.user.fullname }}</a>
+          </td>
+          <td>
+            <a href="mailto:{{ object.user.email }}">
+              {{ object.user.email }}
+            </a>
+          </td>
+          <td class="has-text-centered">
 
-            <div class="list-item box">
-                <div class="list-item-content">
-                    <div class="list-item-title">
-                        <a href="" class="has-text-dark">Bookkeeper Name</a>
-                    </div>
-                    <div class="list-item-description">Bookkeeper Name description</div>
-                </div>
-            </div>
+            {{ object.get_clients_total }}
+          </td>
+          <td class="has-text-centered">{{ object.get_tasks_count }}</td>
+          <td>{{ object.is_active_labeled }}</td>
+          <td>{{ object.status|title }}</td>
+          <td>{{ object.created_at|date:"SHORT_DATE_FORMAT" }}</td>
+          <td>
+            <div class="buttons are-small justify-center">
 
-            <div class="list-item box">
-                <div class="list-item-content">
-                    <div class="list-item-title">
-                        <a href="" class="has-text-dark">Bookkeeper Name</a>
-                    </div>
-                    <div class="list-item-description">Bookkeeper Name description</div>
-                </div>
+              <a href="" class="button is-success is-light">
+                <i class="fa-solid fa-eye"></i>
+              </a>
             </div>
+          </td>
+        </tr>
+        {% endfor %}
 
-            <div class="list-item box">
-                <div class="list-item-content">
-                    <div class="list-item-title">
-                        <a href="" class="has-text-dark">Bookkeeper Name</a>
-                    </div>
-                    <div class="list-item-description">Bookkeeper Name description</div>
-                </div>
-            </div>
-            <div class="list-item box">
-                <div class="list-item-content">
-                    <div class="list-item-title">
-                        <a href="" class="has-text-dark">Bookkeeper Name</a>
-                    </div>
-                    <div class="list-item-description">Bookkeeper Name description</div>
-                </div>
-            </div>
-            <div class="list-item box">
-                <div class="list-item-content">
-                    <div class="list-item-title">
-                        <a href="" class="has-text-dark">Bookkeeper Name</a>
-                    </div>
-                    <div class="list-item-description">Bookkeeper Name description</div>
-                </div>
-            </div>
-        </div>
+      </tbody>
+    </table>
+    {% else %}
+    <div class="notification is-warning">
+      <!-- <button class="delete"></button> -->
+      No bookkeeper(s)
     </div>
-</div>
-<!-- Start Pagination -->
-<div class="columns">
-    <div class="column">
-        <div class="box mt-5">
-            <nav class="pagination is-centered" role="navigation"
-                aria-label="pagination">
-                <a class="pagination-previous">Previous</a>
-                <a class="pagination-next">Next page</a>
-                <ul class="pagination-list">
-                    <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-                    <li><span class="pagination-ellipsis">&hellip;</span></li>
-                    <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-                    <li><a class="pagination-link is-current" aria-label="Page
-                            46"
-                            aria-current="page">46</a></li>
-                    <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-                    <li><span class="pagination-ellipsis">&hellip;</span></li>
-                    <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
-<!-- End Pagination -->
+    {% endif %}
+  </div>
+</section>
+
 {% endblock dashboard_content %}
+{% block externaljs %}
+<script src="{% static 'js/assistant/bookkeeper/list.js' %}" defer type="module"></script>
+{% endblock externaljs %}

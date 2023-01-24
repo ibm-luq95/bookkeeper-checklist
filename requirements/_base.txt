@@ -13,6 +13,7 @@ mysqlclient
 Pillow
 psycopg2-binary
 python-dotenv
+python-decouple
 python-magic
 redis
 requests

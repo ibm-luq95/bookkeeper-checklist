@@ -16,9 +16,9 @@ from dotenv import load_dotenv
 load_dotenv()
 # print(os.environ.get("STAGE_ENVIRONMENT"))
 log = logging.getLogger("my-logger")
-log.info("##########################")
-log.info(os.environ.get("STAGE_ENVIRONMENT"))
-log.info("##########################")
+log.error("##########################")
+log.error(os.environ.get("STAGE_ENVIRONMENT"))
+log.error("##########################")
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bookkeeper_checklist.settings")

@@ -63,3 +63,16 @@ class UserForeignKeyMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class CreatedByMixin(models.Model):
+    created_by = models.ForeignKey(
+        to=get_user_model(),
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=True,
+        editable=False,
+    )
+
+    class Meta:
+        abstract = True

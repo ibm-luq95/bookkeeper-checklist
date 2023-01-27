@@ -115,7 +115,7 @@ Job - {{ object.title }}
                           </label>
                         </td>
                         <td>
-                          <a data-owner="{% if task.user == request.user %}1{% else %}0{% endif %}" href="#"
+                          <a data-owner="{% if task.created_by == request.user %}1{% else %}0{% endif %}" href="#"
                             class="taskViewBtn" data-task-id="{{ task.pk }}">{{ task.title }}</a>
                         </td>
                         <td>{{ task.get_task_status_display }}</td>
@@ -123,14 +123,14 @@ Job - {{ object.title }}
                         <td>
                           <div class="field is-grouped is-grouped-right are-small">
                             <p class="control">
-                              <button data-owner="{% if task.user == request.user %}1{% else %}0{% endif %}"
+                              <button data-owner="{% if task.created_by == request.user %}1{% else %}0{% endif %}"
                                 data-task-id="{{ task.pk }}" type="button"
                                 class="button is-info taskViewBtn is-small bkchlst-input">
                                 <i class="fa-solid fa-eye"></i>
                               </button>
                             </p>
 
-                            {% if task.user == request.user %}
+                            {% if task.created_by == request.user %}
 
                             <p class="control">
                               <button data-task-id="{{ task.pk }}" data-task-title="{{ task.title }}" type="button"
@@ -253,13 +253,13 @@ Job - {{ object.title }}
               <div class="panel-block">
                 <a class="is-active documentElement mr-3" href="{{ document.document_file.url  }}" target="_blank"
                   data-document-id="{{ document.pk }}"
-                  data-owner="{% if document.user == request.user %}1{% else %}0{% endif %}">
+                  data-owner="{% if document.created_by == request.user %}1{% else %}0{% endif %}">
                   <!-- <span class="panel-icon">
                                         <i class="fas fa-book" aria-hidden="true"></i>
                                     </span> -->
                   {{ document.title }}
                 </a>
-                {% if document.user == request.user %}
+                {% if document.created_by == request.user %}
                 <div class="field is-grouped is-grouped-right">
                   <p class="control">
                     <button data-document-id="{{ document.pk }}" data-document-title="{{ document.title }}"

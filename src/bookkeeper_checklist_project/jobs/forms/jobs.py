@@ -4,20 +4,27 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from bookkeeper.models import Bookkeeper
-from core.forms import BaseModelFormMixin, Html5Mixin
+from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
 from jobs.models import Job
 
 
-class JobForm(BaseModelFormMixin):
-    def __init__(self, bookkeeper=None, client=None, *args, **kwargs):
+class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+    def __init__(self, bookkeeper=None, client=None, created_by=None, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)
         if bookkeeper is not None:
             self.fields["bookkeeper"].initial = bookkeeper
             # self.fields["bookkeeper"].widget.attrs.update({"disabled": "disabled"})
-            self.fields["bookkeeper"].widget.attrs.update({"class": "readonly-select cursor-not-allowed"})
+            self.fields["bookkeeper"].widget.attrs.update(
+                {"class": "readonly-select cursor-not-allowed"}
+            )
         if client is not None:
             self.fields["client"].initial = client
-            self.fields["client"].widget.attrs.update({"class": "readonly-select cursor-not-allowed"})
+            self.fields["client"].widget.attrs.update(
+                {"class": "readonly-select cursor-not-allowed"}
+            )
+
+        if created_by is not None:
+            self.created_by = created_by
 
     bookkeeper = forms.ModelMultipleChoiceField(
         queryset=Bookkeeper.objects.all(),

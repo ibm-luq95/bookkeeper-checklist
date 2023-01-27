@@ -2,17 +2,27 @@ from django import forms
 
 from company_services.helpers import PasswordHasher
 from company_services.models import CompanyService
-from core.forms import BaseModelFormMixin
+from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
 
 
-class CompanyServiceForm(BaseModelFormMixin):
-    def __init__(self, client=None, is_update=False, updated_object=None, *args, **kwargs):
+class CompanyServiceForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+    def __init__(
+        self,
+        client=None,
+        is_update=False,
+        updated_object=None,
+        created_by=None,
+        *args,
+        **kwargs
+    ):
         super(CompanyServiceForm, self).__init__(*args, **kwargs)
         # debugging_print(self.fields)
         self.is_update = is_update
         self.updated_object = updated_object
         if client is not None:
             self.fields["client"].initial = client
+        if created_by is not None:
+            self.created_by = created_by
         # if self.is_update is True:
         #     # pass
         #     self.initial["password"] = self.updated_object.decrypted_password

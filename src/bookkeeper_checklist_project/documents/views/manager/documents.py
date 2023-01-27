@@ -32,6 +32,11 @@ class CreateManagerDocumentView(
                 )
         return url
 
+    def get_form_kwargs(self):
+        kwargs = super(CreateManagerDocumentView, self).get_form_kwargs()
+        kwargs.update({"created_by": self.request.user})
+        return kwargs
+
 
 class ListManagerDocumentView(LoginRequiredMixin, ManagerAccessMixin, ListView):
     login_url = reverse_lazy("users:login")

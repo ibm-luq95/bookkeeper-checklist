@@ -45,6 +45,11 @@ class ClientAccountCreateView(
         context["title"] = get_trans_txt("Create client account")
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super(ClientAccountCreateView, self).get_form_kwargs()
+        kwargs.update({"created_by": self.request.user})
+        return kwargs
+
     # def get_success_url(self):
     #     url = reverse_lazy(
     #         "manager:client_account:update", kwargs={"pk": self.get_object().pk}

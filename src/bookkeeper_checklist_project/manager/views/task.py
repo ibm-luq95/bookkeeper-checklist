@@ -53,12 +53,10 @@ class TaskCreateView(
         context.setdefault("title", get_trans_txt("Create task"))
         return context
 
-    def form_valid(self, form):
-        """If the form is valid, save the associated model."""
-        self.object = form.save()
-        self.object.user = self.request.user
-        self.object.save()
-        return super().form_valid(form)
+    def get_form_kwargs(self):
+        kwargs = super(TaskCreateView, self).get_form_kwargs()
+        kwargs.update({"created_by": self.request.user})
+        return kwargs
 
 
 class TaskUpdateView(

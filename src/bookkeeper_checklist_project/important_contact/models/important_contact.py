@@ -6,10 +6,10 @@ from django.utils.translation import gettext as _
 
 # from client.models import Client
 from core.choices import ImportantContactLabelsEnum
-from core.models import BaseModelMixin
+from core.models import BaseModelMixin, CreatedByMixin
 
 
-class ImportantContact(BaseModelMixin):
+class ImportantContact(BaseModelMixin, CreatedByMixin):
     """Important contact for client
 
     Args:

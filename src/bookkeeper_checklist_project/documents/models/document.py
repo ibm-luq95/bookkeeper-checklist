@@ -8,7 +8,7 @@ from django.utils.translation import gettext as _
 
 from client.models import Client
 from core.choices import DocumentTypesEnum
-from core.models import BaseModelMixin
+from core.models import BaseModelMixin, CreatedByMixin
 from jobs.models import Job
 from task.models import Task
 
@@ -26,7 +26,7 @@ def saved_document_file_path(instance, filename):
     return file_path
 
 
-class Documents(BaseModelMixin):
+class Documents(BaseModelMixin, CreatedByMixin):
     title = models.CharField(_("title"), max_length=70, null=False, blank=False)
     document_section = models.CharField(
         _("document section"),
@@ -49,9 +49,6 @@ class Documents(BaseModelMixin):
     )
     task = models.ForeignKey(
         to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
-    )
-    user = models.ForeignKey(
-        to=get_user_model(), on_delete=models.SET_NULL, related_name="documents", null=True
     )
 
     def get_absolute_url(self):

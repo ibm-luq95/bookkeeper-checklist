@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-#
 from rest_framework import serializers
+
+from core.serializers import CreatedBySerializerMixin
 from task.models import Task
 
 
-class CreateTaskSerializer(serializers.ModelSerializer):
+class CreateTaskSerializer(serializers.ModelSerializer, CreatedBySerializerMixin):
     class Meta:
         model = Task
         exclude = (

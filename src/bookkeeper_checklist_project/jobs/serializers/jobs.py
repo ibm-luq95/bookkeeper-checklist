@@ -1,15 +1,14 @@
-from rest_framework import serializers
 from django.utils import timezone
+from rest_framework import serializers
+
+from bookkeeper.serializers import BookkeeperSerializer
 from core.constants import EXCLUDED_FIELDS
+from core.serializers import CreatedBySerializerMixin
 from jobs.models import Job
 from task.serializers import TaskSerializer
-from bookkeeper.serializers import BookkeeperSerializer
 
 
-class CreateJobSerializer(serializers.ModelSerializer):
-    # tasks = TaskSerializer(many=True, read_only=True)
-    # client = ClientSerializer()
-
+class CreateJobSerializer(serializers.ModelSerializer, CreatedBySerializerMixin):
     class Meta:
         model = Job
         exclude = (

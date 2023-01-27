@@ -1,11 +1,11 @@
 from betterforms.multiform import MultiModelForm
 
 from client.models import Client
-from core.forms import BaseModelFormMixin
+from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
 from important_contact.forms import ImportantContactForm
 
 
-class ClientForm(BaseModelFormMixin):
+class ClientForm(BaseModelFormMixin, SaveCreatedByFormMixin):
     def __init__(self, created_by=None, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
         self.fields.pop("is_active")
@@ -16,14 +16,6 @@ class ClientForm(BaseModelFormMixin):
     class Meta(BaseModelFormMixin.Meta):
         model = Client
         # fields = "__all__"
-
-    def save(self, commit=True):
-        client = super().save(commit=False)
-        if self.created_by:
-            client.created_by = self.created_by
-        if commit:
-            client.save()
-        return client
 
 
 class ClientCreationMultiForm(MultiModelForm):

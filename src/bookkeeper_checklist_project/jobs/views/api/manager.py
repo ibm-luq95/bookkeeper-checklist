@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-#
 import json
 import traceback
+from pprint import pprint
 
 from rest_framework import permissions
 from rest_framework import status
@@ -32,12 +33,12 @@ class CreateJobManagerApiView(APIView):
             data = request.data
             json_data = json.dumps(data)
             json_data = json.loads(json_data)
-            # debugging_print(json_data)
+            # pprint(data)
             serializer = CreateJobSerializer(data=json_data)
             # debugging_print(serializer.is_valid())
             if not serializer.is_valid():
                 raise APIException(serializer.errors)
-            # debugging_print(serializer.validated_data)
+            # pprint(serializer.validated_data)
             serializer.save()
             return Response(
                 data={"msg": "Job created successfully!"},

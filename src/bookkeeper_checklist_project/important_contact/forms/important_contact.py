@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-#
 from client.models import Client
-from core.forms import BaseModelFormMixin, Html5Mixin
+from core.forms import BaseModelFormMixin, Html5Mixin, SaveCreatedByFormMixin
 from important_contact.models import ImportantContact
 
 
-class ImportantContactForm(BaseModelFormMixin, Html5Mixin):
+class ImportantContactForm(BaseModelFormMixin, SaveCreatedByFormMixin):
     # auto_id = "important_contact_%s"
 
     def __init__(
@@ -13,16 +13,22 @@ class ImportantContactForm(BaseModelFormMixin, Html5Mixin):
         client_pk=None,
         is_creating=False,
         remove_client_field=False,
+        created_by=None,
         *args,
         **kwargs
     ):
         super(ImportantContactForm, self).__init__(*args, **kwargs)
         # print(is_creating)
 
+        if created_by is not None:
+            self.created_by = created_by
+
         if is_readonly is True:
             for field in self.fields:
                 self.fields[field].widget.attrs.update({"readonly": "readonly"})
-            self.fields["contact_label"].widget.attrs.update({"class": "readonly-select cursor-not-allowed"})
+            self.fields["contact_label"].widget.attrs.update(
+                {"class": "readonly-select cursor-not-allowed"}
+            )
 
         # check if the client passed in the arguments
         # if client_pk is not None:

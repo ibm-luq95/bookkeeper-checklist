@@ -4,12 +4,12 @@ from django.utils.translation import gettext as _
 
 from client.models import Client
 from core.choices import NoteTypesEnum
-from core.models import BaseModelMixin
+from core.models import BaseModelMixin, CreatedByMixin
 from jobs.models import Job
 from task.models import Task
 
 
-class Note(BaseModelMixin):
+class Note(BaseModelMixin, CreatedByMixin):
     """Notes model for bookkeeper, assistant, and manager
 
     Args:
@@ -33,9 +33,6 @@ class Note(BaseModelMixin):
         null=True,
         blank=True,
         choices=NoteTypesEnum.choices,
-    )
-    user = models.ForeignKey(
-        to=get_user_model(), on_delete=models.SET_NULL, related_name="notes", null=True
     )
 
     class Meta:

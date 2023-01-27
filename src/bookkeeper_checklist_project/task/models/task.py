@@ -5,11 +5,11 @@ from django.utils.translation import gettext as _
 
 # from client.models import Client
 from core.choices import TaskStatusEnum, TaskTypeEnum
-from core.models import BaseModelMixin, UserForeignKeyMixin
+from core.models import BaseModelMixin, UserForeignKeyMixin, CreatedByMixin
 from jobs.models import Job
 
 
-class Task(BaseModelMixin, UserForeignKeyMixin):
+class Task(BaseModelMixin, CreatedByMixin):
     """Tasks for every job
 
     Args:

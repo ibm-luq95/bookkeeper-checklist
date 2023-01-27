@@ -317,6 +317,7 @@ src/bookkeeper_checklist_project/maintenance_mode_state.txt
 src/frontend/**
 commands/**
 src/bookkeeper_checklist_project/staticfiles/**
+src/bookkeeper_checklist_project/certs
 src/bookkeeper_checklist_project/certs/**
 deployment/**
 src/bookkeeper_checklist_project/stunnel/**

@@ -47,6 +47,11 @@ class JobCreateView(
         context["title"] = "Create Job"
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super(JobCreateView, self).get_form_kwargs()
+        kwargs.update({"created_by": self.request.user})
+        return kwargs
+
 
 class JobDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
     template_name = "manager/jobs/details.html"
@@ -90,8 +95,8 @@ class JobDeleteView(
 ):
     model = Job
     template_name = "manager/jobs/delete.html"
-    form_class = JobForm
-    http_method_names = ["post", "get"]
+    # form_class = JobForm
+    # http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Job deleted successfully")
     success_url = reverse_lazy("manager:jobs:list")
 

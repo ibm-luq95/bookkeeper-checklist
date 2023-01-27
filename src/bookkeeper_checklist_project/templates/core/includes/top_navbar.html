@@ -69,6 +69,20 @@
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
+            Jobs
+          </a>
+
+          <div class="navbar-dropdown">
+            <a href="{% url 'assistant:job:list' %}" class="navbar-item">
+              List all jobs
+            </a>
+            <a href="{% url 'assistant:important_contact:list' %}" class="navbar-item">
+              Create job
+            </a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
             Special Assignment
             <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">
               {{ request.user.assistant.get_not_seen_special_assignments.count }}

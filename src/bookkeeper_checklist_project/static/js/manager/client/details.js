@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     formData.append("client", currentTarget.querySelector("#client").value);
     formData.append("user", currentTarget.querySelector("#user").value);
     formData.append("document_file", documentFile);
+    formData.append("created_by", currentTarget["user"].value);
     /* formData.forEach((formDataItem) => {
       console.log(formDataItem);
     }); */
@@ -217,6 +218,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       user: currentTarget["user"].value,
       note_section: currentTarget["note_section"].value,
       client: currentTarget["client"].value,
+      created_by: currentTarget["user"].value,
     };
     const requestOptions = {
       method: "POST",
@@ -384,6 +386,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       client: currentTarget["client"].value,
       user: currentTarget["user"].value,
       url: currentTarget["url"].value,
+      created_by: currentTarget["user"].value
     };
     const requestOptions = {
       method: "POST",
@@ -505,9 +508,11 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       status: currentTarget["status"].value,
       note: currentTarget["note"].value,
       job_type: currentTarget["job_type"].value,
+      created_by: currentTarget["user"].value,
       tasks: tasksArray,
     };
-    console.log(formData);
+    console.log(currentTarget.action);
+    // console.log(formData);
     const requestOptions = {
       method: "POST",
       dataToSend: formData,
@@ -553,13 +558,13 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     const formData = {
       title: currentTarget["title"].value,
       task_type: currentTarget["task_type"].value,
-      is_completed: currentTarget["is_completed"].checked,
       hints: currentTarget["hints"].value,
       user: currentTarget["user"].value,
       additional_notes: currentTarget["additional_notes"].value,
       job: currentTarget["job"].value,
       due_date: currentTarget["due_date"].value,
       start_date: currentTarget["start_date"].value,
+      created_by: currentTarget["user"].value
     };
     // console.log(formData);
     const requestOptions = {

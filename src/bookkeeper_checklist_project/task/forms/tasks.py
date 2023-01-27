@@ -1,14 +1,15 @@
 from django import forms
 
-from core.forms import BaseModelFormMixin
+from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
 from jobs.models import Job
 from task.models import Task
 
 
-class TaskForm(BaseModelFormMixin):
-    def __init__(self, client=None, is_disable_job=False, job=None, *args, **kwargs):
+class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+    def __init__(
+        self, client=None, is_disable_job=False, job=None, created_by=None, *args, **kwargs
+    ):
         super(TaskForm, self).__init__(*args, **kwargs)
-        self.fields.pop("user")
         self.fields.pop("is_completed")
         self.fields["job"].widget.attrs.update({"class": "input"})
 
@@ -24,6 +25,9 @@ class TaskForm(BaseModelFormMixin):
         if client is not None:
             self.fields["job"].queryset = Job.objects.filter(client=client)
             # self.fields["client"].widget.attrs.update({"class": "cursor-not-allowed readonly-select"})
+
+        if created_by is not None:
+            self.created_by = created_by
 
     class Meta(BaseModelFormMixin.Meta):
         model = Task

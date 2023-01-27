@@ -8,13 +8,13 @@ from django.utils import timezone
 from bookkeeper.models import Bookkeeper
 from client.models import Client
 from core.choices import JobStatusEnum, JobTypeEnum
-from core.models import BaseModelMixin
+from core.models import BaseModelMixin, CreatedByMixin
 
 # from task.models import Task
 from .help_messages import JOB_HELP_MESSAGES
 
 
-class Job(BaseModelMixin):
+class Job(BaseModelMixin, CreatedByMixin):
     """This is the job for every bookkeeper and assistant
 
     Args:

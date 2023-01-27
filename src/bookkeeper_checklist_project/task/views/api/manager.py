@@ -12,6 +12,7 @@ from core.api.permissions import ManagerApiPermission
 from core.utils import get_formatted_logger
 from task.models import Task
 from task.serializers import CreateTaskSerializer, TaskSerializer
+from pprint import pprint
 
 logger = get_formatted_logger(__name__)
 
@@ -27,7 +28,7 @@ class CreateTaskManagerApiView(APIView):
         serializer = ""
         try:
             data = request.data
-            # debugging_print(data)
+            pprint(data)
             serializer = CreateTaskSerializer(data=data)
             if not serializer.is_valid():
                 raise APIException(serializer.error_messages)

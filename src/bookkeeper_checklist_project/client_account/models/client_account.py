@@ -4,11 +4,11 @@ from django.utils.translation import gettext as _
 
 from client.models import Client
 from company_services.helpers.hasher import PasswordHasher
-from core.models import BaseModelMixin
+from core.models import BaseModelMixin, CreatedByMixin
 from core.choices import ClientAccountStatusEnum
 
 
-class ClientAccount(BaseModelMixin):
+class ClientAccount(BaseModelMixin, CreatedByMixin):
     """Client account model related with client
 
     Args:

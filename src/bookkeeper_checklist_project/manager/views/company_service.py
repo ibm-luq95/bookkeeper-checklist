@@ -53,6 +53,11 @@ class CompanyServicesCreateView(
         context["title"] = get_trans_txt("Create company services")
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super(CompanyServicesCreateView, self).get_form_kwargs()
+        kwargs.update({"created_by": self.request.user})
+        return kwargs
+
 
 class CompanyServicesDeleteView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView

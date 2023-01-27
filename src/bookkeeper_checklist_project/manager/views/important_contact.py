@@ -58,6 +58,7 @@ class ImportantContactCreateView(
     def get_form_kwargs(self):
         kwargs = super(ImportantContactCreateView, self).get_form_kwargs()
         client_pk = self.request.GET.get("client")
+        kwargs.update({"created_by": self.request.user})
         if client_pk is not None:
             kwargs.update({"client_pk": client_pk})
         return kwargs

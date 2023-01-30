@@ -14,4 +14,5 @@ urlpatterns = [
         include("jobs.urls.api.bookkeeper"),
         name="bookkeeper-jobs-api-urls",
     ),
+    path("jobs/", include("jobs.urls.api.jobs"), name="jobs-api-urls")
 ]

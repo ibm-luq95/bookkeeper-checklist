@@ -12,6 +12,7 @@ from jobs.models import Job
 from notes.forms import NoteForm
 from task.forms import TaskForm
 from .mixins import BookkeeperAccessMixin
+from core.choices import JobStatusEnum
 
 logger = get_formatted_logger(__file__)
 
@@ -63,6 +64,7 @@ class JobDetailView(
         context.setdefault("document_form", document_form)
         context.setdefault("note_form", note_form)
         context.setdefault("title", f"Job - {job_object.title}")
+        context.setdefault("job_status", JobStatusEnum.choices)
 
         return context
 

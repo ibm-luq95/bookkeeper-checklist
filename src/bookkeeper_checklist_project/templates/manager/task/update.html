@@ -7,7 +7,7 @@
 <section id="manager-update-task-form">
   <div class="box has-ribbon">
 
-    {% if object.user != request.user %}
+    {% if object.created_by != request.user %}
     <div class="ribbon is-medium is-warning">Not the owner</div>
     {% endif %}
 

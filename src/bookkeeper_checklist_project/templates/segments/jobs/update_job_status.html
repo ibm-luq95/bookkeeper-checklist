@@ -1,0 +1,26 @@
+<form action="{% url 'jobs:api:update-job-status' %}" id="updateJobStatusForm" method="PUT">
+  {% csrf_token %}
+  <fieldset form="updateJobStatusForm">
+    <input type="hidden" name="jobId" value="{{ job_object }}" />
+    <div class="field has-addons mt-3 mr-3">
+      <div class="control is-expanded">
+        <div class="select is-fullwidth is-small {% if current_status == 'past_due' %} is-danger {% endif %}">
+          <select name="status" id="updateJobSelect">
+
+            {% for status in job_status %}
+            <option value="{{ status.0 }}" {% if status.0 == current_status %}selected{% endif %}>
+              {{ status.1 }}
+            </option>
+            {% endfor %}
+
+          </select>
+        </div>
+      </div>
+
+      <div class="control">
+        <button type="submit" class="button is-primary is-small" form="updateJobStatusForm">Update</button>
+      </div>
+    </div>
+  </fieldset>
+
+</form>

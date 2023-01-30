@@ -6,3 +6,4 @@ from .manager import (
     DeleteJobManagerApiView,
 )
 from .bookkeeper import FetchJobBookkeeperApiView
+from .jobs import UpdateJobStatusApiView

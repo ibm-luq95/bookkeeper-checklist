@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
+from core.choices import JobStatusEnum
 from core.utils import get_trans_txt
 from jobs.forms import JobForm
 from jobs.models import Job
@@ -65,6 +66,7 @@ class JobDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         document_form = DocumentForm(document_section="job", client=job_object.client)
         task_form = TaskForm(client=job_object.client, job=job_object)
         note_form = NoteForm(client=job_object.client, note_section="job")
+        context.setdefault("job_status", JobStatusEnum.choices)
         context["title"] = f"Job - {job_object.title}"
         context.setdefault("task_form", task_form)
         context.setdefault("document_form", document_form)

@@ -44,7 +44,7 @@ class CreateNoteManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -79,7 +79,7 @@ class RetrieveNoteManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -118,7 +118,7 @@ class UpdateNoteManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -155,8 +155,8 @@ class DeleteNoteManagerApiView(APIView):
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": ex.detail,
+                # "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:

@@ -7,14 +7,14 @@ from documents.views.api import (
     RetrieveDocumentManagerView,
 )
 
-app_name = "manager_api"
+app_name = "manager"
 
 urlpatterns = [
     path(
         "create-document",
         CreateDocumentManagerApiView.as_view(),
-        name="create-document-manager",
+        name="create",
     ),
-    path("delete", DeleteDocumentManagerApiView.as_view(), name="delete-document"),
+    path("delete", DeleteDocumentManagerApiView.as_view(), name="delete"),
     path("retrieve", RetrieveDocumentManagerView.as_view(), name="retrieve"),
 ]

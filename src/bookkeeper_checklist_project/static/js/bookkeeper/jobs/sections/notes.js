@@ -13,6 +13,7 @@ import {
   isDisabledCssClass,
   eyeSlashIconHTMLCode,
   eyeIconHTMLCode,
+  CURRENTUSER,
 } from "../../../utils/constants.js";
 
 document.addEventListener("DOMContentLoaded", (readyEvent) => {
@@ -150,8 +151,14 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     noteModalForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const currentTarget = event.currentTarget;
+      // check if the submit is for update not create
+      if (currentTarget["_method"].value === "PUT") {
+        if (currentTarget["created_by"].value !== CURRENTUSER) {
+          return false;
+        }
+      }
       const fieldset = currentTarget.querySelector("fieldset");
-      const formInputs = formInputSerializer(currentTarget);
+      const formInputs = formInputSerializer({ formElement: currentTarget });
       fieldset.disabled = true;
       noteModalSubmitBtn.disabled = true;
       const requestOptions = {

@@ -112,7 +112,9 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
             if (allCheckedTasks.length <= 0) {
               alert("No tasks checked");
             } else {
-              const url = window.localStorage.getItem("BookkeeperTaskCompletedUrl");
+              const url = window.localStorage.getItem(
+                "BookkeeperTaskCompletedUrl"
+              );
               const requestOptions = {
                 method: "PUT",
                 dataToSend: { tasks: allCheckedTasks },
@@ -188,7 +190,9 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
             } else {
               taskModalSubmitBtn.hidden = true;
             }
-            const url = window.localStorage.getItem("BookkeeperTasksApiRetrieveUrl");
+            const url = window.localStorage.getItem(
+              "BookkeeperTasksApiRetrieveUrl"
+            );
             const fullUrl = url + `/${taskId}`;
             const requestOptions = {
               method: "GET",
@@ -226,7 +230,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       event.preventDefault();
       const currentTarget = event.currentTarget;
       const fieldset = currentTarget.querySelector("fieldset");
-      const formInputs = formInputSerializer(currentTarget);
+      const formInputs = formInputSerializer({ formElement: currentTarget });
       fieldset.disabled = true;
       taskModalSubmitBtn.disabled = true;
       const requestOptions = {

@@ -3,4 +3,5 @@ from .documents import (
     CreateManagerDocumentView,
     ListManagerDocumentView,
     DetailsManagerDocumentView,
+    UpdateDocumentManagerView,
 )

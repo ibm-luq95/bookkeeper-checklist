@@ -1,0 +1,31 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block dashboard_content %}
+
+<section id="manager-update-document-form">
+  <div class="box has-ribbon">
+    {% if object.created_by != request.user %}
+    <div class="ribbon is-medium is-warning">Not the owner</div>
+    {% endif %}
+    <form method="post" id="update-document-form">
+      {% csrf_token %}
+      <legend class="title has-text-black">
+        Update document
+      </legend>
+      <hr>
+      <fieldset form="update-document-form">
+        {{ form| crispy }}
+        <div class="has-text-right">
+          <button type="submit" class="button is-info is-fullwidth">
+            Update
+          </button>
+        </div>
+      </fieldset>
+
+    </form>
+  </div>
+</section>
+
+{% endblock dashboard_content %}

@@ -13,24 +13,9 @@
         <div class="card">
           <header class="card-header">
             <p class="card-header-title has-text-dark has-text-weight-bold is-size-5">{{ object.title }}</p>
-            <button class="card-header-icon" aria-label="more options">
-
-              {% if object.status == "past_due" %}
-              <span class="tag is-danger is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "complete" %}
-              <span class="tag is-success is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "in_progress" %}
-              <span class="tag is-warning is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "not_started" %}
-              <span class="tag is-light is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "archive" %}
-              <span class="tag is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "not_started" %}
-              <span class="tag is-info is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "not_complete" %}
-              <span class="tag is-link is-medium">{{ object.get_status_display }}</span>
-              {% endif %}
-            </button>
+            <!-- Start Job Status Form -->
+            {% include 'segments/jobs/update_job_status.html' with current_status=object.status job_status=job_status job_object=object.pk %}
+            <!-- End Job Status Form -->
           </header>
           <div class="card-content">
             <div class="content">
@@ -370,4 +355,5 @@
   <script src="{% static 'js/manager/client/segments/notes.js' %}" defer type="module"></script>
   <script src="{% static 'js/manager/client/segments/documents.js' %}" defer type="module"></script>
   <script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
+  <script src="{% static 'js/segments/jobs/update_job_status.js' %}" defer type="module"></script>
   {% endblock externaljs %}

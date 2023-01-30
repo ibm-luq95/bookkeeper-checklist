@@ -17,24 +17,10 @@ Job - {{ object.title }}
         <div class="card">
           <header class="card-header">
             <p class="card-header-title has-text-dark has-text-weight-bold is-size-5">{{ object.title }}</p>
-            <button class="card-header-icon" aria-label="more options">
+            <!-- Start Job Status Form -->
+            {% include 'segments/jobs/update_job_status.html' with current_status=object.status job_status=job_status job_object=object.pk %}
+            <!-- End Job Status Form -->
 
-              {% if object.status == "past_due" %}
-              <span class="tag is-danger is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "complete" %}
-              <span class="tag is-success is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "in_progress" %}
-              <span class="tag is-warning is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "not_started" %}
-              <span class="tag is-light is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "archive" %}
-              <span class="tag is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "not_started" %}
-              <span class="tag is-info is-medium">{{ object.get_status_display }}</span>
-              {% elif object.status == "not_complete" %}
-              <span class="tag is-link is-medium">{{ object.get_status_display }}</span>
-              {% endif %}
-            </button>
           </header>
           <div class="card-content">
             <div class="content">
@@ -250,8 +236,8 @@ Job - {{ object.title }}
 
               {% for document in object.documents.select_related.filter %}
               <div class="panel-block">
-                <a class="is-active mr-3 {% if document.created_by == request.user %} documentElement {% endif %}" href="{{ document.document_file.url  }}" target="_blank"
-                  data-document-id="{{ document.pk }}"
+                <a class="is-active mr-3 {% if document.created_by == request.user %} documentElement {% endif %}"
+                  href="{{ document.document_file.url  }}" target="_blank" data-document-id="{{ document.pk }}"
                   data-owner="{% if document.created_by == request.user %}1{% else %}0{% endif %}">
                   <!-- <span class="panel-icon">
                                         <i class="fas fa-book" aria-hidden="true"></i>
@@ -308,7 +294,8 @@ Job - {{ object.title }}
               {% for note in object.notes.filter %}
               <div class="panel-block">
                 <a class="is-active noteElement mr-3 updateNoteElementBtn"
-                  data-owner="{% if note.created_by == request.user %}1{% else %}0{% endif %}" data-note-id="{{ note.pk }}">
+                  data-owner="{% if note.created_by == request.user %}1{% else %}0{% endif %}"
+                  data-note-id="{{ note.pk }}">
                   <!-- <span class="panel-icon">
                                         <i class="fas fa-book" aria-hidden="true"></i>
                                     </span> -->
@@ -381,4 +368,5 @@ Job - {{ object.title }}
   <script src="{% static 'js/bookkeeper/jobs/sections/notes.js' %}" defer type="module"></script>
   <script src="{% static 'js/bookkeeper/jobs/sections/tasks.js' %}" defer type="module"></script>
   <script src="{% static 'js/bookkeeper/jobs/details.js' %}" defer type="module"></script>
+  <script src="{% static 'js/segments/jobs/update_job_status.js' %}" defer type="module"></script>
   {% endblock externaljs %}

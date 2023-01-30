@@ -321,6 +321,7 @@ src/bookkeeper_checklist_project/certs
 src/bookkeeper_checklist_project/certs/**
 deployment/**
 src/bookkeeper_checklist_project/stunnel/**
+.eslintrc
 
 # Ignore Django Migrations in Development if you are working on team
 # Only for Development only

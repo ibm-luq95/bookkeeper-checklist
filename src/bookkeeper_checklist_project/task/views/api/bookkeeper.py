@@ -183,8 +183,8 @@ class UpdateTaskBookkeeperApiView(APIView):
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
-                # "user_error_msg": serializer.errors,
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:

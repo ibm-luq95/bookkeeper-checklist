@@ -272,7 +272,7 @@
                                 {{ task.title }}
                               </td>
                               <td>
-                                {{ task.get_task_type_display }}
+                                {{ task.get_task_status_display }}
                               </td>
                               <td>
                                 {{ task.start_date }}
@@ -385,7 +385,7 @@
                                   </button>
                                   <button
                                     class="button is-small is-danger bkchlst-input is-disabled managerDeleteNoteBtn"
-                                    disabled type="button" data-tooltip="Delete note" data-note-id="{{ note.pk }}">
+                                    disabled type="button" data-tooltip="Delete note" data-note-id="{{ note.pk }}" data-note-title="{{ note.title }}">
                                     <span class="icon">
                                       <i class="fa-solid fa-trash"></i>
                                     </span>
@@ -446,6 +446,9 @@
                         <th>
                           Password
                         </th>
+                        <th>
+
+                        </th>
 
                       </tr>
                     </thead>
@@ -466,13 +469,18 @@
                         <th id="footerPassword">
                           Password
                         </th>
+                        <th>
+
+                        </th>
                       </tr>
                     </tfoot>
                     <tbody>
                       {% for service in object.company_services.all %}
                       <tr>
                         <td>
-                          {{ service.label }}
+                          <p class="manager-as-lbl">
+                            {{ service.label }}
+                          </p>
                         </td>
 
                         <td>
@@ -486,9 +494,9 @@
                                          readonly/>
                                 </div>
                                 <div class="control">
-                                  <button class="button copyASurlBtn copyBtn is-small"
+                                  <button class="button copyASurlBtn is-small"
                                           data-tooltip="Copy url"
-                                          data-clipboard-target="#ac-url-{{ service.id }}"
+                                          data-url-value="{{ service.url }}"
                                           data-text-type="url">
                                     <i class="fa-solid fa-link"></i>
                                   </button>
@@ -504,8 +512,8 @@
                                   id="ac-username-{{ service.id }}" readonly />
                               </div>
                               <div class="control">
-                                <button class="button copyASUsernameBtn copyBtn is-small" data-tooltip="Copy Username"
-                                  data-clipboard-target="#ac-username-{{ service.id }}" data-text-type="username">
+                                <button class="button copyASUsernameBtn is-small" data-tooltip="Copy Username"
+                                  data-username-value="{{ service.username }}" data-text-type="username">
                                   <i class="fas fa-copy"></i>
                                 </button>
                               </div>
@@ -527,9 +535,9 @@
                               </div>
                               <div class="control">
                                 <button
-                                  class="button copyASUPasswordBtn copyBtn has-tooltip-multiline has-tooltip-left is-small"
-                                  data-tooltip="Copy password, you have to reveal the password to copy it"
-                                  data-clipboard-target="#as-password-{{ service.id }}" data-text-type="password">
+                                  class="button copyASUPasswordBtn has-tooltip-multiline has-tooltip-top is-small"
+                                  data-tooltip="Copy password" data-password-value="{{ service.decrypted_password }}"
+                                   data-text-type="password">
                                   <i class="fas fa-copy"></i>
                                 </button>
 
@@ -537,6 +545,24 @@
                             </div>
 
 
+                          </div>
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled managerViewASBtn"
+                              disabled type="button" data-tooltip="View" data-service-id="{{ service.pk }}">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+                            <button
+                              class="button is-small is-danger bkchlst-input is-disabled managerDeleteASBtn"
+                              disabled type="button" data-tooltip="Delete service" data-service-id="{{ service.pk }}">
+                              <span class="icon">
+                                <i class="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
                           </div>
                         </td>
 
@@ -807,405 +833,45 @@
 </div>
 <!-- End Important Contact Form -->
 
-<!-- Start Document Form -->
-<div class="modal micromodal-slide" id="document-form-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1">
-    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-      aria-labelledby="document-form-modal-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="document-form-modal-title">
-          Create Document
-          <button class="button is-loading is-small" id="managerDocumentLoaderBtn" hidden>
-            Loading
-          </button>
-        </h2>
-
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-        </button>
-      </header>
-      <main class="modal__content" id="document-form-modal-content">
-
-        <div id="addDocumentFormWrapper" class="my-5">
-          <form method="POST" enctype="multipart/form-data"
-            action="{% url 'documents:api:manager_api:create-document-manager' %}" id="addDocumentForm">
-            <fieldset form="addDocumentForm">
-              <legend>
-                Add new document to client
-              </legend>
-              {% csrf_token %}
-
-              <input type="hidden" name="client" id="client" value="{{ object.pk }}" />
-              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
-              {{ document_form| crispy }}
-              <!-- <button class="button is-fullwidth is-primary is-rounded" type="submit">
-                Add
-              </button> -->
-            </fieldset>
-          </form>
-        </div>
-
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="addDocumentForm">
-          Create
-        </button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-          Close
-        </button>
-      </footer>
-    </div>
-  </div>
-</div>
-<!-- End Document Form -->
-
-<!-- Start Note Form -->
-<div class="modal micromodal-slide" id="notes-form-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1">
-    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-      aria-labelledby="notes-form-modal-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="notes-form-modal-title">
-          Create Note
-        </h2>
-
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-        </button>
-      </header>
-      <main class="modal__content" id="notes-form-modal-content">
-
-        <div id="addNoteFormWrapper" class="my-5">
-          <form method="POST" action="{% url 'notes:api:manager:create-note-manager' %}" id="addNoteForm">
-            <fieldset>
-              <legend>
-                Add new note to client
-              </legend>
-              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
-              {% csrf_token %}
-
-              {{ note_form| crispy }}
-              <button class="button is-fullwidth is-primary is-rounded" type="submit">
-                Add
-              </button>
-            </fieldset>
-          </form>
-        </div>
-
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-          Close
-        </button>
-      </footer>
-    </div>
-  </div>
-</div>
-<!-- End Note Form -->
-
-<!-- Start Retrieve Note Form -->
-<div class="modal micromodal-slide" id="note-retrieve-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1">
-    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-      aria-labelledby="note-retrieve-modal-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="note-retrieve-modal-title">
-          Retrieve Note
-          <button class="button is-loading is-small" id="managerNoteLoaderBtn">
-            Loading
-          </button>
-        </h2>
-
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-        </button>
-      </header>
-      <main class="modal__content" id="note-retrieve-modal-content">
-
-        <div id="retrieveNoteFormWrapper" class="my-5">
-          <form method="PUT" action="{% url 'notes:api:manager:update-note' %}" id="retrieveNoteForm">
-            <fieldset form="retrieveNoteForm">
-              <legend>
-                Retrieve note
-              </legend>
-              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
-              <input type="hidden" name="note_id" id="note_id" />
-              {% csrf_token %}
-
-              {{ note_form| crispy }}
-              <!-- <button class="button is-fullwidth is-primary is-rounded" type="submit">
-                Add
-              </button> -->
-            </fieldset>
-          </form>
-        </div>
-
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="retrieveNoteForm">
-          Update
-        </button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-          Close
-        </button>
-      </footer>
-    </div>
-  </div>
-</div>
-<!-- End Retrieve Note Form -->
 
 
-<!-- Start Company Services Form -->
-<div class="modal micromodal-slide" id="company-services-form-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1">
-    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-      aria-labelledby="company-services-form-modal-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="company-services-form-modal-title">
-          Company Services
-          <button class="button is-loading is-small" id="managerCompanyServicesLoaderBtn" hidden>
-            Loading
-          </button>
-        </h2>
 
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-        </button>
-      </header>
-      <main class="modal__content" id="company-services-form-modal-content">
+  <!-- Start Jobs Form -->
+  {% include 'segments/jobs/job_modal.html' with user_type="manager" job_form=jobs_form request_object=request %}
+  <!-- End Jobs Form -->
 
-        <div id="companyServicesFormWrapper" class="my-5">
-          <form method="POST" action="{% url 'company-services:api:manager:create-company-services' %}"
-            id="companyServiceForm">
-            <fieldset form="companyServiceForm">
-              <legend>
-                Create Company Services
-              </legend>
-              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
-              {% csrf_token %}
 
-              {{ company_services_form| crispy }}
-            </fieldset>
-          </form>
-        </div>
+  <!-- Start Company Services Form -->
+  {% include 'segments/company_service/company_service_modal.html' with user_type="manager" company_services_form=company_services_form request_object=request %}
+  <!-- End Company Services Form -->
 
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="companyServiceForm">
-          Create
-        </button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-          Close
-        </button>
-      </footer>
-    </div>
-  </div>
-</div>
-<!-- End Company Services Form -->
+<!-- Start Task Modal Form -->
+{% include 'segments/tasks/task_modal.html' with user_type="manager" task_form=tasks_form request_object=request %}
+<!-- End Task Modal Form -->
 
-<!-- Start Jobs Form -->
-<div class="modal micromodal-slide" id="jobs-create-form-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1">
-    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-      aria-labelledby="jobs-create-form-modal-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="jobs-create-form-modal-title">
-          Create job
-          <button class="button is-loading is-small" id="managerJobsLoaderBtn" hidden>
-            Loading
-          </button>
-        </h2>
+  <!-- Start Note Modal Form -->
+  {% include 'segments/notes/note_modal.html' with user_type="manager" note_form=note_form request_object=request %}
+  <!-- End Note Modal Form -->
 
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-        </button>
-      </header>
-      <main class="modal__content" id="jobs-create-form-modal-content">
 
-        <div id="jobsFormWrapper" class="my-5">
-          <form method="POST" action="{% url 'jobs:api:manager:create' %}" id="jobsForm">
-            <fieldset form="jobsForm">
-              <legend>
-                Create new job
-              </legend>
-              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
-              {% csrf_token %}
-
-              {{ jobs_form| crispy }}
-            </fieldset>
-          </form>
-        </div>
-
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="jobsForm">
-          Create
-        </button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-          Close
-        </button>
-      </footer>
-    </div>
-  </div>
-</div>
-<!-- End Jobs Form -->
-
-<!-- Start Jobs Update Form -->
-<div class="modal micromodal-slide" id="job-details-update-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1">
-    <!-- @audit -->
-    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-      aria-labelledby="job-details-update-modal-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="job-details-update-modal-title">
-          Update job
-          <button class="button is-loading is-small" id="managerUpdateJobsLoaderBtn" hidden>
-            Loading
-          </button>
-        </h2>
-
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-        </button>
-      </header>
-      <main class="modal__content" id="job-details-update-modal-content">
-
-        <div id="jobsUpdateFormWrapper" class="my-5">
-          <form method="PUT" action="{% url 'jobs:api:manager:update' %}" id="jobsUpdateForm">
-            <fieldset form="jobsUpdateForm">
-              <!-- <legend>
-                Create new job
-              </legend> -->
-              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
-              <input type="hidden" name="jobId" id="jobId" value="" />
-              {% csrf_token %}
-
-              {{ jobs_form| crispy }}
-
-              <h4 class="has-text-weight-bold">Tasks</h4>
-
-            </fieldset>
-          </form>
-        </div>
-
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled form="jobsUpdateForm">
-          Update
-        </button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-          Close
-        </button>
-      </footer>
-    </div>
-  </div>
-</div>
-<!-- End Jobs Update Form -->
-
-<!-- Start Tasks Form -->
-<div class="modal micromodal-slide" id="tasks-create-form-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1">
-    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-      aria-labelledby="tasks-create-form-modal-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="tasks-create-form-modal-title">
-          Create Task
-          <button class="button is-loading is-small" id="managerTasksLoaderBtn" hidden>
-            Loading
-          </button>
-        </h2>
-
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-        </button>
-      </header>
-      <main class="modal__content" id="tasks-create-form-modal-content">
-
-        <div id="tasksCreateFormWrapper" class="my-5">
-          <form method="POST" action="{% url 'task:api:manager:create' %}" id="tasksCreateForm">
-            <fieldset form="tasksCreateForm">
-              <legend>
-                Create new task
-              </legend>
-              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
-              {% csrf_token %}
-
-              {{ tasks_form| crispy }}
-            </fieldset>
-          </form>
-        </div>
-
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" id="managerTasksCreateSubmitBtn"
-          disabled form="tasksCreateForm">
-          Create
-        </button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-          Close
-        </button>
-      </footer>
-    </div>
-  </div>
-</div>
-<!-- End Tasks Form -->
-
-<!-- Start Update Tasks Form -->
-<div class="modal micromodal-slide" id="tasks-update-form-modal" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1">
-    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-      aria-labelledby="tasks-update-form-modal-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="tasks-update-form-modal-title">
-          Update Task
-          <button class="button is-loading is-small" id="managerTasksUpdateLoaderBtn" hidden>
-            Loading
-          </button>
-        </h2>
-
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-        </button>
-      </header>
-      <main class="modal__content" id="tasks-update-form-modal-content">
-
-        <div id="tasksUpdateFormWrapper" class="my-5">
-          <form method="PUT" action="{% url 'task:api:manager:update' %}" id="tasksUpdateForm">
-            <fieldset form="tasksUpdateForm">
-              <!-- <legend>
-                Create new task
-              </legend> -->
-              <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
-              <input type="hidden" name="taskId" id="taskId" value="" />
-              {% csrf_token %}
-
-              {{ tasks_form| crispy }}
-            </fieldset>
-          </form>
-        </div>
-
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" id="managerTasksUpdateSubmitBtn"
-          disabled form="tasksUpdateForm">
-          Update
-        </button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-          Close
-        </button>
-      </footer>
-    </div>
-  </div>
-</div>
-<!-- End Update Tasks Form -->
+  <!-- Start Document Modal Form -->
+  {% include 'segments/documents/document_modal.html' with user_type="manager" document_form=document_form request_object=request %}
+  <!-- End Document Modal Form -->
 
 {% endblock dashboard_content %}
 
 {% block externaljs %}
 <script defer>
-  window.localStorage.setItem("retrieveNoteUrl", "{% url 'notes:api:manager:retrieve-note-manager' %}");
-  window.localStorage.setItem("UpdateNoteUrl", "{% url 'notes:api:manager:update-note' %}");
-  window.localStorage.setItem("DeleteNoteUrl", "{% url 'notes:api:manager:delete-note' %}");
-  window.localStorage.setItem("DeleteDocumentUrl", "{% url 'documents:api:manager_api:delete-document' %}");
   window.localStorage.setItem("RetrieveJobUrl", "{% url 'jobs:api:manager:retrieve' %}");
   window.localStorage.setItem("DeleteJobUrl", "{% url 'jobs:api:manager:delete' %}");
-  window.localStorage.setItem("RetrieveTaskUrl", "{% url 'task:api:manager:retrieve' %}");
-  window.localStorage.setItem("DeleteTaskUrl", "{% url 'task:api:manager:delete' %}");
-  window.localStorage.setItem("RetrieveImportantContactUrl", "{% url 'important_contact:api:manager:retrieve' %}");
-  window.localStorage.setItem("origin", "{{ origin }}");
 
+  window.localStorage.setItem("RetrieveImportantContactUrl", "{% url 'important_contact:api:manager:retrieve' %}");
+  window.localStorage.setItem("CreateJobApiUrl", "{% url 'jobs:api:manager:create' %}");
 </script>
 <script src="{% static 'js/manager/client/details.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/client/segments/jobs.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/client/segments/notes.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/client/segments/company_service.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/client/segments/documents.js' %}" defer type="module"></script>
 {% endblock externaljs %}

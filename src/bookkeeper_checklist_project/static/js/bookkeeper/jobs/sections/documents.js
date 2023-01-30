@@ -20,14 +20,14 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     "button#bookkeeperAddDocumentToJobBtn"
   );
   const documentFormModalId = "document-form-modal";
-  const documentTitleFormModalElement = document.querySelector(
-    "#document-form-modal-title"
-  );
+  const modalElement = document.querySelector(`#${documentFormModalId}`);
+  const documentTitleFormModalElement =
+    modalElement.querySelector(".modal__title");
   const documentForm = document
     .querySelector("#document-form-modal")
     .querySelector("form");
-  const addSubmitButton = document.querySelector(
-    `button[form='${documentForm.id}']`
+  const addSubmitButton = modalElement.querySelector(
+    `button[type='submit']`
   );
   const documentModalFooterElement = document.querySelector(
     "#document-modal-footer"
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   documentForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const currentTarget = event.currentTarget;
-    const formInputs = formInputSerializer(currentTarget);
+    const formInputs = formInputSerializer({ formElement: currentTarget });
     delete formInputs["document_file"];
     const formData = new FormData();
     const fieldset = documentForm.querySelector("fieldset");

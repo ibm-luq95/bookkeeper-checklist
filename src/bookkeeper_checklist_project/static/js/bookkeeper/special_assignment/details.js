@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     const currentTarget = event.currentTarget;
     const fieldset = currentTarget.querySelector("fieldset");
     fieldset.disabled = true;
-    const formData = formInputSerializer(currentTarget);
+    const formData = formInputSerializer({formElement: currentTarget});
     const requestOptions = {
       method: "PUT",
       dataToSend: formData,
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     const currentTarget = event.currentTarget;
     const fieldset = currentTarget.querySelector("fieldset");
     fieldset.disabled = true;
-    const inputs = formInputSerializer(currentTarget);
+    const inputs = formInputSerializer({formElement: currentTarget});
     const formData = new FormData();
     // Array.from(currentTarget.elements).forEach(ele => {
     //   console.log(ele);

@@ -1,0 +1,39 @@
+{% load crispy_forms_tags %}
+<div class="modal micromodal-slide" id="company-services-form-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
+      aria-labelledby="company-services-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="company-services-form-modal-title">
+
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="company-services-form-modal-content">
+
+        <div id="companyServicesFormWrapper" class="my-5">
+          <form method="" action="" id="{{ user_type }}companyServiceForm">
+            <fieldset form="companyServiceForm">
+              <input type="hidden" name="_method" value="POST" />
+              <input type="hidden" name="created_by" id="created_by" value="{{ request.user.pk }}" />
+              {% csrf_token %}
+              {{ company_services_form| crispy }}
+            </fieldset>
+          </form>
+        </div>
+
+      </main>
+      <footer class="modal__footer">
+        <button type="submit" form="{{ user_type }}companyServiceForm"
+          class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
+
+        </button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>

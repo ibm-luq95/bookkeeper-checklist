@@ -9,6 +9,6 @@ urlpatterns = [
     path(
         "create",
         CreateCompanyServiceManagerApiView.as_view(),
-        name="create-company-services",
+        name="create",
     ),
 ]

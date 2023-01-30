@@ -33,7 +33,6 @@ class CreateDocumentManagerApiView(APIView):
             serializer = CreateDocumentSerializer(data=data)
             # raise APIException("Stop")
             # debugging_print(serializer.is_valid())
-            # debugging_print(data)
             if serializer.is_valid() is False:
                 raise APIException(serializer.error_messages)
             # debugging_print(serializer.validated_data)
@@ -48,7 +47,7 @@ class CreateDocumentManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -76,7 +75,7 @@ class DeleteDocumentManagerApiView(APIView):
             document_id = data.get("documentId")
             # debugging_print(data)
             document_object = Documents.objects.get(pk=document_id)
-            document_object.soft_delete()
+            document_object.delete()
             return Response(
                 data={"msg": "Document deleted successfully!"},
                 status=status.HTTP_201_CREATED,
@@ -87,7 +86,7 @@ class DeleteDocumentManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": ex,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -114,9 +113,9 @@ class RetrieveDocumentManagerView(APIView):
             data = request.data
             document_id = data.get("documentId")
             document = Documents.objects.select_related().filter(pk=document_id).first()
-            document_serializer = CreateDocumentSerializer(instance=document)
+            serializer = CreateDocumentSerializer(instance=document)
             return Response(
-                data={"document": document_serializer.data},
+                data={"document": serializer.data},
                 status=status.HTTP_201_CREATED,
             )
         except APIException as ex:
@@ -124,8 +123,8 @@ class RetrieveDocumentManagerView(APIView):
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
-                # "user_error_msg": serializer.error_messages,
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:

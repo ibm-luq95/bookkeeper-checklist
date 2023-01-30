@@ -12,7 +12,7 @@
                 </button>
             </header>
             <main class="modal__content" id="note-form-modal-content">
-                <form action="{% url 'notes:api:manager:create-note-manager' %}" method="POST"
+                <form action="{% url 'notes:api:manager:create' %}" method="POST"
                     id="managerAddNewNoteForm">
                     {% csrf_token %}
                     <input type="hidden" name="user" value="{{ request.user.pk }}" />
@@ -20,7 +20,7 @@
                     <fieldset form="managerAddNewNoteForm">
                         {{ note_form|crispy }}
                     </fieldset>
-                    
+
                 </form>
             </main>
             <footer class="modal__footer">

@@ -66,7 +66,7 @@
           <div class="card">
             <header class="card-header">
               <p class="card-header-title has-text-dark">Tasks</p>
-              <button type="button" id="managerAddTaskBtn"
+              <button type="button" id="managerAddTasksBtn"
                 class="card-header-icon has-tooltip-arrow bkchlst-input is-disabled is-responsive" disabled
                 data-tooltip="Add new task" aria-label="Add new task">
                 <span class="icon">
@@ -248,7 +248,7 @@
               </p>
               <div class="panel-block">
                 <p class="control has-icons-left">
-                  <button id="managerAddDocumentToJobBtn" title="Add document" type="button"
+                  <button id="managerAddDocumentBtn" title="Add document" type="button"
                     class="button is-success is-outlined is-fullwidth bkchlst-input is-disabled is-responsive" disabled>
                     <i class="fa-solid fa-plus"></i>
                   </button>
@@ -257,18 +257,29 @@
 
               {% for document in object.documents.filter %}
               <div class="panel-block">
-                <a class="is-active documentElement" href="{{ document.document_file.url  }}" target="_blank"
+                <a class="is-active " href="{{ document.document_file.url  }}" target="_blank"
                   data-document-id="{{ document.pk }}">
                   <!-- <span class="panel-icon">
                                         <i class="fas fa-book" aria-hidden="true"></i>
                                     </span> -->
                   {{ document.title }}
                 </a>
-                <button data-document-id="{{ document.pk }}" data-document-title="{{ document.title }}"
-                  class="button is-danger is-light is-small managerDeleteDocumentBtn bkchlst-input ml-5 is-rounded"
-                  disabled type="button">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
+                <div class="field is-grouped is-grouped-right ml-3">
+                  <p class="control">
+                    <button data-document-id="{{ document.pk }}" data-document-title="{{ document.title }}"
+                      class="button is-danger is-light is-small managerDeleteDocumentBtn bkchlst-input is-rounded"
+                      disabled type="button">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </p>
+                  <p class="control">
+                    <a class="button is-info is-light is-small bkchlst-input is-rounded"
+                      href="{% url 'documents:manager:update' document.pk %}" target="_blank">
+                      <i class="fa-solid fa-pencil"></i>
+                    </a>
+                  </p>
+                </div>
+
               </div>
 
               {% empty %}
@@ -290,7 +301,7 @@
 
               <div class="panel-block">
                 <p class="control has-icons-left">
-                  <button id="managerAddNoteToJobBtn" title="Add note" type="button"
+                  <button id="managerAddNoteBtn" title="Add note" type="button"
                     class="button is-info is-outlined is-fullwidth bkchlst-input is-disabled is-responsive" disabled>
                     <i class="fa-solid fa-plus"></i>
                   </button>
@@ -300,14 +311,14 @@
 
               {% for note in object.notes.filter %}
               <div class="panel-block">
-                <a class="is-active noteElement" data-note-id="{{ note.pk }}">
+                <a class="is-active managerViewNoteBtn" data-note-id="{{ note.pk }}">
                   <!-- <span class="panel-icon">
                                         <i class="fas fa-book" aria-hidden="true"></i>
                                     </span> -->
                   {{ note.title }}
                 </a>
                 <button data-note-id="{{ note.pk }}" data-note-title="{{ note.title }}"
-                  class="button is-danger is-light is-small managerDeleteNotesBtns bkchlst-input ml-5 is-rounded"
+                  class="button is-danger is-light is-small managerDeleteNoteBtn bkchlst-input ml-5 is-rounded"
                   disabled type="button">
                   <i class="fa-solid fa-trash"></i>
                 </button>
@@ -329,39 +340,34 @@
     </div>
   </div>
 
-  <!-- Start Task Form -->
-  {% include 'manager/jobs/segments/add_task_modal.html' %}
-  <!-- End Task Form -->
-  <!-- Start Update Task Form -->
-  {% include 'manager/jobs/segments/update_task_modal.html' %}
-  <!-- End Update Task Form -->
-  <!-- Start Document Form -->
-  {% include 'manager/jobs/segments/add_document_modal.html' %}
-  <!-- End Document Form -->
-  <!-- Start Update Document Form -->
-  {% include 'manager/jobs/segments/update_document_modal.html' %}
-  <!-- End Update Document Form -->
-  <!-- Start Note Form -->
-  {% include 'manager/jobs/segments/add_note_modal.html' %}
-  <!-- End Note Form -->
-  <!-- Start Update Note Form -->
-  {% include 'manager/jobs/segments/update_note_modal.html' %}
-  <!-- End Update Note Form -->
+  <!-- Start Task Modal Form -->
+{% include 'segments/tasks/task_modal.html' with user_type="manager" job_object=object task_form=tasks_form request_object=request %}
+<!-- End Task Modal Form -->
+  <!-- Start Document Modal Form -->
+  {% include 'segments/documents/document_modal.html' with user_type="manager" job_object=object document_form=document_form request_object=request %}
+  <!-- End Document Modal Form -->
+  <!-- Start Note Modal Form -->
+  {% include 'segments/notes/note_modal.html' with user_type="manager" job_object=object note_form=note_form request_object=request %}
+  <!-- End Note Modal Form -->
+
   {% endblock dashboard_content %}
 
   {% block externaljs %}
   <script defer>
-    window.localStorage.setItem("retrieveNoteUrl", "{% url 'notes:api:manager:retrieve-note-manager' %}");
-    window.localStorage.setItem("UpdateNoteUrl", "{% url 'notes:api:manager:update-note' %}");
-    window.localStorage.setItem("DeleteNoteUrl", "{% url 'notes:api:manager:delete-note' %}");
-    window.localStorage.setItem("DeleteDocumentUrl", "{% url 'documents:api:manager_api:delete-document' %}");
+    window.localStorage.setItem("retrieveNoteUrl", "{% url 'notes:api:manager:retrieve' %}");
+    window.localStorage.setItem("UpdateNoteUrl", "{% url 'notes:api:manager:update' %}");
+    window.localStorage.setItem("DeleteNoteUrl", "{% url 'notes:api:manager:delete' %}");
+    window.localStorage.setItem("DeleteDocumentUrl", "{% url 'documents:api:manager:delete' %}");
     window.localStorage.setItem("RetrieveJobUrl", "{% url 'jobs:api:manager:retrieve' %}");
     window.localStorage.setItem("DeleteJobUrl", "{% url 'jobs:api:manager:delete' %}");
     window.localStorage.setItem("RetrieveTaskUrl", "{% url 'task:api:manager:retrieve' %}");
-    window.localStorage.setItem("RetrieveDocumentUrl", "{% url 'documents:api:manager_api:retrieve' %}");
+    window.localStorage.setItem("RetrieveDocumentUrl", "{% url 'documents:api:manager:retrieve' %}");
     window.localStorage.setItem("DeleteTaskUrl", "{% url 'task:api:manager:delete' %}");
     window.localStorage.setItem("origin", "{{ origin }}");
 
   </script>
   <script src="{% static 'js/manager/jobs/details.js' %}" defer type="module"></script>
+  <script src="{% static 'js/manager/client/segments/notes.js' %}" defer type="module"></script>
+  <script src="{% static 'js/manager/client/segments/documents.js' %}" defer type="module"></script>
+  <script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
   {% endblock externaljs %}

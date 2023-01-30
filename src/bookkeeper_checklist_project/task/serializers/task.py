@@ -13,6 +13,7 @@ class TaskSerializer(serializers.ModelSerializer):
             # "user",
             "deleted_at",
             "updated_at",
+            "is_completed",
         )
         # depth = 1
 

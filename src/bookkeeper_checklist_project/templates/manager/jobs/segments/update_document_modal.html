@@ -12,7 +12,7 @@
                 </button>
             </header>
             <main class="modal__content" id="update-document-form-modal-content">
-                <form action="{% url 'documents:api:manager_api:create-document-manager' %}" method="PUT"
+                <form action="{% url 'documents:api:manager:create' %}" method="PUT"
                     id="managerUpdateNewDocumentForm" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="hidden" name="user" value="{{ request.user.pk }}" />
@@ -20,7 +20,7 @@
                     <fieldset form="managerUpdateNewDocumentForm">
                         {{ document_form|crispy }}
                     </fieldset>
-                    
+
                 </form>
             </main>
             <footer class="modal__footer">

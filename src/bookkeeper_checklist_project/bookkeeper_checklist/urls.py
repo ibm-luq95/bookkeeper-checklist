@@ -21,6 +21,7 @@ urlpatterns = [
     path("bookkeeper/", include("bookkeeper.urls"), name="bookkeeper-urls"),
     path("assistant/", include("assistant.urls"), name="assistant-urls"),
     path("manager/", include("manager.urls"), name="manager-urls"),
+    path("core/", include("core.urls"), name="core-urls"),
     path("documents/", include("documents.urls"), name="documents-urls"),
     path("notes/", include("notes.urls"), name="notes-urls"),
     path(

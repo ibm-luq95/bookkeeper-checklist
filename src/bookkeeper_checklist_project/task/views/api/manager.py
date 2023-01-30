@@ -70,7 +70,6 @@ class RetrieveTaskManagerApiView(APIView):
             data = request.data
             task_object = Task.objects.get(pk=data.get("taskId"))
             serializer = TaskSerializer(instance=task_object)
-
             return Response(data={"task": serializer.data}, status=status.HTTP_200_OK)
         except APIException as ex:
             # logger.error("API Exception")
@@ -78,7 +77,7 @@ class RetrieveTaskManagerApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -103,7 +102,7 @@ class UpdateTaskManagerApiView(APIView):
         serializer = ""
         try:
             data = request.data
-            task_object = Task.objects.get(pk=data.get("taskId"))
+            task_object = Task.objects.get(pk=data.get("id"))
             serializer = TaskSerializer(instance=task_object, data=data)
             if not serializer.is_valid(raise_exception=True):
                 raise APIException(serializer.errors)
@@ -118,8 +117,8 @@ class UpdateTaskManagerApiView(APIView):
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
-                # "user_error_msg": serializer.ex,
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:

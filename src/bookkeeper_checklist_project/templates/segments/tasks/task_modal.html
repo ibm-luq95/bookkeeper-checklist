@@ -1,36 +1,43 @@
 {% load crispy_forms_tags %}
 <div class="modal micromodal-slide" id="tasks-form-modal" aria-hidden="true">
-    <div class="modal__overlay" tabindex="-1">
-        <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
-            aria-labelledby="tasks-form-modal-title">
-            <header class="modal__header">
-                <h2 class="modal__title" id="tasks-form-modal-title">
-                </h2>
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
+      aria-labelledby="tasks-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="tasks-form-modal-title">
+        </h2>
 
-                <button class="modal__close" aria-label="Close modal" data-micromodal-close>
-                </button>
-            </header>
-            <main class="modal__content" id="tasks-form-modal-content">
-                <form action="" method="" id="{{ user_type }}TaskForm">
-                    {% csrf_token %}
-                    <fieldset form="{{ user_type }}TaskForm">
-                      <input type="hidden" name="_method" value="POST" />
-                      <input type="hidden" name="user" value="{{ request_object.user.pk }}" />
-                      <input type="hidden" name="job" value="{{ job_object.pk }}" />
-                        <input type="hidden" name="id" id="id" value="" />
-                        {{ task_form|crispy }}
-                    </fieldset>
-                </form>
-            </main>
-            <footer class="modal__footer">
-                <button type="submit" form="{{ user_type }}TaskForm"
-                    class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="tasks-form-modal-content">
+        <form action="" method="" id="{{ user_type }}TaskForm">
+          {% csrf_token %}
+          <fieldset form="{{ user_type }}TaskForm">
+            <legend>Task</legend>
+            <input type="hidden" name="_method" value="POST" />
+            <input type="hidden" name="user" value="{{ request_object.user.pk }}" />
 
-                </button>
-                <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
-                    Close
-                </button>
-            </footer>
-        </div>
+
+            {% if job_object %}
+            <input type="hidden" name="job" value="{{ job_object.pk }}" />
+            {% endif %}
+
+
+            <input type="hidden" name="id" id="id" value="" />
+            {{ task_form|crispy }}
+          </fieldset>
+        </form>
+      </main>
+      <footer class="modal__footer">
+        <button type="submit" form="{{ user_type }}TaskForm"
+          class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
+
+        </button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
     </div>
+  </div>
 </div>

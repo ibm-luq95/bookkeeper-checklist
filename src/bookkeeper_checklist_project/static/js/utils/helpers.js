@@ -1,6 +1,5 @@
 "use strict";
-
-import { DEBUG, isDisabledCssClass } from "./constants.js";
+import { DEBUG, FETCHURLNAMEURL, isDisabledCssClass } from "./constants.js";
 import { getCookie } from "./cookie.js";
 import { showToastNotification } from "./notifications.js";
 
@@ -39,6 +38,16 @@ const fadeIn = (el, display) => {
       requestAnimationFrame(fade);
     }
   })();
+};
+
+/**
+ * Capitalized the first letter of string
+ * @param {string} text String will capitalized
+ * @returns string
+ */
+const capitalizedFirstLetter = (text) => {
+  const capitalized = text.charAt(0).toUpperCase() + text.slice(1);
+  return capitalized;
 };
 
 /**
@@ -242,6 +251,7 @@ class UploadFileRequest {
           false
         );
         this.ajaxObject.send(this.formData);
+        // eslint-disable-next-line no-unused-vars
         this.ajaxObject.addEventListener("readystatechange", (event) => {
           if (this.ajaxObject.readyState === 4) {
             const response = this.ajaxObject.response;
@@ -281,6 +291,7 @@ class UploadFileRequest {
     showToastNotification("Error while uploading!", "danger");
     console.error(event);
   }
+  // eslint-disable-next-line no-unused-vars
   abortHandler(event) {
     this.ajaxObject.abort();
     showToastNotification("Abort uploading!", "danger");
@@ -288,18 +299,48 @@ class UploadFileRequest {
 }
 
 /**
+ * Order or sort json object items
+ * @param {Object} unorderedObject Un ordered object
+ * @returns Object
+ */
+const orderObjectItems = (unorderedObject) => {
+  const orderedObject = Object.keys(unorderedObject)
+    .sort()
+    .reduce((obj, key) => {
+      obj[key] = unorderedObject[key];
+      return obj;
+    }, {});
+  return orderedObject;
+};
+
+/**
  * This will serialize form inputs
- * @param {HTMLFormElement} formElement The form element
- * @param {Array} excludedFields Array of excluded fields
+ * @typedef param
+ * @param {Object} param - this is object param
+ * @param {HTMLFormElement} param.formElement The form element
+ * @param {Array} param.excludedFields Array of excluded fields
+ * @param {boolean} param.isOrdered Order the returned object
  * @returns {Object} json object of all inputs
  */
-const formInputSerializer = (formElement, excludedFields) => {
+const formInputSerializer = ({
+  formElement,
+  excludedFields = [],
+  isOrdered = false,
+}) => {
   const serializedObject = {};
   Array.from(formElement.elements).forEach((element) => {
-    serializedObject[element.name] =
-      element.type === "checkbox" ? element.checked : element.value;
+    // check if the element.name in excludedFields
+    if (excludedFields.includes(element.name) === false) {
+      // check if the element name not empty string
+      if (element.name !== "") {
+        serializedObject[element.name] =
+          element.type === "checkbox" ? element.checked : element.value;
+      }
+    }
   });
-  return serializedObject;
+  return isOrdered === true
+    ? orderObjectItems(serializedObject)
+    : serializedObject;
 };
 
 /**
@@ -331,7 +372,119 @@ const setFormInputValues = (formElement, objectOfValues) => {
   }
 };
 
+/**
+ * Fetch the url path by url name
+ * @param {string} urlName URL name to fetch url
+ */
+const fetchUrlPathByName = async (urlName) => {
+  try {
+    const controller = new AbortController(); // the AbortController
+    const { signal } = controller;
+    const headers = new Headers({
+      "Content-Type": "application/json;charset=utf-8",
+      Accept: "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+      "X-CSRFToken": getCookie("csrftoken"),
+    });
+    const fetchOptions = {
+      method: "POST",
+      mode: "same-origin",
+      credentials: "include",
+      cache: "no-cache",
+      body: JSON.stringify({ urlName: urlName }),
+    };
+    const request = new Request(FETCHURLNAMEURL, {
+      headers: headers,
+      signal: signal,
+    });
+    const response = await fetch(request, fetchOptions);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * Debugging print only if DEBUG is enabled, development only
+ * @param {string} text Message to print
+ * @param {string} consoleType Console log type
+ */
+const debuggingPrint = (text, consoleType = "log") => {
+  if (DEBUG === true) {
+    switch (consoleType) {
+      case "log":
+        console.log(text);
+        break;
+      case "warn":
+        console.warn(text);
+        break;
+      case "info":
+        console.info(text);
+        break;
+      case "error":
+        console.error(text);
+        break;
+      case "dir":
+        console.dir(text);
+        break;
+      case "table":
+        console.table(text);
+        break;
+
+      default:
+        break;
+    }
+  }
+};
+
+/**
+ * Check if the checkbox single or multiple elements
+ * @param {HTMLInputElement|RadioNodeList} htmlElement Element to check
+ * @returns string
+ */
+const checkIfInputSingleOrList = (htmlElement) => {
+  // RadioNodeList, HTMLInputElement
+  if (htmlElement.getConstructorName() === "RadioNodeList") {
+    // in case multiple inputs
+    return "multiple";
+  } else if (htmlElement.getConstructorName() === "HTMLInputElement") {
+    // in case single input
+    return "single";
+  }
+};
+
+/**
+ * Copy text to clipboard using native javascript api with toast notifications
+ * @typedef param
+ * @param {Object} param - this is object param
+ * @param {string} param.textWillCopy Text will copy to clipboard
+ * @param {string} param.label Label which will appear in notification
+ * @param {boolean} param.isNotify If true will display notification message after copy
+ * @param {string} param.notificationMsg Custom notification message not the default
+ * @param {string} param.notificationType Notification type
+ */
+const addTxtToClipboardWithNotification = ({
+  textWillCopy,
+  label,
+  isNotify = true,
+  notificationMsg = null,
+  notificationType = "success",
+}) => {
+  navigator.clipboard.writeText(textWillCopy);
+  if (isNotify === true) {
+    const msg = notificationMsg
+      ? capitalizedFirstLetter(notificationMsg)
+      : capitalizedFirstLetter(`${label} copied successfully!`);
+    showToastNotification(msg, notificationType);
+  }
+};
+
 export {
+  capitalizedFirstLetter,
   enableInputsOnLoad,
   sendRequest,
   fadeIn,
@@ -340,4 +493,9 @@ export {
   sendGetRequest,
   formInputSerializer,
   setFormInputValues,
+  fetchUrlPathByName,
+  debuggingPrint,
+  checkIfInputSingleOrList,
+  orderObjectItems,
+  addTxtToClipboardWithNotification,
 };

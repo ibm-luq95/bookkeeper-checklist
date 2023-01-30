@@ -13,6 +13,7 @@ import {
   isDisabledCssClass,
   eyeSlashIconHTMLCode,
   eyeIconHTMLCode,
+  CURRENTUSER,
 } from "../../utils/constants.js";
 
 document.addEventListener("DOMContentLoaded", (ev) => {
@@ -68,9 +69,9 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     ],
   });
 
-  managerAddTaskBtn.addEventListener("click", (ev) => {
+  /* managerAddTaskBtn.addEventListener("click", (ev) => {
     showMicroModal("tasks-form-modal");
-  });
+  }); */
 
   // delete task buttons from tasks table
   managerDeleteNotesBtns.forEach((btn) => {
@@ -212,11 +213,11 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       });
     });
 
-    managerUpdateNoteForm.addEventListener("submit", (event) => {
+    /* managerUpdateNoteForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const currentTarget = event.currentTarget;
       const fullUrl = event.currentTarget.action;
-      const formData = formInputSerializer(currentTarget);
+      const formData = formInputSerializer({formElement: currentTarget});
       const requestOptions = {
         method: "PUT",
         dataToSend: formData,
@@ -237,11 +238,11 @@ document.addEventListener("DOMContentLoaded", (ev) => {
         .finally(() => {
           console.warn("Finally");
         });
-    });
+    }); */
   }
 
   // show document elements
-  /*   if (documentElements) {
+    if (documentElements) {
     documentElements.forEach((element) => {
       element.addEventListener("click", (event) => {
         event.preventDefault();
@@ -258,7 +259,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
         request
           .then((data) => {
             console.log(data);
-            new MicroModalHandler("update-document-form-modal", {});
+            new MicroModalHandler("document-form-modal", {});
           })
           .catch((error) => {
             console.error(error);
@@ -269,14 +270,14 @@ document.addEventListener("DOMContentLoaded", (ev) => {
           });
       });
     });
-  } */
+  }
   // add new task form
-  managerAddNewTaskForm.addEventListener("submit", (event) => {
+  /* managerAddNewTaskForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const currentTarget = event.currentTarget;
     const fieldset = currentTarget.querySelector("fieldset");
     fieldset.disabled = true;
-    const formData = formInputSerializer(currentTarget);
+    const formData = formInputSerializer({formElement: currentTarget});
     Array.from(currentTarget.elements).forEach((element) => {
       element.classList.remove("is-danger");
     });
@@ -305,12 +306,12 @@ document.addEventListener("DOMContentLoaded", (ev) => {
           }
         }
       });
-  });
+  }); */
 
-  managerUpdateTaskForm.addEventListener("submit", (event) => {
+  /* managerUpdateTaskForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const currentTarget = event.currentTarget;
-    const formData = formInputSerializer(currentTarget);
+    const formData = formInputSerializer({formElement: currentTarget});
     const url = currentTarget.action;
     const fieldset = currentTarget.querySelector("fieldset");
     fieldset.disabled = true;
@@ -342,7 +343,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       .finally(() => {
         fieldset.disabled = false;
       });
-  });
+  }); */
 
   taskViewBtn.forEach((btn) => {
     btn.addEventListener("click", (ev) => {
@@ -424,7 +425,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   });
 
   // add note button event
-  managerAddNoteToJobBtn.addEventListener("click", (event) => {
+  /* managerAddNoteToJobBtn.addEventListener("click", (event) => {
     // @follow-up
     const callBacks = {
       onOpenCallBack: () => {},
@@ -437,7 +438,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
     managerAddNewNoteForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const currentTarget = event.currentTarget;
-      const formElements = formInputSerializer(currentTarget);
+      const formElements = formInputSerializer({formElement: currentTarget});
       fieldset.disabled = true;
       // console.log(formElements);
       // throw new Error("s");
@@ -462,10 +463,10 @@ document.addEventListener("DOMContentLoaded", (ev) => {
           fieldset.disabled = false;
         });
     });
-  });
+  }); */
 
   // add document button event
-  managerAddDocumentToJobBtn.addEventListener("click", (event) => {
+  /* managerAddDocumentToJobBtn.addEventListener("click", (event) => {
     // @follow-up
     const callBacks = {
       onOpenCallBack: () => {},
@@ -518,5 +519,5 @@ document.addEventListener("DOMContentLoaded", (ev) => {
           fieldset.disabled = false;
         });
     });
-  });
+  }); */
 });

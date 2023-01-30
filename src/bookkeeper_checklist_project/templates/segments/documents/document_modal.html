@@ -14,9 +14,14 @@
       <main class="modal__content" id="document-form-modal-content">
         <form action="" method="" id="{{ user_type }}DocumentForm" enctype="multipart/form-data">
           {% csrf_token %}
-          <input type="hidden" name="user" value="{{ request_object.user.pk }}" />
-          <input type="hidden" name="job" value="{{ job_object.pk }}" />
+
           <fieldset form="{{ user_type }}DocumentForm">
+            <input type="hidden" name="created_by" value="{{ request_object.user.pk }}" />
+            <input type="hidden" name="_method" />
+            {% if job_object %}
+            <input type="hidden" name="job" value="{{ job_object.pk }}" />
+            {% endif %}
+            <input type="hidden" name="id" id="id" value="" />
             {{ document_form|crispy }}
           </fieldset>
 

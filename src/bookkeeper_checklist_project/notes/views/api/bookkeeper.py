@@ -104,7 +104,7 @@ class UpdateNoteBookkeeperApiView(APIView):
             note_id = data.get("id")
             user = request.user
             note_object = Note.objects.get(pk=note_id)
-            if note_object.user != user:
+            if note_object.created_by != user:
                 raise PermissionDenied(
                     {"user_error_msg": "You dont have permission to update!"}
                 )
@@ -120,8 +120,8 @@ class UpdateNoteBookkeeperApiView(APIView):
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": ex.detail,
+                # "user_error_msg": serializer.error_messages,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -130,7 +130,7 @@ class UpdateNoteBookkeeperApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while retriever note!",
+                "user_error_msg": "Error while update note!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -148,7 +148,7 @@ class DeleteNoteBookkeeperApiView(APIView):
             user = request.user
             note_id = data.get("noteId")
             note_object = Note.objects.get(pk=note_id)
-            if note_object.user != user:
+            if note_object.created_by != user:
                 raise PermissionDenied(
                     {"user_error_msg": "You dont have permission to delete!"}
                 )
@@ -163,8 +163,8 @@ class DeleteNoteBookkeeperApiView(APIView):
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": ex.detail,
+                # "user_error_msg": serializer.error_emessages,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:

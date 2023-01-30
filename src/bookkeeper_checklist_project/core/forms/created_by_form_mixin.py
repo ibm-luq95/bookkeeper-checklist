@@ -13,7 +13,7 @@ class SaveCreatedByFormMixin(forms.ModelForm):
 
     def save(self, commit=True) -> Any:
         obj = super().save(commit=False)
-        if self.created_by:
+        if hasattr(self, "created_by"):
             obj.created_by = self.created_by
         if commit:
             obj.save()

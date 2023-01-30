@@ -155,7 +155,6 @@ Job - {{ object.title }}
                   <div class="notification is-warning">
                     <!-- <button class="delete"></button> -->
                     No task(s)
-                    <a class="is-primary is-inverted is-hoverable is-hovered mx-1" href="">Create new task</a>
                   </div>
                   {% endif %}
                 </div>
@@ -251,7 +250,7 @@ Job - {{ object.title }}
 
               {% for document in object.documents.select_related.filter %}
               <div class="panel-block">
-                <a class="is-active documentElement mr-3" href="{{ document.document_file.url  }}" target="_blank"
+                <a class="is-active mr-3 {% if document.created_by == request.user %} documentElement {% endif %}" href="{{ document.document_file.url  }}" target="_blank"
                   data-document-id="{{ document.pk }}"
                   data-owner="{% if document.created_by == request.user %}1{% else %}0{% endif %}">
                   <!-- <span class="panel-icon">
@@ -309,17 +308,17 @@ Job - {{ object.title }}
               {% for note in object.notes.filter %}
               <div class="panel-block">
                 <a class="is-active noteElement mr-3 updateNoteElementBtn"
-                  data-owner="{% if note.user == request.user %}1{% else %}0{% endif %}" data-note-id="{{ note.pk }}">
+                  data-owner="{% if note.created_by == request.user %}1{% else %}0{% endif %}" data-note-id="{{ note.pk }}">
                   <!-- <span class="panel-icon">
                                         <i class="fas fa-book" aria-hidden="true"></i>
                                     </span> -->
                   {{ note.title }}
                 </a>
-                {% if note.user == request.user %}
+                {% if note.created_by == request.user %}
                 <div class="field is-grouped is-grouped-right">
                   <p class="control">
                     <button data-note-id="{{ note.pk }}" data-note-title="{{ note.title }}"
-                      data-owner="{% if note.user == request.user %}1{% else %}0{% endif %}"
+                      data-owner="{% if note.created_by == request.user %}1{% else %}0{% endif %}"
                       class="button is-danger is-light is-small bookkeeperDeleteNoteBtn bkchlst-input is-rounded"
                       disabled type="button">
                       <i class="fa-solid fa-trash"></i>
@@ -327,7 +326,7 @@ Job - {{ object.title }}
                   </p>
                   <p class="control">
                     <button type="button" data-note-id="{{ note.pk }}"
-                      data-owner="{% if note.user == request.user %}1{% else %}0{% endif %}"
+                      data-owner="{% if note.created_by == request.user %}1{% else %}0{% endif %}"
                       class="button is-info is-light is-small bkchlst-input is-rounded updateNoteElementBtn">
                       <i class="fa-solid fa-pencil"></i>
                     </button>

@@ -45,7 +45,7 @@ class CreateDocumentBookkeeperApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -68,9 +68,9 @@ class RetrieveDocumentBookkeeperApiView(APIView):
             data = request.data
             document_id = data.get("documentId")
             document = Documents.objects.select_related().filter(pk=document_id).first()
-            document_serializer = CreateDocumentSerializer(instance=document)
+            serializer = CreateDocumentSerializer(instance=document)
             return Response(
-                data={"document": document_serializer.data},
+                data={"document": serializer.data},
                 status=status.HTTP_201_CREATED,
             )
         except APIException as ex:
@@ -78,8 +78,8 @@ class RetrieveDocumentBookkeeperApiView(APIView):
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
-                # "user_error_msg": serializer.error_messages,
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.serializer,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -103,11 +103,11 @@ class DeleteDocumentBookkeeperApiView(APIView):
             document_id = data.get("documentId")
             user = request.user
             document_object = Documents.objects.get(pk=document_id)
-            if document_object.user != user:
+            if document_object.created_by != user:
                 raise PermissionDenied(
                     {"user_error_msg": "You dont have permission to delete!"}
                 )
-            document_object.soft_delete()
+            document_object.delete()
             return Response(
                 data={"msg": "Document deleted successfully!"},
                 status=status.HTTP_201_CREATED,
@@ -117,8 +117,8 @@ class DeleteDocumentBookkeeperApiView(APIView):
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                # "user_error_msg": ex.detail,
-                "user_error_msg": serializer.error_messages,
+                "user_error_msg": ex.detail,
+                # "user_error_msg": serializer.error_messages,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:

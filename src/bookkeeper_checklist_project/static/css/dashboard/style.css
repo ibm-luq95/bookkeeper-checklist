@@ -307,3 +307,7 @@ div.select:has(select.cursor-not-allowed) {
 .manager-dashboard-card-widget {
   /* width: max-content; */
 }
+
+.manager-as-lbl {
+  font-size: 13px;
+}

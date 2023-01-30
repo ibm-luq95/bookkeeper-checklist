@@ -131,7 +131,7 @@ class UpdateJobManagerApiView(APIView):
                 tasks_objects_list.append(Task.objects.get(pk=task))
             job_object.tasks.set(tasks_objects_list)
             return Response(
-                data={"job": serializer.data},
+                data={"job": serializer.data, "msg": "Job updated successfully!"},
                 status=status.HTTP_200_OK,
             )
         except APIException as ex:

@@ -79,10 +79,10 @@ class SetTaskCompletedBookkeeperApiView(APIView):
 
             for task in tasks:
                 task_object = Task.objects.get(pk=task)
-                if current_user != task_object.user:
-                    raise PermissionDenied(
-                        {"user_error_msg": "You dont have permission to update this task!"}
-                    )
+                # if current_user != task_object.created_by:
+                #     raise PermissionDenied(
+                #         {"user_error_msg": "You dont have permission to update this task!"}
+                #     )
                 task_object.is_completed = True
                 task_object.task_status = "completed"
                 task_object.save()
@@ -166,7 +166,7 @@ class UpdateTaskBookkeeperApiView(APIView):
             data = request.data
             current_user = request.user
             task_object = Task.objects.get(pk=data.get("id"))
-            if current_user != task_object.user:
+            if current_user != task_object.created_by:
                 raise PermissionDenied(
                     {"user_error_msg": "You dont have permission to update this task!"}
                 )
@@ -212,7 +212,7 @@ class DeleteTaskBookkeeperApiView(APIView, CheckOwnerPermission):
             data = request.data
             current_user = request.user
             task_object = Task.objects.get(pk=data.get("taskId"))
-            if current_user != task_object.user:
+            if current_user != task_object.created_by:
                 raise PermissionDenied(
                     {"user_error_msg": "You dont have permission to delete this task!"}
                 )

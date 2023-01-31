@@ -5,8 +5,12 @@ from task.models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    task_type_display = serializers.CharField(source="get_task_type_display")
+    task_status_display = serializers.CharField(source="get_task_status_display")
+
     class Meta:
         model = Task
+        # fields = ("get_task_type_display",)
         exclude = (
             "metadata",
             "is_deleted",
@@ -15,7 +19,7 @@ class TaskSerializer(serializers.ModelSerializer):
             "updated_at",
             "is_completed",
         )
-        # depth = 1
+        depth = 1
 
     def update(self, instance, validated_data):
         instance = super(TaskSerializer, self).update(instance, validated_data)

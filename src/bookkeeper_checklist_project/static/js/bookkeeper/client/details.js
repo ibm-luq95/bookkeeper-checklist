@@ -5,7 +5,13 @@ import {
   eyeIconHTMLCode,
 } from "../../utils/constants.js";
 import { showMicroModal, MicroModalHandler } from "../../utils/model-box.js";
-import { enableInputsOnLoad, sendRequest, sendGetRequest, setFormInputValues } from "../../utils/helpers.js";
+import {
+  enableInputsOnLoad,
+  sendRequest,
+  sendGetRequest,
+  setFormInputValues,
+  fetchUrlPathByName,
+} from "../../utils/helpers.js";
 import { showToastNotification } from "../../utils/notifications.js";
 
 document.addEventListener("readystatechange", (ev) => {
@@ -22,21 +28,29 @@ document.addEventListener("readystatechange", (ev) => {
     const clipboardJs = new ClipboardJS(".copyBtn");
 
     // first enable all bkchlst inputs when page fully loaded completed
-    const inputTrimWhitespaceBtns = document.querySelectorAll(".input-trim-whitespace");
+    const inputTrimWhitespaceBtns = document.querySelectorAll(
+      ".input-trim-whitespace"
+    );
 
     inputTrimWhitespaceBtns.forEach((element) => {
       element.value = element.value.trim();
     });
     // Then instantiate the MicroModal module, so that it takes care of all the bindings for you.
-    MicroModal.init({
+    /* MicroModal.init({
       disableScroll: false,
-    });
+    }); */
 
-    const weeklyTasksInputs = document.querySelectorAll(".monthly-task-checkbox");
-    const weeklyTasksSubmitBtn = document.querySelector("#weeklyTasksSubmitBtn");
-    const updateTaskBookkeeperBtn = document.querySelector("button#updateTaskBookkeeperBtn");
+    const weeklyTasksInputs = document.querySelectorAll(
+      ".monthly-task-checkbox"
+    );
+    const weeklyTasksSubmitBtn = document.querySelector(
+      "#weeklyTasksSubmitBtn"
+    );
+    const updateTaskBookkeeperBtn = document.querySelector(
+      "button#updateTaskBookkeeperBtn"
+    );
     const bookkeeperViewImportantContactBtns = document.querySelectorAll(
-      "button.bookkeeperViewImportantContactBtn",
+      "button.bookkeeperViewImportantContactBtn"
     );
 
     // bookkeeper view important contact buttons event
@@ -57,11 +71,17 @@ document.addEventListener("readystatechange", (ev) => {
             request
               .then((data) => {
                 const importantContactObject = data["important_contact"];
-                setFormInputValues(updateImportantContactForm, importantContactObject);
+                setFormInputValues(
+                  updateImportantContactForm,
+                  importantContactObject
+                );
               })
               .catch((error) => {
                 console.error(error);
-                showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+                showToastNotification(
+                  `${JSON.stringify(error["user_error_msg"])}`,
+                  "danger"
+                );
               })
               .finally(() => {
                 // console.warn("Finally");
@@ -75,7 +95,9 @@ document.addEventListener("readystatechange", (ev) => {
     });
 
     // bookkeeper add new task button
-    const bookkeeperAddNewTaskBtn = document.querySelector("#bookkeeperAddNewTaskBtn");
+    /*     const bookkeeperAddNewTaskBtn = document.querySelector(
+      "#bookkeeperAddNewTaskBtn"
+    );
     bookkeeperAddNewTaskBtn.addEventListener("click", (event) => {
       MicroModal.show("add-new-task-modal", {
         disableScroll: false,
@@ -84,222 +106,294 @@ document.addEventListener("readystatechange", (ev) => {
         },
         disableFocus: false,
       });
-    });
+    }); */
 
     // task items buttons
-    const openTasksItemsModalBtns = document.querySelectorAll(".open-tasks-items-modal-btn");
-    openTasksItemsModalBtns.forEach((element) => {
-      element.addEventListener("click", (event) => {
-        const noTasksNotification = document.querySelector("div#noTasksNotification");
-        const tasksTableWrapper = document.querySelector("div#tasksTableWrapper");
-        const currentTarget = event.currentTarget;
-        const fetchJobUrl = window.localStorage.getItem("fetchJobsUrl");
-        const jobId = currentTarget.dataset["jobId"];
-        const tasksItemsModalTitle = document.querySelector("h2#tasks-items-modal-title");
+    const openTasksItemsModalBtns = document.querySelectorAll(
+      ".open-tasks-items-modal-btn"
+    );
+    if (openTasksItemsModalBtns) {
+      openTasksItemsModalBtns.forEach((element) => {
+        element.addEventListener("click", (event) => {
+          const noTasksNotification = document.querySelector(
+            "div#noTasksNotification"
+          );
+          const tasksTableWrapper = document.querySelector(
+            "div#tasksTableWrapper"
+          );
+          const currentTarget = event.currentTarget;
+          const fetchJobUrl = window.localStorage.getItem("fetchJobsUrl");
+          const jobId = currentTarget.dataset["jobId"];
+          const tasksItemsModalTitle = document.querySelector(
+            "h2#tasks-items-modal-title"
+          );
 
-        const callBacks = {
-          onOpenCallBack: () => {
-            const requestOptions = {
-              method: "POST",
-              dataToSend: { jobId: jobId },
-              url: fetchJobUrl,
-            };
-            const request = sendRequest(requestOptions);
-            request
-              .then((data) => {
-                const jobObject = data["job"];
+          const callBacks = {
+            onOpenCallBack: () => {
+              const requestOptions = {
+                method: "POST",
+                dataToSend: { jobId: jobId },
+                url: fetchJobUrl,
+              };
+              const request = sendRequest(requestOptions);
+              request
+                .then((data) => {
+                  const jobObject = data["job"];
 
-                tasksItemsModalTitle.textContent = jobObject["title"];
-                const tasksArray = data["job"]["tasks"];
+                  tasksItemsModalTitle.textContent = jobObject["title"];
+                  const tasksArray = data["job"]["tasks"];
 
-                // check if the tasks length
-                if (tasksArray.length <= 0) {
-                  noTasksNotification.hidden = false;
-                  tasksTableWrapper.hidden = true;
-                } else {
-                  const jobTasksTable = document.querySelector("table#jobTasksTable");
-                  tasksTableWrapper.hidden = false;
-                  // console.log(data);
-                  // console.log(tasksArray);
-
-                  const tasksModalWrapperItems = document.querySelector(
-                    "div#tasksModalWrapperItems",
-                  );
-                  const tableBody = jobTasksTable.querySelector("tbody");
-                  tasksArray.forEach((taskElement) => {
-                    const tableRaw = document.createElement("tr");
-                    tableRaw.setAttribute("data-task-id", taskElement["id"]);
-                    const tdCheckboxEle = document.createElement("td");
-                    tdCheckboxEle.setAttribute("data-td-name", "task-td-checkbox");
-                    const checkboxElement = document.createElement("input");
-                    checkboxElement.type = "checkbox";
-                    checkboxElement.classList.add("tasks-checkbox");
-                    checkboxElement.setAttribute("data-task-id", taskElement["id"]);
-                    // append check box to td
-                    tdCheckboxEle.appendChild(checkboxElement);
-
-                    // task title item
-                    const tdTaskTitleTd = document.createElement("td");
-                    tdTaskTitleTd.setAttribute("data-td-name", "task-td-title");
-                    tdTaskTitleTd.textContent = taskElement["title"].substring(0, 15) + "...";
-                    if (taskElement["is_completed"] === true) {
-                      tdTaskTitleTd.classList.add("completed-task-item");
-                      checkboxElement.checked = true;
-                      checkboxElement.disabled = true;
-                      tableRaw.classList.add("has-background-grey-lighter");
-                      checkboxElement.setAttribute("data-set-disabled", "1");
-                      checkboxElement.setAttribute("data-is-completed", "1");
-                    }
-
-                    // task status item
-                    const tdTaskTypeTd = document.createElement("td");
-                    tdTaskTypeTd.setAttribute("data-td-name", "task-td-status");
-                    tdTaskTypeTd.textContent = taskElement["task_type"];
-
-                    // task created at
-                    const taskCreatedAtTd = document.createElement("td");
-                    taskCreatedAtTd.setAttribute("data-td-name", "task-td-created-at");
-                    taskCreatedAtTd.textContent = taskElement["created_at"];
-
-                    // task due date
-                    const taskDueDateTd = document.createElement("td");
-                    taskDueDateTd.setAttribute("data-td-name", "task-td-due-date");
-                    taskDueDateTd.textContent = taskElement["due_date"];
-
-                    // console.log(taskElement["is_completed"]);
-                    // task buttons td
-                    const taskButtonsActionsTd = document.createElement("td");
-                    taskButtonsActionsTd.setAttribute("data-td-name", "task-td-actions");
-                    taskButtonsActionsTd.classList.add(...["is-actions-cell"]);
-                    const divButtonsElement = document.createElement("div");
-                    divButtonsElement.classList.add(...["buttons", "is-right"]);
-                    const viewButton = document.createElement("button");
-                    viewButton.type = "button";
-                    viewButton.classList.add(
-                      ...[
-                        "button",
-                        "is-small",
-                        // "is-info",
-                        "bkchlst-input",
-                        "bookkeeperTaskViewBtn",
-                      ],
+                  // check if the tasks length
+                  if (tasksArray.length <= 0) {
+                    noTasksNotification.hidden = false;
+                    tasksTableWrapper.hidden = true;
+                  } else {
+                    const jobTasksTable = document.querySelector(
+                      "table#jobTasksTable"
                     );
-                    viewButton.setAttribute("data-task-id", taskElement["id"]);
-                    viewButton.setAttribute("data-tooltip", "View task");
-                    const spanIconElement = document.createElement("span");
-                    spanIconElement.classList.add("icon");
-                    spanIconElement.innerHTML = '<i class="fa-solid fa-eye"></i>';
-                    viewButton.appendChild(spanIconElement);
-                    // append button to div buttons
-                    divButtonsElement.appendChild(viewButton);
-                    // append div buttons to td
-                    taskButtonsActionsTd.appendChild(divButtonsElement);
+                    tasksTableWrapper.hidden = false;
+                    // console.log(data);
+                    // console.log(tasksArray);
 
-                    // append checkbox td to tr
-                    tableRaw.appendChild(tdCheckboxEle);
+                    const tasksModalWrapperItems = document.querySelector(
+                      "div#tasksModalWrapperItems"
+                    );
+                    const tableBody = jobTasksTable.querySelector("tbody");
+                    tasksArray.forEach((taskElement) => {
+                      // console.log(taskElement);
+                      const tableRaw = document.createElement("tr");
+                      tableRaw.setAttribute("data-task-id", taskElement["id"]);
+                      const tdCheckboxEle = document.createElement("td");
+                      tdCheckboxEle.setAttribute(
+                        "data-td-name",
+                        "task-td-checkbox"
+                      );
+                      const checkboxElement = document.createElement("input");
+                      checkboxElement.type = "checkbox";
+                      checkboxElement.classList.add("tasks-checkbox");
+                      checkboxElement.setAttribute(
+                        "data-task-id",
+                        taskElement["id"]
+                      );
+                      // append check box to td
+                      tdCheckboxEle.appendChild(checkboxElement);
 
-                    // append title td to tr
-                    tableRaw.appendChild(tdTaskTitleTd);
+                      // task title item
+                      const tdTaskTitleTd = document.createElement("td");
+                      tdTaskTitleTd.setAttribute(
+                        "data-td-name",
+                        "task-td-title"
+                      );
+                      tdTaskTitleTd.textContent =
+                        taskElement["title"].substring(0, 20) + "...";
+                      if (
+                        taskElement["is_completed"] === true ||
+                        taskElement["task_status"] === "completed"
+                      ) {
+                        tdTaskTitleTd.classList.add("completed-task-item");
+                        checkboxElement.checked = true;
+                        checkboxElement.disabled = true;
+                        tableRaw.classList.add("has-background-grey-lighter");
+                        checkboxElement.setAttribute("data-set-disabled", "1");
+                        checkboxElement.setAttribute("data-is-completed", "1");
+                      }
 
-                    // append status td to tr
-                    tableRaw.appendChild(tdTaskTypeTd);
+                      // task type item
+                      const tdTaskTypeTd = document.createElement("td");
+                      tdTaskTypeTd.setAttribute("data-td-name", "task-td-type");
+                      tdTaskTypeTd.textContent =
+                        taskElement["task_type_display"];
 
-                    // append created at td to tr
-                    tableRaw.appendChild(taskCreatedAtTd);
+                      // task status item
+                      const tdTaskStatusTd = document.createElement("td");
+                      tdTaskStatusTd.setAttribute(
+                        "data-td-name",
+                        "task-td-status"
+                      );
+                      tdTaskStatusTd.textContent =
+                        taskElement["task_status_display"];
 
-                    // append due date td to tr
-                    tableRaw.appendChild(taskDueDateTd);
+                      // task created at
+                      const taskCreatedAtTd = document.createElement("td");
+                      taskCreatedAtTd.setAttribute(
+                        "data-td-name",
+                        "task-td-created-at"
+                      );
+                      taskCreatedAtTd.textContent = taskElement["created_at"];
 
-                    // append buttons td to tr
-                    tableRaw.appendChild(taskButtonsActionsTd);
+                      // task due date
+                      const taskDueDateTd = document.createElement("td");
+                      taskDueDateTd.setAttribute(
+                        "data-td-name",
+                        "task-td-due-date"
+                      );
+                      taskDueDateTd.textContent = taskElement["due_date"];
 
-                    // append the row to tbody
-                    tableBody.appendChild(tableRaw);
-                  });
-                  // view task buttons
-                  const bookkeeperTaskViewBtns = document.querySelectorAll(
-                    "button.bookkeeperTaskViewBtn",
-                  );
-                  bookkeeperTaskViewBtns.forEach((btn) => {
-                    btn.addEventListener("click", (event) => {
-                      const currentTarget = event.currentTarget;
-                      const retrieveTaskUrl = window.localStorage.getItem("retrieveTaskUrl");
-                      const taskId = currentTarget.dataset["taskId"];
-                      // console.log(taskId);
-                      const requestOptions = {
-                        method: "POST",
-                        dataToSend: { taskId: taskId },
-                        url: retrieveTaskUrl,
-                      };
-                      const request = sendRequest(requestOptions);
-                      request
-                        .then((taskData) => {
-                          const taskDetails = taskData["task"];
-                          const jobDetails = taskDetails["job"];
-                          const taskDetailsModalForm = document.querySelector(
-                            "form#taskDetailsModalForm",
-                          );
-                          const taskDetailsModalCallbacks = {
-                            onOpenCallBack: () => {
-                              taskDetailsModalForm["job_title"].value = jobDetails["title"];
-                              taskDetailsModalForm["title"].value = taskDetails["title"];
-                              taskDetailsModalForm["task_type"].value = taskDetails["task_type"];
-                              taskDetailsModalForm["hints"].value = taskDetails["hints"];
-                              if (taskDetails["is_completed"] === true) {
-                                taskDetailsModalForm["is_completed"].checked = true;
-                              } else {
-                                taskDetailsModalForm["is_completed"].checked = false;
-                              }
-                              taskDetailsModalForm["additional_notes"].value =
-                                taskDetails["additional_notes"];
-                              taskDetailsModalForm["start_date"].value = taskDetails["start_date"];
-                              taskDetailsModalForm["due_date"].value = taskDetails["due_date"];
-                            },
-                            onCloseCallback: () => {
-                              console.warn("close details task item");
-                            },
-                          };
-                          new MicroModalHandler("task-details-modal", taskDetailsModalCallbacks);
+                      // console.log(taskElement["is_completed"]);
+                      // task buttons td
+                      const taskButtonsActionsTd = document.createElement("td");
+                      taskButtonsActionsTd.setAttribute(
+                        "data-td-name",
+                        "task-td-actions"
+                      );
+                      taskButtonsActionsTd.classList.add(
+                        ...["is-actions-cell"]
+                      );
+                      const divButtonsElement = document.createElement("div");
+                      divButtonsElement.classList.add(
+                        ...["buttons", "is-right"]
+                      );
+                      const viewButton = document.createElement("button");
+                      viewButton.type = "button";
+                      viewButton.classList.add(
+                        ...[
+                          "button",
+                          "is-small",
+                          // "is-info",
+                          "bkchlst-input",
+                          "bookkeeperTaskViewBtn",
+                        ]
+                      );
+                      viewButton.setAttribute(
+                        "data-task-id",
+                        taskElement["id"]
+                      );
+                      viewButton.setAttribute("data-tooltip", "View task");
+                      const spanIconElement = document.createElement("span");
+                      spanIconElement.classList.add("icon");
+                      spanIconElement.innerHTML =
+                        '<i class="fa-solid fa-eye"></i>';
+                      viewButton.appendChild(spanIconElement);
+                      // append button to div buttons
+                      divButtonsElement.appendChild(viewButton);
+                      // append div buttons to td
+                      taskButtonsActionsTd.appendChild(divButtonsElement);
 
-                          // console.log(tasks);
-                          // showToastNotification(data["msg"], "success");
-                          /* setTimeout(() => {
-                            window.location.reload();
-                          }, 500); */
-                        })
-                        .catch((error) => {
-                          console.error(error);
-                          showToastNotification(
-                            `${JSON.stringify(error["user_error_msg"])}`,
-                            "danger",
-                          );
-                        })
-                        .finally(() => {
-                          // jobsFormFieldset.disabled = false;
-                          // managerJobsLoaderBtn.hidden = true;
-                        });
+                      // append checkbox td to tr
+                      tableRaw.appendChild(tdCheckboxEle);
+
+                      // append title td to tr
+                      tableRaw.appendChild(tdTaskTitleTd);
+
+                      // append type td to tr
+                      tableRaw.appendChild(tdTaskTypeTd);
+
+                      // append status td to tr
+                      tableRaw.appendChild(tdTaskStatusTd);
+
+                      // append created at td to tr
+                      tableRaw.appendChild(taskCreatedAtTd);
+
+                      // append due date td to tr
+                      tableRaw.appendChild(taskDueDateTd);
+
+                      // append buttons td to tr
+                      tableRaw.appendChild(taskButtonsActionsTd);
+
+                      // append the row to tbody
+                      tableBody.appendChild(tableRaw);
                     });
-                  });
-                }
-              })
-              .catch((error) => {
-                console.error(error);
-                showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
-              });
-          },
-          onCloseCallback: () => {
-            console.log("on close");
-            noTasksNotification.hidden = true;
-            jobTasksTable.querySelector("tbody").innerHTML = "";
-            tasksItemsModalTitle.textContent = "";
-          },
-        };
-        const modlaHandler = new MicroModalHandler("tasks-items-modal", callBacks);
+                    // view task buttons
+                    const bookkeeperTaskViewBtns = document.querySelectorAll(
+                      "button.bookkeeperTaskViewBtn"
+                    );
+                    bookkeeperTaskViewBtns.forEach((btn) => {
+                      btn.addEventListener("click", async (event) => {
+                        const currentTarget = event.currentTarget;
+                        const taskId = currentTarget.dataset["taskId"];
+                        const retrieveTaskUrl = await fetchUrlPathByName(
+                          "task:api:bookkeeper:retrieve"
+                        );
+                        // console.log(taskId);
+                        const requestOptions = {
+                          method: "GET",
+                          url: `${retrieveTaskUrl["urlPath"]}?task=${taskId}`,
+                        };
+                        const request = sendRequest(requestOptions);
+                        const modalTitle = document
+                          .querySelector("#task-details-modal")
+                          .querySelector(".modal__title");
+                        request
+                          .then((taskData) => {
+                            const taskDetails = taskData;
+                            const jobDetails = taskData["job"];
+                            const taskDetailsModalForm = document.querySelector(
+                              "form#taskDetailsModalForm"
+                            );
+                            const taskDetailsModalCallbacks = {
+                              onOpenCallBack: () => {
+                                modalTitle.textContent = taskDetails["title"];
+                                taskDetailsModalForm["job_title"].value =
+                                  jobDetails["title"];
+                                taskDetailsModalForm["title"].value =
+                                  taskDetails["title"];
+                                taskDetailsModalForm["task_type"].value =
+                                  taskDetails["task_type"];
+                                taskDetailsModalForm["hints"].value =
+                                  taskDetails["hints"];
+                                taskDetailsModalForm["additional_notes"].value =
+                                  taskDetails["additional_notes"];
+                                taskDetailsModalForm["start_date"].value =
+                                  taskDetails["start_date"];
+                                taskDetailsModalForm["due_date"].value =
+                                  taskDetails["due_date"];
+                              },
+                              onCloseCallback: () => {
+                                console.warn("close details task item");
+                                modalTitle.textContent = "";
+                              },
+                            };
+                            new MicroModalHandler(
+                              "task-details-modal",
+                              taskDetailsModalCallbacks
+                            );
+
+                            // console.log(tasks);
+                            // showToastNotification(data["msg"], "success");
+                            /* setTimeout(() => {
+                              window.location.reload();
+                            }, 500); */
+                          })
+                          .catch((error) => {
+                            console.error(error);
+                            showToastNotification(
+                              `${JSON.stringify(error["user_error_msg"])}`,
+                              "danger"
+                            );
+                          })
+                          .finally(() => {
+                            // jobsFormFieldset.disabled = false;
+                            // managerJobsLoaderBtn.hidden = true;
+                          });
+                      });
+                    });
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                  showToastNotification(
+                    `${JSON.stringify(error["user_error_msg"])}`,
+                    "danger"
+                  );
+                });
+            },
+            onCloseCallback: () => {
+              console.log("on close");
+              noTasksNotification.hidden = true;
+              jobTasksTable.querySelector("tbody").innerHTML = "";
+              tasksItemsModalTitle.textContent = "";
+            },
+          };
+          const modlaHandler = new MicroModalHandler(
+            "tasks-items-modal",
+            callBacks
+          );
+        });
       });
-    });
+    }
 
     // update task button event
-    updateTaskBookkeeperBtn.addEventListener("click", (event) => {
+    updateTaskBookkeeperBtn.addEventListener("click", async (event) => {
       event.preventDefault();
       const checkedTasksArray = new Array();
       const tasksInputs = document.querySelectorAll(".tasks-checkbox");
@@ -313,18 +407,22 @@ document.addEventListener("readystatechange", (ev) => {
       });
 
       if (checkedTasksArray.length > 0) {
-        const setTaskCompletedUrl = window.localStorage.getItem("setTaskCompletedUrl");
+        const setTaskCompletedUrl = await fetchUrlPathByName(
+          "task:api:bookkeeper:set-task-completed"
+        );
         const requestOptions = {
           method: "PUT",
           dataToSend: { tasks: checkedTasksArray },
-          url: setTaskCompletedUrl,
+          url: setTaskCompletedUrl["urlPath"],
         };
         const request = sendRequest(requestOptions);
         request
           .then((data) => {
             const tasks = data["tasks"];
             tasks.forEach((element) => {
-              const trElement = document.querySelector(`tr[data-task-id="${element}"]`);
+              const trElement = document.querySelector(
+                `tr[data-task-id="${element}"]`
+              );
               trElement.classList.add(...["has-background-grey-lighter"]);
               trElement.childNodes.forEach((node) => {
                 const tdName = node.dataset["tdName"];
@@ -354,7 +452,10 @@ document.addEventListener("readystatechange", (ev) => {
           })
           .catch((error) => {
             console.error(error);
-            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+            showToastNotification(
+              `${JSON.stringify(error["user_error_msg"])}`,
+              "danger"
+            );
           })
           .finally(() => {
             // jobsFormFieldset.disabled = false;
@@ -373,14 +474,18 @@ document.addEventListener("readystatechange", (ev) => {
     });
 
     // tasks checkbox main checkbox event
-    const tasksThMainCheckboxs = document.querySelectorAll(".tasks-th-main-checkbox");
+    const tasksThMainCheckboxs = document.querySelectorAll(
+      ".tasks-th-main-checkbox"
+    );
 
     tasksThMainCheckboxs.forEach((element) => {
       element.addEventListener("change", (event) => {
         const currentTarget = event.currentTarget;
 
         const childeElementsCssClass = `.${currentTarget.dataset["childCheckboxClass"]}`;
-        const allChildElements = document.querySelectorAll(childeElementsCssClass);
+        const allChildElements = document.querySelectorAll(
+          childeElementsCssClass
+        );
         allChildElements.forEach((input) => {
           // console.log(weeklyTasksInputs);
           const setDisabled = Boolean(input.dataset["setDisabled"]);
@@ -462,13 +567,19 @@ document.addEventListener("readystatechange", (ev) => {
       });
     });
 
-    const allShowASPasswordBtns = document.querySelectorAll(".showASUPasswordBtn");
+    const allShowASPasswordBtns = document.querySelectorAll(
+      ".showASUPasswordBtn"
+    );
     allShowASPasswordBtns.forEach((btn) => {
       btn.addEventListener("click", (event) => {
         const currentTarget = event.currentTarget;
-        const visibilityStatus = Boolean(parseInt(currentTarget.dataset["visibilityStatus"]));
+        const visibilityStatus = Boolean(
+          parseInt(currentTarget.dataset["visibilityStatus"])
+        );
         const passwordInputId = currentTarget.dataset["passwordInput"];
-        const passwordInputElement = document.querySelector(`#${passwordInputId}`);
+        const passwordInputElement = document.querySelector(
+          `#${passwordInputId}`
+        );
         if (visibilityStatus === true) {
           currentTarget.innerHTML = eyeIconHTMLCode;
           currentTarget.dataset["visibilityStatus"] = 0;
@@ -491,7 +602,10 @@ document.addEventListener("readystatechange", (ev) => {
       const textType = element.dataset["textType"];
       switch (textType) {
         case "username":
-          showToastNotification(`Username ${copiedText} copied successfully`, "success");
+          showToastNotification(
+            `Username ${copiedText} copied successfully`,
+            "success"
+          );
           break;
 
         case "password":
@@ -507,17 +621,48 @@ document.addEventListener("readystatechange", (ev) => {
     const allNotesItemsBtns = document.querySelectorAll(".open-note-item-btn");
     allNotesItemsBtns.forEach((element) => {
       element.addEventListener("click", (event) => {
-        MicroModal.show("notes-item-modal", {
-          disableScroll: false,
-          onClose: (modal) => {
-            console.info(`${modal.id} is hidden`);
+        const currentTarget = event.currentTarget;
+        const noteTextareaElement = document.querySelector(
+          "textarea#noteTextarea"
+        );
+        const noteCreatedByElement = document.querySelector("#noteCreatedBy");
+        const dataset = currentTarget["dataset"];
+        const noteId = dataset["noteId"];
+        const callBacks = {
+          onOpenCallBack: async () => {
+            const retrieveUrl = await fetchUrlPathByName(
+              "notes:api:bookkeeper:retrieve"
+            );
+            const requestOptions = {
+              method: "POST",
+              dataToSend: { noteId: noteId },
+              url: retrieveUrl["urlPath"],
+            };
+            const request = sendRequest(requestOptions);
+            request
+              .then((data) => {
+                noteTextareaElement.value = data["note"]["body"];
+                noteCreatedByElement.textContent = data["note"]["created_at"];
+              })
+              .catch((error) => {
+                console.error(error);
+                showToastNotification(
+                  `${JSON.stringify(error["user_error_msg"])}`,
+                  "danger"
+                );
+              })
+              .finally(() => {});
           },
-          disableFocus: false,
-        });
+          onCloseCallback: () => {
+            noteTextareaElement.value = "";
+            noteCreatedByElement.textContent = "";
+          },
+        };
+        new MicroModalHandler("notes-item-modal", callBacks);
       });
     });
 
-    const tableFooterSearchElements = document.querySelectorAll(
+    /*  const tableFooterSearchElements = document.querySelectorAll(
       "#clientsAccountAndServicesTable tfoot th",
     );
     tableFooterSearchElements.forEach((element) => {
@@ -533,7 +678,11 @@ document.addEventListener("readystatechange", (ev) => {
         case "footerPassword":
           inputID = "searchFooterPassword";
           break;
+        case "footerName":
+          inputID = "searchFooterName";
+          break;
       }
+      // console.log(inputID);
       // element.innerHTML = '<input type="text" placeholder="Search ' + title + '" />';
       const searchInputElement = document.createElement("input");
       searchInputElement.type = "text";
@@ -541,9 +690,9 @@ document.addEventListener("readystatechange", (ev) => {
       searchInputElement.classList.add(...["input", "is-small", "searchTableFooterInput"]);
       searchInputElement.placeholder = `Search ${title}`;
       element.appendChild(searchInputElement);
-    });
+    }); */
 
-    const clientsAccountAndServicesTable = $("#clientsAccountAndServicesTable").DataTable({
+    /* const clientsAccountAndServicesTable = $("#clientsAccountAndServicesTable").DataTable({
       autoWidth: true,
       // processing: true,
       info: true,
@@ -558,21 +707,6 @@ document.addEventListener("readystatechange", (ev) => {
       fixedHeader: true,
       // responsive: true,
       columnDefs: [{ type: "html-input", targets: [0, 1, 2] }],
-      // dom: "Bfrtip",
-      /* buttons: [
-        {
-          extend: "alert",
-          text: "My button 1",
-        },
-        {
-          extend: "alert",
-          text: "My button 2",
-        },
-        {
-          extend: "alert",
-          text: "My button 3",
-        },
-      ], */
       // buttons: ["copy", "csv", "pdf"],
       initComplete: function () {
         // Apply the search
@@ -588,14 +722,14 @@ document.addEventListener("readystatechange", (ev) => {
             });
           });
       },
-    });
+    }); */
     // Apply the search
-    clientsAccountAndServicesTable.columns().every(function () {
+    /* clientsAccountAndServicesTable.columns().every(function () {
       let that = this;
 
       $("input", this.footer()).on("keyup change", function () {
         that.search(this.value).draw();
       });
-    });
+    }); */
   }
 });

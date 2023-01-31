@@ -111,31 +111,32 @@
               <i class="fas fa-tasks w3-margin-right w2-xxlarge w3-text-teal"></i>
               Jobs
             </h2>
-            <button class="button mt-5 mx-5 is-pulled-right is-small bkchlst-input is-disabled" disabled
-              id="bookkeeperAddNewTaskBtn" data-tooltip="New task">
-              <i class="fa-solid fa-plus"></i>
-            </button>
+
           </div>
           <div class="is-clearfix"></div>
           <div class="tab">
             <button class="tablinks has-text-danger has-text-weight-bold" data-tab-element="past-due-tasks-tab">
-              Past Due Jobs ({{ object|get_jobs_by_status:'past_due'|length }})
+              Past Due ({{ object|get_jobs_by_status:'past_due'|length }})
             </button>
             <button class="tablinks defaultOpenTab1 bkchlst-input is-disabled" disabled
               data-tab-element="weekly-tasks-tab">
-              Weekly Jobs ({{ object|get_jobs_by_type:'weekly'|length }})
+              Weekly ({{ object|get_jobs_by_type:'weekly'|length }})
             </button>
             <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="monthly-tasks-tab">
               Monthly
-              Jobs ({{ object|get_jobs_by_type:'monthly'|length }})
+              ({{ object|get_jobs_by_type:'monthly'|length }})
             </button>
             <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="quarter-tasks-tab">
               Quarter
-              Jobs ({{ object|get_jobs_by_type:'quarterly'|length }})
+              ({{ object|get_jobs_by_type:'quarterly'|length }})
             </button>
             <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="yearly-tasks-tab">
               Yearly
-              Jobs ({{ object|get_jobs_by_type:'yearly'|length }})
+              ({{ object|get_jobs_by_type:'yearly'|length }})
+            </button>
+            <button class="tablinks bkchlst-input is-disabled" disabled data-tab-element="all-tasks-tab">
+              All
+              ({{ object|get_jobs_by_type:'all'|length }})
             </button>
           </div>
 
@@ -204,13 +205,17 @@
                                 <i class="fa-solid fa-eye"></i>
                               </span>
                             </button>
+
+                            {% comment %}
                             <button class="button is-small is-danger bkchlst-input is-disabled" disabled
-                              data-past-due-job-id="{{ past_due.pk }}" type="button" data-job-id="{{ past_due.pk }}"
-                              data-tooltip="Delete task">
-                              <span class="icon">
-                                <i class="fa-solid fa-trash"></i>
-                              </span>
-                            </button>
+                            data-past-due-job-id="{{ past_due.pk }}" type="button" data-job-id="{{ past_due.pk }}"
+                            data-tooltip="Delete task">
+                            <span class="icon">
+                              <i class="fa-solid fa-trash"></i>
+                            </span>
+                          </button>
+                            {% endcomment %}
+
                           </div>
                         </td>
                       </tr>
@@ -223,12 +228,12 @@
               </div>
               <hr />
               <div class="field is-grouped is-grouped-right">
-                <p class="control">
+                <!-- <p class="control">
                   <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
                     id="pastDueJobsSubmitBtn" data-is-disabled="1">
                     Submit
                   </button>
-                </p>
+                </p> -->
                 <!-- <p class="control">
                   <button disabled type="button" class="button is-light bkchlst-input is-disabled">
                     Cancel
@@ -326,13 +331,17 @@
                                 <i class="fa-solid fa-eye"></i>
                               </span>
                             </button>
-                            <button class="button is-small is-danger bkchlst-input is-disabled" disabled
-                              data-weekly-job-id="{{ weekly_job.pk }}" type="button" data-job-id="{{ weekly_job.pk }}"
-                              data-tooltip="Delete task">
-                              <span class="icon">
-                                <i class="fa-solid fa-trash"></i>
-                              </span>
-                            </button>
+
+                           {% comment %}
+                           <button class="button is-small is-danger bkchlst-input is-disabled" disabled
+                           data-weekly-job-id="{{ weekly_job.pk }}" type="button" data-job-id="{{ weekly_job.pk }}"
+                           data-tooltip="Delete task">
+                           <span class="icon">
+                             <i class="fa-solid fa-trash"></i>
+                           </span>
+                         </button>
+                           {% endcomment %}
+
                           </div>
                         </td>
                       </tr>
@@ -346,10 +355,10 @@
               <hr />
               <div class="field is-grouped is-grouped-right">
                 <p class="control">
-                  <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                  <!-- <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
                     id="weeklyTasksSubmitBtn" data-is-disabled="1">
                     Submit
-                  </button>
+                  </button> -->
                 </p>
                 <!-- <p class="control">
                   <button disabled type="button" class="button is-light bkchlst-input is-disabled">
@@ -449,13 +458,17 @@
                                 <i class="fa-solid fa-eye"></i>
                               </span>
                             </button>
+
+                            {% comment %}
                             <button class="button is-small is-danger bkchlst-input is-disabled" disabled
-                              data-monthly-job-id="{{ monthly_job.pk }}" type="button"
-                              data-job-id="{{ monthly_job.pk }}" data-tooltip="Delete task">
-                              <span class="icon">
-                                <i class="fa-solid fa-trash"></i>
-                              </span>
-                            </button>
+                            data-monthly-job-id="{{ monthly_job.pk }}" type="button"
+                            data-job-id="{{ monthly_job.pk }}" data-tooltip="Delete task">
+                            <span class="icon">
+                              <i class="fa-solid fa-trash"></i>
+                            </span>
+                          </button>
+                            {% endcomment %}
+
                           </div>
                         </td>
                       </tr>
@@ -469,10 +482,10 @@
               <hr />
               <div class="field is-grouped is-grouped-right">
                 <p class="control">
-                  <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                  <!-- <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
                     id="monthlyTasksSubmitBtn" data-is-disabled="1">
                     Submit
-                  </button>
+                  </button> -->
                 </p>
                 <!-- <p class="control">
                   <button disabled type="button" class="button is-light bkchlst-input is-disabled">
@@ -570,13 +583,17 @@
                                 <i class="fa-solid fa-eye"></i>
                               </span>
                             </button>
+
+                            {% comment %}
                             <button class="button is-small is-danger bkchlst-input is-disabled" disabled
-                              data-quarterly-job-id="{{ quarterly_job.pk }}" type="button"
-                              data-job-id="{{ quarterly_job.pk }}" data-tooltip="Delete task">
-                              <span class="icon">
-                                <i class="fa-solid fa-trash"></i>
-                              </span>
-                            </button>
+                            data-quarterly-job-id="{{ quarterly_job.pk }}" type="button"
+                            data-job-id="{{ quarterly_job.pk }}" data-tooltip="Delete task">
+                            <span class="icon">
+                              <i class="fa-solid fa-trash"></i>
+                            </span>
+                          </button>
+                            {% endcomment %}
+
                           </div>
                         </td>
                       </tr>
@@ -590,10 +607,10 @@
               <hr />
               <div class="field is-grouped is-grouped-right">
                 <p class="control">
-                  <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                  <!-- <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
                     id="quarterlyTasksSubmitBtn" data-is-disabled="1">
                     Submit
-                  </button>
+                  </button> -->
                 </p>
                 <!-- <p class="control">
                   <button disabled type="button" class="button is-light bkchlst-input is-disabled">
@@ -691,13 +708,17 @@
                                 <i class="fa-solid fa-eye"></i>
                               </span>
                             </button>
+
+                            {% comment %}
                             <button class="button is-small is-danger bkchlst-input is-disabled" disabled
-                              data-yearly-job-id="{{ yearly.pk }}" type="button" data-job-id="{{ yearly.pk }}"
-                              data-tooltip="Delete task">
-                              <span class="icon">
-                                <i class="fa-solid fa-trash"></i>
-                              </span>
-                            </button>
+                            data-yearly-job-id="{{ yearly.pk }}" type="button" data-job-id="{{ yearly.pk }}"
+                            data-tooltip="Delete task">
+                            <span class="icon">
+                              <i class="fa-solid fa-trash"></i>
+                            </span>
+                          </button>
+                            {% endcomment %}
+
                           </div>
                         </td>
                       </tr>
@@ -711,10 +732,140 @@
               <hr />
               <div class="field is-grouped is-grouped-right">
                 <p class="control">
-                  <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                  <!-- <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
                     id="yearlyTasksSubmitBtn" data-is-disabled="1">
                     Submit
+                  </button> -->
+                </p>
+                <!-- <p class="control">
+                  <button disabled type="button" class="button is-light bkchlst-input is-disabled">
+                    Cancel
                   </button>
+                </p> -->
+              </div>
+            </div>
+          </div>
+          <div class="tabcontent" id="all-tasks-tab">
+            <div class="container">
+              <div class="b-table">
+                <div class="table-wrapper has-mobile-cards">
+                  <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+                    <thead>
+                      <tr>
+                        <th class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" class="tasks-th-main-checkbox bkchlst-input is-disabled" disabled
+                              data-child-checkbox-class="yearly-job-checkbox">
+                          </label>
+                        </th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Type</th>
+                        <th>Created</th>
+                        <th>Due Date</th>
+                        <th data-tooltip="Tasks Count" class="has-tooltip-right has-tooltip-arrow">Count</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- has-background-danger-light,  has-background-success-light -->
+                      {% for allJobs in object|get_jobs_by_type:'all' %}
+                      <tr
+                        class="{% if allJobs.status == 'past_due' %} has-background-danger-light {% elif allJobs.status == 'complete' %} has-background-success-light {% endif %}">
+                        <td class="is-checkbox-cell">
+                          <label class="checkbox">
+                            <input type="checkbox" data-weekly-job-id="{{ allJobs.pk }}"
+                              class="bkchlst-input allJobs-job-checkbox is-disabled" disabled />
+                          </label>
+                        </td>
+
+                        <td data-label="Title">{{ allJobs.title }}</td>
+                        <td data-label="Status">
+
+                          {% if allJobs.status == "past_due" %}
+                          <span class="tag is-danger has-text-weight-bold">
+                            {{ allJobs.get_status_display }}
+                          </span>
+                          {% elif allJobs.status == "complete" %}
+                          <span class="tag is-success has-text-weight-bold">
+                            {{ allJobs.get_status_display }}
+                          </span>
+                          {% elif allJobs.status == "not_started" %}
+                          <span class="tag is-light has-text-weight-bold">
+                            {{ allJobs.get_status_display }}
+                          </span>
+                          {% elif allJobs.status == "in_progress" %}
+                          <span class="tag is-info has-text-weight-bold">
+                            {{ allJobs.get_status_display }}
+                          </span>
+                          {% elif allJobs.status == "archive" %}
+                          <span class="tag is-dark has-text-weight-bold">
+                            {{ allJobs.get_status_display }}
+                          </span>
+                          {% elif allJobs.status == "not_complete" %}
+                          <span class="tag is-link has-text-weight-bold">
+                            {{ allJobs.get_status_display }}
+                          </span>
+                          {% endif %}
+
+
+                        </td>
+
+                        <td data-label="Type">
+                          {{ allJobs.get_job_type_display }}
+                        </td>
+
+                        <td data-label="Created">
+                          <small class="has-text-grey is-abbr-like" title="{{ allJobs.created_at|date }}">
+                            {{ allJobs.created_at|date }}
+                          </small>
+                        </td>
+                        <td data-label="Due Date">
+                          <small class="has-text-grey is-abbr-like" title="{{ allJobs.due_date|date }}">
+                            {{ allJobs.due_date|date }}
+                          </small>
+                        </td>
+                        <td data-label="Tasks Count">
+                          {{ allJobs.tasks.count }}
+                        </td>
+                        <td class="is-actions-cell">
+                          <div class="buttons is-right">
+                            <button
+                              class="button is-small is-primary open-tasks-items-modal-btn bkchlst-input is-disabled"
+                              disabled data-job-id="{{ allJobs.pk }}" type="button" data-allJobs-job-id="{{ allJobs.pk }}"
+                              data-tooltip="View items">
+                              <span class="icon">
+                                <i class="fa-solid fa-eye"></i>
+                              </span>
+                            </button>
+
+                            {% comment %}
+                            <button class="button is-small is-danger bkchlst-input is-disabled" disabled
+                            data-allJobs-job-id="{{ allJobs.pk }}" type="button" data-job-id="{{ allJobs.pk }}"
+                            data-tooltip="Delete task">
+                            <span class="icon">
+                              <i class="fa-solid fa-trash"></i>
+                            </span>
+                          </button>
+                            {% endcomment %}
+
+                          </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <hr />
+              <div class="field is-grouped is-grouped-right">
+                <p class="control">
+                  <!-- <button type="button" disabled class="button is-primary bkchlst-input is-disabled"
+                    id="allJobsTasksSubmitBtn" data-is-disabled="1">
+                    Submit
+                  </button> -->
                 </p>
                 <!-- <p class="control">
                   <button disabled type="button" class="button is-light bkchlst-input is-disabled">
@@ -756,7 +907,7 @@
                     URL
                   </th>
                   <th>
-                    Username / Email
+                    Username
                   </th>
                   <th>
                     Password
@@ -773,7 +924,7 @@
                     URL
                   </th>
                   <th id="footerUsername">
-                    Username / Email
+                    Username
                   </th>
                   <th id="footerPassword">
                     Password
@@ -785,7 +936,6 @@
                 <tr>
                   <td>
                     {{ account_object.label }}
-                    {{ account_object.url }}
                   </td>
                   <td>
                     <div class="account-service-item account-service-url">
@@ -807,7 +957,7 @@
                     <div class="account-service-item account-service-username">
                       <div class="field has-addons">
                         <div class="control">
-                          <input class="input is-small" type="text" value="{{ account_object.email }}"
+                          <input class="input is-small" type="text" value="{{ account_object.username }}"
                             id="ac-username-{{ account_object.pk }}" readonly />
                         </div>
                         <div class="control">
@@ -829,7 +979,7 @@
                           </button>
                         </p>
                         <div class="control">
-                          <input class="input is-small" type="password" value="{{ account_object.password }}"
+                          <input class="input is-small" type="password" value="{{ account_object.decrypted_password }}"
                             id="as-password-{{ account_object.pk }}" readonly />
                         </div>
                         <div class="control">
@@ -1006,7 +1156,7 @@
 {% comment %} Jobs Items Modal {% endcomment %}
 <div class="modal micromodal-slide" id="tasks-items-modal" aria-hidden="true">
   <div class="modal__overlay" tabindex="-1">
-    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="tasks-items-modal-title">
+    <div class="modal__container modal-max-width" role="dialog" aria-modal="true" aria-labelledby="tasks-items-modal-title">
       <header class="modal__header">
         <h2 class="modal__title" id="tasks-items-modal-title">
         </h2>
@@ -1031,6 +1181,7 @@
                     </th>
                     <th>Title</th>
                     <th>Type</th>
+                    <th>Status</th>
                     <th>Created</th>
                     <th>Due Date</th>
                     <th></th>
@@ -1077,18 +1228,19 @@
             <legend>
               Note:
             </legend>
-            <textarea name="note" id="note" class="bkchlst-input is-disabled textarea input-trim-whitespace"
-              style="width: 500px;" disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit quos commodi cumque inventore assumenda expedita ad sed dolores ab ipsam a, doloribus non veritatis necessitatibus cupiditate voluptatibus natus sit nobis.
+            <textarea name="note" id="noteTextarea" class="bkchlst-input is-disabled textarea input-trim-whitespace"
+              style="width: 500px;" readonly>
+
             </textarea>
             <small class="w3-text-grey is-abbr-like is-inline-block mt-2 has-tooltip-arrow has-tooltip-right"
-              data-tooltip="Created at">Wed Jul 06 2022 14:36:48 GMT+0300</small>
+              data-tooltip="Created at" id="noteCreatedBy"></small>
           </fieldset>
         </form>
       </main>
       <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
+        <!-- <button class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
           Update
-        </button>
+        </button> -->
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
           Close
         </button>
@@ -1135,13 +1287,6 @@
               <div class="control">
                 <input class="input" type="text" name="task_type" id="taskDetailsType" readonly />
               </div>
-            </div>
-
-            <div class="field">
-              <label class="checkbox" for="taskDetailsIsCompleted">
-                <input type="checkbox" name="is_completed" id="taskDetailsIsCompleted" onclick="return false;" />
-                Is Completed
-              </label>
             </div>
 
             <div class="field">

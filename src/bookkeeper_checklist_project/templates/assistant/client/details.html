@@ -1,0 +1,176 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+{% load url_helpers %}
+
+
+{% block dashboard_content %}
+<section class="box block has-ribbon" id="assistant-client-details">
+
+  {% comment %}
+  <div class="ribbon is-warning">Default</div>
+  {% endcomment %}
+
+  <!-- start client media -->
+  <div class="mb-4">
+    <article class="media">
+      <figure class="media-left">
+        <p class="image is-64x64">
+          {% if object.company_logo %}
+          <img src="{{ object.company_logo.url }}" loading="lazy" alt="{{ object.name }}" />
+          {% else %}
+          <img src="{% static 'imgs/default_client.jpg' %}" loading="lazy" alt="{{ object.name }}" />
+          {% endif %}
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong>{{ object.name }}</strong>
+            &nbsp;
+            <small title="Created at">{{ object.created_at|date }}</small>
+            &nbsp;
+            <span class="tag mb-1 is-inline-block">{{ object.get_status_display }}</span>
+            <br>
+            {{ object.industry }}
+          </p>
+        </div>
+        <nav class="level is-mobile">
+          <div class="level-left">
+            <!-- <a class="level-item">
+              <span class="icon is-small"><i class="fas fa-reply"></i></span>
+            </a>
+            <a class="level-item">
+              <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+            </a>
+            <a class="level-item">
+              <span class="icon is-small"><i class="fas fa-heart"></i></span>
+            </a> -->
+          </div>
+        </nav>
+      </div>
+      <div class="media-right">
+      </div>
+    </article>
+  </div>
+  <!-- end client media -->
+
+  <!-- Start tab links -->
+  <div class="tabs">
+    <ul>
+      <li class="assistant-client-link" data-link-name="overview" data-link-label="Overview">
+        <a class="tabItemLink" href="{% url 'assistant:client:overview' object.pk %}"
+          data-tab-element="overviewContentWrapper">Overview</a>
+      </li>
+      <li class="assistant-client-link" data-link-name="jobs" data-link-label="Jobs">
+        <a class="tabItemLink" class="tabItemLink" href="{% url 'assistant:client:jobs' object.pk %}"
+          data-tab-element="jobsContentWrapper">Jobs</a>
+      </li>
+      <li class="assistant-client-link" data-link-name="tasks" data-link-label="Tasks">
+        <a class="tabItemLink" href="{% url 'assistant:client:tasks' object.pk %}"
+          data-tab-element="tasksContentWrapper">Tasks</a>
+      </li>
+      <li class="assistant-client-link" data-link-name="services" data-link-label="Accounts & Services">
+        <a class="tabItemLink" href="{% url 'assistant:client:services' object.pk %}"
+          data-tab-element="servicesContentWrapper">Accounts &
+          Services</a>
+      </li>
+      <li class="assistant-client-link" data-link-name="contacts" data-link-label="Important Contacts">
+        <a class="tabItemLink" href="{% url 'assistant:client:contacts' object.pk %}"
+          data-tab-element="contactsContentWrapper">
+          Important Contacts
+        </a>
+      </li>
+      <li class="assistant-client-link" data-link-name="assignments" data-link-label="Special Assignments">
+        <a class="tabItemLink" href="{% url 'assistant:client:assignments' object.pk %}"
+          data-tab-element="specialAssignmentsContentWrapper">Special Assignments</a>
+      </li>
+      <li class="assistant-client-link" data-link-name="documents" data-link-label="Documents">
+        <a class="tabItemLink" href="{% url 'assistant:client:documents' object.pk %}"
+          data-tab-element="documentsContentWrapper">Documents</a>
+      </li>
+      <li class="assistant-client-link" data-link-name="notes" data-link-label="Notes">
+        <a class="tabItemLink" href="{% url 'assistant:client:notes' object.pk %}"
+          data-tab-element="notesContentWrapper">Notes</a>
+      </li>
+    </ul>
+  </div>
+  <!-- End tab links -->
+</section>
+
+<!-- Start Section Header -->
+<section class="box block">
+  <h5 id="sectionContentHeader" class="title is-size-6"></h5>
+</section>
+<!-- End Section Header -->
+
+<!-- Start section content -->
+<section id="clientDetailsSectionsWrapper" class="box block">
+
+
+  {% with request.get_full_path|get_last_url_part as page_section_name %}
+
+  {% if page_section_name == "documents" %}
+
+  <!-- Start Documents Segment -->
+  <div id="documentsContentWrapper" hidden>
+    {% include 'components/documents/table_list.html' with documents_list=object.documents.select_related.filter user_type=request.user.user_type %}
+  </div>
+  <!-- End Documents Segment -->
+
+  {% elif page_section_name == "jobs" %}
+  <!-- Start Jobs Segment -->
+  <div id="jobsContentWrapper" hidden>
+    {% include 'components/jobs/table_list.html' with jobs_list=object.jobs.select_related.filter user_type=request.user.user_type %}
+  </div>
+  <!-- End Jobs Segment -->
+  {% elif page_section_name == "assignments" %}
+  <!-- Start Special Assignments Segment -->
+  <div id="specialAssignmentsContentWrapper" hidden>
+    {% include 'components/special_assignments/table_list.html' with assignments_list=object.special_assignments.select_related.filter user_type=request.user.user_type %}
+  </div>
+  <!-- End Special Assignments Segment -->
+  {% elif page_section_name == "notes" %}
+  <!-- Start Notes Segment -->
+  <div id="notesContentWrapper" hidden>
+    {% include 'components/notes/table_list.html' with notes_list=object.notes.select_related.filter user_type=request.user.user_type %}
+  </div>
+  <!-- End Notes Segment -->
+  {% elif page_section_name == "services" %}
+  <!-- Start Account & Services Segment -->
+  <div id="servicesContentWrapper" hidden>
+    {% include 'components/company_services/table_list.html' with services_list=object.company_services.select_related user_type=request.user.user_type %}
+  </div>
+  <!-- End Account & Services Segment -->
+  {% elif page_section_name == "tasks" %}
+
+  <!-- Start Tasks Segment -->
+  <div id="tasksContentWrapper" hidden>
+    {% include 'components/tasks/table_list.html' with client_object=object tasks_list=object.get_all_tasks user_type=request.user.user_type %}
+  </div>
+  <!-- End Tasks Segment -->
+  {% elif page_section_name == "overview" %}
+  <!-- Start Overview Segment -->
+  <div id="overviewContentWrapper" hidden>
+    {% include 'assistant/client/segments/overview.html' with client_object=object user_type=request.user.user_type %}
+  </div>
+  <!-- End overview Segment -->
+
+  {% elif page_section_name == "contacts" %}
+  <!-- Start Important Contacts Segment -->
+  <div id="contactsContentWrapper" hidden>
+    {% include 'components/important_contacts/table_list.html' with contacts_list=object.important_contacts.select_related.filter user_type=request.user.user_type %}
+  </div>
+  <!-- End Important Contacts Segment -->
+
+  {% endif %}
+
+  {% endwith %}
+
+</section>
+<!-- End section content -->
+
+{% endblock dashboard_content %}
+{% block externaljs %}
+<script src="{% static 'js/assistant/client/details.js' %}" defer type="module"></script>
+<script src="{% static 'js/assistant/client/segments/jobs.js' %}" defer type="module"></script>
+{% endblock externaljs %}

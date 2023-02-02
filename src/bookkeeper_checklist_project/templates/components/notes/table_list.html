@@ -1,0 +1,49 @@
+{% extends 'components/core/table_list_layout.html' %}
+{% block table_content_block %}
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="notesTableComponent">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Note Section</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for note_object in notes_list %}
+    <tr>
+
+      <td data-label="Title">
+        {{ note_object.title }}
+      </td>
+
+      <td data-label="Content">
+        {{ note_object.body }}
+      </td>
+      <td data-label="Note Section">
+        {{ note_object.get_note_section_display }}
+      </td>
+      <td data-label="Created">
+        {% include 'components/core/table_cell_created.html' with created_at=note_object.created_at user_type=request.user.user_type %}
+      </td>
+      <td class="is-actions-cell">
+        {% include 'components/core/table_cell_actions.html' with object_pk=note_object.pk user_type=request.user.user_type app_name="notes" %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr class="is-empty">
+      <td colspan="5">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p><span class="icon is-large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span></p>
+            <p>Nothing's there&hellip;</p>
+          </div>
+        </section>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock table_content_block %}

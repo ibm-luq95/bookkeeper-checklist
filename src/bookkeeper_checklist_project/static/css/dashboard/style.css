@@ -16,6 +16,13 @@ body {
   height: 100%;
   background: #ecf0f3;
 }
+a {
+  margin: 0;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+}
 nav.navbar {
   border-top: 4px solid #276cda;
   margin-bottom: 1rem;
@@ -271,11 +278,11 @@ nav.navbar {
   max-width: 100% !important;
 }
 
-table.table-list-component td,
+/* table.table-list-component td,
 table.table-list-component th {
   vertical-align: middle;
   text-align: center;
-}
+} */
 
 .small-fa-fonts {
   font-size: 10px !important;
@@ -310,4 +317,9 @@ div.select:has(select.cursor-not-allowed) {
 
 .manager-as-lbl {
   font-size: 13px;
+}
+
+.assistant-client-details-widget {
+  max-width: 200px;
+  min-width: 200px;
 }

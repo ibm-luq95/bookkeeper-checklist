@@ -46,10 +46,10 @@
         {% for object in object_list %}
         <tr>
           <td>
-            <a href="{% url 'manager:jobs:details' object.pk %}">{{ object.title }}</a>
+            <a href="">{{ object.title }}</a>
           </td>
           <td>
-            <a href="{% url 'manager:client:details' object.client.pk %}">
+            <a href="">
               {{ object.client }} <i class="fas fa-external-link-alt is-small"></i>
             </a>
           </td>
@@ -57,7 +57,7 @@
 
 
             {% for bookkeeper in object.bookkeeper.filter %}
-            <a href="{% url 'manager:bookkeeper:details' bookkeeper.pk %}" target="_blank"
+            <a href="" target="_blank"
               class="is-block has-text-justified">{{ bookkeeper }}</a>
             {% empty %}
             <p class="is-6 has-text-danger has-text-weight-bold">
@@ -90,15 +90,15 @@
           <td>{{ object.created_at|date }}</td>
           <td>
             <div class="buttons are-small justify-center">
-              <a href="{% url 'manager:jobs:details' object.pk %}" class="button is-info is-light">
+              <a href="" class="button is-info is-light">
                 <i class="fa-solid fa-eye"></i>
               </a>
 
               {% if object.created_by == request.user %}
-              <a href="{% url 'manager:jobs:update' object.pk %}" class="button is-success is-light">
+              <a href="" class="button is-success is-light">
                 <i class="fa-solid fa-pencil"></i>
               </a>
-              <a href="{% url 'manager:jobs:delete' object.pk %}" class="button is-danger is-light">
+              <a href="" class="button is-danger is-light">
                 <i class="fa-solid fa-trash"></i>
               </a>
               {% endif %}

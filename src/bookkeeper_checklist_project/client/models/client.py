@@ -99,3 +99,14 @@ class Client(BaseModelMixin):
             return set(all_bookkeepers)
         else:
             return None
+
+    def get_all_tasks(self) -> list | None:
+        all_tasks = []
+        jobs = self.jobs.select_related().filter()
+        if jobs:
+            for job in jobs:
+                tasks = job.tasks.select_related().filter()
+                if tasks:
+                    for task in tasks:
+                        all_tasks.append(task)
+        return all_tasks

@@ -1,0 +1,66 @@
+{% extends 'components/core/table_list_layout.html' %}
+{% block table_content_block %}
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="jobsTableComponent">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Bookkeeper(s)</th>
+      <th>Task(s)</th>
+      <th>Status</th>
+      <th>Due Date</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for job_object in jobs_list %}
+    <tr>
+
+      <td data-label="Title">
+        <a href="{% url 'manager:task:update' job_object.pk %}">
+          {{ job_object.title|truncatechars:40 }}
+        </a>
+      </td>
+      <td data-label="Bookkeeper(s)">
+        {% for bookkeeper in job_object.bookkeeper.filter %}
+        <a href="" target="_blank"
+          class="is-block has-text-justified">{{ bookkeeper }}</a>
+        {% empty %}
+        <p class="is-6 has-text-danger has-text-weight-bold">
+          No bookkeeper for this job
+        </p>
+        {% endfor %}
+      </td>
+      <td data-label="Task(s)">
+        {{ job_object.tasks.count }}
+      </td>
+      <td data-label="Status" class="is-progress-cell">
+        {% include 'components/core/status_tag.html' with status=job_object.status tag_size="is-small" status_label=job_object.get_status_display %}
+      </td>
+      <td data-label="Due Date">
+        <small class="has-text-grey is-abbr-like"
+          title="{{ job_object.due_date|date }}">{{ job_object.due_date|date }}</small>
+      </td>
+      <td data-label="Created">
+        {% include 'components/core/table_cell_created.html' with created_at=job_object.created_at user_type=request.user.user_type %}
+      </td>
+      <td class="is-actions-cell">
+        {% include 'components/core/table_cell_actions.html' with object_pk=job_object.pk user_type=request.user.user_type app_name="jobs" %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr class="is-empty">
+      <td colspan="7">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p><span class="icon is-large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span></p>
+            <p>Nothing's there&hellip;</p>
+          </div>
+        </section>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock table_content_block %}

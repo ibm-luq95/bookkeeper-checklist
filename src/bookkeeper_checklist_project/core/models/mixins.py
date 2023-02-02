@@ -76,3 +76,16 @@ class CreatedByMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class GetObjectSectionMixin(models.Model):
+    class Meta:
+        abstract = True
+
+    def get_object_section(self):
+        if self.job:
+            return self.job
+        elif self.client:
+            return self.client
+        elif self.task:
+            return self.task

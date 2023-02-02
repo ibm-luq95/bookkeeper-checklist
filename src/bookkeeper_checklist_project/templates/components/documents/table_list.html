@@ -1,0 +1,48 @@
+{% extends 'components/core/table_list_layout.html' %}
+{% block table_content_block %}
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="documentsTableComponent">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Download</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for document_object in documents_list %}
+    <tr>
+
+      <td data-label="Title">
+        <a href="{{ document_object.document_file.url }}">{{ document_object.title }}</a>
+      </td>
+
+      <td data-label="Download">
+        <a class="button is-small" href="{{ document_object.document_file.url }}"
+          download="{{ document_object.document_file.url }}">
+          <i class="fa-solid fa-download"></i>
+        </a>
+      </td>
+      <td data-label="Created">
+        {% include 'components/core/table_cell_created.html' with created_at=document_object.created_at user_type=request.user.user_type %}
+      </td>
+      <td class="is-actions-cell">
+        {% include 'components/core/table_cell_actions.html' with object_pk=document_object.pk user_type=request.user.user_type app_name="documents" %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr class="is-empty">
+      <td colspan="4">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p><span class="icon is-large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span></p>
+            <p>Nothing's there&hellip;</p>
+          </div>
+        </section>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock table_content_block %}

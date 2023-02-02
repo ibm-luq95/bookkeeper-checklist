@@ -105,7 +105,7 @@
 
         <tr>
           <td>
-            <a href="{% url 'assistant:client:details' object.pk %}">{{ object.name }}</a>
+            <a href="{% url 'assistant:client:overview' object.pk %}">{{ object.name }}</a>
           </td>
           <td>
             {% for bookkeeper in object.get_managed_bookkeepers %}

@@ -84,6 +84,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "bookkeeper.middleware.BookkeeperMiddleware",
     "maintenance_mode.middleware.MaintenanceModeMiddleware",
+    # "django_hide.middleware.CSRFHIDEMiddleware",
     # "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
 ]
 

@@ -1,0 +1,52 @@
+<div class="columns is-flex is-mobile is-gapless is-justify-content-space-around">
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Tasks</h1>
+          <h2 class="subtitle is-5">{{ client_object.get_total_tasks_for_all_jobs }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Documents</h1>
+          <h2 class="subtitle is-5">{{ client_object.documents.select_related.count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Notes</h1>
+          <h2 class="subtitle is-5">{{ client_object.notes.select_related.count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Assignments</h1>
+          <h2 class="subtitle is-5">{{ client_object.special_assignments.select_related.count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Services</h1>
+          <h2 class="subtitle is-5">{{ client_object.company_services.select_related.count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

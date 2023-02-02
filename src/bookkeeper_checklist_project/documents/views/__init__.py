@@ -6,3 +6,4 @@ from .manager import (
     UpdateDocumentManagerView,
 )
 from .bookkeeper import UpdateDocumentBookkeeperView
+from .assistant import UpdateDocumentAssistantView

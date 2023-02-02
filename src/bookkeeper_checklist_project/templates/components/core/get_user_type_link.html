@@ -1,0 +1,9 @@
+{% if user_type == "manager" %}
+<a target="_blank" href="#">{{ user_object.fullname }}</a>
+{% elif user_type == "bookkeeper" %}
+<a href="{% url 'manager:bookkeeper:details' user_object.bookkeeper.pk %}"
+  target="_blank">{{ user_object.fullname }}</a>
+
+{% elif user_type == "assistant" %}
+<a target="_blank" href="#">{{ user_object.fullname }}</a>
+{% endif %}

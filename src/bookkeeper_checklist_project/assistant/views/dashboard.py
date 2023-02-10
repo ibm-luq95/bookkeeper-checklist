@@ -7,7 +7,7 @@ from .mixins import AssistantAccessMixin
 
 class DashboardView(LoginRequiredMixin, AssistantAccessMixin, TemplateView):
     template_name = "assistant/dashboard/dashboard.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

@@ -15,7 +15,7 @@ logger = get_formatted_logger(__file__)
 
 class SpecialAssignmentsListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
     template_name = "bookkeeper/special_assignment/list.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = SpecialAssignment
     http_method_names = ["get"]
 
@@ -35,7 +35,7 @@ class SpecialAssignmentsListView(LoginRequiredMixin, BookkeeperAccessMixin, List
 
 
 class SpecialAssignmentDetailsView(LoginRequiredMixin, BookkeeperAccessMixin, DetailView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "bookkeeper/special_assignment/details.html"
     model = SpecialAssignment
 
@@ -68,7 +68,7 @@ class SpecialAssignmentDetailsView(LoginRequiredMixin, BookkeeperAccessMixin, De
 class SpecialAssignmentCreateView(
     LoginRequiredMixin, BookkeeperAccessMixin, SuccessMessageMixin, CreateView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "bookkeeper/special_assignment/create.html"
     form_class = SpecialAssignmentForm
     success_message = get_trans_txt("Special assignment created successfully!")
@@ -101,7 +101,7 @@ class RequestedSpecialAssignmentsListView(
     LoginRequiredMixin, BookkeeperAccessMixin, ListView
 ):
     template_name = "bookkeeper/special_assignment/requested_assignments.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = SpecialAssignment
     http_method_names = ["get"]
 
@@ -123,7 +123,7 @@ class RequestedSpecialAssignmentsListView(
 class SpecialAssignmentUpdateView(
     LoginRequiredMixin, BookkeeperAccessMixin, SuccessMessageMixin, UpdateView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "bookkeeper/special_assignment/update.html"
     form_class = SpecialAssignmentForm
     success_message = get_trans_txt("Special assignment updated successfully!")
@@ -166,7 +166,7 @@ class SpecialAssignmentUpdateView(
 class SpecialAssignmentDeleteView(
     LoginRequiredMixin, BookkeeperAccessMixin, SuccessMessageMixin, DeleteView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = SpecialAssignment
     template_name = "bookkeeper/special_assignment/delete.html"
     success_message: str = get_trans_txt("Special assignment deleted successfully!")

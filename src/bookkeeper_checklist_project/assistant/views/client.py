@@ -13,7 +13,7 @@ from .mixins import AssistantAccessMixin
 
 class ClientListView(LoginRequiredMixin, AssistantAccessMixin, ListView):
     template_name = "assistant/client/list.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Client
 
     def get_context_data(self, **kwargs):
@@ -31,7 +31,7 @@ class ClientListView(LoginRequiredMixin, AssistantAccessMixin, ListView):
 
 class ClientDetailsView(LoginRequiredMixin, AssistantAccessMixin, DetailView):
     template_name = "assistant/client/details.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Client
 
     def get_context_data(self, **kwargs):
@@ -117,7 +117,7 @@ class ClientCreateView(
     LoginRequiredMixin, AssistantAccessMixin, SuccessMessageMixin, CreateView
 ):
     template_name = "assistant/client/create.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Client
     success_message = "Client created successfully"
     success_url = reverse_lazy("assistant:client:list")
@@ -139,7 +139,7 @@ class ClientUpdateView(
     LoginRequiredMixin, AssistantAccessMixin, SuccessMessageMixin, UpdateView
 ):
     template_name = "assistant/client/update.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Client
     form_class = ClientForm
 

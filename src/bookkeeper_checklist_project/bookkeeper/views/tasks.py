@@ -18,7 +18,7 @@ logger = get_formatted_logger(__file__)
 
 class TaskListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
     template_name = "bookkeeper/tasks/list.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Task
 
     def get_context_data(self, **kwargs):
@@ -75,7 +75,7 @@ class TaskUpdateView(
     UpdateView,
 ):
     template_name = "bookkeeper/tasks/details.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Task
     form_class = TaskForm
     success_message = "Task Update Successfully"

@@ -16,7 +16,7 @@ class SiteSettingsCreateView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CacheViewMixin, UpdateView
 ):
     template_name = "site_settings/site_settings.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     form_class = SiteSettingsForm
     success_url = reverse_lazy("site_settings:web-app-settings")
     success_message = "Web application settings updated successfully!"

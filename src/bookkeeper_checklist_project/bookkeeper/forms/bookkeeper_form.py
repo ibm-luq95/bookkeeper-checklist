@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
 from bookkeeper.models import Bookkeeper
-from core.constants.form import CREATE_FORM_FIELDS, EXCLUDED_FIELDS
+from core.constants.form import CREATE_USER_FORM_FIELDS, EXCLUDED_FIELDS
 from core.forms import BaseModelFormMixin
 
 
@@ -18,7 +18,7 @@ class BookkeeperForm(BaseModelFormMixin, UserCreationForm):
     class Meta(BaseModelFormMixin.Meta):
         model = get_user_model()
         # exclude = EXCLUDED_FIELDS + ["last_login"]
-        fields = CREATE_FORM_FIELDS
+        fields = CREATE_USER_FORM_FIELDS
 
     def save(self, commit=True):
         user = super().save(commit=False)

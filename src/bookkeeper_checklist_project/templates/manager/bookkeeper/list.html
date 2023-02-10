@@ -59,7 +59,9 @@
           </td>
           <td class="has-text-centered">
 
-            {{ object.get_clients_total }}
+            {% comment  %}
+              {{ object.get_clients_total }}
+            {% endcomment %}
           </td>
           <td class="has-text-centered">{{ object.get_tasks_count }}</td>
           <td>{{ object.is_active_labeled }}</td>

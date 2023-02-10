@@ -2,7 +2,10 @@
 
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+
+from core.forms.widgets import CustomPasswordInputWidget
 from users.models import CustomUser
+
 
 
 class UpdateUserForm(forms.ModelForm):
@@ -10,10 +13,10 @@ class UpdateUserForm(forms.ModelForm):
         super(UpdateUserForm, self).__init__(*args, **kwargs)
 
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}), required=False
+        widget=CustomPasswordInputWidget, required=False
     )
     confirm_password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}), required=False
+        widget=CustomPasswordInputWidget, required=False
     )
 
     class Meta:

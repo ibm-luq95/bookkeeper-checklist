@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext as _
 from django.utils import timezone
 
+from assistant.models import Assistant
 from bookkeeper.models import Bookkeeper
 from client.models import Client
 from core.choices import JobStatusEnum, JobTypeEnum
@@ -23,6 +24,9 @@ class Job(BaseModelMixin, CreatedByMixin):
 
     bookkeeper = models.ManyToManyField(
         to=Bookkeeper, help_text=JOB_HELP_MESSAGES.get("bookkeeper"), related_name="jobs"
+    )
+    assistants = models.ManyToManyField(
+        to=Assistant, related_name="jobs", help_text=JOB_HELP_MESSAGES.get("assistant")
     )
     title = models.CharField(
         _("title"), max_length=100, null=False, help_text=JOB_HELP_MESSAGES.get("title")
@@ -89,3 +93,14 @@ class Job(BaseModelMixin, CreatedByMixin):
             return True
         else:
             return False
+
+    def get_all_assigned_users(self) -> list:
+        all_users = []
+        if self.bookkeeper.all():
+            for bookkeeper in self.bookkeeper.all():
+                all_users.append(bookkeeper)
+
+        if self.assistants.all():
+            for assistant in self.assistants.all():
+                all_users.append(assistant)
+        return all_users

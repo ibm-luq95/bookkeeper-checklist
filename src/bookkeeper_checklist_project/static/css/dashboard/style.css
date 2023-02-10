@@ -276,6 +276,7 @@ nav.navbar {
 
 .modal-max-width {
   max-width: 100% !important;
+  /* max-width: 200% !important; */
 }
 
 /* table.table-list-component td,
@@ -322,4 +323,8 @@ div.select:has(select.cursor-not-allowed) {
 .assistant-client-details-widget {
   max-width: 200px;
   min-width: 200px;
+}
+.disabled-link {
+  cursor: not-allowed !important;
+  pointer-events: none !important;
 }

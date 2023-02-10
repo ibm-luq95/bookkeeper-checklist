@@ -1,20 +1,27 @@
-{% extends 'components/core/table_list_layout.html' %}
+{% extends 'components/core/table_list/table_list_layout.html' %}
 {% block table_content_block %}
+{% if enable_create_btn == True %}
+  {% include 'components/core/table_list/create_btn.html' with btn_id="addDocumentBtn" app_name="document" %}
+{% endif %}
 <table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="documentsTableComponent">
   <thead>
     <tr>
       <th>Title</th>
+      <th>Section</th>
       <th>Download</th>
       <th>Created</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    {% for document_object in documents_list %}
+    {% for document_object in object_list %}
     <tr>
 
       <td data-label="Title">
         <a href="{{ document_object.document_file.url }}">{{ document_object.title }}</a>
+      </td>
+      <td data-label="Section">
+        {{ document_object.get_document_section_display }}
       </td>
 
       <td data-label="Download">
@@ -24,18 +31,18 @@
         </a>
       </td>
       <td data-label="Created">
-        {% include 'components/core/table_cell_created.html' with created_at=document_object.created_at user_type=request.user.user_type %}
+        {% include 'components/core/table_list/table_cell_created.html' with created_at=document_object.created_at user_type=request.user.user_type only %}
       </td>
       <td class="is-actions-cell">
-        {% include 'components/core/table_cell_actions.html' with object_pk=document_object.pk user_type=request.user.user_type app_name="documents" %}
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=document_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True only %}
       </td>
     </tr>
     {% empty %}
     <tr class="is-empty">
-      <td colspan="4">
+      <td colspan="5">
         <section class="section">
           <div class="content has-text-grey has-text-centered">
-            <p><span class="icon is-large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span></p>
+            <p><span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span></p>
             <p>Nothing's there&hellip;</p>
           </div>
         </section>

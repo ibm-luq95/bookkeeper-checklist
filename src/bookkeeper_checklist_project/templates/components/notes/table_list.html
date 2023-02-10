@@ -1,5 +1,8 @@
-{% extends 'components/core/table_list_layout.html' %}
+{% extends 'components/core/table_list/table_list_layout.html' %}
 {% block table_content_block %}
+{% if enable_create_btn == True %}
+  {% include 'components/core/table_list/create_btn.html' with btn_id="addNoteBtn" app_name="note" %}
+{% endif %}
 <table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="notesTableComponent">
   <thead>
     <tr>
@@ -25,10 +28,10 @@
         {{ note_object.get_note_section_display }}
       </td>
       <td data-label="Created">
-        {% include 'components/core/table_cell_created.html' with created_at=note_object.created_at user_type=request.user.user_type %}
+        {% include 'components/core/table_list/table_cell_created.html' with created_at=note_object.created_at user_type=user_type %}
       </td>
       <td class="is-actions-cell">
-        {% include 'components/core/table_cell_actions.html' with object_pk=note_object.pk user_type=request.user.user_type app_name="notes" %}
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=note_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True only %}
       </td>
     </tr>
     {% empty %}
@@ -36,7 +39,7 @@
       <td colspan="5">
         <section class="section">
           <div class="content has-text-grey has-text-centered">
-            <p><span class="icon is-large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span></p>
+            <p><span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span></p>
             <p>Nothing's there&hellip;</p>
           </div>
         </section>

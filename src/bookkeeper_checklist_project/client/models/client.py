@@ -68,8 +68,8 @@ class Client(BaseModelMixin):
                 image.thumbnail(output_size)
                 image.save(self.company_logo.path)
 
-    def get_absolute_url(self):
-        return reverse("manager:client:details", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("manager:client:details", kwargs={"pk": self.pk})
 
     def get_tasks_count(self):
         return self.jobs.all()
@@ -78,7 +78,7 @@ class Client(BaseModelMixin):
         all_tasks_count = []
         if self.jobs.count() <= 0:
             return 0
-        for job in self.jobs.select_related().filter():
+        for job in self.jobs.all():
             all_tasks_count.append(job.tasks.count())
 
         # print("#############")
@@ -90,11 +90,11 @@ class Client(BaseModelMixin):
 
     def get_managed_bookkeepers(self) -> set | None:
         all_bookkeepers = []
-        jobs = self.jobs.select_related().filter()
+        jobs = self.jobs.all()
         if jobs:
             for job in jobs:
                 # print(job)
-                for bookkeeper in job.bookkeeper.select_related().filter():
+                for bookkeeper in job.bookkeeper.all():
                     all_bookkeepers.append(bookkeeper)
             return set(all_bookkeepers)
         else:
@@ -102,10 +102,10 @@ class Client(BaseModelMixin):
 
     def get_all_tasks(self) -> list | None:
         all_tasks = []
-        jobs = self.jobs.select_related().filter()
+        jobs = self.jobs.all()
         if jobs:
             for job in jobs:
-                tasks = job.tasks.select_related().filter()
+                tasks = job.tasks.all()
                 if tasks:
                     for task in tasks:
                         all_tasks.append(task)

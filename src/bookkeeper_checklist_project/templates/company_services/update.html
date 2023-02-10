@@ -1,0 +1,9 @@
+{% extends 'core/layouts/dashboard.html' %}
+
+
+{% block dashboard_content %}
+{# Start Include Create Form Component #}
+{% include 'components/core/forms/create_update_form.html' with user_type=request.user.user_type form=form title=title submit_btn_label="update" app_name="company_service" form_type="update" csrf_token=csrf_token current_password=object.decrypted_password only %}
+{# End Include Create Form Component #}
+
+{% endblock dashboard_content %}

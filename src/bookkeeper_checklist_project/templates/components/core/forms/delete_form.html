@@ -1,0 +1,24 @@
+{% load string_helpers_tags %}
+{% load url_helpers %}
+
+
+<section id="{{ user_type }}-delete-form-wrapper" class="box block">
+  <header>
+    <h3 class="title is-3">
+      Delete {{ object }}
+    </h3>
+  </header>
+  <hr />
+  <div>
+    <form method="POST">
+      {% csrf_token %}
+      <p>Are you sure you want to delete {{ object_type|to_title_case }} <span
+          class="has-text-weight-bold">"{{ object }}"</span>?</p>
+      <div class="buttons mt-5 has-text-right">
+        <button type="submit" class="button is-danger">Delete</button>
+        <a href="{% fetch_url_by_name_pk url_name=cancel_url %}" class="button">Cancel</a>
+      </div>
+    </form>
+
+  </div>
+</section>

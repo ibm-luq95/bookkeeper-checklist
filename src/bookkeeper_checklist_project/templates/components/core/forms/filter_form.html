@@ -1,0 +1,42 @@
+{% load crispy_forms_tags %}
+{% load url_helpers %}
+
+{% spaceless %}
+{% if filter_form %}
+<div class="filter-form">
+
+  <form action="{% fetch_url_by_name_pk url_name=action_url %}" method="GET" id="filterFormComponent">
+    <fieldset form="filterFormComponent" {% if object_list.count == 0 %} disabled {% endif %}>
+      {%  for form_item in filter_form  %}
+      {% if forloop.counter0|divisibleby:5 %} <div class="columns"> {%  endif %}
+        <div class="column">
+          <div class="field">
+            <!-- <label class="label">Label</label> -->
+            <div class="control">
+              <!-- <input class="input" type="text" placeholder="Text input"> -->
+              {{ form_item|as_crispy_field }}
+            </div>
+
+            {% comment %}
+            <p class="help">{{ form_item.help }}</p>
+            {% endcomment %}
+
+          </div>
+        </div><!-- column -->
+        {%  if forloop.counter|divisibleby:5 or forloop.last %}</div><!-- columns closing -->
+      <hr>{%  endif %}
+      {%  endfor %}
+
+      <div class="field is-grouped is-grouped-right">
+        <p class="control">
+          <button type="submit" class="button">Filter</button>
+        </p>
+        <a href="{% fetch_url_by_name_pk url_name=reset_url %}" class="button is-danger is-light">Reset</a>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<hr />
+
+{% endif %}
+{% endspaceless %}

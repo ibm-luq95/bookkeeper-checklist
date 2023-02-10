@@ -1,0 +1,45 @@
+{% load crispy_forms_tags %}
+{% load url_helpers %}
+
+<section id="{{ user_type }}-{{ form_type }}-{{ app_name }}-form">
+  <div class="box block has-ribbon">
+    {% if is_show_ribbon is True %}
+    {% if object.created_by != request.user %}<div class="ribbon is-medium is-warning">Not the owner</div>{% endif %}
+    {% endif %}
+
+    <form method="POST" id="{{ form_type }}-{{ app_name }}-form" {% if is_file_form is True %}
+      enctype="multipart/form-data" {% endif %}>
+      <fieldset form="{{ form_type }}-{{ app_name }}-form">
+        <div class="columns is-flex is-justify-content-space-between mt-1">
+          <div class="column">
+            <legend class="title has-text-black">
+              {{ title }}
+            </legend>
+          </div>
+          <div class="column">
+            <div class="buttons is-right">
+              <button class="button hint--top is-danger is-light is-responsive is-hoverable" aria-label="Cancel, go back" onclick="window.history.back();">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-arrow-left"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <hr />
+
+        {% csrf_token %}
+        {{ form| crispy }}
+        {% if current_password is not None %}
+        <div class="block" style="word-wrap: break-word">
+          <span class="is-size-6 is-inline-block">Current Password:</span>
+          <h6 class="is-size-7 is-family-code has-text-weight-semibold">{{ current_password }}</h6>
+        </div>
+        {% endif %}
+        <div class="has-text-right">
+          <button type="submit" class="button is-info is-fullwidth">{{ submit_btn_label|capfirst }}</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>

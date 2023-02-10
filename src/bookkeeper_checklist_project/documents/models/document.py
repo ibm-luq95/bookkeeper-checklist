@@ -9,6 +9,7 @@ from django.utils.translation import gettext as _
 from client.models import Client
 from core.choices import DocumentTypesEnum
 from core.models import BaseModelMixin, CreatedByMixin
+from core.utils import debugging_print
 from jobs.models import Job
 from task.models import Task
 
@@ -51,5 +52,6 @@ class Documents(BaseModelMixin, CreatedByMixin):
         to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
     )
 
-    def get_absolute_url(self):
-        return reverse("documents:manager:details", kwargs={"pk": self.pk})
+    def delete(self, *args, **kwargs):
+        self.document_file.storage.delete(self.document_file.name)
+        super(Documents, self).delete(*args, **kwargs)

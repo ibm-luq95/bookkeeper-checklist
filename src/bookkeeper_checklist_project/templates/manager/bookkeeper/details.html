@@ -210,7 +210,7 @@
                                             <th>
                                                 Jobs
                                             </th>
-                                            
+
                                             <th>Created AT</th>
                                         </tr>
                                     </thead>
@@ -228,7 +228,7 @@
                                             <th>
                                                 Jobs
                                             </th>
-                                           
+
                                             <th>Created AT</th>
                                         </tr>
                                     </tfoot>
@@ -236,7 +236,7 @@
                                         {% for client in bookkeeper_helper.get_clients.select_related.filter %}
                                         <tr>
                                             <td>
-                                                <a href="{% url 'manager:client:details' client.pk %}" target="_blank">
+                                                <a href="{% url 'client:manager:details:overview' client.pk %}" target="_blank">
                                                     {{ client.name }}
                                                 </a>
                                             </td>
@@ -251,7 +251,7 @@
                                             <td>
                                                 {{ client.jobs.select_related.count }}
                                             </td>
-                                            
+
                                             <td>
                                                 {{ client.created_at|date }}
                                             </td>
@@ -273,7 +273,7 @@
 
                             <div id="accountsAndServicesTabWrapper">
 
-                                
+
                                 <table class="table is-fullwidth table-100" id="managerTasksTable">
                                     <thead>
                                         <tr>
@@ -326,12 +326,12 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        
 
-                                       
+
+
                                     </tbody>
                                 </table>
-                                
+
 
                             </div>
                         </section> -->
@@ -399,7 +399,7 @@
                                                 {{ task.title }}
                                             </td>
                                             <td>
-                                                <a href="{% url 'manager:jobs:details' task.job.pk %}" target="_blank">
+                                                <a href="{% url 'jobs:manager:details' task.job.pk %}" target="_blank">
                                                     {{ task.job.title }}
                                                 </a>
                                             </td>
@@ -409,7 +409,7 @@
                                             <td>
                                                 {{ task.get_task_status_display }}
                                             </td>
-                                            
+
                                             <td>
                                                 {{ task.get_is_completed_label }}
                                             </td>
@@ -433,7 +433,7 @@
                                     No tasks
                                 </div>
                                 {% endif %}
-                                
+
 
                             </div>
                         </section>

@@ -52,8 +52,8 @@ class ImportantContact(BaseModelMixin, CreatedByMixin):
         # return f"Contact {self.contact_label} for client {self.client}"
         return f"{self.get_contact_label_display()} - {self.company_name}"
 
-    def get_absolute_url(self):
-        return reverse("manager:important_contact:update", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("important_contact:manager:update", kwargs={"pk": self.pk})
 
     @property
     def contact_fullname(self):

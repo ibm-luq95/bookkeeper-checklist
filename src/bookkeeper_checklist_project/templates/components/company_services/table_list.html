@@ -1,7 +1,10 @@
-{% extends 'components/core/table_list_layout.html' %}
-
+{% extends 'components/core/table_list/table_list_layout.html' %}
+{% load url_helpers %}
 
 {% block table_content_block %}
+{% if enable_create_btn == True %}
+  {% include 'components/core/table_list/create_btn.html' with btn_id="addServiceBtn" app_name="service" %}
+{% endif %}
 <table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="accountsAndServicesTableComponent">
   <thead>
     <tr>
@@ -16,11 +19,11 @@
     </tr>
   </thead>
   <tbody>
-    {% for service_object in services_list %}
+    {% for service_object in object_list %}
     <tr>
 
       <td data-label="Client">
-        <a target="_blank" href="">
+        <a target="_blank" href="{% fetch_app_url_for_user app_name='client' user_type=user_type path_name='details:overview' object_pk=service_object.client.pk %}">
           {{ service_object.client }} <i class="fas fa-external-link-alt is-small"></i>
         </a>
       </td>
@@ -31,69 +34,21 @@
         {{ service_object.label|truncatechars:15 }}
       </td>
       <td data-label="URL">
-        <div class="account-service-item account-service-url">
-          <div class="field has-addons">
-            <div class="control">
-              <input class="input is-small accountAndServicesInput" type="url" value="{{ service_object.url }}"
-                id="ac-url-{{ service_object.pk }}" readonly />
-            </div>
-            <div class="control">
-              <button class="button copyASurlBtn is-small" data-tooltip="Copy url"
-                data-url-value="{{ service_object.url }}" data-text-type="url">
-                <i class="fa-solid fa-link"></i>
-              </button>
-            </div>
-          </div>
-        </div>
+        {% include 'components/core/inputs/url.html' with url=service_object.url object_pk=service_object.pk is_readonly=True only %}
       </td>
       <td data-label="Username">
-        <div class="account-service-item account-service-username">
-          <div class="field has-addons">
-            <div class="control">
-              <input class="input is-small" type="text" value="{{ service_object.username }}"
-                id="ac-username-{{ service_object.pk }}" readonly />
-            </div>
-            <div class="control">
-              <button class="button copyASUsernameBtn is-small" data-tooltip="Copy Username"
-                data-username-value="{{ service_object.username }}" data-text-type="username">
-                <i class="fas fa-copy"></i>
-              </button>
-            </div>
-          </div>
-        </div>
+        {% include 'components/core/inputs/username.html' with username=service_object.username object_pk=service_object.pk is_readonly=True only %}
       </td>
       <td data-label="Password">
-        <div class="account-service-item account-service-password">
-          <div class="field has-addons">
-            <p class="control">
-              <button class="button showASUPasswordBtn is-small" data-tooltip="Show Password" data-visibility-status="0"
-                data-password-input="as-password-{{ service_object.pk }}">
-                <i class="fas fa-eye"></i>
-              </button>
-            </p>
-            <div class="control">
-              <input class="input is-small" type="password" value="{{ service_object.decrypted_password }}"
-                id="as-password-{{ service_object.id }}" readonly />
-            </div>
-            <div class="control">
-              <button class="button copyASUPasswordBtn has-tooltip-multiline has-tooltip-top is-small"
-                data-tooltip="Copy password" data-password-value="{{ service.decrypted_password }}"
-                data-text-type="password">
-                <i class="fas fa-copy"></i>
-              </button>
+        {% include 'components/core/inputs/password.html' with password=service_object.decrypted_password object_pk=service_object.pk is_readonly=True only %}
 
-            </div>
-          </div>
-
-
-        </div>
       </td>
       <td data-label="Created">
         <small class="has-text-grey is-abbr-like"
           title="{{ service_object.created_at|date }}">{{ service_object.created_at|date }}</small>
       </td>
       <td class="is-actions-cell">
-        {% include 'components/core/table_cell_actions.html' with object_pk=service_object.pk user_type=request.user.user_type app_name="company_services" %}
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=service_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns %}
       </td>
     </tr>
     {% empty %}
@@ -101,7 +56,7 @@
       <td colspan="8">
         <section class="section">
           <div class="content has-text-grey has-text-centered">
-            <p><span class="icon is-large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span></p>
+            <p><span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span></p>
             <p>Nothing's there&hellip;</p>
           </div>
         </section>

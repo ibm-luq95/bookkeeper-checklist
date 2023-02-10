@@ -46,14 +46,15 @@ class CustomUser(BaseModelMixin, AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "user"
         verbose_name_plural = "users"
+        ordering = ["-created_at", "-updated_at"]
 
     def __str__(self):
         # return self.email
         full_info = f"{self.fullname}:-> {self.user_type}"
         return full_info
 
-    def get_absolute_url(self):
-        return reverse("manager:users:detail", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("manager:users:detail", kwargs={"pk": self.pk})
 
     @property
     def fullname(self):

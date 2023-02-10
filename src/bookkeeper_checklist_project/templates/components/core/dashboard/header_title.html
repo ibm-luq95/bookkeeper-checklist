@@ -1,0 +1,62 @@
+{% load url_helpers %}
+{% load string_helpers_tags %}
+{% spaceless %}
+  <header class="columns is-flex is-justify-content-space-between">
+    <div class="column">
+      <div class="buttons is-left pt-1">
+        <p class="control">
+          <a class="button is-warning is-hoverable is-responsive hint--top"
+             aria-label="Go back"
+             onclick="history.back();">
+            <span class="icon is-small">
+              <i class="fa-solid fa-arrow-left"></i>
+            </span>
+          </a>
+        </p>
+        <p class="control is-relative">
+          <h3 class="title is-4 is-inline-block mx-3 is-relative"
+              style="top: 9px">{{ page_header }}</h3>
+        </p>
+      </div>
+
+
+    </div>
+
+    <div class="column">
+      <div class="buttons is-right pt-1">
+        <p class="control">
+          <a class="button is-hoverable is-primary hint--top is-responsive"
+             aria-label="{{ 'create new '|capfirst|add:app_name }}"
+             href="{% fetch_app_url_for_user app_name=app_name user_type=user_type path_name="create" %}">
+            <span class="icon is-small">
+              <i class="fa-solid fa-plus"></i>
+            </span>
+          </a>
+        </p>
+        {% if is_archived_enabled is True %}
+          {% if list_type == "archive" %}
+            <p class="control">
+              <a class="button is-hoverable is-responsive is-info hint--top"
+                 href="{% fetch_app_url_for_user app_name=app_name user_type=user_type path_name="list" %}"
+                 aria-label="{{ app_name|to_title_case }} list">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-list-ul"></i>
+                </span>
+              </a>
+            </p>
+          {% elif list_type == "list" %}
+            <p class="control">
+              <a class="button is-hoverable is-responsive is-info hint--top"
+                 href="{% fetch_app_url_for_user app_name=app_name user_type=user_type path_name="archive" %}"
+                 aria-label="{{ app_name|to_title_case }} archive">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-box-archive"></i>
+                </span>
+              </a>
+            </p>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </header>
+{% endspaceless %}

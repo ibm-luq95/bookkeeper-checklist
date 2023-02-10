@@ -221,7 +221,7 @@ MESSAGE_TAGS = {
 
 LOGIN_REDIRECT_URL = ""
 LOGOUT_REDIRECT_URL = "/"
-LOGIN_URL = "users:login"
+LOGIN_URL = "users:auth:login"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bulma"
 
@@ -276,7 +276,9 @@ SESSION_EXPIRE_SECONDS = config("SESSION_EXPIRE_SECONDS", cast=int)  # 1 hour
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = ast.literal_eval(
 #     os.environ.get("SESSION_EXPIRE_AT_BROWSER_CLOSE")
 # )  # Invalid session
-SESSION_EXPIRE_AT_BROWSER_CLOSE = config("SESSION_EXPIRE_AT_BROWSER_CLOSE", cast=bool) # Invalid session
+SESSION_EXPIRE_AT_BROWSER_CLOSE = config(
+    "SESSION_EXPIRE_AT_BROWSER_CLOSE", cast=bool
+)  # Invalid session
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = ast.literal_eval(
 #     os.environ.get("SESSION_EXPIRE_AFTER_LAST_ACTIVITY")
 # )
@@ -325,7 +327,6 @@ LOGGING = {
             "level": "ERROR",
             "propagate": True,
         },
-
     },
 }
 # check if cache enabled
@@ -334,16 +335,22 @@ if config("IS_CACHE_ENABLED", cast=bool) is True:
     # CACHE_MIDDLEWARE_ALIAS = os.environ.get(
     #     "CACHE_MIDDLEWARE_ALIAS"
     # )  # which cache alias to use
-    CACHE_MIDDLEWARE_ALIAS = config("CACHE_MIDDLEWARE_ALIAS", cast=str)  # which cache alias to use
+    CACHE_MIDDLEWARE_ALIAS = config(
+        "CACHE_MIDDLEWARE_ALIAS", cast=str
+    )  # which cache alias to use
     # CACHE_MIDDLEWARE_SECONDS = int(
     #     os.environ.get("CACHE_MIDDLEWARE_SECONDS")
     # )  # number of seconds to cache a page for (TTL)
-    CACHE_MIDDLEWARE_SECONDS = config("CACHE_MIDDLEWARE_SECONDS", cast=int)  # number of seconds to cache a page for (TTL)
+    CACHE_MIDDLEWARE_SECONDS = config(
+        "CACHE_MIDDLEWARE_SECONDS", cast=int
+    )  # number of seconds to cache a page for (TTL)
 
     # CACHE_MIDDLEWARE_KEY_PREFIX = os.environ.get(
     #     "CACHE_MIDDLEWARE_KEY_PREFIX"
     # )  # should be used if the cache is shared across multiple sites that
-    CACHE_MIDDLEWARE_KEY_PREFIX = config("CACHE_MIDDLEWARE_KEY_PREFIX", cast=str) # should be used if the cache is shared across multiple sites that
+    CACHE_MIDDLEWARE_KEY_PREFIX = config(
+        "CACHE_MIDDLEWARE_KEY_PREFIX", cast=str
+    )  # should be used if the cache is shared across multiple sites that
     # use the
     # same
     # Django instance

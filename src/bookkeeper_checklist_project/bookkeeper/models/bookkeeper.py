@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-
 from core.models import BaseModelMixin, StaffMemberMixin
 
 
@@ -37,3 +36,11 @@ class Bookkeeper(BaseModelMixin, StaffMemberMixin):
             total_list.add(str(job.client.pk))
         return len(total_list)
 
+
+def get_all_bookkeepers_as_choices() -> list:
+    all_bookkeepers = []
+    if Bookkeeper.objects.select_related().count() > 0:
+        for bookkeeper in Bookkeeper.objects.select_related().all():
+            all_bookkeepers.append((bookkeeper.pk, f"{bookkeeper.user.fullname}"))
+
+    return all_bookkeepers

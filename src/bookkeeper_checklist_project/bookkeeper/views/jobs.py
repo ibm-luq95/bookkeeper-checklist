@@ -18,7 +18,7 @@ logger = get_formatted_logger(__file__)
 
 
 class JobListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "bookkeeper/jobs/list.html"
     model = Job
 
@@ -48,7 +48,7 @@ class JobListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
 class JobDetailView(
     LoginRequiredMixin, BookkeeperAccessMixin, UserPassesTestMixin, DetailView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "bookkeeper/jobs/detail.html"
     model = Job
 

@@ -15,7 +15,7 @@ from .mixins import ManagerAccessMixin
 
 
 class BookkeepersListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name: str = "manager/bookkeeper/list.html"
     model = Bookkeeper
     queryset = (
@@ -34,7 +34,7 @@ class BookkeepersListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
 
 
 class BookkeepersArchiveView(LoginRequiredMixin, ManagerAccessMixin, ListView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name: str = "manager/bookkeeper/archive_list.html"
     model = Bookkeeper
     queryset = (
@@ -55,7 +55,7 @@ class BookkeepersArchiveView(LoginRequiredMixin, ManagerAccessMixin, ListView):
 class BookkeeperCreateView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name: str = "manager/bookkeeper/create.html"
     model = Bookkeeper
     success_url = get_trans_txt("Bookkeeper created successfully")
@@ -72,7 +72,7 @@ class BookkeeperCreateView(
 class BookkeeperUpdateView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name: str = "manager/bookkeeper/update.html"
     model = Bookkeeper
     success_url = get_trans_txt("Bookkeeper updated successfully")
@@ -93,7 +93,7 @@ class BookkeeperUpdateView(
 
 
 class BookkeepersDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "manager/bookkeeper/details.html"
     model = Bookkeeper
 
@@ -113,7 +113,7 @@ class BookkeepersDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView)
 class BookkeeperDeleteView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Bookkeeper
     template_name = "manager/bookkeeper/delete.html"
     success_message: str = get_trans_txt("Bookkeeper deleted successfully!")

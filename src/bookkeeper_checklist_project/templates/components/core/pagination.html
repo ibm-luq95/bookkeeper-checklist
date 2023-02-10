@@ -1,0 +1,44 @@
+{% spaceless %}
+{% if page_obj %}
+<div class="mt-5">
+  <hr />
+  {% if page_obj.has_other_pages %}
+  <div class="column">
+    <nav class="pagination is-centered is-rounded" id="tablPagiantionComponents" role="navigation"
+      aria-label="pagination">
+
+      {% comment %}
+      <a class="pagination-previous">Previous</a>
+      <a class="pagination-next">Next page</a>
+      {% endcomment %}
+
+
+
+      <ul class="pagination-list">
+        {% if page_obj.has_previous %}
+        <li><a class="pagination-link" aria-label="page" href="?page=1">&laquo;</a>
+        </li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+        <li><a class="pagination-link is-current" aria-label="Page {{ i }}" aria-current="page">{{ i }}</a></li>
+        {% else %}
+        <li><a class="pagination-link" aria-label="Goto page {{ i }}" href="?page={{ i }}">{{ i }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li><a class="pagination-link" aria-label="Goto page {{ page_obj.paginator.num_pages }}"
+            href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+{% endspaceless %}

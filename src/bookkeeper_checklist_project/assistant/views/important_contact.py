@@ -13,7 +13,7 @@ from .mixins import AssistantAccessMixin
 
 
 class ImportantContactListView(LoginRequiredMixin, AssistantAccessMixin, ListView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "assistant/important_contact/list.html"
     model = ImportantContact
     http_method_names = ["get"]
@@ -35,7 +35,7 @@ class ImportantContactListView(LoginRequiredMixin, AssistantAccessMixin, ListVie
 class ImportantContactCreateView(
     LoginRequiredMixin, AssistantAccessMixin, SuccessMessageMixin, CreateView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "assistant/important_contact/create.html"
     model = ImportantContact
     http_method_names = ["get", "post"]

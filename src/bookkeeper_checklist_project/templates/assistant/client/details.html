@@ -145,7 +145,7 @@
 
   <!-- Start Tasks Segment -->
   <div id="tasksContentWrapper" hidden>
-    {% include 'components/tasks/table_list.html' with client_object=object tasks_list=object.get_all_tasks user_type=request.user.user_type %}
+    {% include 'components/task/table_list.html' with client_object=object tasks_list=object.get_all_tasks user_type=request.user.user_type %}
   </div>
   <!-- End Tasks Segment -->
   {% elif page_section_name == "overview" %}
@@ -158,7 +158,7 @@
   {% elif page_section_name == "contacts" %}
   <!-- Start Important Contacts Segment -->
   <div id="contactsContentWrapper" hidden>
-    {% include 'components/important_contacts/table_list.html' with contacts_list=object.important_contacts.select_related.filter user_type=request.user.user_type %}
+    {% include 'components/important_contact/table_list.html' with contacts_list=object.important_contacts.select_related.filter user_type=request.user.user_type %}
   </div>
   <!-- End Important Contacts Segment -->
 

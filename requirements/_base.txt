@@ -1,7 +1,6 @@
 cryptography
 Django
 crispy-bulma
-django-betterforms
 django-crispy-forms
 django-filter
 django-maintenance-mode
@@ -15,6 +14,7 @@ psycopg2-binary
 python-dotenv
 python-decouple
 python-magic
+stringcase
 redis
 requests
 Whitenoise

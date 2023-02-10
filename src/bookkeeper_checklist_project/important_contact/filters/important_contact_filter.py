@@ -9,6 +9,6 @@ class ImportantContactFilter(django_filters.FilterSet):
         fields = {
             "contact_first_name": ["icontains"],
             "contact_last_name": ["icontains"],
-            "contact_label": ["icontains"],
+            "contact_label": ["exact"],
             "company_name": ["icontains"],
         }

@@ -1,0 +1,19 @@
+{% spaceless %}
+  <div class="field has-addons">
+    <div class="control">
+      <input class="input is-small"
+             {% if is_readonly is True %} readonly {% endif %}
+             type="text"
+             id="username-{{ object_pk }}"
+             value="{{ username }}"/>
+    </div>
+    <div class="control">
+      <button type="button"
+              class="button is-small copyInputBtn"
+              data-text-type="username"
+              data-copied-value="{{ username }}">
+        <i class="fa-solid fa-copy"></i>
+      </button>
+    </div>
+  </div>
+{% endspaceless %}

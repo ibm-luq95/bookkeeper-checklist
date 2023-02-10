@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-#
 from .manager import (
-    CreateManagerDocumentView,
-    DetailsManagerDocumentView,
-    ListManagerDocumentView,
-    UpdateDocumentManagerView,
+    ManagerListDocumentView,
+    ManagerCreateDocumentView,
+    ManagerUpdateDocumentView,
+    ManagerDetailsDocumentView,
+    ManagerDeleteDocumentView,
 )
-from .bookkeeper import UpdateDocumentBookkeeperView
-from .assistant import UpdateDocumentAssistantView
+from .bookkeeper import BookkeeperUpdateDocumentView
+from .assistant import AssistantUpdateDocumentView

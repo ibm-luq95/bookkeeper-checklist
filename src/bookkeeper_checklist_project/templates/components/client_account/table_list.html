@@ -1,0 +1,70 @@
+{% extends 'components/core/table_list/table_list_layout.html' %}
+{% load url_helpers %}
+{% block table_content_block %}
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="clientAccountsTableComponent">
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>URL</th>
+      <th>Username</th>
+      <th>Password</th>
+      <th>Status</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for account_object in object_list %}
+    <tr>
+      <td data-label="Client">
+
+        <a href="{% fetch_app_url_for_user app_name='client' user_type=user_type path_name='details:overview' object_pk=account_object.client.pk %}" target="_blank">
+          {{ account_object.client }} <i class="fas fa-external-link-alt is-small"></i>
+        </a>
+      </td>
+      <td data-label="Name">
+
+        <a href="{% fetch_app_url_for_user app_name='accounts' user_type=user_type path_name='update' object_pk=account_object.pk %}">
+          {{ account_object.account_name }}
+        </a>
+      </td>
+      <td data-label="Email">
+        {% include 'components/core/inputs/email.html' with email=account_object.account_email object_pk=account_object.pk is_readonly=True only %}
+      </td>
+      <td data-label="URL">
+        {% include 'components/core/inputs/url.html' with url=account_object.account_url object_pk=account_object.pk is_readonly=True only %}
+      </td>
+      <td data-label="Username">
+        {% include 'components/core/inputs/username.html' with username=account_object.account_username object_pk=account_object.pk is_readonly=True only %}
+      </td>
+      <td data-label="Password">
+        {% include 'components/core/inputs/password.html' with password=account_object.decrypted_account_password object_pk=account_object.pk is_readonly=True only %}
+      </td>
+      <td data-label="Status">
+        {% include 'components/core/table_list/status_tag.html' with status=account_object.status tag_size="is-small" status_label=account_object.get_status_display only %}
+      </td>
+      <td>
+        {% include 'components/core/table_list/table_cell_created.html' with created_at=account_object.created_at user_type=user_type only %}
+      </td>
+      <td class="is-actions-cell">
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=account_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr class="is-empty">
+      <td colspan="9">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p><span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span></p>
+            <p>Nothing's there&hellip;</p>
+          </div>
+        </section>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock table_content_block %}

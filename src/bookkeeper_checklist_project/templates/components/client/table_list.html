@@ -1,0 +1,80 @@
+{% extends 'components/core/table_list/table_list_layout.html' %}
+{% load url_helpers %}
+{% block table_content_block %}
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="clientsTableComponent">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Bookkeeper(s)</th>
+      <th>Status</th>
+      <th>Industry</th>
+      <th>Contacts</th>
+      <th>Jobs</th>
+      <th>Tasks</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for client_object in clients_list %}
+
+    <tr>
+      <td data-label="Name">
+        <a
+          href="{% fetch_url_by_name_pk details_url=details_url object_pk=client_object.pk %}">{{ client_object.name }}</a>
+      </td>
+      <td data-label="Bookkeeper(s)">
+
+        {% for bookkeeper in client_object.get_managed_bookkeepers %}
+
+        <a href="{% fetch_user_details_url base_user=user_type user_object=bookkeeper.user %}" target="_blank">{{ bookkeeper }}</a>
+        <br />
+        {% empty %}
+        No bookkeepers for this client
+        {% endfor %}
+
+      </td>
+      <td data-label="Status">
+        {% include 'components/core/table_list/status_tag.html' with status=client_object.status tag_size="is-small" status_label=client_object.get_status_display %}
+      </td>
+      <td data-label="Industry">{{ client_object.industry|truncatechars:20 }}</td>
+      <td data-label="Contacts">
+
+        {% for contact in client_object.important_contacts.all %}
+
+        <a href="{% fetch_app_url_for_user app_name='important_contact' user_type=user_type path_name='update' object_pk=contact.pk %}" target="_blank">{{ contact }}</a>
+        <br />
+        {% empty %}
+        No contact
+        {% endfor %}
+
+      </td>
+      <td data-label="Jobs">{{ client_object.jobs.count }}</td>
+      <td data-label="Tasks">{{ client_object.get_total_tasks_for_all_jobs }}</td>
+      <td data-label="Created">
+        {% include 'components/core/table_list/table_cell_created.html' with created_at=client_object.created_at user_type=user_type only %}
+      </td>
+      <td class="is-actions-cell">
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=client_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True only %}
+
+      </td>
+    </tr>
+    {% empty %}
+    <tr class="is-empty">
+      <td colspan="9">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <span class="icon is-large">
+                <i class="fa-solid fa-face-meh fa-3x"></i>
+              </span>
+            </p>
+            <p>Nothing's there&hellip;</p>
+          </div>
+        </section>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock table_content_block %}

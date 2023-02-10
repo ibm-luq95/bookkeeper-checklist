@@ -21,7 +21,7 @@ logger = get_formatted_logger(__name__)
 
 class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
     template_name = "bookkeeper/dashboard/dashboard.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

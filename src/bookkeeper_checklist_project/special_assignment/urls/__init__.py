@@ -7,4 +7,9 @@ urlpatterns = [
     path(
         "api/", include("special_assignment.urls.api"), name="special-assignment-api-urls"
     ),
+    path(
+        "manager/",
+        include("special_assignment.urls.manager"),
+        name="special-assignment-manager-urls",
+    ),
 ]

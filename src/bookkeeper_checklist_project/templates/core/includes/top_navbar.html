@@ -106,6 +106,15 @@
 
         {% if perms.manager.manager_user %}
         <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Users</a>
+
+          <div class="navbar-dropdown">
+            <a href="{% url 'users:manager:list' %}" class="navbar-item">List all users</a>
+
+          </div>
+        </div>
+        {% comment  %}
+          <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">Managers</a>
 
           <div class="navbar-dropdown">
@@ -117,8 +126,10 @@
             </a>
           </div>
         </div>
+        {% endcomment %}
         {% endif %}
-        <div class="navbar-item has-dropdown is-hoverable">
+        {% comment  %}
+          <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">Bookkeepers</a>
 
           <div class="navbar-dropdown">
@@ -136,26 +147,27 @@
             <a href="{% url 'manager:assistant:create' %}" class="navbar-item">Create new assistant</a>
           </div>
         </div>
+        {% endcomment %}
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">Clients</a>
 
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="{% url 'manager:client:list' %}">List all clients</a>
-            <a class="navbar-item" href="{% url 'manager:client:create' %}">Create new client</a>
-            <a class="navbar-item" href="{% url 'manager:client_account:list' %}">Client accounts</a>
-            <a class="navbar-item" href="{% url 'manager:important_contact:list' %}">Client contact</a>
+            <a class="navbar-item" href="{% url 'client:manager:list' %}">List all clients</a>
+            <a class="navbar-item" href="{% url 'client:manager:create' %}">Create new client</a>
+            <a class="navbar-item" href="{% url 'accounts:manager:list' %}">Client accounts</a>
+            <a class="navbar-item" href="{% url 'important_contact:manager:list' %}">Client contact</a>
             <!-- <hr class="dropdown-divider" />
             <a class="navbar-item" href="">Client report</a> -->
             <hr class="dropdown-divider" />
-            <a class="navbar-item" href="{% url 'manager:client:archive' %}">Clients archive</a>
+            <a class="navbar-item" href="{% url 'client:manager:archive' %}">Clients archive</a>
           </div>
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">Company Services</a>
 
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="{% url 'manager:company_services:list' %}">List all services</a>
+            <a class="navbar-item" href="{% url 'company_services:manager:list' %}">List all services</a>
 
           </div>
         </div>
@@ -165,17 +177,17 @@
           </a>
 
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="{% url 'manager:jobs:list' %}">
+            <a class="navbar-item" href="{% url 'jobs:manager:list' %}">
               List all jobs
             </a>
-            <a class="navbar-item" href="{% url 'manager:jobs:create' %}">
+            <a class="navbar-item" href="{% url 'jobs:manager:create' %}">
               Create new job
             </a>
             <a class="navbar-item" href="">
               Templates
             </a>
             <hr class="dropdown-divider" />
-            <a class="navbar-item" href="{% url 'manager:jobs:archive' %}">
+            <a class="navbar-item" href="{% url 'jobs:manager:archive' %}">
               Jobs archive
             </a>
           </div>
@@ -186,14 +198,14 @@
           </a>
 
           <div class="navbar-dropdown">
-            <a href="{% url 'manager:task:list' %}" class="navbar-item">
+            <a href="{% url 'task:manager:list' %}" class="navbar-item">
               List all tasks
             </a>
-            <a href="{% url 'manager:task:create' %}" class="navbar-item">
+            <a href="{% url 'task:manager:create' %}" class="navbar-item">
               Create task
             </a>
             <hr class="dropdown-divider" />
-            <a href="{% url 'manager:task:archive' %}" class="navbar-item">
+            <a href="{% url 'task:manager:archive' %}" class="navbar-item">
               Tasks archive
             </a>
 
@@ -208,16 +220,31 @@
           </a>
 
           <div class="navbar-dropdown">
-            <a href="{% url 'manager:special_assignment:list' %}" class="navbar-item">
+            <a href="{% url 'special_assignment:manager:list' %}" class="navbar-item">
               List all assignments
             </a>
-            <a href="{% url 'manager:special_assignment:requested' %}" class="navbar-item">
+            <a href="{% url 'special_assignment:manager:requested' %}" class="navbar-item">
               Requested assignments
             </a>
             <hr class="dropdown-divider" />
-            <a href="{% url 'manager:special_assignment:create' %}" class="navbar-item">
+            <a href="{% url 'special_assignment:manager:create' %}" class="navbar-item">
               Create new assignment
             </a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Documents
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'documents:manager:list' %}">
+              List all documents
+            </a>
+            <!-- <a class="navbar-item" href="">
+                            Update settings
+                        </a> -->
+
           </div>
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
@@ -277,7 +304,7 @@
                 Modifiers
               </a>
               <hr class="dropdown-divider"> -->
-              <a href="{% url 'users:logout' %}" class="dropdown-item">
+              <a href="{% url 'users:auth:logout' %}" class="dropdown-item">
                 Logout
               </a>
             </div>

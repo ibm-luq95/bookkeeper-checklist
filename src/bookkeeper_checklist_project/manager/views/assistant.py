@@ -10,7 +10,7 @@ from .mixins import ManagerAccessMixin
 
 
 class AssistantListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name: str = "manager/assistant/list.html"
     model = Assistant
 
@@ -24,7 +24,7 @@ class AssistantListView(LoginRequiredMixin, ManagerAccessMixin, ListView):
 
 
 class AssistantDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "manager/assistant/details.html"
     model = Assistant
 
@@ -39,7 +39,7 @@ class AssistantDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
 class AssistantCreateView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name: str = "manager/assistant/create.html"
     model = Assistant
     success_url = get_trans_txt("Assistant created successfully")
@@ -56,7 +56,7 @@ class AssistantCreateView(
 class AssistantUpdateView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "manager/assistant/update.html"
     model = Assistant
     http_method_names = ["post", "get"]
@@ -77,7 +77,7 @@ class AssistantUpdateView(
 class AssistantDeleteView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
 ):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Assistant
     template_name = "manager/assistant/delete.html"
     success_message: str = get_trans_txt("Assistant deleted successfully!")

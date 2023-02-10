@@ -163,7 +163,7 @@
                   {% for client in all_clients|slice:5 %}
                     <tr>
                       <td>
-                        <a href="{% url 'manager:client:details' client.pk %}">{{ client.name }}</a>
+                        <a href="{% url 'client:manager:details:overview' client.pk %}">{{ client.name }}</a>
                       </td>
                     </tr>
                   {% empty %}
@@ -177,7 +177,7 @@
           </div>
         </div>
         <footer class="card-footer">
-          <a href="{% url 'manager:client:list' %}"
+          <a href="{% url 'client:manager:list' %}"
              class="card-footer-item has-text-black">All</a>
         </footer>
       </div>
@@ -210,7 +210,7 @@
                   {% for special_assignment in all_special_assignments|slice:5 %}
                     <tr>
                       <td>
-                        <a href="{% url 'manager:special_assignment:details' special_assignment.pk %}">
+                        <a href="{% url 'special_assignment:manager:details' special_assignment.pk %}">
                           {{ special_assignment.title|truncatechars:20 }}
                         </a>
                       </td>
@@ -229,7 +229,7 @@
           </div>
         </div>
         <footer class="card-footer">
-          <a href="{% url 'manager:special_assignment:list' %}"
+          <a href="{% url 'special_assignment:manager:list' %}"
              class="card-footer-item has-text-black">All</a>
         </footer>
       </div>
@@ -262,7 +262,7 @@
                   {% for task in all_tasks|slice:5 %}
                     <tr>
                       <td>
-                        <a href="{% url 'manager:task:update' task.pk %}">
+                        <a href="{% url 'task:manager:update' task.pk %}">
                           {{ task.title|truncatechars:20 }}
                         </a>
                       </td>
@@ -281,7 +281,7 @@
           </div>
         </div>
         <footer class="card-footer">
-          <a href="{% url 'manager:task:list' %}"
+          <a href="{% url 'task:manager:list' %}"
              class="card-footer-item has-text-black">All</a>
         </footer>
       </div>

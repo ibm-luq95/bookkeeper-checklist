@@ -24,8 +24,8 @@ class DocumentForm(BaseModelFormMixin, SaveCreatedByFormMixin):
             # self.fields.pop("task")
             self.fields.pop("job")
 
-        if client is not None:
-            self.fields["client"].initial = client
+        # if client is not None:
+        #     self.fields["client"].initial = client
 
         if is_update is True:
             self.fields["document_file"].required = False

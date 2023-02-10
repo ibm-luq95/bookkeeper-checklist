@@ -1,3 +1,2 @@
 -r _base.txt
 Psycopg2-Binary
-# django-admin-honeypot-updated-2021

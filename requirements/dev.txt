@@ -2,6 +2,7 @@
 autopep8
 bandit
 black
+black[d]
 bpython
 django-debug-toolbar
 django-extensions
@@ -23,14 +24,12 @@ pip-chill
 pipdeptree
 prettyprinter
 prettytable
-#prospector
 pycodestyle
 pydocstyle
 pygraphviz
 pylama
 pylint
 pylint-django
-pypika
 PyPika
 pytest
 pytest-django

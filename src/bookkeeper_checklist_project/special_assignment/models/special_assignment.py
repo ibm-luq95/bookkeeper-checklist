@@ -61,13 +61,13 @@ class SpecialAssignment(BaseModelMixin, TeamMembersMixin):
 
     objects = SpecialAssignmentsManager()
 
-    class Meta(BaseModelMixin.Meta):
-        permissions = (
+    class Meta:
+        permissions = BaseModelMixin.Meta.permissions + [
             (
                 "bookkeeper_can_delete_special_assignment",
                 "Bookkeeper can delete special assignment",
             ),
-        )
+        ]
 
     def __str__(self) -> str:
         return f"{self.title}"

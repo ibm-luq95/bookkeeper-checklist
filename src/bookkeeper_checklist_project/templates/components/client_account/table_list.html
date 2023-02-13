@@ -20,13 +20,13 @@
     <tr>
       <td data-label="Client">
 
-        <a href="{% fetch_app_url_for_user app_name='client' user_type=user_type path_name='details:overview' object_pk=account_object.client.pk %}" target="_blank">
+        <a href="{% fetch_app_url_for_user app_name='client' path_name='details:overview' object_pk=account_object.client.pk %}" target="_blank">
           {{ account_object.client }} <i class="fas fa-external-link-alt is-small"></i>
         </a>
       </td>
       <td data-label="Name">
 
-        <a href="{% fetch_app_url_for_user app_name='accounts' user_type=user_type path_name='update' object_pk=account_object.pk %}">
+        <a href="{% fetch_app_url_for_user app_name='accounts' path_name='update' object_pk=account_object.pk %}">
           {{ account_object.account_name }}
         </a>
       </td>

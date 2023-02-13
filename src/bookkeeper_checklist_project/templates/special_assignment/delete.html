@@ -9,7 +9,7 @@ Delete {{ object }}
 {% block dashboard_content %}
 
 {# Start Include Delete Form Component #}
-{% include 'components/core/forms/delete_form.html' with user_type=request.user.user_type form=form object=object title=title object_type="special_assignment" cancel_url="special_assignment:manager:list" csrf_token=csrf_token only %}
+{% include 'components/core/forms/delete_form.html' with user_type=request.user.user_type form=form object=object title=title object_type="special_assignment" cancel_url="special_assignment:list" csrf_token=csrf_token only %}
 {# End Include Delete Form Component #}
 
 {% endblock dashboard_content %}

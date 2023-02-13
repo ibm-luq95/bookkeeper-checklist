@@ -19,13 +19,13 @@
     </tr>
   </thead>
   <tbody>
-    {% for job_object in jobs_list %}
+    {% for job_object in object_list %}
     <tr>
 
       <td data-label="Title">
 
         <a
-          href="{% fetch_app_url_for_user app_name='jobs' user_type=user_type path_name='details' object_pk=job_object.pk %}">
+          href="{% fetch_app_url_for_user app_name='jobs' path_name='details' object_pk=job_object.pk %}">
           {{ job_object.title|truncatechars:40 }}
         </a>
       </td>

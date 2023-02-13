@@ -58,40 +58,40 @@
   <div class="tabs">
     <ul>
       <li class="client-link" data-link-name="overview" data-link-label="Overview">
-        <a class="tabItemLink" href="{% url 'client:'|add:request.user.user_type|add:':details:overview' object.pk %}"
+        <a class="tabItemLink" href="{% url 'client:details:overview' object.pk %}"
           data-tab-element="overviewContentWrapper">Overview</a>
       </li>
       <li class="client-link" data-link-name="jobs" data-link-label="Jobs">
         <a class="tabItemLink" class="tabItemLink"
-          href="{% url 'client:'|add:request.user.user_type|add:':details:jobs' object.pk %}"
+          href="{% url 'client:details:jobs' object.pk %}"
           data-tab-element="jobsContentWrapper">Jobs</a>
       </li>
       <li class="client-link" data-link-name="tasks" data-link-label="Tasks">
-        <a class="tabItemLink" href="{% url 'client:'|add:request.user.user_type|add:':details:tasks' object.pk %}"
+        <a class="tabItemLink" href="{% url 'client:details:tasks' object.pk %}"
           data-tab-element="tasksContentWrapper">Tasks</a>
       </li>
       <li class="client-link" data-link-name="services" data-link-label="Accounts & Services">
-        <a class="tabItemLink" href="{% url 'client:'|add:request.user.user_type|add:':details:services' object.pk %}"
+        <a class="tabItemLink" href="{% url 'client:details:services' object.pk %}"
           data-tab-element="servicesContentWrapper">Accounts &
           Services</a>
       </li>
       <li class="client-link" data-link-name="contacts" data-link-label="Important Contacts">
-        <a class="tabItemLink" href="{% url 'client:'|add:request.user.user_type|add:':details:contacts' object.pk %}"
+        <a class="tabItemLink" href="{% url 'client:details:contacts' object.pk %}"
           data-tab-element="contactsContentWrapper">
           Important Contacts
         </a>
       </li>
       <li class="client-link" data-link-name="assignments" data-link-label="Special Assignments">
         <a class="tabItemLink"
-          href="{% url 'client:'|add:request.user.user_type|add:':details:assignments' object.pk %}"
+          href="{% url 'client:details:assignments' object.pk %}"
           data-tab-element="specialAssignmentsContentWrapper">Special Assignments</a>
       </li>
       <li class="client-link" data-link-name="documents" data-link-label="Documents">
-        <a class="tabItemLink" href="{% url 'client:'|add:request.user.user_type|add:':details:documents' object.pk %}"
+        <a class="tabItemLink" href="{% url 'client:details:documents' object.pk %}"
           data-tab-element="documentsContentWrapper">Documents</a>
       </li>
       <li class="client-link" data-link-name="notes" data-link-label="Notes">
-        <a class="tabItemLink" href="{% url 'client:'|add:request.user.user_type|add:':details:notes' object.pk %}"
+        <a class="tabItemLink" href="{% url 'client:details:notes' object.pk %}"
           data-tab-element="notesContentWrapper">Notes</a>
       </li>
     </ul>
@@ -125,7 +125,7 @@
   {% elif page_section_name == "jobs" %}
   <!-- Start Jobs Segment -->
   <div id="jobsContentWrapper" hidden>
-    {% include 'components/jobs/table_list.html' with jobs_list=object.jobs.all user_type=request.user.user_type enable_create_btn=True %}
+    {% include 'components/jobs/table_list.html' with object_list=object.jobs.all user_type=request.user.user_type enable_create_btn=True %}
 
     <!-- Start Jobs Form -->
     {% include 'segments/jobs/job_modal.html' with user_type=request.user.user_type job_form=jobs_form request_object=request %}
@@ -136,13 +136,13 @@
   {% elif page_section_name == "assignments" %}
   <!-- Start Special Assignments Segment -->
   <div id="specialAssignmentsContentWrapper" hidden>
-    {% include 'components/special_assignments/table_list.html' with assignments_list=object.special_assignments.all user_type=request.user.user_type %}
+    {% include 'components/special_assignments/table_list.html' with object_list=object.special_assignments.all user_type=request.user.user_type %}
   </div>
   <!-- End Special Assignments Segment -->
   {% elif page_section_name == "notes" %}
   <!-- Start Notes Segment -->
   <div id="notesContentWrapper" hidden>
-    {% include 'components/notes/table_list.html' with notes_list=object.notes.all user_type=request.user.user_type enable_create_btn=True %}
+    {% include 'components/notes/table_list.html' with object_list=object.notes.all user_type=request.user.user_type enable_create_btn=True %}
     <!-- Start Note Modal Form -->
     {% include 'segments/notes/note_modal.html' with user_type=request.user.user_type note_form=note_form request_object=request %}
     <!-- End Note Modal Form -->
@@ -151,7 +151,7 @@
   {% elif page_section_name == "services" %}
   <!-- Start Account & Services Segment -->
   <div id="servicesContentWrapper" hidden>
-    {% include 'components/company_services/table_list.html' with services_list=object.company_services all=request.user.user_type enable_create_btn=True %}
+    {% include 'components/company_services/table_list.html' with object_list=object.company_services all=request.user.user_type enable_create_btn=True %}
 
     <!-- Start Company Services Form -->
     {% include 'segments/company_service/company_service_modal.html' with user_type=request.user.user_type company_services_form=company_services_form request_object=request %}
@@ -162,7 +162,7 @@
 
   <!-- Start Tasks Segment -->
   <div id="tasksContentWrapper" hidden>
-    {% include 'components/task/table_list.html' with client_object=object tasks_list=object.get_all_tasks user_type=request.user.user_type enable_create_btn=True %}
+    {% include 'components/task/table_list.html' with client_object=object object_list=object.get_all_tasks user_type=request.user.user_type enable_create_btn=True %}
     <!-- Start Task Modal Form -->
     {% include 'segments/tasks/task_modal.html' with user_type=request.user.user_type task_form=tasks_form request_object=request %}
     <!-- End Task Modal Form -->
@@ -178,7 +178,7 @@
   {% elif page_section_name == "contacts" %}
   <!-- Start Important Contacts Segment -->
   <div id="contactsContentWrapper" hidden>
-    {% include 'components/important_contact/table_list.html' with contacts_list=object.important_contacts.all user_type=request.user.user_type %}
+    {% include 'components/important_contact/table_list.html' with object_list=object.important_contacts.all user_type=request.user.user_type %}
   </div>
   <!-- End Important Contacts Segment -->
 

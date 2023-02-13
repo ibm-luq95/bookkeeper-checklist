@@ -18,16 +18,16 @@
     </tr>
   </thead>
   <tbody>
-    {% for assignment_object in assignments_list %}
+    {% for assignment_object in object_list %}
     <tr>
 
       <td data-label="Title">
         <a
-          href="{% fetch_app_url_for_user app_name='special_assignment' user_type=user_type path_name='details' object_pk=assignment_object.pk %}">{{ assignment_object.title|truncatechars:20 }}</a>
+          href="{% fetch_app_url_for_user app_name='special_assignment' path_name='details' object_pk=assignment_object.pk %}">{{ assignment_object.title|truncatechars:20 }}</a>
       </td>
       <td data-label="Client">
 
-        <a href="{% fetch_url_by_name_pk url_name='client:manager:details:overview' object_pk=assignment_object.client.pk %}"
+        <a href="{% fetch_url_by_name_pk url_name='client:details:overview' object_pk=assignment_object.client.pk %}"
           target="_blank">
           {{ assignment_object.client.name }} <i class="fas fa-external-link-alt is-small"></i>
         </a>

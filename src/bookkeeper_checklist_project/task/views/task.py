@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from task.forms import TaskForm
 from task.models import Task
 from core.constants import LIST_VIEW_PAGINATE_BY
@@ -14,10 +13,9 @@ from manager.views.mixins import ManagerAccessMixin
 from task.filters import TaskFilter
 
 
-class ManagerTasksListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class TasksListView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "task/list.html"
     model = Task
     queryset = Task.objects.select_related().filter(~Q(task_status="archive"))
@@ -39,10 +37,9 @@ class ManagerTasksListView(
         return self.filterset.qs
 
 
-class ManagerTasksArchiveListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class TasksArchiveListView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "task/list.html"
     model = Task
     queryset = Task.objects.select_related().filter(Q(task_status="archive"))
@@ -64,15 +61,15 @@ class ManagerTasksArchiveListView(
         return self.filterset.qs
 
 
-class ManagerTaskCreateView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
+class TaskCreateView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
 ):
     model = Task
     template_name = "task/create.html"
     form_class = TaskForm
     http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Task created successfully")
-    success_url = reverse_lazy("task:manager:list")
+    success_url = reverse_lazy("task:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -81,13 +78,13 @@ class ManagerTaskCreateView(
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(ManagerTaskCreateView, self).get_form_kwargs()
+        kwargs = super(TaskCreateView, self).get_form_kwargs()
         kwargs.update({"created_by": self.request.user})
         return kwargs
 
 
-class ManagerTaskUpdateView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
+class TaskUpdateView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
 ):
     # model = get_user_model()
     template_name = "task/update.html"
@@ -104,15 +101,14 @@ class ManagerTaskUpdateView(
 
     def get_success_url(self):
         task = self.get_object()
-        url = reverse_lazy("task:manager:update", kwargs={"pk": task.pk})
+        url = reverse_lazy("task:update", kwargs={"pk": task.pk})
         return url
 
 
-class ManagerTaskDeleteView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
+class TaskDeleteView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
 ):
-    login_url = reverse_lazy("users:auth:login")
     model = Task
     template_name = "task/delete.html"
     success_message: str = get_trans_txt("Task deleted successfully!")
-    success_url = reverse_lazy("task:manager:list")
+    success_url = reverse_lazy("task:list")

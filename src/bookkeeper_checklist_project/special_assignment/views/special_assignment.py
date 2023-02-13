@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -7,17 +6,16 @@ from django.views.generic import ListView, DeleteView, CreateView, UpdateView, D
 
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from manager.views.mixins import ManagerAccessMixin
 from special_assignment.filters import SpecialAssignmentFilter
 from special_assignment.forms import SpecialAssignmentForm, DiscussionForm
 from special_assignment.models import SpecialAssignment
 
 
-class ManagerSpecialAssignmentListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class SpecialAssignmentListView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "special_assignment/list.html"
     model = SpecialAssignment
     queryset = SpecialAssignment.objects.select_related().filter(~Q(status="archive"))
@@ -39,10 +37,9 @@ class ManagerSpecialAssignmentListView(
         return self.filterset.qs
 
 
-class ManagerSpecialAssignmentArchiveListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class SpecialAssignmentArchiveListView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "special_assignment/list.html"
     model = SpecialAssignment
     queryset = SpecialAssignment.objects.select_related().filter(Q(status="archive"))
@@ -66,15 +63,14 @@ class ManagerSpecialAssignmentArchiveListView(
         return self.filterset.qs
 
 
-class ManagerSpecialAssignmentCreateView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
+class SpecialAssignmentCreateView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "special_assignment/create.html"
     form_class = SpecialAssignmentForm
     success_message = get_trans_txt("Special assignment created successfully!")
     model = SpecialAssignment
-    success_url = reverse_lazy("special_assignment:manager:list")
+    success_url = reverse_lazy("special_assignment:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -99,15 +95,14 @@ class ManagerSpecialAssignmentCreateView(
         return super().form_valid(form)
 
 
-class ManagerSpecialAssignmentUpdateView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
+class SpecialAssignmentUpdateView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "special_assignment/update.html"
     form_class = SpecialAssignmentForm
     success_message = get_trans_txt("Special assignment updated successfully!")
     model = SpecialAssignment
-    success_url = reverse_lazy("special_assignment:manager:list")
+    success_url = reverse_lazy("special_assignment:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -116,9 +111,7 @@ class ManagerSpecialAssignmentUpdateView(
         return context
 
     def get_success_url(self):
-        url = reverse_lazy(
-            "special_assignment:manager:update", kwargs={"pk": self.get_object().pk}
-        )
+        url = reverse_lazy("special_assignment:update", kwargs={"pk": self.get_object().pk})
         return url
 
     def get_form_kwargs(self):
@@ -136,20 +129,16 @@ class ManagerSpecialAssignmentUpdateView(
         return super().form_valid(form)
 
 
-class ManagerSpecialAssignmentDeleteView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
+class SpecialAssignmentDeleteView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
 ):
-    login_url = reverse_lazy("users:auth:login")
     model = SpecialAssignment
     template_name = "special_assignment/delete.html"
     success_message: str = get_trans_txt("Special assignment deleted successfully!")
-    success_url = reverse_lazy("special_assignment:manager:list")
+    success_url = reverse_lazy("special_assignment:list")
 
 
-class ManagerSpecialAssignmentDetailsView(
-    LoginRequiredMixin, ManagerAccessMixin, DetailView
-):
-    login_url = reverse_lazy("users:auth:login")
+class SpecialAssignmentDetailsView(BaseLoginRequiredMixin, ManagerAccessMixin, DetailView):
     template_name = "special_assignment/details.html"
     model = SpecialAssignment
 
@@ -179,11 +168,11 @@ class ManagerSpecialAssignmentDetailsView(
         return context
 
 
-class ManagerRequestedSpecialAssignmentsListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class RequestedSpecialAssignmentsListView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
     template_name = "special_assignment/list.html"
-    login_url = reverse_lazy("users:auth:login")
+
     model = SpecialAssignment
     http_method_names = ["get"]
 

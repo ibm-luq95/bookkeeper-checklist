@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 
 class BaseListViewMixin:
@@ -10,3 +12,7 @@ class BaseListViewMixin:
         if hasattr(self.model, "_meta"):
             context.setdefault("app_label", self.model._meta.app_label)
         return context
+
+
+class BaseLoginRequiredMixin(LoginRequiredMixin):
+    login_url = reverse_lazy("users:auth:login")

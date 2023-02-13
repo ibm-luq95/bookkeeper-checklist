@@ -11,11 +11,11 @@
     {# End Include Header List Component #}
     <hr>
     {# Start Include Filter Form Component #}
-    {% include 'components/core/forms/filter_form.html' with object_list=object_list user_type=request.user.user_type action_url="accounts:"|add:request.user.user_type|add:":list" reset_url="accounts:"|add:request.user.user_type|add:":list" filter_form=filter_form only %}
+    {% include 'components/core/forms/filter_form.html' with object_list=object_list user_type=request.user.user_type action_url="accounts:list" reset_url="accounts:list" filter_form=filter_form only %}
     {# End Include Filter Form Component #}
 
     {# Start Include Client Table List Component #}
-    {% include 'components/client_account/table_list.html' with object_list=object_list user_type=request.user.user_type details_url="accounts:"|add:request.user.user_type|add:":details" action_urls_pattern="accounts:"|add:request.user.user_type enabled_action_btns='update,delete' only %}
+    {% include 'components/client_account/table_list.html' with object_list=object_list user_type=request.user.user_type details_url="accounts:details" action_urls_pattern="accounts" enabled_action_btns='update,delete' only %}
     {# End Include Client Table List Component #}
 
     {# Start Include Pagination Component #}

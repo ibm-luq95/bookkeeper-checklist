@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-#
-from .manager import (
-    ManagerImportantContactCreateView,
-    ManagerImportantContactDeleteView,
-    ManagerImportantContactUpdateView,
-    ManagerImportantContactListView,
+from .important_contact import (
+    ImportantContactListView,
+    ImportantContactCreateView,
+    ImportantContactDeleteView,
+    ImportantContactUpdateView,
 )

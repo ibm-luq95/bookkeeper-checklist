@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
@@ -7,17 +6,16 @@ from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 from client.models import Client
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from important_contact.filters import ImportantContactFilter
 from important_contact.forms import ImportantContactForm
 from important_contact.models import ImportantContact
 from manager.views.mixins import ManagerAccessMixin
 
 
-class ManagerImportantContactListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class ImportantContactListView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "important_contact/list.html"
     model = ImportantContact
     http_method_names = ["get"]
@@ -38,19 +36,19 @@ class ManagerImportantContactListView(
         return self.filterset.qs
 
 
-class ManagerImportantContactCreateView(
-    LoginRequiredMixin,
+class ImportantContactCreateView(
+    BaseLoginRequiredMixin,
     ManagerAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     CreateView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "important_contact/create.html"
     model = ImportantContact
     http_method_names = ["get", "post"]
     form_class = ImportantContactForm
     success_message = get_trans_txt("Contact created successfully")
+    success_url = reverse_lazy("important_contact:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -66,7 +64,7 @@ class ManagerImportantContactCreateView(
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(ManagerImportantContactCreateView, self).get_form_kwargs()
+        kwargs = super(ImportantContactCreateView, self).get_form_kwargs()
         client_pk = self.request.GET.get("client")
         kwargs.update({"created_by": self.request.user})
         if client_pk is not None:
@@ -84,19 +82,19 @@ class ManagerImportantContactCreateView(
         return super().form_valid(form)
 
 
-class ManagerImportantContactUpdateView(
-    LoginRequiredMixin,
+class ImportantContactUpdateView(
+    BaseLoginRequiredMixin,
     ManagerAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     UpdateView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "important_contact/update.html"
     model = ImportantContact
     http_method_names = ["get", "post"]
     form_class = ImportantContactForm
     success_message = get_trans_txt("Contact update successfully")
+    success_url = reverse_lazy("important_contact:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -108,19 +106,18 @@ class ManagerImportantContactUpdateView(
         return context
 
 
-class ManagerImportantContactDeleteView(
-    LoginRequiredMixin,
+class ImportantContactDeleteView(
+    BaseLoginRequiredMixin,
     ManagerAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     DeleteView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "important_contact/delete.html"
     model = ImportantContact
     http_method_names = ["get", "post"]
     success_message = get_trans_txt("Contact deleted successfully")
-    success_url = reverse_lazy("important_contact:manager:list")
+    success_url = reverse_lazy("important_contact:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

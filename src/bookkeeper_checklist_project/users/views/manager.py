@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Permission
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.contenttypes.models import ContentType
@@ -11,7 +10,7 @@ from django.views.generic import ListView, CreateView, DeleteView, UpdateView, F
 from core.cache import CacheViewMixin
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt, debugging_print
-from core.views.mixins import BaseListViewMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from manager.views.mixins import ManagerAccessMixin
 from django.forms.models import model_to_dict
 from users.models import CustomUser
@@ -20,9 +19,8 @@ from users.filters import UsersFilter
 
 
 class ManagerUsersListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "users/list.html"
     model = CustomUser
     paginate_by = LIST_VIEW_PAGINATE_BY
@@ -43,9 +41,8 @@ class ManagerUsersListView(
 
 
 class ManagerUsersArchiveListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "users/list.html"
     model = CustomUser
     paginate_by = LIST_VIEW_PAGINATE_BY
@@ -66,12 +63,11 @@ class ManagerUsersArchiveListView(
 
 
 class ManagerUsersCreateView(
-    LoginRequiredMixin,
+    BaseLoginRequiredMixin,
     ManagerAccessMixin,
     SuccessMessageMixin,
     CreateView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "users/create.html"
     model = CustomUser
     form_class = UserCreationForm
@@ -90,12 +86,11 @@ class ManagerUsersCreateView(
 
 
 class ManagerUsersChangeView(
-    LoginRequiredMixin,
+    BaseLoginRequiredMixin,
     ManagerAccessMixin,
     SuccessMessageMixin,
     UpdateView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "users/update.html"
     model = CustomUser
     form_class = UserChangeForm
@@ -138,9 +133,8 @@ class ManagerUsersChangeView(
 
 
 class ManagerUpdateUserPasswordView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "users/update_password.html"
     form_class = UserPasswordChangeForm
     model = CustomUser
@@ -164,12 +158,11 @@ class ManagerUpdateUserPasswordView(
 
 
 class ManagerUsersDeleteView(
-    LoginRequiredMixin,
+    BaseLoginRequiredMixin,
     ManagerAccessMixin,
     SuccessMessageMixin,
     DeleteView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "users/delete.html"
     model = CustomUser
     success_message = "User deleted successfully"

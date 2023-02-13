@@ -20,7 +20,7 @@
         {{ object.get_status_display|capfirst }}
       </span>
       {% endif %}
-      <a href="{% url 'special_assignment:manager:update' object.pk %}" title="Update assignment" class="button is-success">
+      <a href="{% url 'special_assignment:update' object.pk %}" title="Update assignment" class="button is-success">
         <i class="fa-solid fa-pencil"></i>
       </a>
 
@@ -97,7 +97,7 @@
                 <div>
                   <h5 class="title is-size-5 mb-5 is-inline">Client: </h5>
                   <h2 class="title subtitle is-size-6 is-inline">
-                    <a href="{% url 'client:manager:details:overview' object.client.pk %}"
+                    <a href="{% url 'client:details:overview' object.client.pk %}"
                       target="_blank">{{ object.client.name }}</a>
                   </h2>
                 </div>

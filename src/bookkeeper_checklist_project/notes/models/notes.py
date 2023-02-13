@@ -35,7 +35,7 @@ class Note(BaseModelMixin, CreatedByMixin, GetObjectSectionMixin):
         choices=NoteTypesEnum.choices,
     )
 
-    class Meta:
+    class Meta(BaseModelMixin.Meta):
         verbose_name_plural = "notes"
 
     def __str__(self):

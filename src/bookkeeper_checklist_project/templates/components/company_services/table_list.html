@@ -23,7 +23,7 @@
     <tr>
 
       <td data-label="Client">
-        <a target="_blank" href="{% fetch_app_url_for_user app_name='client' user_type=user_type path_name='details:overview' object_pk=service_object.client.pk %}">
+        <a target="_blank" href="{% fetch_app_url_for_user app_name='client' path_name='details:overview' object_pk=service_object.client.pk %}">
           {{ service_object.client }} <i class="fas fa-external-link-alt is-small"></i>
         </a>
       </td>

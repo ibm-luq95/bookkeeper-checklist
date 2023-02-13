@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-#
-from .manager import (
-    ManagerClientAccountCreateView,
-    ManagerClientAccountDeleteView,
-    ManagerClientAccountDetailsView,
-    ManagerClientAccountUpdateView,
-    ManagerClientAccountListView,
+from .client_account import (
+    ClientAccountListView,
+    ClientAccountCreateView,
+    ClientAccountDeleteView,
+    ClientAccountUpdateView,
+    ClientAccountDetailsView,
 )

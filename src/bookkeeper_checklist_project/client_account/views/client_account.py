@@ -1,25 +1,21 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
 from django.db.models import Q
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from client_account.forms import ClientAccountForm
 from client_account.filters import ClientAccountFilter
+from client_account.forms import ClientAccountForm
 from client_account.models import ClientAccount
-from core.utils import get_trans_txt
-
 from core.constants import LIST_VIEW_PAGINATE_BY
-from core.views.mixins import BaseListViewMixin
-
+from core.utils import get_trans_txt
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from manager.views.mixins import ManagerAccessMixin
 
 
-class ManagerClientAccountListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class ClientAccountListView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "client_account/list.html"
     model = ClientAccount
     queryset = (
@@ -43,19 +39,18 @@ class ManagerClientAccountListView(
         return self.filterset.qs
 
 
-class ManagerClientAccountCreateView(
-    LoginRequiredMixin,
+class ClientAccountCreateView(
+    BaseLoginRequiredMixin,
     SuccessMessageMixin,
     ManagerAccessMixin,
     BaseListViewMixin,
     CreateView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "client_account/create.html"
     form_class = ClientAccountForm
     model = ClientAccount
     success_message = get_trans_txt("Client account created successfully!")
-    success_url = reverse_lazy("accounts:manager:list")
+    success_url = reverse_lazy("accounts:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -64,7 +59,7 @@ class ManagerClientAccountCreateView(
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(ManagerClientAccountCreateView, self).get_form_kwargs()
+        kwargs = super(ClientAccountCreateView, self).get_form_kwargs()
         kwargs.update({"created_by": self.request.user})
         return kwargs
 
@@ -75,14 +70,13 @@ class ManagerClientAccountCreateView(
     #     return url
 
 
-class ManagerClientAccountUpdateView(
-    LoginRequiredMixin,
+class ClientAccountUpdateView(
+    BaseLoginRequiredMixin,
     SuccessMessageMixin,
     ManagerAccessMixin,
     BaseListViewMixin,
     UpdateView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "client_account/update.html"
     form_class = ClientAccountForm
     success_message = get_trans_txt("Client account updated successfully!")
@@ -95,23 +89,22 @@ class ManagerClientAccountUpdateView(
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(ManagerClientAccountUpdateView, self).get_form_kwargs()
+        kwargs = super(ClientAccountUpdateView, self).get_form_kwargs()
         kwargs.update({"is_update": True, "updated_object": self.get_object()})
         return kwargs
 
     def get_success_url(self):
-        url = reverse_lazy("accounts:manager:update", kwargs={"pk": self.get_object().pk})
+        url = reverse_lazy("accounts:update", kwargs={"pk": self.get_object().pk})
         return url
 
 
-class ManagerClientAccountDetailsView(
-    LoginRequiredMixin,
+class ClientAccountDetailsView(
+    BaseLoginRequiredMixin,
     SuccessMessageMixin,
     ManagerAccessMixin,
     BaseListViewMixin,
     DetailView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "client_account/details.html"
     model = ClientAccount
 
@@ -122,15 +115,14 @@ class ManagerClientAccountDetailsView(
         return context
 
 
-class ManagerClientAccountDeleteView(
-    LoginRequiredMixin,
+class ClientAccountDeleteView(
+    BaseLoginRequiredMixin,
     ManagerAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     DeleteView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     model = ClientAccount
     template_name = "client_account/delete.html"
     success_message: str = get_trans_txt("Client account deleted successfully!")
-    success_url = reverse_lazy("accounts:manager:list")
+    success_url = reverse_lazy("accounts:list")

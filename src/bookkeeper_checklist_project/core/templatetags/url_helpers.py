@@ -78,12 +78,15 @@ def fetch_url_by_name_pk(
 def fetch_app_url_for_user(
     context: RequestContext,
     app_name: str,
-    user_type: str,
     path_name: str,
+    user_type: Optional[str] = None,
     object_pk: Optional[UUID] = None,
 ) -> str:
     url_path = ""
-    url_pattern = f"{app_name}:{user_type}:{path_name}"
+    if user_type is not None:
+        url_pattern = f"{app_name}:{user_type}:{path_name}"
+    else:
+        url_pattern = f"{app_name}:{path_name}"
     # debugging_print(locals())
     if object_pk is not None:
         url_path = reverse_lazy(url_pattern, kwargs={"pk": object_pk})

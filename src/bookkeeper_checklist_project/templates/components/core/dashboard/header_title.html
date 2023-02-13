@@ -27,7 +27,7 @@
         <p class="control">
           <a class="button is-hoverable is-primary hint--top is-responsive"
              aria-label="{{ 'create new '|capfirst|add:app_name }}"
-             href="{% fetch_app_url_for_user app_name=app_name user_type=user_type path_name="create" %}">
+             href="{% fetch_app_url_for_user app_name=app_name path_name="create" %}">
             <span class="icon is-small">
               <i class="fa-solid fa-plus"></i>
             </span>
@@ -37,7 +37,7 @@
           {% if list_type == "archive" %}
             <p class="control">
               <a class="button is-hoverable is-responsive is-info hint--top"
-                 href="{% fetch_app_url_for_user app_name=app_name user_type=user_type path_name="list" %}"
+                 href="{% fetch_app_url_for_user app_name=app_name path_name="list" %}"
                  aria-label="{{ app_name|to_title_case }} list">
                 <span class="icon is-small">
                   <i class="fa-solid fa-list-ul"></i>
@@ -47,7 +47,7 @@
           {% elif list_type == "list" %}
             <p class="control">
               <a class="button is-hoverable is-responsive is-info hint--top"
-                 href="{% fetch_app_url_for_user app_name=app_name user_type=user_type path_name="archive" %}"
+                 href="{% fetch_app_url_for_user app_name=app_name path_name="archive" %}"
                  aria-label="{{ app_name|to_title_case }} archive">
                 <span class="icon is-small">
                   <i class="fa-solid fa-box-archive"></i>

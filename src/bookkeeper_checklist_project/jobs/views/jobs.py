@@ -1,28 +1,24 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from core.choices import JobStatusEnum
+from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
+from documents.forms import DocumentForm
+from jobs.filters import JobFilter
 from jobs.forms import JobForm
 from jobs.models import Job
+from manager.views.mixins import ManagerAccessMixin
 from notes.forms import NoteForm
 from special_assignment.forms import DiscussionForm
 from task.forms import TaskForm
-from documents.forms import DocumentForm
-from manager.views.mixins import ManagerAccessMixin
-from jobs.filters import JobFilter
-from core.constants import LIST_VIEW_PAGINATE_BY
 
 
-class ManagerJobListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
-):
-    login_url = reverse_lazy("users:auth:login")
+class JobListView(BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView):
     template_name = "jobs/list.html"
     model = Job
     queryset = (
@@ -49,15 +45,15 @@ class ManagerJobListView(
         return self.filterset.qs
 
 
-class ManagerJobCreateView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
+class JobCreateView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
 ):
     model = Job
     template_name = "jobs/create.html"
     form_class = JobForm
     http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Job created successfully")
-    success_url = reverse_lazy("jobs:manager:list")
+    success_url = reverse_lazy("jobs:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -66,12 +62,12 @@ class ManagerJobCreateView(
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(ManagerJobCreateView, self).get_form_kwargs()
+        kwargs = super(JobCreateView, self).get_form_kwargs()
         kwargs.update({"created_by": self.request.user})
         return kwargs
 
 
-class ManagerJobDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
+class JobDetailsView(BaseLoginRequiredMixin, ManagerAccessMixin, DetailView):
     template_name = "jobs/details.html"
     model = Job
 
@@ -92,8 +88,8 @@ class ManagerJobDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
         return context
 
 
-class ManagerJobUpdateView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
+class JobUpdateView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
 ):
     # model = get_user_model()
     template_name = "jobs/update.html"
@@ -101,7 +97,7 @@ class ManagerJobUpdateView(
     http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Job updated successfully")
     model = Job
-    success_url = reverse_lazy("jobs:manager:list")
+    success_url = reverse_lazy("jobs:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -110,20 +106,20 @@ class ManagerJobUpdateView(
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(ManagerJobUpdateView, self).get_form_kwargs()
+        kwargs = super(JobUpdateView, self).get_form_kwargs()
         kwargs.update({"is_updated": True})
         return kwargs
 
 
-class ManagerJobDeleteView(
-    LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
+class JobDeleteView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
 ):
     model = Job
     template_name = "jobs/delete.html"
     # form_class = JobForm
     # http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Job deleted successfully")
-    success_url = reverse_lazy("jobs:manager:list")
+    success_url = reverse_lazy("jobs:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -132,10 +128,9 @@ class ManagerJobDeleteView(
         return context
 
 
-class ManagerJobArchiveListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class JobArchiveListView(
+    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "jobs/list.html"
     model = Job
     queryset = (

@@ -1,10 +1,9 @@
-from .manager import (
-    ManagerClientListView,
-    ManagerClientCreateView,
-    ManagerClientDetailsView,
-    ManagerClientUpdateView,
-    ManagerClientDeleteView,
-    ManagerClientDetailsOverviewRedirectView,
-    ManagerClientArchiveListView,
-
+from .client import (
+    ClientListView,
+    ClientCreateView,
+    ClientDeleteView,
+    ClientDetailsView,
+    ClientUpdateView,
+    ClientDetailsOverviewRedirectView,
+    ClientArchiveListView,
 )

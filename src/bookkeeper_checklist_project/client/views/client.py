@@ -18,19 +18,18 @@ from client.models import Client
 from company_services.forms import CompanyServiceForm
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from documents.forms import DocumentForm
 from important_contact.forms import ImportantContactForm
 from jobs.forms import JobForm
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from notes.forms import NoteForm
 from task.forms import TaskForm
 
 
-class ManagerClientListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class ClientListView(
+    BaseLoginRequiredMixin, ManagerAssistantAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "client/list.html"
     model = Client
     # queryset = Client.objects.filter(~Q(status="archive")).prefetch_related("jobs")
@@ -57,10 +56,9 @@ class ManagerClientListView(
         return self.filterset.qs
 
 
-class ManagerClientArchiveListView(
-    LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+class ClientArchiveListView(
+    BaseLoginRequiredMixin, ManagerAssistantAccessMixin, BaseListViewMixin, ListView
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "client/list.html"
     model = Client
     queryset = Client.objects.prefetch_related("jobs").filter(Q(status="archive"))
@@ -82,18 +80,17 @@ class ManagerClientArchiveListView(
         return self.filterset.qs
 
 
-class ManagerClientCreateView(
-    LoginRequiredMixin,
+class ClientCreateView(
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
-    ManagerAccessMixin,
     BaseListViewMixin,
     CreateView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "client/create.html"
     form_class = ClientForm
     success_message = get_trans_txt("Client created successfully")
-    success_url = reverse_lazy("client:manager:list")
+    success_url = reverse_lazy("client:list")
 
     # template_name_suffix = "_create_client"
 
@@ -104,7 +101,7 @@ class ManagerClientCreateView(
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(ManagerClientCreateView, self).get_form_kwargs()
+        kwargs = super(ClientCreateView, self).get_form_kwargs()
         kwargs.update({"created_by": self.request.user})
         return kwargs
 
@@ -119,8 +116,7 @@ class ManagerClientCreateView(
         return super().form_valid(form)
 
 
-class ManagerClientDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
-    login_url = reverse_lazy("users:auth:login")
+class ClientDetailsView(BaseLoginRequiredMixin, ManagerAssistantAccessMixin, DetailView):
     template_name = "client/details.html"
     model = Client
 
@@ -155,24 +151,23 @@ class ManagerClientDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailVie
         return context
 
 
-class ManagerClientDetailsOverviewRedirectView(
-    LoginRequiredMixin, ManagerAccessMixin, RedirectView
+class ClientDetailsOverviewRedirectView(
+    BaseLoginRequiredMixin, ManagerAssistantAccessMixin, RedirectView
 ):
-    pattern_name = "client:manager:details:overview"
+    pattern_name = "client:details:overview"
 
 
-class ManagerClientUpdateView(
-    LoginRequiredMixin,
-    ManagerAccessMixin,
+class ClientUpdateView(
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     UpdateView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     template_name = "client/update.html"
     model = Client
     template_name_suffix = "_update_form"
     form_class = ClientForm
-    success_url = reverse_lazy("client:manager:list")
+    success_url = reverse_lazy("client:list")
     success_message = "Update successfully"
 
     def get_context_data(self, **kwargs):
@@ -196,14 +191,13 @@ class ManagerClientUpdateView(
         return super().form_valid(form)
 
 
-class ManagerClientDeleteView(
-    LoginRequiredMixin,
-    ManagerAccessMixin,
+class ClientDeleteView(
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     DeleteView,
 ):
-    login_url = reverse_lazy("users:auth:login")
     model = Client
     template_name = "client/delete.html"
     success_message: str = "Client deleted successfully!"
-    success_url = reverse_lazy("client:manager:list")
+    success_url = reverse_lazy("client:list")

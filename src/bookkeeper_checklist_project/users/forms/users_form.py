@@ -73,15 +73,29 @@ class UserChangeForm(UserChangeForm):
     ):
         if user_object:
             all_initial_permissions = []
-            content_type_object = ContentType.objects.get(model=user_object.user_type)
+            content_type_object = ContentType.objects.filter(
+                model__in=[
+                    user_object.user_type,
+                    "Client",
+                    "CompanyService",
+                    "Job",
+                    "Task",
+                    "SpecialAssignment",
+                    "Documents",
+                    "ImportantContact",
+                    "ClientAccount",
+                    "Note"
+                ]
+            )
             # for group in user_object.groups.all():
             #     all_initial_permissions = [perm for perm in group.permissions.all()]
             all_initial_permissions = [perm for perm in user_object.user_permissions.all()]
             self.base_fields[
                 "user_permissions"
             ] = forms.ModelMultipleChoiceField(  # this should before super().__init__
-                queryset=Permission.objects.filter(content_type=content_type_object),
-                label="Set custom permissions", initial=all_initial_permissions
+                queryset=Permission.objects.filter(content_type__in=content_type_object),
+                label="Set custom permissions",
+                initial=all_initial_permissions,
             )
             debugging_print(all_initial_permissions)
         super().__init__(*args, **kwargs)

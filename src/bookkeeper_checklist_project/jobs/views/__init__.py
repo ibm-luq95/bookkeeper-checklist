@@ -1,8 +1,8 @@
-from .manager import (
-    ManagerJobCreateView,
-    ManagerJobListView,
-    ManagerJobDeleteView,
-    ManagerJobUpdateView,
-    ManagerJobDetailsView,
-    ManagerJobArchiveListView,
+from .jobs import (
+    JobListView,
+    JobArchiveListView,
+    JobCreateView,
+    JobDetailsView,
+    JobDeleteView,
+    JobUpdateView,
 )

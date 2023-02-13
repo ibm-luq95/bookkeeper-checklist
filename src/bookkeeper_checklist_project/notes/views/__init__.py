@@ -8,5 +8,6 @@ from notes.views.api import (
     RetrieveNoteBookkeeperApiView,
     CreateNoteBookkeeperApiView,
     UpdateNoteBookkeeperApiView,
-    DeleteNoteBookkeeperApiView
+    DeleteNoteBookkeeperApiView,
 )
+from .notes import NoteCreateView, NotesUpdateView, NoteListView, NoteDeleteView

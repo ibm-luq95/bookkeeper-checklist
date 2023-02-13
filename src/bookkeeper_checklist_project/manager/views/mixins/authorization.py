@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-#
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import PermissionDenied
 
 
 class ManagerAccessMixin(PermissionRequiredMixin):
-    permission_required = "manager.manager_user"
+    permission_required = ["manager.manager_user"]
 
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
@@ -15,7 +16,10 @@ class ManagerAccessMixin(PermissionRequiredMixin):
             )
 
         if not self.has_permission():
-            user_type = self.request.user.user_type
             raise PermissionDenied
 
         return super(ManagerAccessMixin, self).dispatch(request, *args, **kwargs)
+
+
+class ManagerAssistantAccessMixin(ManagerAccessMixin):
+    permission_required = ["manager.manager_user", "assistant.assistant_user"]

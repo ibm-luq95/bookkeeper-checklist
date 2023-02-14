@@ -1,16 +1,24 @@
+{% load authorization_tags %}
 {% spaceless %}
-  <section class="create-table-btn-wrapper my-5">
-    <div class="table-wrapper has-mobile-cards">
-      <div class="buttons is-right">
-        <div class="control">
-          <button class="button is-link is-light hint--top"
-                  aria-label="Create new {{ app_name }}"
-                  id="{{ btn_id }}">
-            <span class="icon is-small">
-              <i class="fa-solid fa-plus"></i>
-            </span>
-          </button>
-        </div>
-      </div>
-    </section>
+  {% if perms %}
+{% check_user_permissions perms=perms app_name=app_name perm_name="add" as check_permission %}
+    {% if check_permission is True %}
+      <section class="create-table-btn-wrapper my-5">
+        <div class="table-wrapper has-mobile-cards">
+          <div class="buttons is-right">
+            <div class="control">
+              <button class="button is-link is-light hint--top"
+                      aria-label="Create new {{ app_name }}"
+                      id="{{ btn_id }}">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </section>
+      {% endif %}
+
+    {% endif %}
+
   {% endspaceless %}

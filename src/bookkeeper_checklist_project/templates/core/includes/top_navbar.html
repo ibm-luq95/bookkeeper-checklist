@@ -43,7 +43,11 @@
 
           <div class="navbar-dropdown">
             <a class="navbar-item" href="{% url 'client:list' %}">List all clients</a>
+            {% if perms.client.add_client or request.user.user_type == 'manager' %}
             <a class="navbar-item" href="{% url 'client:create' %}">Create new client</a>
+
+            {% endif %}
+
             {% if perms.client_account.can_view_list or request.user.user_type == 'manager' %}
             <a class="navbar-item" href="{% url 'accounts:list' %}">Client accounts</a>
 

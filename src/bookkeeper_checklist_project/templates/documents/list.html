@@ -8,7 +8,7 @@
 
 <section id="{{ request.user.user_type }}-{{ app_label }}-list" class="box block">
   {# Start Include Header List Component #}
-  {% include 'components/core/dashboard/header_title.html' with user_type=request.user.user_type app_name=app_label page_header=page_header list_type=list_type is_archived_enabled=False only %}
+  {% include 'components/core/dashboard/header_title.html' with user_type=request.user.user_type app_name=app_label page_header=page_header list_type=list_type is_archived_enabled=False perms=perms only %}
   {# End Include Header List Component #}
 
   <div>
@@ -17,7 +17,7 @@
     {# End Include Filter Form Component #}
 
     {# Start Include Table List Component #}
-    {% include 'components/documents/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' only %}
+    {% include 'components/documents/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' app_name=app_label perms=perms only %}
     {# End Include Table List Component #}
 
     {# Start Include Pagination Component #}

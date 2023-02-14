@@ -1,10 +1,13 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
 {% load url_helpers %}
 {% block table_content_block %}
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="clientAccountsTableComponent">
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="clientAccountsTableComponent">
   <thead>
     <tr>
+      {% if is_show_client_column is True %}
       <th>Client</th>
+
+      {% endif %}
       <th>Name</th>
       <th>Email</th>
       <th>URL</th>
@@ -18,12 +21,15 @@
   <tbody>
     {% for account_object in object_list %}
     <tr>
+      {% if is_show_client_column is True %}
       <td data-label="Client">
 
-        <a href="{% fetch_app_url_for_user app_name='client' path_name='details:overview' object_pk=account_object.client.pk %}" target="_blank">
+        <a href="{% fetch_app_url_for_user app_name='client' path_name='details:overview' object_pk=account_object.client.pk %}"
+          target="_blank">
           {{ account_object.client }} <i class="fas fa-external-link-alt is-small"></i>
         </a>
       </td>
+      {% endif %}
       <td data-label="Name">
 
         <a href="{% fetch_app_url_for_user app_name='accounts' path_name='update' object_pk=account_object.pk %}">
@@ -49,12 +55,12 @@
         {% include 'components/core/table_list/table_cell_created.html' with created_at=account_object.created_at user_type=user_type only %}
       </td>
       <td class="is-actions-cell">
-        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=account_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns %}
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=account_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns perms=perms app_name=app_name perm_app_name=perm_app_name only %}
       </td>
     </tr>
     {% empty %}
     <tr class="is-empty">
-      <td colspan="9">
+      <td colspan="{% if is_show_client_column is True %} 9 {% else %} 8 {% endif %}">
         <section class="section">
           <div class="content has-text-grey has-text-centered">
             <p><span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span></p>

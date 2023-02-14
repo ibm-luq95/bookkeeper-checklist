@@ -1,7 +1,7 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
 {% load url_helpers %}
 {% block table_content_block %}
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="clientsTableComponent">
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="clientsTableComponent">
   <thead>
     <tr>
       <th>Name</th>
@@ -42,7 +42,7 @@
 
         {% for contact in client_object.important_contacts.all %}
 
-        <a href="{% fetch_app_url_for_user app_name='important_contact' user_type=user_type path_name='update' object_pk=contact.pk %}" target="_blank">{{ contact }}</a>
+        <a href="{% fetch_app_url_for_user app_name='important_contact' path_name='update' object_pk=contact.pk %}" target="_blank">{{ contact }}</a>
         <br />
         {% empty %}
         No contact
@@ -55,7 +55,7 @@
         {% include 'components/core/table_list/table_cell_created.html' with created_at=client_object.created_at user_type=user_type only %}
       </td>
       <td class="is-actions-cell">
-        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=client_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True only %}
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=client_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_name=app_name only %}
 
       </td>
     </tr>

@@ -3,12 +3,12 @@
 
 {% block table_content_block %}
 {% if enable_create_btn == True %}
-  {% include 'components/core/table_list/create_btn.html' with btn_id="addServiceBtn" app_name="service" %}
+{% include 'components/core/table_list/create_btn.html' with btn_id="addServiceBtn" app_name=app_name perms=perms only %}
 {% endif %}
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="accountsAndServicesTableComponent">
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="accountsAndServicesTableComponent">
   <thead>
     <tr>
-      <th>Client</th>
+      {% if is_show_client_column is True %}<th>Client</th>{% endif %}
       <th>Service Name</th>
       <th>Label</th>
       <th>URL</th>
@@ -21,18 +21,18 @@
   <tbody>
     {% for service_object in object_list %}
     <tr>
-
+      {% if is_show_client_column is True %}
       <td data-label="Client">
-        <a target="_blank" href="{% fetch_app_url_for_user app_name='client' path_name='details:overview' object_pk=service_object.client.pk %}">
+        <a target="_blank"
+          href="{% fetch_app_url_for_user app_name='client' path_name='details:overview' object_pk=service_object.client.pk %}">
           {{ service_object.client }} <i class="fas fa-external-link-alt is-small"></i>
         </a>
       </td>
-      <td data-label="Service Name">
-        {{ service_object.get_service_name_display }}
-      </td>
-      <td data-label="Label">
-        {{ service_object.label|truncatechars:15 }}
-      </td>
+
+      {% endif %}
+
+      <td data-label="Service Name">{{ service_object.get_service_name_display }}</td>
+      <td data-label="Label">{{ service_object.label|truncatechars:15 }}</td>
       <td data-label="URL">
         {% include 'components/core/inputs/url.html' with url=service_object.url object_pk=service_object.pk is_readonly=True only %}
       </td>
@@ -41,22 +41,23 @@
       </td>
       <td data-label="Password">
         {% include 'components/core/inputs/password.html' with password=service_object.decrypted_password object_pk=service_object.pk is_readonly=True only %}
-
       </td>
       <td data-label="Created">
         <small class="has-text-grey is-abbr-like"
           title="{{ service_object.created_at|date }}">{{ service_object.created_at|date }}</small>
       </td>
       <td class="is-actions-cell">
-        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=service_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns %}
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=service_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns perms=perms app_name=app_name only %}
       </td>
     </tr>
     {% empty %}
     <tr class="is-empty">
-      <td colspan="8">
+      <td colspan="{% if is_show_client_column is True %} 7 {% else %} 8 {% endif %}">
         <section class="section">
           <div class="content has-text-grey has-text-centered">
-            <p><span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span></p>
+            <p>
+              <span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span>
+            </p>
             <p>Nothing's there&hellip;</p>
           </div>
         </section>

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
@@ -10,21 +11,28 @@ from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from notes.models import Note
 from notes.forms import NoteForm
 from notes.filters import NotesFilter
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 
 
-class NoteListView(BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView):
+class NoteListView(
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    ListView,
+):
     template_name = "notes/list.html"
     model = Note
     http_method_names = ["get"]
     paginate_by = LIST_VIEW_PAGINATE_BY
+    permission_required = "notes.can_view_list"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", get_trans_txt("All notes"))
         context.setdefault("filter_form", self.filterset.form)
-        context.setdefault("page_header", "clients contacts".title())
+        context.setdefault("page_header", "notes".title())
         # print(self.filterset.form["contact_name"])
         return context
 
@@ -36,11 +44,13 @@ class NoteListView(BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin
 
 class NoteCreateView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     CreateView,
 ):
+    permission_required = "notes.add_note"
     template_name = "notes/create.html"
     model = Note
     http_method_names = ["get", "post"]
@@ -65,11 +75,13 @@ class NoteCreateView(
 
 class NotesUpdateView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     UpdateView,
 ):
+    permission_required = "notes.change_note"
     template_name = "notes/update.html"
     model = Note
     http_method_names = ["get", "post"]
@@ -87,11 +99,13 @@ class NotesUpdateView(
 
 class NoteDeleteView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     DeleteView,
 ):
+    permission_required = "notes.delete_note"
     template_name = "notes/delete.html"
     model = Note
     http_method_names = ["get", "post"]

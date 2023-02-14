@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-#
-
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
@@ -10,12 +10,17 @@ from company_services.models import CompanyService
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
 from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 
 
 class CompanyServicesListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "company_services.can_view_list"
     template_name = "company_services/list.html"
     model = CompanyService
     http_method_names = ["get"]
@@ -52,11 +57,13 @@ class CompanyServicesListView(
 
 class CompanyServicesCreateView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     CreateView,
 ):
+    permission_required = "company_services.add_companyservice"
     template_name = "company_services/create.html"
     model = CompanyService
     http_method_names = ["get", "post"]
@@ -78,11 +85,13 @@ class CompanyServicesCreateView(
 
 class CompanyServicesDeleteView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     DeleteView,
 ):
+    permission_required = "company_services.delete_companyservice"
     model = CompanyService
     template_name = "company_services/delete.html"
     success_message: str = get_trans_txt("Company service deleted successfully!")
@@ -91,11 +100,13 @@ class CompanyServicesDeleteView(
 
 class CompanyServicesUpdateView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     UpdateView,
 ):
+    permission_required = "company_services.change_companyservice"
     template_name = "company_services/update.html"
     model = CompanyService
     http_method_names = ["get", "post"]

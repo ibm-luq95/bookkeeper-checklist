@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -10,12 +11,17 @@ from client_account.models import ClientAccount
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
 from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 
 
 class ClientAccountListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "client_account.can_view_list"
     template_name = "client_account/list.html"
     model = ClientAccount
     queryset = (
@@ -41,11 +47,13 @@ class ClientAccountListView(
 
 class ClientAccountCreateView(
     BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
-    ManagerAccessMixin,
     BaseListViewMixin,
     CreateView,
 ):
+    permission_required = "client_account.add_clientaccount"
     template_name = "client_account/create.html"
     form_class = ClientAccountForm
     model = ClientAccount
@@ -72,11 +80,13 @@ class ClientAccountCreateView(
 
 class ClientAccountUpdateView(
     BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
-    ManagerAccessMixin,
     BaseListViewMixin,
     UpdateView,
 ):
+    permission_required = "client_account.change_clientaccount"
     template_name = "client_account/update.html"
     form_class = ClientAccountForm
     success_message = get_trans_txt("Client account updated successfully!")
@@ -100,13 +110,15 @@ class ClientAccountUpdateView(
 
 class ClientAccountDetailsView(
     BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
-    ManagerAccessMixin,
     BaseListViewMixin,
     DetailView,
 ):
     template_name = "client_account/details.html"
     model = ClientAccount
+    permission_required = "client_account.view_clientaccount"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -117,12 +129,14 @@ class ClientAccountDetailsView(
 
 class ClientAccountDeleteView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     DeleteView,
 ):
     model = ClientAccount
+    permission_required = "client_account.delete_clientaccount"
     template_name = "client_account/delete.html"
     success_message: str = get_trans_txt("Client account deleted successfully!")
     success_url = reverse_lazy("accounts:list")

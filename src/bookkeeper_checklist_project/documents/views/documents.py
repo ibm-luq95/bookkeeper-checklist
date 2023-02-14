@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -9,12 +10,17 @@ from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from documents.filters import DocumentsFilter
 from documents.forms import DocumentForm
 from documents.models import Documents
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 
 
 class ListDocumentView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "documents.can_view_list"
     template_name = "documents/list.html"
     model = Documents
     paginate_by = LIST_VIEW_PAGINATE_BY
@@ -38,11 +44,13 @@ class ListDocumentView(
 
 class CreateDocumentView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     CreateView,
 ):
+    permission_required = "documents.add_documents"
     template_name = "documents/create.html"
     form_class = DocumentForm
     success_message = get_trans_txt("Document Created Successfully")
@@ -67,19 +75,26 @@ class CreateDocumentView(
 
 
 class DetailsDocumentView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, DetailView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    DetailView,
 ):
     template_name = "documents/show.html"
     model = Documents
+    permission_required = "documents.change_documents"
 
 
 class UpdateDocumentView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     UpdateView,
 ):
+    permission_required = "documents.change_documents"
     template_name = "documents/update.html"
     form_class = DocumentForm
     success_message = get_trans_txt("Document updated successfully")
@@ -107,11 +122,13 @@ class UpdateDocumentView(
 
 class DeleteDocumentView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     DeleteView,
 ):
+    permission_required = "documents.delete_documents"
     model = Documents
     template_name = "documents/delete.html"
     success_message: str = "Document deleted successfully!"

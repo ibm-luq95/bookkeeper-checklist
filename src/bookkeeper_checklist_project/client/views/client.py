@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -28,8 +28,13 @@ from task.forms import TaskForm
 
 
 class ClientListView(
-    BaseLoginRequiredMixin, ManagerAssistantAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "client.can_view_list"
     template_name = "client/list.html"
     model = Client
     # queryset = Client.objects.filter(~Q(status="archive")).prefetch_related("jobs")
@@ -57,8 +62,13 @@ class ClientListView(
 
 
 class ClientArchiveListView(
-    BaseLoginRequiredMixin, ManagerAssistantAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "client.view_archive"
     template_name = "client/list.html"
     model = Client
     queryset = Client.objects.prefetch_related("jobs").filter(Q(status="archive"))
@@ -82,11 +92,13 @@ class ClientArchiveListView(
 
 class ClientCreateView(
     BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
     ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     CreateView,
 ):
+    permission_required = "client.add_client"
     template_name = "client/create.html"
     form_class = ClientForm
     success_message = get_trans_txt("Client created successfully")
@@ -116,9 +128,12 @@ class ClientCreateView(
         return super().form_valid(form)
 
 
-class ClientDetailsView(BaseLoginRequiredMixin, ManagerAssistantAccessMixin, DetailView):
+class ClientDetailsView(
+    BaseLoginRequiredMixin, PermissionRequiredMixin, ManagerAssistantAccessMixin, DetailView
+):
     template_name = "client/details.html"
     model = Client
+    permission_required = "client.view_client"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -152,23 +167,29 @@ class ClientDetailsView(BaseLoginRequiredMixin, ManagerAssistantAccessMixin, Det
 
 
 class ClientDetailsOverviewRedirectView(
-    BaseLoginRequiredMixin, ManagerAssistantAccessMixin, RedirectView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    RedirectView,
 ):
     pattern_name = "client:details:overview"
+    permission_required = "client.view_client"
 
 
 class ClientUpdateView(
     BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
     ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     UpdateView,
 ):
+    permission_required = "client.change_client"
     template_name = "client/update.html"
     model = Client
     template_name_suffix = "_update_form"
     form_class = ClientForm
     success_url = reverse_lazy("client:list")
-    success_message = "Update successfully"
+    success_message = "Client update successfully"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -193,11 +214,13 @@ class ClientUpdateView(
 
 class ClientDeleteView(
     BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
     ManagerAssistantAccessMixin,
     SuccessMessageMixin,
     DeleteView,
 ):
     model = Client
+    permission_required = "client.delete_client"
     template_name = "client/delete.html"
     success_message: str = "Client deleted successfully!"
     success_url = reverse_lazy("client:list")

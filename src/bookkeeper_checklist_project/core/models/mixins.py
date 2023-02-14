@@ -29,6 +29,7 @@ class BaseModelMixin(models.Model):
         ordering = ["-created_at"]
         permissions = [
             ("can_view_list", "Can view list view"),
+            ("view_archive", "Can view archive")
         ]
 
     def soft_delete(self):

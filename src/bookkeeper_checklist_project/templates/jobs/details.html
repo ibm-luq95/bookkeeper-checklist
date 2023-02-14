@@ -154,7 +154,7 @@
               <div class="media-content">
                 <div class="content">
                   <a class="button is-fullwidth has-text-weight-bold " data-tooltip="Update job details"
-                    href="{% url 'jobs:manager:update' object.pk %}" target="_blank">
+                    href="{% url 'jobs:update' object.pk %}" target="_blank">
                     Edit Job
                   </a>
                 </div>
@@ -209,7 +209,7 @@
                     <br>
 
                     {% if object.client %}
-                    <a href="{% url 'client:manager:details:overview' object.client.pk %}"
+                    <a href="{% url 'client:details:overview' object.client.pk %}"
                       target="_blank">{{ object.client }}</a>
                     {% else %}
                     No client
@@ -259,7 +259,7 @@
                   </p>
                   <p class="control">
                     <a class="button is-info is-light is-small bkchlst-input is-rounded"
-                      href="{% url 'documents:manager:update' document.pk %}" target="_blank">
+                      href="{% url 'documents:update' document.pk %}" target="_blank">
                       <i class="fa-solid fa-pencil"></i>
                     </a>
                   </p>

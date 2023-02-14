@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -9,13 +10,18 @@ from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from task.forms import TaskForm
 from task.models import Task
 from core.constants import LIST_VIEW_PAGINATE_BY
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from task.filters import TaskFilter
 
 
 class TasksListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "task.can_view_list"
     template_name = "task/list.html"
     model = Task
     queryset = Task.objects.select_related().filter(~Q(task_status="archive"))
@@ -38,8 +44,13 @@ class TasksListView(
 
 
 class TasksArchiveListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "task.can_view_archive"
     template_name = "task/list.html"
     model = Task
     queryset = Task.objects.select_related().filter(Q(task_status="archive"))
@@ -62,8 +73,13 @@ class TasksArchiveListView(
 
 
 class TaskCreateView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    SuccessMessageMixin,
+    CreateView,
 ):
+    permission_required = "task.add_task"
     model = Task
     template_name = "task/create.html"
     form_class = TaskForm
@@ -84,8 +100,13 @@ class TaskCreateView(
 
 
 class TaskUpdateView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    SuccessMessageMixin,
+    UpdateView,
 ):
+    permission_required = "task.change_task"
     # model = get_user_model()
     template_name = "task/update.html"
     form_class = TaskForm
@@ -106,8 +127,13 @@ class TaskUpdateView(
 
 
 class TaskDeleteView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    SuccessMessageMixin,
+    DeleteView,
 ):
+    permission_required = "task.delete_task"
     model = Task
     template_name = "task/delete.html"
     success_message: str = get_trans_txt("Task deleted successfully!")

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -7,15 +8,20 @@ from django.views.generic import ListView, DeleteView, CreateView, UpdateView, D
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
 from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from special_assignment.filters import SpecialAssignmentFilter
 from special_assignment.forms import SpecialAssignmentForm, DiscussionForm
 from special_assignment.models import SpecialAssignment
 
 
 class SpecialAssignmentListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "special_assignment.can_view_list"
     template_name = "special_assignment/list.html"
     model = SpecialAssignment
     queryset = SpecialAssignment.objects.select_related().filter(~Q(status="archive"))
@@ -38,8 +44,13 @@ class SpecialAssignmentListView(
 
 
 class SpecialAssignmentArchiveListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "special_assignment.can_view_archive"
     template_name = "special_assignment/list.html"
     model = SpecialAssignment
     queryset = SpecialAssignment.objects.select_related().filter(Q(status="archive"))
@@ -64,8 +75,13 @@ class SpecialAssignmentArchiveListView(
 
 
 class SpecialAssignmentCreateView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    SuccessMessageMixin,
+    CreateView,
 ):
+    permission_required = "special_assignment.add_specialassignment"
     template_name = "special_assignment/create.html"
     form_class = SpecialAssignmentForm
     success_message = get_trans_txt("Special assignment created successfully!")
@@ -96,8 +112,13 @@ class SpecialAssignmentCreateView(
 
 
 class SpecialAssignmentUpdateView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    SuccessMessageMixin,
+    UpdateView,
 ):
+    permission_required = "special_assignment.change_specialassignment"
     template_name = "special_assignment/update.html"
     form_class = SpecialAssignmentForm
     success_message = get_trans_txt("Special assignment updated successfully!")
@@ -130,15 +151,23 @@ class SpecialAssignmentUpdateView(
 
 
 class SpecialAssignmentDeleteView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    SuccessMessageMixin,
+    DeleteView,
 ):
+    permission_required = "special_assignment.delete_specialassignment"
     model = SpecialAssignment
     template_name = "special_assignment/delete.html"
     success_message: str = get_trans_txt("Special assignment deleted successfully!")
     success_url = reverse_lazy("special_assignment:list")
 
 
-class SpecialAssignmentDetailsView(BaseLoginRequiredMixin, ManagerAccessMixin, DetailView):
+class SpecialAssignmentDetailsView(
+    BaseLoginRequiredMixin, ManagerAssistantAccessMixin, PermissionRequiredMixin, DetailView
+):
+    permission_required = "special_assignment.view_specialassignment"
     template_name = "special_assignment/details.html"
     model = SpecialAssignment
 
@@ -169,8 +198,13 @@ class SpecialAssignmentDetailsView(BaseLoginRequiredMixin, ManagerAccessMixin, D
 
 
 class RequestedSpecialAssignmentsListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "special_assignment.can_view_list"
     template_name = "special_assignment/list.html"
 
     model = SpecialAssignment

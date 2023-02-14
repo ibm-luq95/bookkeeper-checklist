@@ -105,8 +105,9 @@ class ManagerUsersChangeView(
 
     def get_success_url(self):
         user_type = self.request.user.user_type
-        url_pattern = f"users:{user_type}:list"
-        url = reverse_lazy(url_pattern)
+        user = self.get_object()
+        url_pattern = f"users:{user_type}:update"
+        url = reverse_lazy(url_pattern, kwargs={"pk": user.pk})
         return url
 
     def get_form_kwargs(self):

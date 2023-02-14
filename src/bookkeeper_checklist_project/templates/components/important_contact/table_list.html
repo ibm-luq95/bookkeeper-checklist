@@ -1,6 +1,9 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
 {% block table_content_block %}
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth" id="contactsTableComponent">
+{% if enable_create_btn == True %}
+  {% include 'components/core/table_list/create_btn.html' with btn_id="addContactBtn" app_name=app_name perms=perms only %}
+{% endif %}
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="contactsTableComponent">
   <thead>
     <tr>
       <th>Label</th>
@@ -24,7 +27,7 @@
         {% include 'components/core/table_list/table_cell_created.html' with created_at=contact_object.created_at user_type=user_type only %}
       </td>
       <td class="is-actions-cell">
-        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=contact_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns only %}
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=contact_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns perms=perms app_name=app_name only %}
       </td>
     </tr>
     {% empty %}

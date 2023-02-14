@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
@@ -10,12 +11,17 @@ from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from important_contact.filters import ImportantContactFilter
 from important_contact.forms import ImportantContactForm
 from important_contact.models import ImportantContact
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 
 
 class ImportantContactListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    BaseListViewMixin,
+    ListView,
 ):
+    permission_required = "important_contact.can_view_list"
     template_name = "important_contact/list.html"
     model = ImportantContact
     http_method_names = ["get"]
@@ -38,11 +44,13 @@ class ImportantContactListView(
 
 class ImportantContactCreateView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     CreateView,
 ):
+    permission_required = "important_contact.add_importantcontact"
     template_name = "important_contact/create.html"
     model = ImportantContact
     http_method_names = ["get", "post"]
@@ -84,11 +92,13 @@ class ImportantContactCreateView(
 
 class ImportantContactUpdateView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     UpdateView,
 ):
+    permission_required = "important_contact.change_importantcontact"
     template_name = "important_contact/update.html"
     model = ImportantContact
     http_method_names = ["get", "post"]
@@ -108,11 +118,13 @@ class ImportantContactUpdateView(
 
 class ImportantContactDeleteView(
     BaseLoginRequiredMixin,
-    ManagerAccessMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
     SuccessMessageMixin,
     BaseListViewMixin,
     DeleteView,
 ):
+    permission_required = "important_contact.delete_importantcontact"
     template_name = "important_contact/delete.html"
     model = ImportantContact
     http_method_names = ["get", "post"]

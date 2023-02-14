@@ -1,62 +1,81 @@
 {% load url_helpers %}
+{% load authorization_tags %}
 {% load string_helpers_tags %}
 {% spaceless %}
-  <header class="columns is-flex is-justify-content-space-between">
-    <div class="column">
-      <div class="buttons is-left pt-1">
-        <p class="control">
-          <a class="button is-warning is-hoverable is-responsive hint--top"
-             aria-label="Go back"
-             onclick="history.back();">
-            <span class="icon is-small">
-              <i class="fa-solid fa-arrow-left"></i>
-            </span>
-          </a>
-        </p>
-        <p class="control is-relative">
-          <h3 class="title is-4 is-inline-block mx-3 is-relative"
-              style="top: 9px">{{ page_header }}</h3>
-        </p>
-      </div>
-
-
+<header class="columns is-flex is-justify-content-space-between">
+  <div class="column">
+    <div class="buttons is-left pt-1">
+      <p class="control">
+        <a class="button is-warning is-hoverable is-responsive hint--top" aria-label="Go back"
+          onclick="history.back();">
+          <span class="icon is-small">
+            <i class="fa-solid fa-arrow-left"></i>
+          </span>
+        </a>
+      </p>
+      <p class="control is-relative">
+        <h3 class="title is-4 is-inline-block mx-3 is-relative" style="top: 9px">{{ page_header }}</h3>
+      </p>
     </div>
 
-    <div class="column">
-      <div class="buttons is-right pt-1">
-        <p class="control">
-          <a class="button is-hoverable is-primary hint--top is-responsive"
-             aria-label="{{ 'create new '|capfirst|add:app_name }}"
-             href="{% fetch_app_url_for_user app_name=app_name path_name="create" %}">
-            <span class="icon is-small">
-              <i class="fa-solid fa-plus"></i>
-            </span>
-          </a>
-        </p>
-        {% if is_archived_enabled is True %}
-          {% if list_type == "archive" %}
-            <p class="control">
-              <a class="button is-hoverable is-responsive is-info hint--top"
-                 href="{% fetch_app_url_for_user app_name=app_name path_name="list" %}"
-                 aria-label="{{ app_name|to_title_case }} list">
-                <span class="icon is-small">
-                  <i class="fa-solid fa-list-ul"></i>
-                </span>
-              </a>
-            </p>
-          {% elif list_type == "list" %}
-            <p class="control">
-              <a class="button is-hoverable is-responsive is-info hint--top"
-                 href="{% fetch_app_url_for_user app_name=app_name path_name="archive" %}"
-                 aria-label="{{ app_name|to_title_case }} archive">
-                <span class="icon is-small">
-                  <i class="fa-solid fa-box-archive"></i>
-                </span>
-              </a>
-            </p>
-          {% endif %}
-        {% endif %}
-      </div>
+
+  </div>
+
+  <div class="column">
+    <div class="buttons is-right pt-1">
+
+      {% if perm_app_name %}
+      {% check_user_permissions perms=perms app_name=perm_app_name perm_name="add" as check_permission %}
+      {% else %}
+
+      {% check_user_permissions perms=perms app_name=app_name perm_name="add" as check_permission %}
+      {% endif %}
+
+
+      {% if check_permission is True %}
+      <p class="control">
+        <a class="button is-hoverable is-primary hint--top is-responsive"
+          aria-label="{{ 'create new '|capfirst|add:app_name }}"
+          href="{% fetch_app_url_for_user app_name=app_name path_name="create" %}">
+          <span class="icon is-small">
+            <i class="fa-solid fa-plus"></i>
+          </span>
+        </a>
+      </p>
+      {% endif %}
+
+      {% if is_archived_enabled is True %}
+      {% if list_type == "archive" %}
+      <p class="control">
+        <a class="button is-hoverable is-responsive is-info hint--top"
+          href="{% fetch_app_url_for_user app_name=app_name path_name="list" %}"
+          aria-label="{{ app_name|to_title_case }} list">
+          <span class="icon is-small">
+            <i class="fa-solid fa-list-ul"></i>
+          </span>
+        </a>
+      </p>
+      {% elif list_type == "list" %}
+      {% if perm_app_name %}
+      {% check_user_permissions perms=perms app_name=perm_app_name perm_name="view_archive" is_include_app_name=False as check_permission %}
+      {% else %}
+      {% check_user_permissions perms=perms app_name=app_name perm_name="view_archive" is_include_app_name=False as check_permission %}
+      {% endif %}
+      {% if check_permission %}
+      <p class="control">
+        <a class="button is-hoverable is-responsive is-info hint--top"
+          href="{% fetch_app_url_for_user app_name=app_name path_name="archive" %}"
+          aria-label="{{ app_name|to_title_case }} archive">
+          <span class="icon is-small">
+            <i class="fa-solid fa-box-archive"></i>
+          </span>
+        </a>
+      </p>
+      {% endif %}
+
+      {% endif %}
+      {% endif %}
     </div>
-  </header>
+  </div>
+</header>
 {% endspaceless %}

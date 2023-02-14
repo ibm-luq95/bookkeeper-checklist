@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -12,13 +13,20 @@ from documents.forms import DocumentForm
 from jobs.filters import JobFilter
 from jobs.forms import JobForm
 from jobs.models import Job
-from manager.views.mixins import ManagerAccessMixin
+from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from notes.forms import NoteForm
 from special_assignment.forms import DiscussionForm
 from task.forms import TaskForm
 
 
-class JobListView(BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView):
+class JobListView(
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    BaseListViewMixin,
+    ListView,
+):
+    permission_required = "jobs.can_view_list"
     template_name = "jobs/list.html"
     model = Job
     queryset = (
@@ -46,9 +54,14 @@ class JobListView(BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin,
 
 
 class JobCreateView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    SuccessMessageMixin,
+    CreateView,
 ):
     model = Job
+    permission_required = "jobs.add_job"
     template_name = "jobs/create.html"
     form_class = JobForm
     http_method_names = ["post", "get"]
@@ -67,9 +80,12 @@ class JobCreateView(
         return kwargs
 
 
-class JobDetailsView(BaseLoginRequiredMixin, ManagerAccessMixin, DetailView):
+class JobDetailsView(
+    BaseLoginRequiredMixin, PermissionRequiredMixin, ManagerAssistantAccessMixin, DetailView
+):
     template_name = "jobs/details.html"
     model = Job
+    permission_required = "jobs.view_job"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -89,9 +105,14 @@ class JobDetailsView(BaseLoginRequiredMixin, ManagerAccessMixin, DetailView):
 
 
 class JobUpdateView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, UpdateView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    SuccessMessageMixin,
+    UpdateView,
 ):
     # model = get_user_model()
+    permission_required = "jobs.change_job"
     template_name = "jobs/update.html"
     form_class = JobForm
     http_method_names = ["post", "get"]
@@ -112,8 +133,13 @@ class JobUpdateView(
 
 
 class JobDeleteView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, DeleteView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    SuccessMessageMixin,
+    DeleteView,
 ):
+    permission_required = "jobs.delete_job"
     model = Job
     template_name = "jobs/delete.html"
     # form_class = JobForm

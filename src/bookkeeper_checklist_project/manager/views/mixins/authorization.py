@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import PermissionDenied
 
@@ -21,5 +21,16 @@ class ManagerAccessMixin(PermissionRequiredMixin):
         return super(ManagerAccessMixin, self).dispatch(request, *args, **kwargs)
 
 
-class ManagerAssistantAccessMixin(ManagerAccessMixin):
-    permission_required = ["manager.manager_user", "assistant.assistant_user"]
+class ManagerAssistantAccessMixin(UserPassesTestMixin):
+    # permission_required = ("manager.manager_user", "assistant.assistant_user")
+
+    # def has_permission(self) -> bool:
+    #     # perms = self.get_permission_required()
+    #     # print(self.request.user.has_perms(perms))
+    #     # return self.request.user.has_perms(perms)
+    #     user_type = self.request.user.user_type
+    #     return user_type == "manager" or user_type == "assistant"
+
+    def test_func(self) -> bool | None:
+        user_type = self.request.user.user_type
+        return user_type == "manager" or user_type == "assistant"

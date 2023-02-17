@@ -14,7 +14,7 @@
     {# End Include Filter Form Component #}
 
     {# Start Include Task Table List Component #}
-    {% include 'components/task/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' perms=perms app_name=app_label only %}
+    {% include 'components/task/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' perms=perms app_name=app_label is_show_created_at=is_show_created_at is_show_job_column=True only %}
     {# End Include Task Table List Component #}
 
     {# Start Include Pagination Component #}

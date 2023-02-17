@@ -302,7 +302,7 @@ document.addEventListener("readystatechange", (ev) => {
                         const currentTarget = event.currentTarget;
                         const taskId = currentTarget.dataset["taskId"];
                         const retrieveTaskUrl = await fetchUrlPathByName(
-                          "task:api:bookkeeper:retrieve"
+                          "task:api:retrieve"
                         );
                         // console.log(taskId);
                         const requestOptions = {
@@ -408,7 +408,7 @@ document.addEventListener("readystatechange", (ev) => {
 
       if (checkedTasksArray.length > 0) {
         const setTaskCompletedUrl = await fetchUrlPathByName(
-          "task:api:bookkeeper:set-task-completed"
+          "task:api:set-task-completed"
         );
         const requestOptions = {
           method: "PUT",
@@ -631,7 +631,7 @@ document.addEventListener("readystatechange", (ev) => {
         const callBacks = {
           onOpenCallBack: async () => {
             const retrieveUrl = await fetchUrlPathByName(
-              "notes:api:bookkeeper:retrieve"
+              "notes:api:retrieve"
             );
             const requestOptions = {
               method: "POST",

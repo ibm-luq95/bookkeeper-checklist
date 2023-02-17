@@ -50,7 +50,8 @@ class CustomUser(BaseModelMixin, AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         # return self.email
-        full_info = f"{self.fullname}:-> {self.user_type}"
+        # full_info = f"{self.fullname}:-> {self.user_type}"
+        full_info = f"{self.user_type.title()} - {self.fullname}"
         return full_info
 
     # def get_absolute_url(self):

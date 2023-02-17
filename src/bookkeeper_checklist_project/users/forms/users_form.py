@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Password
 from django.contrib.auth.models import Permission
 from django.db import transaction
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.utils.safestring import mark_safe
 
 from assistant.models import Assistant
 from bookkeeper.models import Bookkeeper
@@ -80,12 +81,13 @@ class UserChangeForm(UserChangeForm):
             all_initial_permissions = []
             content_type_object = ContentType.objects.filter(
                 model__in=[
-                    user_object.user_type,
+                    # user_object.user_type,
                     "Client",
                     "CompanyService",
                     "Job",
                     "Task",
                     "SpecialAssignment",
+                    "Discussion",
                     "Documents",
                     "ImportantContact",
                     "ClientAccount",
@@ -101,6 +103,12 @@ class UserChangeForm(UserChangeForm):
                 queryset=Permission.objects.filter(content_type__in=content_type_object),
                 label="Set custom permissions",
                 initial=all_initial_permissions,
+                # widget=forms.CheckboxSelectMultiple,
+                widget=forms.SelectMultiple,
+                help_text=mark_safe(
+                    "<strong>** Press CTRL in keyboard when pick permissions to avoid lose the previous "
+                    "permissions **</strong>"
+                ),
             )
             # debugging_print(all_initial_permissions)
         super().__init__(*args, **kwargs)

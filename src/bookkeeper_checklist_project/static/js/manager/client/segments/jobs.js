@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     const callBacks = {
       onOpenCallBack: async () => {
         const createJobUrl = await fetchUrlPathByName(
-          "jobs:api:manager:create"
+          "jobs:api:create"
         );
         jobModalSubmitBtn.textContent = "Create";
         jobsForm.elements["_method"].value = "POST";
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   jobsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     try {
-      const updateJobUrl = await fetchUrlPathByName("jobs:api:manager:update");
+      const updateJobUrl = await fetchUrlPathByName("jobs:api:update");
       const currentTarget = event.currentTarget;
       jobsFormFieldset.disabled = true;
       managerJobsLoaderBtn.hidden = false;
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
 
       const jobId = event.currentTarget.dataset["jobId"];
       const jobTitle = event.currentTarget.dataset["jobTitle"];
-      const deleteJobUrl = await fetchUrlPathByName("jobs:api:manager:delete");
+      const deleteJobUrl = await fetchUrlPathByName("jobs:api:delete");
       const requestOptions = {
         method: "DELETE",
         dataToSend: { jobId: jobId },
@@ -196,8 +196,8 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       const jobsUpdateFormFieldSet = jobsForm.querySelector("fieldset");
       const jobId = event.currentTarget.dataset["jobId"];
       // const url = window.localStorage.getItem("RetrieveJobUrl");
-      const retrieveUrl = await fetchUrlPathByName("jobs:api:manager:retrieve");
-      const updateJobUrl = await fetchUrlPathByName("jobs:api:manager:update");
+      const retrieveUrl = await fetchUrlPathByName("jobs:api:retrieve");
+      const updateJobUrl = await fetchUrlPathByName("jobs:api:update");
 
       // job-details-update-modal @audit
       const callBacks = {

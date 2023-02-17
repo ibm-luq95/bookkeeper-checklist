@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -22,11 +23,27 @@ class Job(BaseModelMixin, CreatedByMixin):
         BaseModelMixin (models.Model): Django model base mixin
     """
 
-    bookkeeper = models.ManyToManyField(
-        to=Bookkeeper, help_text=JOB_HELP_MESSAGES.get("bookkeeper"), related_name="jobs"
+    # bookkeeper = models.ManyToManyField(
+    #     to=Bookkeeper, help_text=JOB_HELP_MESSAGES.get("bookkeeper"), related_name="jobs"
+    # )
+    # assistants = models.ManyToManyField(
+    #     to=Assistant, related_name="jobs", help_text=JOB_HELP_MESSAGES.get("assistant")
+    # )
+    client = models.ForeignKey(
+        to=Client,
+        on_delete=models.PROTECT,  # TODO: check if this should be null not protected
+        null=True,
+        blank=True,
+        related_name="jobs",
+        help_text=JOB_HELP_MESSAGES.get("client"),
     )
-    assistants = models.ManyToManyField(
-        to=Assistant, related_name="jobs", help_text=JOB_HELP_MESSAGES.get("assistant")
+    managed_by = models.ForeignKey(
+        to=get_user_model(),
+        on_delete=models.CASCADE,
+        related_name="jobs",
+        null=True,
+        blank=True,
+        help_text=JOB_HELP_MESSAGES.get("managed_by")
     )
     title = models.CharField(
         _("title"), max_length=100, null=False, help_text=JOB_HELP_MESSAGES.get("title")
@@ -58,24 +75,22 @@ class Job(BaseModelMixin, CreatedByMixin):
         # default=JobStatusEnum.NOT_STARTED,
         help_text=JOB_HELP_MESSAGES.get("status"),
     )
-    client = models.ForeignKey(
-        to=Client,
-        on_delete=models.PROTECT,  # TODO: check if this should be null not protected
-        null=True,
-        blank=True,
-        related_name="jobs",
-        help_text=JOB_HELP_MESSAGES.get("client"),
-    )
+
     # tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
     note = models.TextField(
         _("note"), null=True, help_text=JOB_HELP_MESSAGES.get("note"), blank=True
     )
 
+    class Meta(BaseModelMixin.Meta):
+        permissions = BaseModelMixin.Meta.permissions + [
+            ("list_abstract_job_template", "List abstract job template")
+        ]
+
     def __str__(self) -> str:
         return self.title
 
-    def get_absolute_url(self):
-        return reverse("manager:jobs:details", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("manager:jobs:details", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -94,13 +109,13 @@ class Job(BaseModelMixin, CreatedByMixin):
         else:
             return False
 
-    def get_all_assigned_users(self) -> list:
-        all_users = []
-        if self.bookkeeper.all():
-            for bookkeeper in self.bookkeeper.all():
-                all_users.append(bookkeeper)
-
-        if self.assistants.all():
-            for assistant in self.assistants.all():
-                all_users.append(assistant)
-        return all_users
+    # def get_all_assigned_users(self) -> list:
+    #     all_users = []
+    #     if self.bookkeeper.all():
+    #         for bookkeeper in self.bookkeeper.all():
+    #             all_users.append(bookkeeper)
+    #
+    #     if self.assistants.all():
+    #         for assistant in self.assistants.all():
+    #             all_users.append(assistant)
+    #     return all_users

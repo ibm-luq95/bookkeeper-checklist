@@ -71,7 +71,7 @@
           <a class="navbar-link">Jobs</a>
 
           <div class="navbar-dropdown">
-            {% if perms.manager.manager_user %}<a class="navbar-item" href="">Templates</a>{% endif %}
+            {% if perms.manager.manager_user or perms.jobs.list_abstract_job_template %}<a class="navbar-item" href="">Templates</a>{% endif %}
             <a class="navbar-item" href="{% url 'jobs:list' %}">List all jobs</a>
             <a class="navbar-item" href="{% url 'jobs:create' %}">Create new job</a>
 

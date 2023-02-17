@@ -91,10 +91,18 @@ class JobDetailsView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         job_object = self.get_object()
-        discussion_form = DiscussionForm(job=job_object)
-        document_form = DocumentForm(document_section="job", client=job_object.client)
-        task_form = TaskForm(client=job_object.client, job=job_object)
-        note_form = NoteForm(client=job_object.client, note_section="job")
+        discussion_form = DiscussionForm(initial={"job": job_object})
+        document_form = DocumentForm(
+            initial={
+                # "client": job_object.client,
+                "document_section": "job",
+                "job": job_object,
+            }
+        )
+        task_form = TaskForm(initial={"client": job_object.client, "job": job_object})
+        note_form = NoteForm(
+            initial={"client": job_object.client, "note_section": "job", "job": job_object}
+        )
         context.setdefault("job_status", JobStatusEnum.choices)
         context.setdefault("title", f"Job - {job_object.title}")
         context.setdefault("task_form", task_form)

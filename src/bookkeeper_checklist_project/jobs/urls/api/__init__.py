@@ -1,18 +1,34 @@
 # -*- coding: utf-8 -*-#
 from django.urls import path, include
+from jobs.views.api import (
+    CreateJobApiView,
+    RetrieveJobApiView,
+    UpdateJobApiView,
+    UpdateJobStatusApiView,
+    DeleteJobApiView,
+)
 
 app_name = "api"
 
 urlpatterns = [
     path(
-        "manager/",
-        include("jobs.urls.api.manager"),
-        name="manager-jobs-api-urls",
+        "create",
+        CreateJobApiView.as_view(),
+        name="create",
     ),
-    path(
-        "bookkeeper/",
-        include("jobs.urls.api.bookkeeper"),
-        name="bookkeeper-jobs-api-urls",
-    ),
-    path("jobs/", include("jobs.urls.api.jobs"), name="jobs-api-urls")
+    path("retrieve", RetrieveJobApiView.as_view(), name="retrieve"),
+    path("update", UpdateJobApiView.as_view(), name="update"),
+    path("delete", DeleteJobApiView.as_view(), name="delete"),
+    path("update-status", UpdateJobStatusApiView.as_view(), name="update-job-status"),
+    # path(
+    #     "manager/",
+    #     include("jobs.urls.api.manager"),
+    #     name="manager-jobs-api-urls",
+    # ),
+    # path(
+    #     "bookkeeper/",
+    #     include("jobs.urls.api.bookkeeper"),
+    #     name="bookkeeper-jobs-api-urls",
+    # ),
+    # path("jobs/", include("jobs.urls.api.jobs"), name="jobs-api-urls"),
 ]

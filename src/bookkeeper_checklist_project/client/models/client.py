@@ -2,7 +2,6 @@
 from PIL import Image
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from core.choices import ClientStatusEnum
@@ -26,6 +25,9 @@ class Client(BaseModelMixin):
         BaseModelMixin (models.Model): Django base model mixin
     """
 
+    bookkeepers = models.ManyToManyField(
+        to="bookkeeper.Bookkeeper", related_name="clients", blank=True
+    )
     name = models.CharField(_("name"), max_length=50, null=True)
     email = models.EmailField(_("email"), max_length=50, null=True)
     industry = models.CharField(_("industry"), max_length=50, null=True)
@@ -106,6 +108,7 @@ class Client(BaseModelMixin):
         if jobs:
             for job in jobs:
                 tasks = job.tasks.all()
+                print(tasks)
                 if tasks:
                     for task in tasks:
                         all_tasks.append(task)

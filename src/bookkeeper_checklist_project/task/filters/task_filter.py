@@ -7,9 +7,9 @@ from task.models import Task
 
 
 class TaskFilter(django_filters.FilterSet):
-    job__bookkeeper = django_filters.ChoiceFilter(
-        widget=forms.Select(), choices=get_all_bookkeepers_as_choices, label="Bookkeeper"
-    )
+    # job__bookkeeper = django_filters.ChoiceFilter(
+    #     widget=forms.Select(), choices=get_all_bookkeepers_as_choices, label="Bookkeeper"
+    # )
 
     class Meta:
         model = Task
@@ -17,6 +17,6 @@ class TaskFilter(django_filters.FilterSet):
             "task_type": ["exact"],
             "task_status": ["exact"],
             "job__title": ["icontains"],
-            "job__bookkeeper": ["exact"]
+            # "job__bookkeeper": ["exact"]
             # "company_name": ["icontains"],
         }

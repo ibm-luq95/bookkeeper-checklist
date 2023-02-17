@@ -5,7 +5,8 @@
 {% if enable_create_btn == True %}
 {% include 'components/core/table_list/create_btn.html' with btn_id="addServiceBtn" app_name=app_name perms=perms only %}
 {% endif %}
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="accountsAndServicesTableComponent">
+<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
+  id="accountsAndServicesTableComponent">
   <thead>
     <tr>
       {% if is_show_client_column is True %}<th>Client</th>{% endif %}
@@ -14,7 +15,10 @@
       <th>URL</th>
       <th>Username</th>
       <th>Password</th>
+      {% if is_show_created_at is True %}
+
       <th>Created</th>
+      {% endif %}
       <th></th>
     </tr>
   </thead>
@@ -42,10 +46,12 @@
       <td data-label="Password">
         {% include 'components/core/inputs/password.html' with password=service_object.decrypted_password object_pk=service_object.pk is_readonly=True only %}
       </td>
+      {% if is_show_created_at is True %}
       <td data-label="Created">
-        <small class="has-text-grey is-abbr-like"
-          title="{{ service_object.created_at|date }}">{{ service_object.created_at|date }}</small>
+          {% include 'components/core/table_list/table_cell_created.html' with created_at=service_object.created_at user_type=user_type only %}
       </td>
+      {% endif %}
+
       <td class="is-actions-cell">
         {% include 'components/core/table_list/table_cell_actions.html' with object_pk=service_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns perms=perms app_name=app_name only %}
       </td>

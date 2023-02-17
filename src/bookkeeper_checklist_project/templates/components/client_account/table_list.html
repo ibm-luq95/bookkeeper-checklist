@@ -51,9 +51,11 @@
       <td data-label="Status">
         {% include 'components/core/table_list/status_tag.html' with status=account_object.status tag_size="is-small" status_label=account_object.get_status_display only %}
       </td>
-      <td>
+      {% if is_show_created_at is True %}
+      <td data-label="Created">
         {% include 'components/core/table_list/table_cell_created.html' with created_at=account_object.created_at user_type=user_type only %}
       </td>
+      {% endif %}
       <td class="is-actions-cell">
         {% include 'components/core/table_list/table_cell_actions.html' with object_pk=account_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern is_enabled=True enabled_action_btns=enabled_action_btns perms=perms app_name=app_name perm_app_name=perm_app_name only %}
       </td>

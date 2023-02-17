@@ -10,7 +10,7 @@ import { MicroModalHandler } from "../../../utils/model-box.js";
 import { showToastNotification } from "../../../utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", (readyEvent) => {
-  //task:api:manager:create, task:api:manager:update
+  //task:api:create, task:api:update
   const taskModalId = "tasks-form-modal";
   const taskModalElement = document.querySelector(`#${taskModalId}`);
   const taskModalFormElement = taskModalElement.querySelector("form");
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         taskModalFormElement.setAttribute("method", "POST");
         taskModalFormElement["_method"].value = "POST";
 
-        const createUrl = await fetchUrlPathByName("task:api:manager:create");
+        const createUrl = await fetchUrlPathByName("task:api:create");
         taskModalFormElement.setAttribute("action", createUrl["urlPath"]);
       },
       onCloseCallback: () => {
@@ -105,8 +105,8 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     btn.addEventListener("click", async (event) => {
       const taskId = event.currentTarget.dataset["taskId"];
       // const url = window.localStorage.getItem("RetrieveTaskUrl");
-      const retrieveUrl = await fetchUrlPathByName("task:api:manager:retrieve");
-      const updateUrl = await fetchUrlPathByName("task:api:manager:update");
+      const retrieveUrl = await fetchUrlPathByName("task:api:retrieve");
+      const updateUrl = await fetchUrlPathByName("task:api:update");
       const callBacks = {
         onOpenCallBack: () => {
           // console.log("Open update job");
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     btn.addEventListener("click", async (event) => {
       const taskId = event.currentTarget.dataset["taskId"];
       const taskTitle = event.currentTarget.dataset["taskTitle"];
-      const deleteUrl = await fetchUrlPathByName("task:api:manager:delete");
+      const deleteUrl = await fetchUrlPathByName("task:api:delete");
       const msg = confirm(`Do you want to delete task ${taskTitle}`);
       if (msg) {
         const requestOptions = {

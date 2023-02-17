@@ -5,8 +5,11 @@ from django.utils.translation import gettext as _
 
 from assistant.models import Assistant
 from bookkeeper.models import Bookkeeper
+from django.utils.safestring import mark_safe
 from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
+from core.utils import debugging_print
 from jobs.models import Job
+from users.models import CustomUser
 
 
 class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
@@ -17,36 +20,49 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         created_by=None,
         is_updated=False,
         *args,
-        **kwargs
+        **kwargs,
     ):
         super(JobForm, self).__init__(*args, **kwargs)
-        if bookkeeper is not None:
-            self.fields["bookkeeper"].initial = bookkeeper
-            # self.fields["bookkeeper"].widget.attrs.update({"disabled": "disabled"})
-            self.fields["bookkeeper"].widget.attrs.update(
-                {"class": "readonly-select cursor-not-allowed"}
-            )
+        # if bookkeeper is not None:
+        #     self.fields["bookkeeper"].initial = bookkeeper
+        #     # self.fields["bookkeeper"].widget.attrs.update({"disabled": "disabled"})
+        #     self.fields["bookkeeper"].widget.attrs.update(
+        #         {"class": "readonly-select cursor-not-allowed"}
+        #     )
         if client is not None:
             self.fields["client"].initial = client
             self.fields["client"].widget.attrs.update(
                 {"class": "readonly-select cursor-not-allowed"}
             )
 
+        if self.initial.get("client", None) is not None:
+            if is_updated is not True:
+                all_client_bookkeepers = self.initial.get("client").bookkeepers.all()
+                bookkeepers_pks = [
+                    bookkeeper.user.pk for bookkeeper in all_client_bookkeepers
+                ]
+                self.fields["managed_by"].queryset = CustomUser.objects.filter(
+                    pk__in=bookkeepers_pks
+                )
+                self.fields["managed_by"].help_text = mark_safe(
+                    "<strong>Bookkeepers who assigned for this client</strong>"
+                )
+
         if created_by is not None:
             self.created_by = created_by
 
         self.is_update = is_updated
 
-    bookkeeper = forms.ModelMultipleChoiceField(
-        queryset=Bookkeeper.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-    )
-    assistants = forms.ModelMultipleChoiceField(
-        queryset=Assistant.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-    )
+    # bookkeeper = forms.ModelMultipleChoiceField(
+    #     queryset=Bookkeeper.objects.all(),
+    #     widget=forms.CheckboxSelectMultiple,
+    #     required=False,
+    # )
+    # assistants = forms.ModelMultipleChoiceField(
+    #     queryset=Assistant.objects.all(),
+    #     widget=forms.CheckboxSelectMultiple,
+    #     required=False,
+    # )
 
     def clean_due_date(self):
         data = self.cleaned_data["due_date"]

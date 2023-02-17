@@ -51,88 +51,25 @@
           <div class="card">
             <header class="card-header">
               <p class="card-header-title has-text-dark">Tasks</p>
+              {% if perms.task.add_task %}
               <button type="button" id="managerAddTasksBtn"
-                class="card-header-icon has-tooltip-arrow bkchlst-input is-disabled is-responsive" disabled
-                data-tooltip="Add new task" aria-label="Add new task">
-                <span class="icon">
-                  <i class="fas fa-plus" aria-hidden="true"></i>
-                </span>
-              </button>
+              class="card-header-icon hint--top bkchlst-input is-disabled is-responsive" disabled
+              aria-label="Add new task">
+              <span class="icon">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+              </span>
+            </button>
+              {% endif %}
             </header>
             <div class="card-content">
-              <div class="content">
-                <div class="box">
-                  {% if object.tasks.count > 0 %}
-                  <table class="table is-fullwidth table-100" id="managerJobTasksTable">
-                    <thead>
-                      <tr>
-                        <th>
-                          <label class="checkbox">
-                            <input id="managerTaskParentCheckboxInput" type="checkbox" />
-                          </label>
-                        </th>
-                        <th>Title</th>
-                        <th>Status</th>
-                        <th>Due Date</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th></th>
-                        <th>Title</th>
-                        <th>Status</th>
-                        <th>Due Date</th>
-                        <th></th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-
-
-                      {% for task in object.tasks.all %}
-                      <tr>
-                        <td>
-                          <label class="checkbox">
-                            <input value="{{ task.pk }}" class="managerTaskCheckboxInput" type="checkbox" />
-                          </label>
-                        </td>
-                        <td>
-                          <a data-task-id="{{ task.pk }}" class="taskViewBtn">{{ task.title }}</a>
-                        </td>
-                        <td>{{ task.get_task_status_display }}</td>
-                        <td>{{ task.due_date }}</td>
-                        <td>
-                          <div class="field is-grouped">
-                            <p class="control">
-                              <button data-task-id="{{ task.pk }}" type="button"
-                                class="button is-info taskViewBtn is-small is-responsive bkchlst-input is-disabled"
-                                disabled>
-                                <i class="fa-solid fa-eye"></i>
-                              </button>
-                            </p>
-                            <p class="control">
-                              <button data-task-id="{{ task.pk }}" data-task-title="{{ task.title }}" type="button"
-                                class="button is-danger taskDeleteBtn is-small is-responsive bkchlst-input is-disabled"
-                                disabled>
-                                <i class="fa-solid fa-trash"></i>
-                              </button>
-                            </p>
-                          </div>
-                        </td>
-                      </tr>
-                      {% endfor %}
-
-
-                    </tbody>
-                  </table>
-                  {% else %}
-                  <div class="notification is-warning">
-                    <!-- <button class="delete"></button> -->
-                    No task(s)
-                  </div>
-                  {% endif %}
-                </div>
+              <div class="buttons  is-right">
+                <button class="button is-responsive is-rounded is-primary is-light hint--top" aria-label="Set tasks completed">Done</button>
+                <button class="button is-responsive is-rounded">Small</button>
+                <!-- <button class="button is-responsive">Small</button> -->
+                <!-- <button class="button is-responsive">Small</button> -->
               </div>
+              {% include 'components/task/table_list.html' with client_object=object object_list=object.tasks.all user_type=request.user.user_type enable_create_btn=False perms=perms app_name="task" details_url="task:update" action_urls_pattern="task" enabled_action_btns='update,delete' is_show_checkboxes=True is_show_job_column=False is_show_start_date=False only %}
+
             </div>
             <!-- <footer class="card-footer">
                                 <a href="#" class="card-footer-item">Save</a>
@@ -153,7 +90,7 @@
 
               <div class="media-content">
                 <div class="content">
-                  <a class="button is-fullwidth has-text-weight-bold " data-tooltip="Update job details"
+                  <a class="button is-fullwidth has-text-weight-bold hint--top" aria-label="Update job details"
                     href="{% url 'jobs:update' object.pk %}" target="_blank">
                     Edit Job
                   </a>
@@ -233,10 +170,12 @@
               </p>
               <div class="panel-block">
                 <p class="control has-icons-left">
-                  <button id="managerAddDocumentBtn" title="Add document" type="button"
-                    class="button is-success is-outlined is-fullwidth bkchlst-input is-disabled is-responsive" disabled>
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
+                  {% if perms.documents.add_document %}
+                  <button id="addDocumentBtn" aria-label="Add document" type="button"
+                  class="button is-success is-outlined is-fullwidth bkchlst-input is-disabled is-responsive hint--top" disabled>
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+                  {% endif %}
                 </p>
               </div>
 
@@ -286,10 +225,12 @@
 
               <div class="panel-block">
                 <p class="control has-icons-left">
-                  <button id="managerAddNoteBtn" title="Add note" type="button"
-                    class="button is-info is-outlined is-fullwidth bkchlst-input is-disabled is-responsive" disabled>
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
+                 {% if perms.notes.add_note %}
+                 <button id="addNoteBtn" aria-label="Add note" type="button"
+                 class="button is-info is-outlined is-fullwidth bkchlst-input is-disabled is-responsive hint--top" disabled>
+                 <i class="fa-solid fa-plus"></i>
+               </button>
+                 {% endif %}
                 </p>
               </div>
 
@@ -303,8 +244,8 @@
                   {{ note.title }}
                 </a>
                 <button data-note-id="{{ note.pk }}" data-note-title="{{ note.title }}"
-                  class="button is-danger is-light is-small managerDeleteNoteBtn bkchlst-input ml-5 is-rounded"
-                  disabled type="button">
+                  class="button is-danger is-light is-small managerDeleteNoteBtn bkchlst-input ml-5 is-rounded" disabled
+                  type="button">
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
@@ -326,8 +267,8 @@
   </div>
 
   <!-- Start Task Modal Form -->
-{% include 'segments/tasks/task_modal.html' with user_type="manager" job_object=object task_form=tasks_form request_object=request %}
-<!-- End Task Modal Form -->
+  {% include 'segments/tasks/task_modal.html' with user_type="manager" job_object=object task_form=task_form request_object=request %}
+  <!-- End Task Modal Form -->
   <!-- Start Document Modal Form -->
   {% include 'segments/documents/document_modal.html' with user_type="manager" job_object=object document_form=document_form request_object=request %}
   <!-- End Document Modal Form -->
@@ -338,22 +279,9 @@
   {% endblock dashboard_content %}
 
   {% block externaljs %}
-  <script defer>
-    window.localStorage.setItem("retrieveNoteUrl", "{% url 'notes:api:manager:retrieve' %}");
-    window.localStorage.setItem("UpdateNoteUrl", "{% url 'notes:api:manager:update' %}");
-    window.localStorage.setItem("DeleteNoteUrl", "{% url 'notes:api:manager:delete' %}");
-    window.localStorage.setItem("DeleteDocumentUrl", "{% url 'documents:api:manager:delete' %}");
-    window.localStorage.setItem("RetrieveJobUrl", "{% url 'jobs:api:manager:retrieve' %}");
-    window.localStorage.setItem("DeleteJobUrl", "{% url 'jobs:api:manager:delete' %}");
-    window.localStorage.setItem("RetrieveTaskUrl", "{% url 'task:api:manager:retrieve' %}");
-    window.localStorage.setItem("RetrieveDocumentUrl", "{% url 'documents:api:manager:retrieve' %}");
-    window.localStorage.setItem("DeleteTaskUrl", "{% url 'task:api:manager:delete' %}");
-    window.localStorage.setItem("origin", "{{ origin }}");
-
-  </script>
   <script src="{% static 'js/manager/jobs/details.js' %}" defer type="module"></script>
-  <script src="{% static 'js/manager/client/segments/notes.js' %}" defer type="module"></script>
-  <script src="{% static 'js/manager/client/segments/documents.js' %}" defer type="module"></script>
+  <script src="{% static 'js/apps/notes/notes.js' %}" defer type="module"></script>
+  <script src="{% static 'js/apps/documents/documents.js' %}" defer type="module"></script>
   <script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
   <script src="{% static 'js/segments/jobs/update_job_status.js' %}" defer type="module"></script>
   {% endblock externaljs %}

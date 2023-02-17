@@ -23,7 +23,7 @@ class Bookkeeper(BaseModelMixin, StaffMemberMixin):
 
     def get_tasks_count(self):
         all_tasks = []
-        all_jobs = self.jobs.all()
+        all_jobs = self.user.jobs.all()
         for job in all_jobs:
             all_tasks.append(job.tasks.count())
         return sum(all_tasks)

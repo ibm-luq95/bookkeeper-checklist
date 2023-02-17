@@ -12,4 +12,5 @@ JOB_HELP_MESSAGES = {
     "tasks": _("Tasks of this job"),
     "description": _("Description of the job"),
     "due_date": _("Due date for this job"),
+    "managed_by": _("Staff member who will handle the job"),
 }

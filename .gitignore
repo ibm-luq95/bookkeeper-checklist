@@ -326,6 +326,7 @@ src/bookkeeper_checklist_project/stunnel/**
 poetry.lock
 env_template
 .flake8
+jsconfig.json
 
 # Ignore Django Migrations in Development if you are working on team
 # Only for Development only

@@ -9,455 +9,118 @@
 {% block dashboard_content %}
 
 <section id="manager-bookkeepers-details">
-    <header>
-        <h3 class="title is-3"></h3>
-    </header>
-    <hr />
-    <div class="box">
-        <div class="columns">
-            <div class="container profile">
-                <!-- Start update modal -->
-                {% include 'manager/bookkeeper/segments/update_bookkeeper_modal.html' with object=object %}
-                <!-- End update modal -->
-                <div class="section profile-heading">
-                    <div class="columns is-mobile is-multiline">
-                        <div class="column is-2">
-                            <span class="header-icon user-profile-image">
-                                {% comment %} <img alt="" src="http://placehold.it/300x225" /> {% endcomment %}
+  <header>
+    <h3 class="title is-3"></h3>
+  </header>
+  <hr />
+  <div class="box">
+    <div class="columns">
+      <div class="container profile">
+        <!-- Start update modal -->
+        {% include 'manager/bookkeeper/segments/update_bookkeeper_modal.html' with object=object %}
+        <!-- End update modal -->
+        <div class="section profile-heading">
+          <div class="columns is-mobile is-multiline">
+            <div class="column is-2">
+              <span class="header-icon user-profile-image">
+                {% comment %} <img alt="" src="http://placehold.it/300x225" /> {% endcomment %}
 
-                                {% if object.profile_picture %}
-                                <img src="{{ object.profile_picture.url }}" alt="{{ object.user.fullname }}" />
-                                {% else %}
-                                <img src="{% static 'imgs/avatar.jpg' %}" alt="{{ object.user.fullname }}" />
-                                {% endif %}
-                            </span>
-                        </div>
-                        <div class="column is-4-tablet is-10-mobile name">
-                            <p>
-                                <span class="title is-bold">{{ object.user.fullname }}</span>
-                                <br />
+                {% if object.profile_picture %}
+                <img src="{{ object.profile_picture.url }}" alt="{{ object.user.fullname }}" />
+                {% else %}
+                <img src="{% static 'imgs/avatar.jpg' %}" alt="{{ object.user.fullname }}" />
+                {% endif %}
+              </span>
+            </div>
+            <div class="column is-4-tablet is-10-mobile name">
+              <p>
+                <span class="title is-bold">{{ object.user.fullname }}</span>
+                <br />
 
-                                <br />
-                            </p>
-                            <p class="tagline">
+                <br />
+              </p>
+              <p class="tagline">
 
-                                <a class="button is-primary is-outlined" href="#" id="edit-preferences"
-                                    style="margin: 5px 0">Preferences</a>
+                <a class="button is-primary is-outlined" href="#" id="edit-preferences"
+                  style="margin: 5px 0">Preferences</a>
 
-                            </p>
-                        </div>
-                        <div class="column is-2-tablet is-4-mobile has-text-centered">
-                            <p class="stat-val">{{ object.jobs.count }}</p>
-                            <p class="stat-key">Jobs</p>
-                        </div>
-                        <div class="column is-2-tablet is-4-mobile has-text-centered">
-                            <p class="stat-val">{{ object.get_tasks_count }}</p>
-                            <p class="stat-key">Tasks</p>
-                        </div>
-                        <div class="column is-2-tablet is-4-mobile has-text-centered">
-                            <p class="stat-val">{{ bookkeeper_helper.get_clients.count }}</p>
-                            <p class="stat-key">Clients</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="profile-options is-fullwidth">
-                    <div class="tabs is-toggle is-fullwidth" id="tabs">
-                        <ul>
-                            <li class="is-active" data-tab="1">
-                                <a>
-                                    <span class="icon is-small"><i class="fa-solid fa-briefcase"></i></span>
-                                    <span>Jobs</span>
-                                </a>
-                            </li>
-                            <li data-tab="2">
-                                <a>
-                                    <span class="icon is-small"><i class="fa-solid fa-users"></i></span>
-                                    <span>Clients</span>
-                                </a>
-                            </li>
-                            <!-- <li data-tab="3">
+              </p>
+            </div>
+            <div class="column is-2-tablet is-4-mobile has-text-centered">
+              <p class="stat-val">{{ object.user.jobs.count }}</p>
+              <p class="stat-key">Jobs</p>
+            </div>
+            <div class="column is-2-tablet is-4-mobile has-text-centered">
+              <p class="stat-val">{{ object.get_tasks_count }}</p>
+              <p class="stat-key">Tasks</p>
+            </div>
+            <div class="column is-2-tablet is-4-mobile has-text-centered">
+              <p class="stat-val">{{ object.clients.count }}</p>
+              <p class="stat-key">Clients</p>
+            </div>
+          </div>
+        </div>
+        <div class="profile-options is-fullwidth">
+          <div class="tabs is-toggle is-fullwidth" id="tabs">
+            <ul>
+              <li class="is-active" data-tab="1">
+                <a>
+                  <span class="icon is-small"><i class="fa-solid fa-briefcase"></i></span>
+                  <span>Jobs</span>
+                </a>
+              </li>
+              <li data-tab="2">
+                <a>
+                  <span class="icon is-small"><i class="fa-solid fa-users"></i></span>
+                  <span>Clients</span>
+                </a>
+              </li>
+              <!-- <li data-tab="3">
                                 <a>
                                     <span class="icon is-small"><i class="fa-solid fa-solid fa-key"></i></span>
                                     <span>Accounts & Services</span>
                                 </a>
                             </li> -->
-                            <li data-tab="4">
-                                <a>
-                                    <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
-                                    <span>Tasks</span>
-                                </a>
-                            </li>
-                            <li data-tab="5">
-                                <a>
-                                    <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
-                                    <span>Special Assignment</span>
-                                </a>
-                            </li>
+              <li data-tab="3">
+                <a>
+                  <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
+                  <span>Tasks</span>
+                </a>
+              </li>
+              <li data-tab="4">
+                <a>
+                  <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
+                  <span>Special Assignment</span>
+                </a>
+              </li>
 
-                        </ul>
-                    </div>
-                    <div id="tab-content">
-                        <section class="is-active" data-content="1">
-                            {% if object.jobs.count > 0 %}
-                            <!-- Start jobs table -->
-                            <table class="table is-fullwidth table-100" id="managerClientsJobsTable">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Account Name</th>
-                                        <th>
-                                            Status
-                                        </th>
-                                        <th>
-                                            Type
-                                        </th>
-                                        <th>
-                                            Tasks
-                                        </th>
-                                        <th>
-                                            Created Date
-                                        </th>
-                                        <!-- <th>Due Date</th> -->
-                                        <!-- <th></th> -->
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>
-                                            Name
-                                        </th>
-                                        <th>
-                                            Account Name
-                                        </th>
-                                        <th>
-                                            Status
-                                        </th>
-                                        <th>
-                                            Type
-                                        </th>
-                                        <th>
-                                            Tasks
-                                        </th>
-                                        <th>
-                                            Start Date
-                                        </th>
-                                        <!-- <th>Due Date</th> -->
-                                        <!-- <th></th> -->
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    {% for job in object.jobs.all %}
-
-                                    <tr>
-                                        <td>
-                                            <a href="">
-                                                {{ job.title }}
-                                            </a>
-                                        </td>
-                                        <td>
-                                            {{ job.client.name }}
-                                        </td>
-                                        <td>
-                                            {{ job.get_status_display }}
-                                        </td>
-                                        <td>
-                                            {{ job.get_job_type_display }}
-                                        </td>
-                                        <td>
-                                            {{ job.tasks.count }}
-                                        </td>
-                                        <td>
-                                            {{ job.created_at }}
-                                        </td>
-                                        <!-- <td>Mon Mar 20 2023</td> -->
-                                        <!-- <td>
-                                            <a href="" class="button is-small has-tooltip-arrow" data-tooltip="View client">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
-                                        </td> -->
-                                    </tr>
-                                    {% endfor %}
+            </ul>
+          </div>
+          <div id="tab-content">
+            <section class="is-active" data-content="1">
+                1
+            </section>
+            <section data-content="2">
+              {% include 'components/client/table_list.html' with clients_list=object.clients.all user_type=request.user.user_type details_url="client"|add:":details:overview" action_urls_pattern="client" app_name="client" perms=perms is_show_created_at=False only %}
+            </section>
 
 
-                                </tbody>
-                            </table>
-                            <!-- End jobs table -->
+            <section data-content="3">
+              tasks
+            </section>
 
-                            {% else %}
-                            <div class="notification is-warning">
-                                <!-- <button class="delete"></button> -->
-                                No Jobs <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
-                                    id="addNewJobBtn">Create new job</a>
-                            </div>
-                            {% endif  %}
-                        </section>
-                        <section data-content="2">
-                            <div id="clientsTabWrapper">
+            <section data-content="4">
+              special assignment
+            </section>
 
-                                {% if bookkeeper_helper.get_clients.count > 0 %}
-                                <table class="table is-fullwidth table-100" id="managerClientsTable">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Name
-                                            </th>
-                                            <th>
-                                                Email
-                                            </th>
-                                            <th>
-                                                Industry
-                                            </th>
-                                            <th>
-                                                Jobs
-                                            </th>
-
-                                            <th>Created AT</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>
-                                                Name
-                                            </th>
-                                            <th>
-                                                Email
-                                            </th>
-                                            <th>
-                                                Industry
-                                            </th>
-                                            <th>
-                                                Jobs
-                                            </th>
-
-                                            <th>Created AT</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        {% for client in bookkeeper_helper.get_clients.select_related.filter %}
-                                        <tr>
-                                            <td>
-                                                <a href="{% url 'client:manager:details:overview' client.pk %}" target="_blank">
-                                                    {{ client.name }}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="mailto:{{ client.email }}">
-                                                    {{ client.email }}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                {{ client.industry }}
-                                            </td>
-                                            <td>
-                                                {{ client.jobs.select_related.count }}
-                                            </td>
-
-                                            <td>
-                                                {{ client.created_at|date }}
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                                {% else %}
-                                <div class="notification is-warning">
-                                    <!-- <button class="delete"></button> -->
-                                    No clients <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
-                                        id="addNewClientBtn">Create new client</a>
-                                </div>
-                                {% endif %}
-
-                            </div>
-                        </section>
-                        <!-- <section data-content="3">
-
-                            <div id="accountsAndServicesTabWrapper">
-
-
-                                <table class="table is-fullwidth table-100" id="managerTasksTable">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Title
-                                            </th>
-                                            <th>
-                                                Hint
-                                            </th>
-                                            <th>
-                                                Client
-                                            </th>
-                                            <th>
-                                                Job
-                                            </th>
-                                            <th>
-                                                Start Date
-                                            </th>
-                                            <th>
-                                                Due Date
-                                            </th>
-                                            <th class="has-text-centered">
-                                                Completed
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>
-                                                Title
-                                            </th>
-                                            <th>
-                                                Hint
-                                            </th>
-                                            <th>
-                                                Client
-                                            </th>
-                                            <th>
-                                                Job
-                                            </th>
-                                            <th>
-                                                Start Date
-                                            </th>
-                                            <th>
-                                                Due Date
-                                            </th>
-                                            <th class="has-text-centered">
-                                                Completed
-                                            </th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-
-
-
-                                    </tbody>
-                                </table>
-
-
-                            </div>
-                        </section> -->
-
-                        <section data-content="4">
-                            <div id="tasksTabWrapper">
-                                {% if bookkeeper_helper.get_last_tasks|length > 0 %}
-                                <table class="table is-fullwidth table-100" id="managerTasksTable">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Title
-                                            </th>
-                                            <th>
-                                                Job
-                                            </th>
-                                            <th>
-                                                Task Type
-                                            </th>
-                                            <th>
-                                                Task Status
-                                            </th>
-                                            <th>
-                                                Completed
-                                            </th>
-                                            <th>
-                                                Start Date
-                                            </th>
-                                            <th>
-                                                Due Date
-                                            </th>
-                                            <th>Created AT</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>
-                                                Title
-                                            </th>
-                                            <th>
-                                                Job
-                                            </th>
-                                            <th>
-                                                Task Type
-                                            </th>
-                                            <th>
-                                                Task Status
-                                            </th>
-                                            <th>
-                                                Completed
-                                            </th>
-                                            <th>
-                                                Start Date
-                                            </th>
-                                            <th>
-                                                Due Date
-                                            </th>
-                                            <th>Created AT</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        {% for task in bookkeeper_helper.get_last_tasks %}
-                                        <tr>
-                                            <td>
-                                                {{ task.title }}
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'jobs:manager:details' task.job.pk %}" target="_blank">
-                                                    {{ task.job.title }}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                {{ task.get_task_type_display }}
-                                            </td>
-                                            <td>
-                                                {{ task.get_task_status_display }}
-                                            </td>
-
-                                            <td>
-                                                {{ task.get_is_completed_label }}
-                                            </td>
-
-                                            <td>
-                                                {{ task.start_date }}
-                                            </td>
-                                            <td>
-                                                {{ task.due_date }}
-                                            </td>
-                                            <td>
-                                                {{ task.created_at|date }}
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                                {% else %}
-                                <div class="notification is-warning">
-                                    <!-- <button class="delete"></button> -->
-                                    No tasks
-                                </div>
-                                {% endif %}
-
-
-                            </div>
-                        </section>
-
-                        <section data-content="5">
-                            special assignment
-                        </section>
-
-                    </div>
-                </div>
-
-            </div>
+          </div>
         </div>
 
+      </div>
     </div>
+
+  </div>
 </section>
-
-<!-- Start Jobs Form -->
-{% include 'manager/bookkeeper/segments/create_job_modal.html' with object=object %}
-<!-- End Jobs Form -->
-
-<!-- Start Client Form -->
-{% include 'manager/bookkeeper/segments/create_client_modal.html' with object=object %}
-<!-- End Client Form -->
 
 
 {% endblock dashboard_content %}

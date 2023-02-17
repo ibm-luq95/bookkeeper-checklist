@@ -328,3 +328,10 @@ div.select:has(select.cursor-not-allowed) {
   cursor: not-allowed !important;
   pointer-events: none !important;
 }
+div.scrollable {
+  width: 100%;
+  max-height: 100px;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}

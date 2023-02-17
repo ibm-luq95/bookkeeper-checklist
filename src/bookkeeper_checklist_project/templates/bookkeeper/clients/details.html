@@ -1375,12 +1375,5 @@
 {% endblock dashboard_content %}
 
 {% block externaljs %}
-<script>
-  window.localStorage.setItem("fetchJobsUrl", "{% url 'jobs:api:bookkeeper:fetch' %}");
-  window.localStorage.setItem("setTaskCompletedUrl", "{% url 'task:api:bookkeeper:set-task-completed' %}");
-  window.localStorage.setItem("retrieveTaskUrl", "{% url 'task:api:bookkeeper:retrieve' %}");
-  window.localStorage.setItem("RetrieveImportantContactUrl", "{% url 'important_contact:api:bookkeeper:retrieve' %}");
-
-</script>
 <script src="{% static 'js/bookkeeper/client/details.js' %}" defer type="module"></script>
 {% endblock externaljs %}

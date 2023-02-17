@@ -24,6 +24,7 @@ from important_contact.forms import ImportantContactForm
 from jobs.forms import JobForm
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from notes.forms import NoteForm
+from special_assignment.forms import SpecialAssignmentForm
 from task.forms import TaskForm
 
 
@@ -117,16 +118,6 @@ class ClientCreateView(
         kwargs.update({"created_by": self.request.user})
         return kwargs
 
-    def form_valid(self, form):
-        """If the form is valid, save the associated model."""
-        self.object = form.save()
-        important_contacts = form.cleaned_data.get("important_contacts")
-        if important_contacts:
-            for contact in important_contacts:
-                self.object.important_contacts.add(contact)
-            self.object.save()
-        return super().form_valid(form)
-
 
 class ClientDetailsView(
     BaseLoginRequiredMixin, PermissionRequiredMixin, ManagerAssistantAccessMixin, DetailView
@@ -144,8 +135,9 @@ class ClientDetailsView(
         # important_contact_form = ImportantContactForm(
         #     instance=client.important_contact, is_readonly=False
         # )  # OLD, Before refactoring the important contact
-        important_contact_form = ImportantContactForm(
-            is_readonly=True, remove_client_field=True
+        important_contact_form = ImportantContactForm()
+        special_assignment_form = SpecialAssignmentForm(
+            assigned_by=self.request.user, initial={"client": client}
         )
         company_services_form = CompanyServiceForm(initial={"client": client})
         jobs_form = JobForm(initial={"client": client})
@@ -160,6 +152,7 @@ class ClientDetailsView(
         context.setdefault("company_services_form", company_services_form)
         context.setdefault("jobs_form", jobs_form)
         context.setdefault("tasks_form", tasks_form)
+        context.setdefault("special_assignment_form", special_assignment_form)
         # context.setdefault("important_contacts", important_contacts)
         origin = self.request.get_host()
         context.setdefault("origin", origin)
@@ -200,16 +193,6 @@ class ClientUpdateView(
         # )
         # context.setdefault("important_contact_form", important_contact_form)
         return context
-
-    def form_valid(self, form):
-        """If the form is valid, save the associated model."""
-        self.object = form.save()
-        important_contacts = form.cleaned_data.get("important_contacts")
-        if important_contacts:
-            for contact in important_contacts:
-                self.object.important_contacts.add(contact)
-            self.object.save()
-        return super().form_valid(form)
 
 
 class ClientDeleteView(

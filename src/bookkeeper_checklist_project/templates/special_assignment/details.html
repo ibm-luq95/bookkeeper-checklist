@@ -129,7 +129,7 @@
                 </div>
                 <hr />
                 <section>
-                  <form action="{% url 'special_assignment:api:special_assignment:manager:update-status' %}"
+                  <form action="{% url 'special_assignment:api:special_assignment:update-status' %}"
                     method="PUT" id="updateSpecialAssignmentStatusForm">
                     <fieldset form="updateSpecialAssignmentStatusForm">
                       {% csrf_token %}
@@ -183,7 +183,7 @@
         </p>
       </figure>
       <div class="media-content">
-        <form action="{% url 'special_assignment:api:discussion:manager:create' %}" method="POST"
+        <form action="{% url 'special_assignment:api:discussion:create' %}" method="POST"
           id="managerAddReplyForm" enctype="multipart/form-data">
           <fieldset form="managerAddReplyForm">
             {% csrf_token %}

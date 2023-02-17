@@ -31,7 +31,7 @@ class BookkeeperHelper:
         """
         try:
             tasks_total_count = []
-            for job in self.bookkeeper.jobs.all():
+            for job in self.bookkeeper.user.jobs.all():
                 tasks_total_count.append(job.tasks.count())
 
             return sum(tasks_total_count)

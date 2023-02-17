@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-#
 from django.urls import path, include
+from special_assignment.views.api import (
+    CreateSpecialAssignmentApiView,
+    UpdateSpecialAssignmentApiView,
+)
 
 app_name = "special_assignment"
 
 urlpatterns = [
+    path("create", CreateSpecialAssignmentApiView.as_view(), name="create"),
     path(
-        "manager/",
-        include("special_assignment.urls.api.special_assignment.manager"),
-        name="manager-special-assignment-api-urls",
-    ),
-    path(
-        "bookkeeper/",
-        include("special_assignment.urls.api.special_assignment.bookkeeper"),
-        name="bookkeeper-special-assignment-api-urls",
+        "update",
+        UpdateSpecialAssignmentApiView.as_view(),
+        name="update-status",
     ),
 ]

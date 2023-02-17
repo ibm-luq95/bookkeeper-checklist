@@ -22,8 +22,10 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin):
             self.fields.pop("job")
 
         # this used in manager client details view, to pass only jobs for custom client
-        if client is not None:
-            self.fields["job"].queryset = Job.objects.filter(client=client)
+        if self.initial.get("client", None) is not None:
+            self.fields["job"].queryset = Job.objects.filter(
+                client=self.initial.get("client")
+            )
             # self.fields["client"].widget.attrs.update({"class": "cursor-not-allowed readonly-select"})
 
         if created_by is not None:

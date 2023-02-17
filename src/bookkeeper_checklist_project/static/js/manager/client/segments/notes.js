@@ -10,7 +10,7 @@ import { MicroModalHandler } from "../../../utils/model-box.js";
 import { showToastNotification } from "../../../utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", (readyEvent) => {
-  // notes:api:manager:create, notes:api:manager:update, notes:api:manager:retrieve, notes:api:manager:delete
+  // notes:api:create, notes:api:update, notes:api:retrieve, notes:api:delete
   const noteModalId = "note-form-modal";
   const noteModalElement = document.querySelector(`#${noteModalId}`);
   const notOwnerTagElement = noteModalElement.querySelector(".not-owner-tag");
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         noteModalSubmitElement.textContent = "Create";
         noteModalFormElement["_method"].value = "POST";
         noteModalFormElement.setAttribute("method", "POST");
-        const createUrl = await fetchUrlPathByName("notes:api:manager:create");
+        const createUrl = await fetchUrlPathByName("notes:api:create");
         noteModalFormElement.setAttribute("action", createUrl["urlPath"]);
       },
       onCloseCallback: () => {},
@@ -92,9 +92,9 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       const data = currentTarget.dataset;
       const noteId = data["noteId"];
       const retrieveUrl = await fetchUrlPathByName(
-        "notes:api:manager:retrieve"
+        "notes:api:retrieve"
       );
-      const updateUrl = await fetchUrlPathByName("notes:api:manager:update");
+      const updateUrl = await fetchUrlPathByName("notes:api:update");
       const requestOptions = {
         method: "POST",
         dataToSend: { noteId: noteId },
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       const data = currentTarget.dataset;
       const noteId = data["noteId"];
       const noteTitle = data["noteTitle"];
-      const deleteUrl = await fetchUrlPathByName("notes:api:manager:delete");
+      const deleteUrl = await fetchUrlPathByName("notes:api:delete");
       const confirmMsg = confirm(
         `Do you want to delete the note ${noteTitle}?`
       );

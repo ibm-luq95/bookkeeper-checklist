@@ -33,4 +33,6 @@ class ManagerAssistantAccessMixin(UserPassesTestMixin):
 
     def test_func(self) -> bool | None:
         user_type = self.request.user.user_type
-        return user_type == "manager" or user_type == "assistant"
+        return (
+            user_type == "manager" or user_type == "assistant" or user_type == "bookkeeper"
+        )

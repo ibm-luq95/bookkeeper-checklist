@@ -33,6 +33,11 @@
             <br>
             {{ object.industry }}
           </p>
+          <p>
+            <a href="mailto:{{ object.email }}">
+              {{ object.email }}
+            </a>
+          </p>
         </div>
         <nav class="level is-mobile">
           <div class="level-left">
@@ -62,8 +67,7 @@
           data-tab-element="overviewContentWrapper">Overview</a>
       </li>
       <li class="client-link" data-link-name="jobs" data-link-label="Jobs">
-        <a class="tabItemLink" class="tabItemLink"
-          href="{% url 'client:details:jobs' object.pk %}"
+        <a class="tabItemLink" href="{% url 'client:details:jobs' object.pk %}"
           data-tab-element="jobsContentWrapper">Jobs</a>
       </li>
       <li class="client-link" data-link-name="tasks" data-link-label="Tasks">
@@ -82,8 +86,7 @@
         </a>
       </li>
       <li class="client-link" data-link-name="assignments" data-link-label="Special Assignments">
-        <a class="tabItemLink"
-          href="{% url 'client:details:assignments' object.pk %}"
+        <a class="tabItemLink" href="{% url 'client:details:assignments' object.pk %}"
           data-tab-element="specialAssignmentsContentWrapper">Special Assignments</a>
       </li>
       <li class="client-link" data-link-name="documents" data-link-label="Documents">
@@ -115,7 +118,7 @@
 
   <!-- Start Documents Segment -->
   <div id="documentsContentWrapper" hidden>
-    {% include 'components/documents/table_list.html' with object_list=object.documents.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="documents" only %}
+    {% include 'components/documents/table_list.html' with object_list=object.documents.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="documents" action_urls_pattern="documents" enabled_action_btns='update,delete' is_show_created_at=False only %}
     <!-- Start Document Modal Form -->
     {% include 'segments/documents/document_modal.html' with user_type=request.user.user_type document_form=document_form request_object=request %}
     <!-- End Document Modal Form -->
@@ -125,7 +128,7 @@
   {% elif page_section_name == "jobs" %}
   <!-- Start Jobs Segment -->
   <div id="jobsContentWrapper" hidden>
-    {% include 'components/jobs/table_list.html' with object_list=object.jobs.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="jobs" only %}
+    {% include 'components/jobs/table_list.html' with object_list=object.jobs.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="jobs" action_urls_pattern="jobs" enabled_action_btns='update,delete,details' details_url="jobs:details" is_show_created_at=False only %}
 
     <!-- Start Jobs Form -->
     {% include 'segments/jobs/job_modal.html' with user_type=request.user.user_type job_form=jobs_form request_object=request %}
@@ -136,13 +139,18 @@
   {% elif page_section_name == "assignments" %}
   <!-- Start Special Assignments Segment -->
   <div id="specialAssignmentsContentWrapper" hidden>
-    {% include 'components/special_assignment/table_list.html' with object_list=object.special_assignments.all user_type=request.user.user_type perms=perms app_name="special_assignment" enable_create_btn=True only %}
+    {% include 'components/special_assignment/table_list.html' with object_list=object.special_assignments.all user_type=request.user.user_type perms=perms app_name="special_assignment" action_urls_pattern="special_assignment" enabled_action_btns='update,delete,details' details_url="special_assignment:details" is_show_created_at=False enable_create_btn=True only %}
   </div>
+  <!-- Start Special Assignment Form -->
+  {% include 'segments/special_assignment/special_assignment_modal.html' with user_type=request.user.user_type form=special_assignment_form request_object=request client_object=object %}
+  <!-- End Speical Assignment Form -->
+  </div>
+  <!-- End Important Contacts Segment -->
   <!-- End Special Assignments Segment -->
   {% elif page_section_name == "notes" %}
   <!-- Start Notes Segment -->
   <div id="notesContentWrapper" hidden>
-    {% include 'components/notes/table_list.html' with object_list=object.notes.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="note" only %}
+    {% include 'components/notes/table_list.html' with object_list=object.notes.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="note" action_urls_pattern="notes" enabled_action_btns='update,delete' is_show_created_at=False only %}
     <!-- Start Note Modal Form -->
     {% include 'segments/notes/note_modal.html' with user_type=request.user.user_type note_form=note_form request_object=request %}
     <!-- End Note Modal Form -->
@@ -151,7 +159,7 @@
   {% elif page_section_name == "services" %}
   <!-- Start Account & Services Segment -->
   <div id="servicesContentWrapper" hidden>
-    {% include 'components/company_services/table_list.html' with object_list=object.company_services.all all=request.user.user_type enable_create_btn=True is_show_client_column=False perms=perms app_name="company_services" only %}
+    {% include 'components/company_services/table_list.html' with object_list=object.company_services.all all=request.user.user_type enable_create_btn=True is_show_client_column=False perms=perms app_name="company_services" is_show_client_column=False action_urls_pattern="company_services" enabled_action_btns='update,delete' is_show_created_at=False  only %}
 
     <!-- Start Company Services Form -->
     {% include 'segments/company_service/company_service_modal.html' with user_type=request.user.user_type company_services_form=company_services_form request_object=request %}
@@ -162,7 +170,7 @@
 
   <!-- Start Tasks Segment -->
   <div id="tasksContentWrapper" hidden>
-    {% include 'components/task/table_list.html' with client_object=object object_list=object.get_all_tasks user_type=request.user.user_type enable_create_btn=True perms=perms app_name="task" only %}
+    {% include 'components/task/table_list.html' with client_object=object object_list=object.get_all_tasks user_type=request.user.user_type enable_create_btn=True perms=perms app_name="task" details_url="task:update" action_urls_pattern="task" enabled_action_btns='update,delete' is_show_job_column=True is_show_start_date=True is_show_checkboxes=False only %}
     <!-- Start Task Modal Form -->
     {% include 'segments/tasks/task_modal.html' with user_type=request.user.user_type task_form=tasks_form request_object=request %}
     <!-- End Task Modal Form -->
@@ -178,7 +186,11 @@
   {% elif page_section_name == "contacts" %}
   <!-- Start Important Contacts Segment -->
   <div id="contactsContentWrapper" hidden>
-    {% include 'components/important_contact/table_list.html' with object_list=object.important_contacts.all user_type=request.user.user_type perms=perms app_name="important_contact" enable_create_btn=True only %}
+    {% include 'components/important_contact/table_list.html' with object_list=object.important_contacts.all user_type=request.user.user_type perms=perms app_name="important_contact" action_urls_pattern="important_contact" enabled_action_btns='update,delete' enable_create_btn=True only %}
+
+    <!-- Start Important Contact Form -->
+    {% include 'segments/important_contact/important_contact_modal.html' with user_type=request.user.user_type form=important_contact_form request_object=request client_object=object %}
+    <!-- End Important Contact Form -->
   </div>
   <!-- End Important Contacts Segment -->
 
@@ -190,26 +202,23 @@
 <!-- End section content -->
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/apps/client/details_page/details.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/client/details.js' %}" defer type="module"></script>
 {% with request.get_full_path|get_last_url_part as page_section_name %}
 {% if page_section_name == "jobs" %}
-<script src="{% static 'js/apps/client/details_page/jobs.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/jobs/jobs.js' %}" defer type="module"></script>
 {% elif page_section_name == "tasks" %}
-<script src="{% static 'js/apps/client/details_page/tasks.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/task/task.js' %}" defer type="module"></script>
 {% elif page_section_name == "documents" %}
-<script src="{% static 'js/apps/client/details_page/documents.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/documents/documents.js' %}" defer type="module"></script>
 {% elif page_section_name == "notes" %}
-<script src="{% static 'js/apps/client/details_page/notes.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/notes/notes.js' %}" defer type="module"></script>
+{% elif page_section_name == "services" %}
+<script src="{% static 'js/apps/company_service/company_service.js' %}" defer type="module"></script>
+{% elif page_section_name == "contacts" %}
+<script src="{% static 'js/apps/important_contact/important_contact.js' %}" defer type="module"></script>
+{% elif page_section_name == "assignments" %}
+<script src="{% static 'js/apps/special_assignment/special_assignment.js' %}" defer type="module"></script>
 {% endif %}
 {% endwith %}
 
-{% comment  %}
-  <script src="{% static 'js/apps/client/segments/jobs.js' %}" defer type="module"></script>
-<script src="{% static 'js/manager/client/details.js' %}" defer type="module"></script>
-<script src="{% static 'js/manager/client/segments/jobs.js' %}" defer type="module"></script>
-<script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
-<script src="{% static 'js/manager/client/segments/notes.js' %}" defer type="module"></script>
-<script src="{% static 'js/manager/client/segments/company_service.js' %}" defer type="module"></script>
-<script src="{% static 'js/manager/client/segments/documents.js' %}" defer type="module"></script>
-{% endcomment %}
 {% endblock externaljs %}

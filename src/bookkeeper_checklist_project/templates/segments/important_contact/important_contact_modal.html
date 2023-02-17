@@ -1,0 +1,40 @@
+{% load crispy_forms_tags %}
+<div class="modal micromodal-slide" id="important-contact-form-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container modal-max-width" role="dialog" aria-modal="true"
+      aria-labelledby="important-contact-form-modal-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="important-contact-form-modal-title">
+
+        </h2>
+
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close>
+        </button>
+      </header>
+      <main class="modal__content" id="important-contact-form-modal-content">
+        <form action="" method="" id="{{ user_type }}ImportantContactForm">
+          {% csrf_token %}
+
+          <fieldset form="{{ user_type }}ImportantContactForm">
+            <input type="hidden" name="created_by" value="{{ request_object.user.pk }}" />
+            <input type="hidden" name="_method" />
+            {% if client_object %}
+            <input type="hidden" name="client" value="{{ client_object.pk }}" />
+            {% endif %}
+            {{ form|crispy }}
+          </fieldset>
+
+        </form>
+      </main>
+      <footer class="modal__footer" id="important-contact-form-modal-footer">
+        <button type="submit" form="{{ user_type }}ImportantContactForm"
+          class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
+
+        </button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
+          Close
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>

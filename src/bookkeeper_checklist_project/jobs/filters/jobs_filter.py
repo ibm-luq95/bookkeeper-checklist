@@ -20,9 +20,9 @@ class JobFilter(django_filters.FilterSet):
         widget=forms.DateInput(attrs={"type": "date"}),
         lookup_expr="lt",
     )
-    bookkeeper = django_filters.ChoiceFilter(
-        widget=forms.Select(), choices=get_all_bookkeepers_as_choices
-    )
+    # bookkeeper = django_filters.ChoiceFilter(
+    #     widget=forms.Select(), choices=get_all_bookkeepers_as_choices
+    # )
 
     class Meta:
         model = Job

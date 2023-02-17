@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
   const managerTaskParentCheckboxInput = document.querySelector(
     "input#managerTaskParentCheckboxInput",
   );
-  const clientsTable = $("#managerJobTasksTable").DataTable({
+/*   const clientsTable = $("#managerJobTasksTable").DataTable({
     autoWidth: true,
     processing: true,
     info: false,
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", (ev) => {
       "csv",
       "pdf",
     ],
-  });
+  }); */
 
   /* managerAddTaskBtn.addEventListener("click", (ev) => {
     showMicroModal("tasks-form-modal");

@@ -320,12 +320,14 @@ const orderObjectItems = (unorderedObject) => {
  * @param {HTMLFormElement} param.formElement The form element
  * @param {Array} param.excludedFields Array of excluded fields
  * @param {boolean} param.isOrdered Order the returned object
- * @returns {Object} json object of all inputs
+ * @param {boolean} param.returnAsFormData Return inputs as FormData object
+ * @returns {Object|FormData} json object of all inputs
  */
 const formInputSerializer = ({
   formElement,
   excludedFields = [],
   isOrdered = false,
+  returnAsFormData = false,
 }) => {
   const serializedObject = {};
   Array.from(formElement.elements).forEach((element) => {
@@ -338,9 +340,21 @@ const formInputSerializer = ({
       }
     }
   });
-  return isOrdered === true
-    ? orderObjectItems(serializedObject)
-    : serializedObject;
+  // check if returnAsFormData is true
+  if (returnAsFormData === false) {
+    return isOrdered === true
+      ? orderObjectItems(serializedObject)
+      : serializedObject;
+  } else {
+    const formData = new FormData();
+    for (const key in serializedObject) {
+      // check if the element not function, normal element
+      if (typeof serializedObject[key] !== "function") {
+        formData.append(key, serializedObject[key]);
+      }
+    }
+    return formData;
+  }
 };
 
 /**

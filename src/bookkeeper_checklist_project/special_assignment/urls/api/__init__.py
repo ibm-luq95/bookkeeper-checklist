@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-#
 from django.urls import path, include
+from special_assignment.views.api import CreateSpecialAssignmentApiView
 
 app_name = "api"
 

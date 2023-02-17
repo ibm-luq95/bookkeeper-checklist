@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-#
-from .manager import CreateCompanyServiceManagerApiView
+from .company_services import CreateCompanyServiceApiView

@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-#
 from django.urls import path, include
 
+from documents.views.api import CreateDocumentApiView, DeleteDocumentApiView, RetrieveDocumentApiView
+
 app_name = "api"
 
 urlpatterns = [
     path(
-        "manager/", include("documents.urls.api.manager"), name="manager-documents-api-urls"
+        "create-document",
+        CreateDocumentApiView.as_view(),
+        name="create",
     ),
-    path(
-        "bookkeeper/",
-        include("documents.urls.api.bookkeeper"),
-        name="bookkeeper-documents-api-urls",
-    ),
+    path("delete", DeleteDocumentApiView.as_view(), name="delete"),
+    path("retrieve", RetrieveDocumentApiView.as_view(), name="retrieve"),
 ]

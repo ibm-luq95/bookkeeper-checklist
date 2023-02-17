@@ -1,52 +1,46 @@
 # -*- coding: utf-8 -*-#
-import json
 import traceback
-from pprint import pprint
 
-from rest_framework import permissions
+from rest_framework import permissions, generics
 from rest_framework import status
 from rest_framework.exceptions import APIException
+from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.api.permissions import ManagerApiPermission, BaseApiPermissionMixin
-from core.utils import get_formatted_logger
-from jobs.models import Job
-from jobs.serializers import CreateJobSerializer, JobSerializer
+from core.utils import get_formatted_logger, debugging_print
 from task.models import Task
+from task.serializers import CreateTaskSerializer, TaskSerializer
+from pprint import pprint
 
 logger = get_formatted_logger(__name__)
 
 
-class CreateJobApiView(APIView):
-    # permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+class CreateTaskApiView(APIView):
     permission_classes = (
         permissions.IsAuthenticated,
         BaseApiPermissionMixin,
     )
-    perm_slug = "jobs.job"
+    perm_slug = "task.task"
 
     def post(self, request: Request, *args, **kwargs):
         serializer = ""
         try:
             data = request.data
-            json_data = json.dumps(data)
-            json_data = json.loads(json_data)
-            # pprint(data)
-            serializer = JobSerializer(data=json_data)
-            # debugging_print(serializer.is_valid())
+            pprint(data)
+            serializer = TaskSerializer(data=data)
             if not serializer.is_valid():
-                raise APIException(serializer.errors)
-            # pprint(serializer.validated_data)
+                raise APIException(serializer.error_messages)
+            debugging_print(serializer.validated_data)
             serializer.save()
             return Response(
-                data={"msg": "Job created successfully!"},
-                status=status.HTTP_201_CREATED,
+                data={"msg": "Task created successfully!"}, status=status.HTTP_201_CREATED
             )
         except APIException as ex:
             # logger.error("API Exception")
-            logger.error(serializer.errors)
+            logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 # "user_error_msg": ex.detail,
@@ -59,34 +53,32 @@ class CreateJobApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while create job!",
+                "user_error_msg": "Error while create task!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RetrieveJobApiView(APIView):
+class RetrieveTaskApiView(APIView):
     permission_classes = (
         permissions.IsAuthenticated,
         BaseApiPermissionMixin,
     )
-    perm_slug = "jobs.job"
+    perm_slug = "task.task"
 
     def post(self, request: Request, *args, **kwargs):
+        serializer = ""
         try:
             data = request.data
-            job_object = Job.objects.get(pk=data.get("jobId"))
-            serializer = JobSerializer(instance=job_object)
-            return Response(
-                data={"job": serializer.data},
-                status=status.HTTP_200_OK,
-            )
+            task_object = Task.objects.get(pk=data.get("taskId"))
+            serializer = TaskSerializer(instance=task_object)
+            return Response(data={"task": serializer.data}, status=status.HTTP_200_OK)
         except APIException as ex:
             # logger.error("API Exception")
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
-                # "user_error_msg": str(ex),
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -95,147 +87,39 @@ class RetrieveJobApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while retrieve job!",
+                "user_error_msg": "Error while retrieve task!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UpdateJobApiView(APIView):
+class UpdateTaskApiView(APIView):
     permission_classes = (
         permissions.IsAuthenticated,
         BaseApiPermissionMixin,
     )
-    perm_slug = "jobs.job"
-
-    def put(self, request: Request, *args, **kwargs):
-        try:
-            data = request.data
-            job_object = Job.objects.get(pk=data.get("jobId"))
-            del data["jobId"]
-            serializer = JobSerializer(instance=job_object, data=data, partial=True)
-            if not serializer.is_valid(raise_exception=True):
-                raise APIException(serializer.errors)
-            serializer.save()
-            tasks = data.get("tasks")
-            bookkeepers = data.get("bookkeeper")
-
-            # update bookkeeper
-            bookkeepers_objects_list = []
-            for bookkeeper in bookkeepers:
-                bookkeepers_objects_list.append(bookkeeper)
-            job_object.bookkeeper.set(bookkeepers_objects_list)
-
-            # update tasks
-            tasks_objects_list = []
-            for task in tasks:
-                tasks_objects_list.append(Task.objects.get(pk=task))
-            job_object.tasks.set(tasks_objects_list)
-            return Response(
-                data={"job": serializer.data, "msg": "Job updated successfully!"},
-                status=status.HTTP_200_OK,
-            )
-        except APIException as ex:
-            # logger.error("API Exception")
-            logger.error(traceback.format_exc())
-            # logger.error(ex.detail)
-            response_data = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
-                # "user_error_msg": str(ex),
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as ex:
-            # debugging_print(ex)
-            logger.error(traceback.format_exc())
-            response_data = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                "error": str(ex),
-                "user_error_msg": "Error while retrieve job!",
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteJobApiView(APIView):
-    permission_classes = (
-        permissions.IsAuthenticated,
-        BaseApiPermissionMixin,
-    )
-    perm_slug = "jobs.job"
-
-    def delete(self, request: Request, *args, **kwargs):
-        try:
-            response_msg_data = {
-                "is_allowed_deleted": False,
-                "msg": "",
-                "not_completed_tasks": 0,
-            }
-            data = request.data
-            job_object = Job.objects.get(pk=data.get("jobId"))
-            # debugging_print(job_object.get_all_not_completed_tasks())
-            response_msg_data["not_completed_tasks"] = len(
-                job_object.get_all_not_completed_tasks()
-            )
-            # check if job contains tasks
-            if job_object.tasks.count() <= 0:
-                response_msg_data["is_allowed_deleted"] = True
-                response_msg_data["msg"] = f"Job '{job_object}' deleted successfully"
-                job_object.delete()
-            else:
-                response_msg_data["is_allowed_deleted"] = False
-                response_msg_data["msg"] = (
-                    f"You cant delete '{job_object.title}', it contains un-completed {response_msg_data.get('not_completed_tasks')} "
-                    f"tasks!"
-                )
-
-            return Response(
-                data=response_msg_data,
-                status=status.HTTP_200_OK,
-            )
-        except APIException as ex:
-            # logger.error("API Exception")
-            logger.error(traceback.format_exc())
-            # logger.error(ex.detail)
-            response_data = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
-                # "user_error_msg": str(ex),
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as ex:
-            # debugging_print(ex)
-            logger.error(traceback.format_exc())
-            response_data = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                "error": str(ex),
-                "user_error_msg": "Error while retrieve job!",
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UpdateJobStatusApiView(APIView):
-    permission_classes = (permissions.IsAuthenticated, BaseApiPermissionMixin)
-    perm_slug = "jobs.job"
+    perm_slug = "task.task"
 
     def put(self, request: Request, *args, **kwargs):
         serializer = ""
         try:
             data = request.data
-            job_id = data.get("jobId")
-            job_status = data.get("status")
-            job = Job.objects.filter(pk=job_id)
-            job.update(status=job_status)
-            data = {"msg": "Status updated successfully!"}
+            task_object = Task.objects.get(pk=data.get("id"))
+            serializer = TaskSerializer(instance=task_object, data=data)
+            if not serializer.is_valid(raise_exception=True):
+                raise APIException(serializer.errors)
+            # debugging_print(task_object.job)
+            # debugging_print(task_object.job)
+            serializer.save()
             return Response(
-                data=data,
-                status=status.HTTP_200_OK,
+                data={"msg": "Task updated successfully!"}, status=status.HTTP_200_OK
             )
         except APIException as ex:
             # logger.error("API Exception")
             logger.error(ex)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
-                # "user_error_msg": serializer.errors,
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.errors,
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -244,6 +128,109 @@ class UpdateJobStatusApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while create job!",
+                "user_error_msg": "Error while update task!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteTaskApiView(APIView):
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BaseApiPermissionMixin,
+    )
+    perm_slug = "task.task"
+
+    def delete(self, request: Request, *args, **kwargs):
+        serializer = ""
+        try:
+            data = request.data
+            task_object = Task.objects.get(pk=data.get("taskId"))
+            task_object.delete()
+            return Response(
+                data={"msg": "Task deleted successfully!"}, status=status.HTTP_200_OK
+            )
+        except APIException as ex:
+            # logger.error("API Exception")
+            logger.error(ex)
+            response_data = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                "user_error_msg": ex.detail,
+                # "user_error_msg": serializer.ex,
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            # debugging_print(ex)
+            logger.error(traceback.format_exc())
+            response_data = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                "error": str(ex),
+                "user_error_msg": "Error while update task!",
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SetTaskCompletedApiView(APIView):
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BaseApiPermissionMixin,
+    )
+    perm_slug = "task.task"
+
+    def put(self, request: Request, *args, **kwargs):
+        serializer = ""
+        try:
+            data = request.data
+            tasks = data.get("tasks")
+            current_user = request.user
+
+            for task in tasks:
+                task_object = Task.objects.get(pk=task)
+                # if current_user != task_object.created_by:
+                #     raise PermissionDenied(
+                #         {"user_error_msg": "You dont have permission to update this task!"}
+                #     )
+                task_object.is_completed = True
+                task_object.task_status = "completed"
+                task_object.save()
+                job_object = task_object.job
+                # check if all tasks done set the job completed
+                if len(job_object.get_all_not_completed_tasks()) == 0:
+                    job_object.status = "complete"
+                    job_object.save()
+            return Response(
+                data={"msg": "Task set to completed successfully!", "tasks": tasks},
+                status=status.HTTP_200_OK,
+            )
+        except APIException as ex:
+            # logger.error("API Exception")
+            logger.error(ex)
+            response_data = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                "user_error_msg": ex.detail,
+                # "user_error_msg": str(ex),
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            # debugging_print(ex)
+            logger.error(traceback.format_exc())
+            response_data = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                "error": str(ex),
+                "user_error_msg": "Error while update task!",
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TaskRetrieveAPIView(generics.RetrieveAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+        BaseApiPermissionMixin,
+    ]
+    perm_slug = "task.task"
+    serializer_class = TaskSerializer
+    queryset = Task.objects.select_related().all()
+
+    def get_object(self):
+        qs = self.get_queryset()
+        obj = get_object_or_404(queryset=qs, pk=self.request.GET.get("task"))
+        return obj

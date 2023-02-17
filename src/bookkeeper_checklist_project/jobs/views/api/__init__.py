@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-#
-from .manager import (
-    CreateJobManagerApiView,
-    RetrieveJobManagerApiView,
-    UpdateJobManagerApiView,
-    DeleteJobManagerApiView,
+from .jobs import (
+    UpdateJobStatusApiView,
+    CreateJobApiView,
+    DeleteJobApiView,
+    RetrieveJobApiView,
+    UpdateJobApiView,
 )
-from .bookkeeper import FetchJobBookkeeperApiView
-from .jobs import UpdateJobStatusApiView

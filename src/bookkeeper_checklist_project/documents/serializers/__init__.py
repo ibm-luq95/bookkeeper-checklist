@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-#
-from .create_document import CreateDocumentSerializer
+from .documents_serializer import DocumentSerializer

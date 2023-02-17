@@ -6,7 +6,8 @@ from django.utils.translation import gettext as _
 
 from company_services.models import CompanyService
 from core.choices import CustomUserStatusEnum
-from core.models import SoftDeleteManager
+from core.models import SoftDeleteManager, BaseQuerySetMixin
+from core.utils import get_trans_txt
 
 
 class StaffMemberMixin(models.Model):
@@ -51,9 +52,13 @@ class StaffMemberMixin(models.Model):
     @property
     def is_active_labeled(self) -> str:
         if self.user.is_active is True:
-            return "Active"
+            return get_trans_txt("Active")
         else:
-            return "Deactivate"
+            return get_trans_txt("Deactivate")
 
     def get_not_seen_special_assignments(self):
-        return self.special_assignments.select_related().filter(is_seen=False)
+        return self.special_assignments.filter(is_seen=False)
+
+    def get_user_jobs(self) -> BaseQuerySetMixin:
+        if hasattr(self, "jobs"):
+            return self.jobs.all()

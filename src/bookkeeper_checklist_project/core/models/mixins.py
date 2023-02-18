@@ -29,7 +29,7 @@ class BaseModelMixin(models.Model):
         ordering = ["-created_at"]
         permissions = [
             ("can_view_list", "Can view list view"),
-            ("view_archive", "Can view archive")
+            ("view_archive", "Can view archive"),
         ]
 
     def soft_delete(self):
@@ -93,3 +93,13 @@ class GetObjectSectionMixin(models.Model):
             return self.client
         elif self.task:
             return self.task
+
+
+class StartAndDueDateMixin(models.Model):
+    start_date = models.DateField(
+        _("start date"), default=timezone.now, null=True, blank=True
+    )
+    due_date = models.DateField(_("due date"), default=timezone.now, null=True, blank=True)
+
+    class Meta:
+        abstract = True

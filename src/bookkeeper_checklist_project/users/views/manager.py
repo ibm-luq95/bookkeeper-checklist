@@ -1,21 +1,15 @@
 # -*- coding: utf-8 -*-#
-from django.contrib.auth.models import Permission
-from django.contrib.auth.views import PasswordChangeView
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db import transaction
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView, FormView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
-from core.cache import CacheViewMixin
 from core.constants import LIST_VIEW_PAGINATE_BY
-from core.utils import get_trans_txt, debugging_print
+from core.utils import get_trans_txt
 from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from manager.views.mixins import ManagerAccessMixin
-from django.forms.models import model_to_dict
-from users.models import CustomUser
-from users.forms import UserCreationForm, UserChangeForm, UserPasswordChangeForm
 from users.filters import UsersFilter
+from users.forms import UserCreationForm, UserChangeForm, UserPasswordChangeForm
+from users.models import CustomUser
 
 
 class ManagerUsersListView(

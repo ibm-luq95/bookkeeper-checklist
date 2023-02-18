@@ -1,7 +1,7 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
 {% load url_helpers %}
 {% block table_content_block %}
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="clientAccountsTableComponent">
+<table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="clientAccountsTableComponent">
   <thead>
     <tr>
       {% if is_show_client_column is True %}
@@ -15,7 +15,7 @@
       <th>Password</th>
       <th>Status</th>
       <th>Created</th>
-      <th></th>
+      <th class="no-sort"></th>
     </tr>
   </thead>
   <tbody>
@@ -26,7 +26,7 @@
 
         <a href="{% fetch_app_url_for_user app_name='client' path_name='details:overview' object_pk=account_object.client.pk %}"
           target="_blank">
-          {{ account_object.client }} <i class="fas fa-external-link-alt is-small"></i>
+          {{ account_object.client }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
         </a>
       </td>
       {% endif %}

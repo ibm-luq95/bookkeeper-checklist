@@ -6,6 +6,17 @@ from task.models import Task
 
 
 class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+    field_order = [
+        "title",
+        "job",
+        "task_type",
+        "task_status",
+        "start_date",
+        "due_date",
+        "additional_notes",
+        "hints"
+    ]
+
     def __init__(
         self, client=None, is_disable_job=False, job=None, created_by=None, *args, **kwargs
     ):
@@ -33,3 +44,6 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin):
 
     class Meta(BaseModelFormMixin.Meta):
         model = Task
+        widgets = {
+            "additional_notes": forms.TextInput()
+        }

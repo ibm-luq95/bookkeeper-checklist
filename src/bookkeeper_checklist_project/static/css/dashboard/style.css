@@ -334,4 +334,25 @@ div.scrollable {
   margin: 0;
   padding: 0;
   overflow: auto;
+
+  /* border: 1px solid #e4e4e4b9; */
+}
+div.scrollable::-webkit-scrollbar {
+  transition: all 250ms ease-in !important;
+  background-color: transparent;
+  width: 0px;
+  /* background-color: #dfe6e9; */
+}
+div.scrollable:hover::-webkit-scrollbar {
+  width: 8px;
+}
+div.scrollable:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.sortable th.indicator-left::after {
+  content: "";
+}
+.sortable th.indicator-left::before {
+  margin-right: 3px;
+  content: "▸";
 }

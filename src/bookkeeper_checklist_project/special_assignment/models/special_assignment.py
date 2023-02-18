@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 
 from client.models import Client
 from core.choices.special_assignment import SpecialAssignmentStatusEnum
-from core.models import BaseModelMixin, TeamMembersMixin
+from core.models import BaseModelMixin, TeamMembersMixin, StartAndDueDateMixin
 from core.utils import get_trans_txt
 from core.utils import FileValidator
 from .managers import SpecialAssignmentsManager
@@ -29,7 +29,7 @@ file_validator = FileValidator(
 )
 
 
-class SpecialAssignment(BaseModelMixin, TeamMembersMixin):
+class SpecialAssignment(BaseModelMixin, StartAndDueDateMixin, TeamMembersMixin):
     client = models.ForeignKey(
         to=Client, on_delete=models.PROTECT, related_name="special_assignments"
     )
@@ -48,8 +48,6 @@ class SpecialAssignment(BaseModelMixin, TeamMembersMixin):
         blank=True,
         validators=[file_validator],
     )
-    start_date = models.DateField(_("start date"))
-    due_date = models.DateField(_("due date"))
     notes = models.TextField(_("notes"), null=True, blank=True)
     is_seen = models.BooleanField(_("is_seen"), default=False)
     assigned_by = models.ForeignKey(

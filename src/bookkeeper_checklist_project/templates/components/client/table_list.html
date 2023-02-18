@@ -2,7 +2,7 @@
 {% load url_helpers %}
 {% block table_content_block %}
 
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="clientsTableComponent">
+<table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="clientsTableComponent">
   <thead>
     <tr>
       <th>Name</th>
@@ -16,7 +16,7 @@
       <th>Created</th>
 
       {% endif %}
-      <th></th>
+      <th class="no-sort"></th>
     </tr>
   </thead>
   <tbody>

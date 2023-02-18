@@ -5,7 +5,7 @@
 {% if enable_create_btn == True %}
 {% include 'components/core/table_list/create_btn.html' with btn_id="addServiceBtn" app_name=app_name perms=perms only %}
 {% endif %}
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
+<table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
   id="accountsAndServicesTableComponent">
   <thead>
     <tr>
@@ -19,7 +19,7 @@
 
       <th>Created</th>
       {% endif %}
-      <th></th>
+      <th class="no-sort"></th>
     </tr>
   </thead>
   <tbody>
@@ -29,7 +29,7 @@
       <td data-label="Client">
         <a target="_blank"
           href="{% fetch_app_url_for_user app_name='client' path_name='details:overview' object_pk=service_object.client.pk %}">
-          {{ service_object.client }} <i class="fas fa-external-link-alt is-small"></i>
+          {{ service_object.client }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
         </a>
       </td>
 

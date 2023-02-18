@@ -9,6 +9,7 @@ from client_account.filters import ClientAccountFilter
 from client_account.forms import ClientAccountForm
 from client_account.models import ClientAccount
 from core.constants import LIST_VIEW_PAGINATE_BY
+from core.constants.status_labels import CON_ARCHIVED
 from core.utils import get_trans_txt
 from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
@@ -26,7 +27,7 @@ class ClientAccountListView(
     model = ClientAccount
     queryset = (
         ClientAccount.objects.select_related()
-        .filter(~Q(status__in=["archive"]))
+        .filter(~Q(status__in=[CON_ARCHIVED]))
         .order_by("-created_at")
     )
     paginate_by = LIST_VIEW_PAGINATE_BY

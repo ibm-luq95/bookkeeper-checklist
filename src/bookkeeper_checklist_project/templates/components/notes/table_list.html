@@ -4,7 +4,7 @@
   {% if enable_create_btn == True %}
 {% include 'components/core/table_list/create_btn.html' with btn_id="addNoteBtn" app_name=app_name perms=perms only %}
   {% endif %}
-  <table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
+  <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
          id="notesTableComponent">
     <thead>
       <tr>
@@ -12,7 +12,7 @@
         <th>Content</th>
         <th>Note Section</th>
         {% if is_show_created_at is True %}<th>Created</th>{% endif %}
-        <th></th>
+        <th class="no-sort"></th>
       </tr>
     </thead>
     <tbody>

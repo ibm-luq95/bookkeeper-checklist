@@ -27,9 +27,6 @@ class CompanyServicesListView(
     list_type = "list"
     paginate_by = LIST_VIEW_PAGINATE_BY
 
-    # queryset = CompanyService.objects.all().values("pk", "email", "client", "service_name", "label", "url")
-    # queryset = CompanyService.objects.prefetch_related("client").only("password").values("pk", "client", "label", "url", "service_name")
-
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)

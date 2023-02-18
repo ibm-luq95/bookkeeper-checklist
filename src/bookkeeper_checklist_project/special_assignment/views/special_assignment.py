@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView, DetailView
 
 from core.constants import LIST_VIEW_PAGINATE_BY
+from core.constants.status_labels import CON_ARCHIVED, CON_COMPLETED
 from core.utils import get_trans_txt
 from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
@@ -24,7 +25,9 @@ class SpecialAssignmentListView(
     permission_required = "special_assignment.can_view_list"
     template_name = "special_assignment/list.html"
     model = SpecialAssignment
-    queryset = SpecialAssignment.objects.select_related().filter(~Q(status="archive"))
+    queryset = SpecialAssignment.objects.select_related().filter(
+        ~Q(status__in=[CON_ARCHIVED, CON_COMPLETED])
+    )
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "list"
 
@@ -53,7 +56,9 @@ class SpecialAssignmentArchiveListView(
     permission_required = "special_assignment.can_view_archive"
     template_name = "special_assignment/list.html"
     model = SpecialAssignment
-    queryset = SpecialAssignment.objects.select_related().filter(Q(status="archive"))
+    queryset = SpecialAssignment.objects.select_related().filter(
+        Q(status__in=[CON_ARCHIVED, CON_COMPLETED])
+    )
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "archive"
 
@@ -221,6 +226,8 @@ class RequestedSpecialAssignmentsListView(
     def get_queryset(self):
         queryset = super().get_queryset()
         manager = self.request.user.manager
-        queryset = manager.user.requested_assignments.select_related().all()
+        queryset = manager.user.requested_assignments.filter(
+            ~Q(status__in=[CON_ARCHIVED, CON_COMPLETED])
+        )
         self.filterset = SpecialAssignmentFilter(self.request.GET, queryset=queryset)
         return self.filterset.qs

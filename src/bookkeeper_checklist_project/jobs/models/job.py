@@ -10,13 +10,13 @@ from assistant.models import Assistant
 from bookkeeper.models import Bookkeeper
 from client.models import Client
 from core.choices import JobStatusEnum, JobTypeEnum
-from core.models import BaseModelMixin, CreatedByMixin
+from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin
 
 # from task.models import Task
 from .help_messages import JOB_HELP_MESSAGES
 
 
-class Job(BaseModelMixin, CreatedByMixin):
+class Job(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
     """This is the job for every bookkeeper and assistant
 
     Args:
@@ -54,12 +54,6 @@ class Job(BaseModelMixin, CreatedByMixin):
         null=True,
         blank=True,
         help_text=JOB_HELP_MESSAGES.get("description"),
-    )
-    due_date = models.DateField(
-        _("due date"),
-        null=True,
-        blank=True,
-        help_text=JOB_HELP_MESSAGES.get("due_date"),
     )
     job_type = models.CharField(
         _("job type"),

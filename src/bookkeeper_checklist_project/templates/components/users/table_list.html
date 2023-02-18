@@ -1,6 +1,6 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
 {% block table_content_block %}
-  <table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
+  <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
          id="usersTableComponent">
     <thead>
       <tr>
@@ -11,7 +11,7 @@
         <th>Last Login</th>
         <th>Updated</th>
         {% if is_show_created_at is True %}<th>Created</th>{% endif %}
-        <th></th>
+        <th class="no-sort"></th>
       </tr>
     </thead>
     <tbody>

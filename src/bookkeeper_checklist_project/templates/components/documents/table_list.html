@@ -3,14 +3,14 @@
 {% if enable_create_btn == True %}
 {% include 'components/core/table_list/create_btn.html' with btn_id="addDocumentBtn" app_name=app_name perms=perms only %}
 {% endif %}
-<table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="documentsTableComponent">
+<table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="documentsTableComponent">
   <thead>
     <tr>
       <th>Title</th>
       <th>Section</th>
       <th>Download</th>
       {% if is_show_created_at is True %}<th>Created</th>{% endif %}
-      <th></th>
+      <th class="no-sort"></th>
     </tr>
   </thead>
   <tbody>

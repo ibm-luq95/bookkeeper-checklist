@@ -106,7 +106,7 @@
 
             {% for client in object.client.filter %}
             <a target="_blank" href="{% url 'client:manager:details:overview:overview:overview:overview:overview' client.pk %}">
-              {{ client.name }} <i class="fas fa-external-link-alt is-small"></i>
+              {{ client.name }} <i class="fas fa-external-link-alt is-small fa-xs fa-xs"></i>
             </a>
             <br />
             {% empty %}

@@ -31,15 +31,16 @@ class ClientForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         with transaction.atomic():
             if commit:
                 client.save()
-            important_contacts = self.cleaned_data.get("important_contacts")
-            bookkeepers = self.cleaned_data.get("bookkeepers")
-            if important_contacts:
-                for contact in important_contacts:
-                    client.important_contacts.add(contact)
-            if bookkeepers:
-                for bookkeeper in bookkeepers:
-                    client.bookkeepers.add(bookkeeper)
-            client.save()
+            # important_contacts = self.cleaned_data.get("important_contacts")
+            # bookkeepers = self.cleaned_data.get("bookkeepers")
+            # if important_contacts:
+            #     for contact in important_contacts:
+            #         client.important_contacts.add(contact)
+            # if bookkeepers:
+            #     for bookkeeper in bookkeepers:
+            #         client.bookkeepers.add(bookkeeper)
+            # client.save()
+            self.save_m2m()
             return client
 
 

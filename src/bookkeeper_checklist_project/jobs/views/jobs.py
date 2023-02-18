@@ -7,6 +7,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 
 from core.choices import JobStatusEnum
 from core.constants import LIST_VIEW_PAGINATE_BY
+from core.constants.status_labels import CON_COMPLETED, CON_ARCHIVED
 from core.utils import get_trans_txt
 from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from documents.forms import DocumentForm
@@ -31,7 +32,7 @@ class JobListView(
     model = Job
     queryset = (
         Job.objects.select_related()
-        .filter(~Q(status__in=["archive", "complete"]))
+        .filter(~Q(status__in=[CON_COMPLETED, CON_ARCHIVED]))
         .order_by("-created_at")
     )
     list_type = "list"
@@ -126,7 +127,6 @@ class JobUpdateView(
     http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Job updated successfully")
     model = Job
-    success_url = reverse_lazy("jobs:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -138,6 +138,12 @@ class JobUpdateView(
         kwargs = super(JobUpdateView, self).get_form_kwargs()
         kwargs.update({"is_updated": True})
         return kwargs
+
+    def get_success_url(self) -> str:
+        job = self.get_object()
+        url_pattern = f"jobs:update"
+        url = reverse_lazy(url_pattern, kwargs={"pk": job.pk})
+        return url
 
 
 class JobDeleteView(
@@ -169,7 +175,7 @@ class JobArchiveListView(
     model = Job
     queryset = (
         Job.objects.select_related()
-        .filter(Q(status__in=["archive", "complete"]))
+        .filter(Q(status__in=[CON_COMPLETED, CON_ARCHIVED]))
         .order_by("-created_at")
     )
     paginate_by = LIST_VIEW_PAGINATE_BY

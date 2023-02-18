@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
+from core.constants.status_labels import CON_ARCHIVED, CON_COMPLETED
 from core.utils import get_trans_txt
 from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
 from task.forms import TaskForm
@@ -24,7 +25,9 @@ class TasksListView(
     permission_required = "task.can_view_list"
     template_name = "task/list.html"
     model = Task
-    queryset = Task.objects.select_related().filter(~Q(task_status="archive"))
+    queryset = Task.objects.select_related().filter(
+        ~Q(task_status__in=[CON_ARCHIVED, CON_COMPLETED])
+    )
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "list"
 
@@ -53,7 +56,9 @@ class TasksArchiveListView(
     permission_required = "task.can_view_archive"
     template_name = "task/list.html"
     model = Task
-    queryset = Task.objects.select_related().filter(Q(task_status="archive"))
+    queryset = Task.objects.select_related().filter(
+        Q(task_status__in=[CON_ARCHIVED, CON_COMPLETED])
+    )
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "archive"
 

@@ -10,7 +10,7 @@
       {% if is_show_checkboxes is True %}
       <th data-label="Task Checkbox">
         <label class="checkbox">
-          <input id="managerTaskParentCheckboxInput" type="checkbox" />
+          <input id="taskParentCheckboxInput" type="checkbox" />
         </label>
       </th>
       {% endif %}
@@ -37,13 +37,13 @@
       {% if is_show_checkboxes is True %}
       <td data-label="Task Checkbox">
         <label class="checkbox">
-          <input value="{{ task_object.pk }}" class="managerTaskCheckboxInput" type="checkbox" />
+          <input value="{{ task_object.pk }}" class="taskCheckboxInput" type="checkbox" />
         </label>
       </td>
       {% endif %}
       <td data-label="Title">
         <a
-          href="{% fetch_app_url_for_user app_name='task' path_name='update' object_pk=task_object.pk %}">{{ task_object.title|truncatechars:15 }}</a>
+          href="{% fetch_app_url_for_user app_name='task' path_name='update' object_pk=task_object.pk %}" class="taskUpdateBtn" data-item-id="{{ task_object.pk }}">{{ task_object.title|truncatechars:15 }}</a>
       </td>
       {% if is_show_job_column is True %}
       <td data-label="Job">
@@ -89,7 +89,7 @@
       {% endif %}
 
       <td class="is-actions-cell">
-        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=task_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms only %}
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=task_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms action_btn_css_class="task" only %}
       </td>
     </tr>
     {% empty %}

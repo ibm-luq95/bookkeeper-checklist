@@ -14,7 +14,9 @@ class BaseModelMixin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     metadata = models.JSONField(_("metadata"), null=True, blank=True, default=dict)
     is_deleted = models.BooleanField(_("is_deleted"), default=False)
-    created_at = models.DateTimeField(_("created_at"), default=timezone.now, editable=False)
+    created_at = models.DateTimeField(
+        _("created_at"), default=timezone.now, editable=False
+    )
     updated_at = models.DateTimeField(
         _("updated_at"), auto_now=True, blank=True, null=True, editable=False
     )

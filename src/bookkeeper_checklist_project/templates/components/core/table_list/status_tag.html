@@ -1,5 +1,5 @@
 {% with tag_size|default:'is-small' as tag_size %}
-  {% if status == "not_started" %}
+  {% if status == "not_started" or status == "archived" %}
     <span class="tag {{ tag_size }}">{{ status_label }}</span>
   {% elif status == "in_progress" %}
     <span class="tag {{ tag_size }} is-warning">{{ status_label }}</span>

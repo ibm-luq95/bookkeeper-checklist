@@ -40,9 +40,9 @@ class ClientListView(
     template_name = "client/list.html"
     model = Client
     # queryset = Client.objects.filter(~Q(status="archive")).prefetch_related("jobs")
-    queryset = Client.objects.prefetch_related(
-        "jobs", "jobs__created_by", "important_contacts"
-    ).filter(~Q(status=CON_ARCHIVED))
+    # queryset = Client.objects.prefetch_related(
+    #     "jobs", "jobs__created_by", "important_contacts"
+    # ).filter(~Q(status=CON_ARCHIVED))
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "list"
 
@@ -73,7 +73,8 @@ class ClientArchiveListView(
     permission_required = "client.view_archive"
     template_name = "client/list.html"
     model = Client
-    queryset = Client.objects.prefetch_related("jobs").filter(Q(status=CON_ARCHIVED))
+    # queryset = Client.objects.prefetch_related("jobs").filter(Q(status=CON_ARCHIVED))
+    queryset = Client.original_objects.prefetch_related("jobs").filter(Q(status=CON_ARCHIVED))
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "archive"
 
@@ -131,7 +132,6 @@ class ClientDetailsView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         client = self.get_object()
-        important_contacts = client.important_contacts.filter().select_related()
         context.setdefault("title", f"Client - {client.name}")
         # important_contact_form = ImportantContactForm(
         #     instance=client.important_contact, is_readonly=False
@@ -145,9 +145,9 @@ class ClientDetailsView(
         tasks_form = TaskForm(initial={"client": client})
         context.setdefault("important_contact_form", important_contact_form)
         document_form = DocumentForm(
-            initial={"document_section": "client", "client": client}
+            initial={"document_section": "client", "client": client}, removed_fields=["job", "task"]
         )
-        note_form = NoteForm(initial={"note_section": "client", "client": client})
+        note_form = NoteForm(initial={"note_section": "client", "client": client}, removed_fields=["job", "task"])
         context.setdefault("document_form", document_form)
         context.setdefault("note_form", note_form)
         context.setdefault("company_services_form", company_services_form)

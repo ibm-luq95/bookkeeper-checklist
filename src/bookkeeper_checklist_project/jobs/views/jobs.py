@@ -30,11 +30,6 @@ class JobListView(
     permission_required = "jobs.can_view_list"
     template_name = "jobs/list.html"
     model = Job
-    queryset = (
-        Job.objects.select_related()
-        .filter(~Q(status__in=[CON_COMPLETED, CON_ARCHIVED]))
-        .order_by("-created_at")
-    )
     list_type = "list"
     paginate_by = LIST_VIEW_PAGINATE_BY
 
@@ -82,7 +77,10 @@ class JobCreateView(
 
 
 class JobDetailsView(
-    BaseLoginRequiredMixin, PermissionRequiredMixin, ManagerAssistantAccessMixin, DetailView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    DetailView,
 ):
     template_name = "jobs/details.html"
     model = Job
@@ -95,14 +93,19 @@ class JobDetailsView(
         discussion_form = DiscussionForm(initial={"job": job_object})
         document_form = DocumentForm(
             initial={
-                # "client": job_object.client,
                 "document_section": "job",
                 "job": job_object,
-            }
+            },
+            removed_fields=["client", "task"],
         )
         task_form = TaskForm(initial={"client": job_object.client, "job": job_object})
         note_form = NoteForm(
-            initial={"client": job_object.client, "note_section": "job", "job": job_object}
+            initial={
+                # "client": job_object.client,
+                "note_section": "job",
+                "job": job_object,
+            },
+            removed_fields=["client", "task"],
         )
         context.setdefault("job_status", JobStatusEnum.choices)
         context.setdefault("title", f"Job - {job_object.title}")
@@ -127,6 +130,7 @@ class JobUpdateView(
     http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Job updated successfully")
     model = Job
+    success_url = reverse_lazy("jobs:list")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -139,11 +143,11 @@ class JobUpdateView(
         kwargs.update({"is_updated": True})
         return kwargs
 
-    def get_success_url(self) -> str:
-        job = self.get_object()
-        url_pattern = f"jobs:update"
-        url = reverse_lazy(url_pattern, kwargs={"pk": job.pk})
-        return url
+    # def get_success_url(self) -> str:
+    #     job = self.get_object()
+    #     url_pattern = f"jobs:update"
+    #     url = reverse_lazy(url_pattern, kwargs={"pk": job.pk})
+    #     return url
 
 
 class JobDeleteView(
@@ -173,17 +177,19 @@ class JobArchiveListView(
 ):
     template_name = "jobs/list.html"
     model = Job
-    queryset = (
-        Job.objects.select_related()
-        .filter(Q(status__in=[CON_COMPLETED, CON_ARCHIVED]))
-        .order_by("-created_at")
-    )
+    queryset = Job.original_objects.filter(Q(status__in=[CON_COMPLETED, CON_ARCHIVED]))
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "archive"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = JobFilter(self.request.GET, queryset=queryset)
+        return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
+        context.setdefault("filter_form", self.filterset.form)
         context.setdefault("title", get_trans_txt("Archived jobs".title()))
         context.setdefault("page_header", get_trans_txt("archived jobs".title()))
         context.setdefault("list_type", self.list_type)

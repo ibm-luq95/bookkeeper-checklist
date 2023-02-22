@@ -25,9 +25,9 @@ class TasksListView(
     permission_required = "task.can_view_list"
     template_name = "task/list.html"
     model = Task
-    queryset = Task.objects.select_related().filter(
-        ~Q(task_status__in=[CON_ARCHIVED, CON_COMPLETED])
-    )
+    # queryset = Task.objects.select_related().filter(
+    #     ~Q(task_status__in=[CON_ARCHIVED, CON_COMPLETED])
+    # )
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "list"
 
@@ -56,7 +56,7 @@ class TasksArchiveListView(
     permission_required = "task.can_view_archive"
     template_name = "task/list.html"
     model = Task
-    queryset = Task.objects.select_related().filter(
+    queryset = Task.original_objects.filter(
         Q(task_status__in=[CON_ARCHIVED, CON_COMPLETED])
     )
     paginate_by = LIST_VIEW_PAGINATE_BY

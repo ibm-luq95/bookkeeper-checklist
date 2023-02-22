@@ -224,7 +224,8 @@ class UpdateJobStatusApiView(APIView):
             job_status = data.get("status")
             job = Job.objects.filter(pk=job_id)
             job.update(status=job_status)
-            data = {"msg": "Status updated successfully!"}
+            job = Job.original_objects.filter(pk=job_id)
+            data = {"msg": "Status updated successfully!", "status": job.first().status}
             return Response(
                 data=data,
                 status=status.HTTP_200_OK,

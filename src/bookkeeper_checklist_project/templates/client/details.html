@@ -30,7 +30,7 @@
             <small title="Created at">{{ object.created_at|date }}</small>
             &nbsp;
             <span class="tag mb-1 is-inline-block">{{ object.get_status_display }}</span>
-            <br>
+            <br />
             {{ object.industry }}
           </p>
           <p>
@@ -74,10 +74,12 @@
         <a class="tabItemLink" href="{% url 'client:details:jobs' object.pk %}"
           data-tab-element="jobsContentWrapper">Jobs</a>
       </li>
+      {% comment  %}
       <li class="client-link" data-link-name="tasks" data-link-label="Tasks">
         <a class="tabItemLink" href="{% url 'client:details:tasks' object.pk %}"
           data-tab-element="tasksContentWrapper">Tasks</a>
       </li>
+      {% endcomment %}
       <li class="client-link" data-link-name="services" data-link-label="Accounts & Services">
         <a class="tabItemLink" href="{% url 'client:details:services' object.pk %}"
           data-tab-element="servicesContentWrapper">Accounts &
@@ -114,7 +116,6 @@
 
 <!-- Start section content -->
 <section id="clientDetailsSectionsWrapper" class="box block">
-
 
   {% with request.get_full_path|get_last_url_part as page_section_name %}
 
@@ -170,6 +171,7 @@
     <!-- End Company Services Form -->
   </div>
   <!-- End Account & Services Segment -->
+  {% comment  %}
   {% elif page_section_name == "tasks" %}
 
   <!-- Start Tasks Segment -->
@@ -180,6 +182,7 @@
     <!-- End Task Modal Form -->
   </div>
   <!-- End Tasks Segment -->
+  {% endcomment %}
   {% elif page_section_name == "overview" %}
   <!-- Start Overview Segment -->
   <div id="overviewContentWrapper" hidden>

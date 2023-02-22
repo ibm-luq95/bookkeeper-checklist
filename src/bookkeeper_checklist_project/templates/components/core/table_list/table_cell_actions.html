@@ -23,8 +23,8 @@
 {% check_user_permissions perms=perms app_name=app_name perm_name="change" as check_permission %}
         {% if check_permission is True %}
           <a href="{% fetch_url_by_name_pk action_urls_pattern=action_urls_pattern|add:':update' object_pk=object_pk %}"
-             class="button is-success is-light hint--top"
-             aria-label="Update">
+             class="button is-success is-light hint--top {% if action_btn_css_class %} {{ action_btn_css_class|add:'UpdateBtn' }} {% endif %}"
+             aria-label="Update" data-item-id="{{ object_pk }}">
             <span class="icon is-small">
               <i class="fa-solid fa-pencil"></i>
             </span>
@@ -38,8 +38,8 @@
 {% check_user_permissions perms=perms app_name=app_name perm_name="delete" as check_permission %}
         {% if check_permission is True %}
           <a href="{% fetch_url_by_name_pk action_urls_pattern=action_urls_pattern|add:':delete' object_pk=object_pk %}"
-             class="button is-danger is-light hint--top"
-             aria-label="Delete">
+             class="button is-danger is-light hint--top {% if action_btn_css_class %} {{ action_btn_css_class|add:'DeleteBtn' }} {% endif %}"
+             aria-label="Delete" data-item-id="{{ object_pk }}">
             <span class="icon is-small">
               <i class="fa-solid fa-trash"></i>
             </span>

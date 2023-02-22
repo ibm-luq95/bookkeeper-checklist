@@ -25,9 +25,9 @@ class SpecialAssignmentListView(
     permission_required = "special_assignment.can_view_list"
     template_name = "special_assignment/list.html"
     model = SpecialAssignment
-    queryset = SpecialAssignment.objects.select_related().filter(
-        ~Q(status__in=[CON_ARCHIVED, CON_COMPLETED])
-    )
+    # queryset = SpecialAssignment.objects.select_related().filter(
+    #     ~Q(status__in=[CON_ARCHIVED, CON_COMPLETED])
+    # )
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "list"
 
@@ -56,7 +56,7 @@ class SpecialAssignmentArchiveListView(
     permission_required = "special_assignment.can_view_archive"
     template_name = "special_assignment/list.html"
     model = SpecialAssignment
-    queryset = SpecialAssignment.objects.select_related().filter(
+    queryset = SpecialAssignment.original_objects.filter(
         Q(status__in=[CON_ARCHIVED, CON_COMPLETED])
     )
     paginate_by = LIST_VIEW_PAGINATE_BY
@@ -137,7 +137,9 @@ class SpecialAssignmentUpdateView(
         return context
 
     def get_success_url(self):
-        url = reverse_lazy("special_assignment:update", kwargs={"pk": self.get_object().pk})
+        url = reverse_lazy(
+            "special_assignment:update", kwargs={"pk": self.get_object().pk}
+        )
         return url
 
     def get_form_kwargs(self):
@@ -170,7 +172,10 @@ class SpecialAssignmentDeleteView(
 
 
 class SpecialAssignmentDetailsView(
-    BaseLoginRequiredMixin, ManagerAssistantAccessMixin, PermissionRequiredMixin, DetailView
+    BaseLoginRequiredMixin,
+    ManagerAssistantAccessMixin,
+    PermissionRequiredMixin,
+    DetailView,
 ):
     permission_required = "special_assignment.view_specialassignment"
     template_name = "special_assignment/details.html"

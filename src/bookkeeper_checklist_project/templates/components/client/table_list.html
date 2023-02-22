@@ -53,7 +53,7 @@
             target="_blank">{{ contact }}</a>
           <br />
           {% empty %}
-          No contact
+          {% include 'components/core/red_text.html' with text="No contacts" only %}
           {% endfor %}
         </div>
 

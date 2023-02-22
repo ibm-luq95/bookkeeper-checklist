@@ -52,7 +52,7 @@
             <header class="card-header">
               <p class="card-header-title has-text-dark">Tasks</p>
               {% if perms.task.add_task %}
-              <button type="button" id="managerAddTasksBtn"
+              <button type="button" id="addTaskBtn"
               class="card-header-icon hint--top bkchlst-input is-disabled is-responsive" disabled
               aria-label="Add new task">
               <span class="icon">
@@ -63,8 +63,8 @@
             </header>
             <div class="card-content">
               <div class="buttons  is-right">
-                <button class="button is-responsive is-rounded is-primary is-light hint--top" aria-label="Set tasks completed">Done</button>
-                <button class="button is-responsive is-rounded">Small</button>
+                <button class="button is-responsive is-rounded is-primary is-light hint--top" id="setTaskCompletedBtn" aria-label="Set tasks completed">Done</button>
+                <!-- <button class="button is-responsive is-rounded">Small</button> -->
                 <!-- <button class="button is-responsive">Small</button> -->
                 <!-- <button class="button is-responsive">Small</button> -->
               </div>
@@ -111,16 +111,10 @@
               <div class="media-content">
                 <div class="content">
                   <p>
-                    <strong>Bookkeeper(s)</strong>
+                    <strong>Managed by</strong>
                     <!-- <small>@johnsmith</small> <small>31m</small> -->
-                    <br>
-
-                    {% for bookkeeper in object.bookkeeper.filter %}
-                    <a class="is-block" target="_blank"
-                      href="{% url 'manager:bookkeeper:details' bookkeeper.pk %}">{{ bookkeeper.user.fullname }}</a>
-                    {% empty %}
-                    No Bookkeeper(s)
-                    {% endfor %}
+                    <br />
+                    {{ object.managed_by }}
 
 
                   </p>
@@ -234,7 +228,6 @@
                 </p>
               </div>
 
-
               {% for note in object.notes.filter %}
               <div class="panel-block">
                 <a class="is-active managerViewNoteBtn" data-note-id="{{ note.pk }}">
@@ -255,17 +248,13 @@
                 No note(s)
               </div>
               {% endfor %}
-
-
-
-
             </article>
           </div>
         </div>
       </div>
     </div>
   </div>
-
+</section>
   <!-- Start Task Modal Form -->
   {% include 'segments/tasks/task_modal.html' with user_type="manager" job_object=object task_form=task_form request_object=request %}
   <!-- End Task Modal Form -->
@@ -279,9 +268,13 @@
   {% endblock dashboard_content %}
 
   {% block externaljs %}
-  <script src="{% static 'js/manager/jobs/details.js' %}" defer type="module"></script>
+  {% comment  %}
+    <script src="{% static 'js/manager/jobs/details.js' %}" defer type="module"></script>
+    <script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
+  {% endcomment %}
   <script src="{% static 'js/apps/notes/notes.js' %}" defer type="module"></script>
+  <script src="{% static 'js/apps/task/task.js' %}" defer type="module"></script>
   <script src="{% static 'js/apps/documents/documents.js' %}" defer type="module"></script>
-  <script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
+
   <script src="{% static 'js/segments/jobs/update_job_status.js' %}" defer type="module"></script>
   {% endblock externaljs %}

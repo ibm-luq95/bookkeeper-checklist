@@ -13,6 +13,18 @@ from users.models import CustomUser
 
 
 class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+    field_order = [
+        "title",
+        "client",
+        "managed_by",
+        "start_date",
+        "due_date",
+        "description",
+        "status",
+        "job_type",
+        "note",
+    ]
+
     def __init__(
         self,
         bookkeeper=None,

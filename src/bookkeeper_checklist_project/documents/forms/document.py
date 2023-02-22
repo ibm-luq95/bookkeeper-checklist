@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-#
+from typing import Optional
+
 from django import forms
 from documents.models import Documents
 from core.constants.form import EXCLUDED_FIELDS
-from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
+from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin, RemoveFieldsMixin
 
 
-class DocumentForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+class DocumentForm(BaseModelFormMixin, SaveCreatedByFormMixin, RemoveFieldsMixin):
     # auto_id = "doct_"
 
     def __init__(
@@ -14,10 +16,12 @@ class DocumentForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         client=None,
         is_update=False,
         created_by=None,
+        removed_fields: Optional[list] = None,
         *args,
-        **kwargs
+        **kwargs,
     ):
         super(DocumentForm, self).__init__(*args, **kwargs)
+        RemoveFieldsMixin.__init__(self, removed_fields=removed_fields)
         if document_section is not None:
             self.fields["document_section"].initial = document_section
             # self.fields["document_section"].widget.attrs.update({"class": "readonly-select cursor-not-allowed"})

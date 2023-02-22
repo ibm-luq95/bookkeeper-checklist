@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-#
+from django.db.models import Q
+
+from core.constants.status_labels import CON_COMPLETED, CON_ARCHIVED
 from core.models import SoftDeleteManager, BaseQuerySetMixin
 
 
@@ -21,6 +24,7 @@ class RepliesManager(SoftDeleteManager):
 class SpecialAssignmentsManager(SoftDeleteManager):
     def get_queryset(self) -> SpecialAssignmentQuerySet:
         queryset = SpecialAssignmentQuerySet(self.model, using=self._db).filter(
-            is_deleted=False
+            Q(is_deleted=False),
+            ~Q(status__in=[CON_COMPLETED, CON_ARCHIVED]),
         )
         return queryset

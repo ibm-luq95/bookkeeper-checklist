@@ -30,7 +30,7 @@ class TaskStatusEnum(models.TextChoices):
 
 class TaskTypeEnum(models.TextChoices):
     NO_TYPE = CON_NO_TYPE, _(stringcase.sentencecase(CON_NO_TYPE))
-    RECURRING = CON_RECURRING, _(stringcase.sentencecase(CON_NO_TYPE))
+    RECURRING = CON_RECURRING, _(stringcase.sentencecase(CON_RECURRING))
     WEEKLY = CON_WEEKLY, _(stringcase.sentencecase(CON_WEEKLY))
     MONTHLY = CON_MONTHLY, _(stringcase.sentencecase(CON_MONTHLY))
     QUARTERLY = CON_QUARTERLY, _(stringcase.sentencecase(CON_QUARTERLY))

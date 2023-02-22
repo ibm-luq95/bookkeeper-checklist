@@ -1,9 +1,6 @@
 "use strict";
 
-import {
-  eyeIconHTMLCode,
-  eyeSlashIconHTMLCode,
-} from "../../utils/constants.js";
+import { eyeIconHTMLCode, eyeSlashIconHTMLCode } from "../../utils/constants.js";
 import { getCookie } from "../../utils/cookie.js";
 import {
   sendRequest,
@@ -23,13 +20,9 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   const modalTitleElement = modalElement.querySelector(".modal__title");
   const documentForm = modalElement.querySelector("form");
   const fieldset = documentForm.querySelector("fieldset");
-  const managerDocumentElements = document.querySelectorAll(
-    ".managerDocumentElement"
-  );
+  const managerDocumentElements = document.querySelectorAll(".managerDocumentElement");
   const submitButton = modalElement.querySelector("button[type='submit']");
-  const managerDeleteDocumentBtn = document.querySelectorAll(
-    ".managerDeleteDocumentBtn"
-  );
+  const managerDeleteDocumentBtn = document.querySelectorAll(".managerDeleteDocumentBtn");
   const managerAddDocumentBtn = document.querySelector("button#addDocumentBtn");
 
   // create document modal
@@ -58,8 +51,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   documentForm.addEventListener("submit", (ev) => {
     ev.preventDefault();
     const currentTarget = documentForm;
-    const documentFile =
-      currentTarget.querySelector("input[type=file]").files[0];
+    const documentFile = currentTarget.querySelector("input[type=file]").files[0];
     // fieldset.disabled = true;
     const formData = new FormData();
     // console.log(currentTarget.action);
@@ -77,7 +69,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       formInputs,
       getCookie("csrftoken"),
       currentTarget["_method"].value,
-      false
+      false,
     );
     const request = uploadRequest.sendRequest();
     request
@@ -135,10 +127,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           })
           .catch((error) => {
             console.error(error);
-            showToastNotification(
-              `${JSON.stringify(error["user_error_msg"])}`,
-              "danger"
-            );
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
           })
           .finally(() => {
             console.warn("Finally");
@@ -148,33 +137,32 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   }
 
   // delete document buttons
-  /* managerDeleteDocumentBtn.forEach((btn) => {
-        btn.addEventListener("click", (ev) => {
-          const DeleteDocumentUrl = window.localStorage.getItem("DeleteDocumentUrl");
-          const fullUrl = window.location.origin + DeleteDocumentUrl;
-          const currentTarget = ev.currentTarget;
-          const documentId = currentTarget.dataset["documentId"];
-          const documentTitle = currentTarget.dataset["documentTitle"];
-          const msg = confirm(`Do you want to delete document ${documentTitle}?`);
-          if (msg === true) {
-            const requestOptions = {
-              method: "DELETE",
-              dataToSend: { documentId: documentId },
-              url: fullUrl,
-            };
-            const request = sendRequest(requestOptions);
-            request
-              .then((data) => {
-                showToastNotification("Document deleted successfully", "success");
-                setTimeout(() => {
-                  window.location.reload();
-                }, 500);
-              })
-              .catch((error) => {
-                console.error(error);
-                showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
-              });
-          }
-        });
-      }); */
+  managerDeleteDocumentBtn.forEach((btn) => {
+    btn.addEventListener("click", async (ev) => {
+      const currentTarget = ev.currentTarget;
+      const documentId = currentTarget.dataset["documentId"];
+      const documentTitle = currentTarget.dataset["documentTitle"];
+      const url = await fetchUrlPathByName("documents:api:delete");
+      const msg = confirm(`Do you want to delete document ${documentTitle}?`);
+      if (msg === true) {
+        const requestOptions = {
+          method: "DELETE",
+          dataToSend: { documentId: documentId },
+          url: url["urlPath"],
+        };
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            showToastNotification("Document deleted successfully", "success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          });
+      }
+    });
+  });
 });

@@ -117,13 +117,13 @@ class UpdateJobApiView(APIView):
                 raise APIException(serializer.errors)
             serializer.save()
             tasks = data.get("tasks")
-            bookkeepers = data.get("bookkeeper")
+            # bookkeepers = data.get("bookkeeper")
 
             # update bookkeeper
-            bookkeepers_objects_list = []
-            for bookkeeper in bookkeepers:
-                bookkeepers_objects_list.append(bookkeeper)
-            job_object.bookkeeper.set(bookkeepers_objects_list)
+            # bookkeepers_objects_list = []
+            # for bookkeeper in bookkeepers:
+            #     bookkeepers_objects_list.append(bookkeeper)
+            # job_object.bookkeeper.set(bookkeepers_objects_list)
 
             # update tasks
             tasks_objects_list = []

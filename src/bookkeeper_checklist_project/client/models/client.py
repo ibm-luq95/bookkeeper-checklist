@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-#
 from PIL import Image
+from django.core import validators
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext as _
@@ -31,6 +32,20 @@ class Client(BaseModelMixin):
     name = models.CharField(_("name"), max_length=50, null=True)
     email = models.EmailField(_("email"), max_length=50, null=True)
     industry = models.CharField(_("industry"), max_length=50, null=True)
+    website = models.URLField(_("website"), null=True, blank=True)
+    street = models.CharField(_("street"), max_length=50, null=True, blank=True)
+    city = models.CharField(_("city"), max_length=20, null=True, blank=True)
+    state = models.CharField(_("state"), max_length=20, null=True, blank=True)
+    phone_number = models.CharField(
+        _("phone_number"), max_length=50, null=True, blank=True
+    )
+    postcode = models.CharField(
+        _("postcode"),
+        max_length=10,
+        null=True,
+        blank=True,
+        validators=[validators.integer_validator],
+    )
     is_active = models.BooleanField(_("is active"), default=True)
     company_logo = models.ImageField(
         _("company logo"),

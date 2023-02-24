@@ -1,8 +1,6 @@
 {% extends 'core/layouts/dashboard.html' %}
 {% load static %}
 
-
-
 {% block dashboard_content %}
 
 <section id="manager-job-details">
@@ -53,22 +51,30 @@
               <p class="card-header-title has-text-dark">Tasks</p>
               {% if perms.task.add_task %}
               <button type="button" id="addTaskBtn"
-              class="card-header-icon hint--top bkchlst-input is-disabled is-responsive" disabled
-              aria-label="Add new task">
-              <span class="icon">
-                <i class="fas fa-plus" aria-hidden="true"></i>
-              </span>
-            </button>
+                class="card-header-icon hint--top bkchlst-input is-disabled is-responsive" disabled
+                aria-label="Add new task">
+                <span class="icon">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+              </button>
               {% endif %}
             </header>
             <div class="card-content">
               <div class="buttons  is-right">
-                <button class="button is-responsive is-rounded is-primary is-light hint--top" id="setTaskCompletedBtn" aria-label="Set tasks completed">Done</button>
+                <button class="button is-responsive is-rounded is-primary is-light hint--top" id="setTaskCompletedBtn"
+                  aria-label="Set tasks completed">Done</button>
                 <!-- <button class="button is-responsive is-rounded">Small</button> -->
                 <!-- <button class="button is-responsive">Small</button> -->
                 <!-- <button class="button is-responsive">Small</button> -->
               </div>
-              {% include 'components/task/table_list.html' with client_object=object object_list=object.tasks.all user_type=request.user.user_type enable_create_btn=False perms=perms app_name="task" details_url="task:update" action_urls_pattern="task" enabled_action_btns='update,delete' is_show_checkboxes=True is_show_job_column=False is_show_start_date=False only %}
+              
+              {% if perms.task.can_view_list %}
+              {% include 'components/task/table_list.html' with client_object=object object_list=object.tasks.all user_type=request.user.user_type enable_create_btn=False perms=perms app_name="task" details_url="task:update" action_urls_pattern="task" enabled_action_btns='update,delete' is_show_checkboxes=True is_show_job_column=False is_show_start_date=False request=request only %}
+              {% else %}
+              {% include 'components/core/no_permissions.html' with msg="no permissions to see tasks" %}
+              {% endif %}
+                
+              
 
             </div>
             <!-- <footer class="card-footer">
@@ -81,19 +87,23 @@
         <!-- End Tasks Card -->
       </div>
 
-
       <div class="column is-4">
         <div class="box pb-1 pt-2 px-0">
           <div class="job-item-block mb-5 is-bordered has-border-bottom-width-1 p-2">
             <article class="media">
 
-
               <div class="media-content">
                 <div class="content">
-                  <a class="button is-fullwidth has-text-weight-bold hint--top" aria-label="Update job details"
-                    href="{% url 'jobs:update' object.pk %}" target="_blank">
+
+                  {% if perms.jobs.change_job %}
+                  <button id="updateJobBtn" class="button is-fullwidth has-text-weight-bold hint--top" aria-label="Update job details">
                     Edit Job
-                  </a>
+                  </button>
+                  <!-- Start Jobs Form -->
+                  {% include 'segments/jobs/job_modal.html' with user_type=request.user.user_type job_form=job_form request_object=request jobId=object.pk only %}
+                  <!-- End Jobs Form -->
+                  {% endif %}
+
                 </div>
 
               </div>
@@ -115,8 +125,6 @@
                     <!-- <small>@johnsmith</small> <small>31m</small> -->
                     <br />
                     {{ object.managed_by }}
-
-
                   </p>
                 </div>
 
@@ -137,7 +145,7 @@
                   <p>
                     <strong>Client</strong>
                     <!-- <small>@johnsmith</small> <small>31m</small> -->
-                    <br>
+                    <br />
 
                     {% if object.client %}
                     <a href="{% url 'client:details:overview' object.client.pk %}"
@@ -145,8 +153,6 @@
                     {% else %}
                     No client
                     {% endif %}
-
-
                   </p>
                 </div>
 
@@ -164,11 +170,12 @@
               </p>
               <div class="panel-block">
                 <p class="control has-icons-left">
-                  {% if perms.documents.add_document %}
+                  {% if perms.documents.add_documents %}
                   <button id="addDocumentBtn" aria-label="Add document" type="button"
-                  class="button is-success is-outlined is-fullwidth bkchlst-input is-disabled is-responsive hint--top" disabled>
-                  <i class="fa-solid fa-plus"></i>
-                </button>
+                    class="button is-success is-outlined is-fullwidth bkchlst-input is-disabled is-responsive hint--top"
+                    disabled>
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
                   {% endif %}
                 </p>
               </div>
@@ -206,8 +213,6 @@
               </div>
               {% endfor %}
 
-
-
             </article>
           </div>
 
@@ -219,12 +224,13 @@
 
               <div class="panel-block">
                 <p class="control has-icons-left">
-                 {% if perms.notes.add_note %}
-                 <button id="addNoteBtn" aria-label="Add note" type="button"
-                 class="button is-info is-outlined is-fullwidth bkchlst-input is-disabled is-responsive hint--top" disabled>
-                 <i class="fa-solid fa-plus"></i>
-               </button>
-                 {% endif %}
+                  {% if perms.notes.add_note %}
+                  <button id="addNoteBtn" aria-label="Add note" type="button"
+                    class="button is-info is-outlined is-fullwidth bkchlst-input is-disabled is-responsive hint--top"
+                    disabled>
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                  {% endif %}
                 </p>
               </div>
 
@@ -255,26 +261,27 @@
     </div>
   </div>
 </section>
-  <!-- Start Task Modal Form -->
-  {% include 'segments/tasks/task_modal.html' with user_type="manager" job_object=object task_form=task_form request_object=request %}
-  <!-- End Task Modal Form -->
-  <!-- Start Document Modal Form -->
-  {% include 'segments/documents/document_modal.html' with user_type="manager" job_object=object document_form=document_form request_object=request %}
-  <!-- End Document Modal Form -->
-  <!-- Start Note Modal Form -->
-  {% include 'segments/notes/note_modal.html' with user_type="manager" job_object=object note_form=note_form request_object=request %}
-  <!-- End Note Modal Form -->
+<!-- Start Task Modal Form -->
+{% include 'segments/tasks/task_modal.html' with user_type="manager" job_object=object task_form=task_form request_object=request %}
+<!-- End Task Modal Form -->
+<!-- Start Document Modal Form -->
+{% include 'segments/documents/document_modal.html' with user_type="manager" job_object=object document_form=document_form request_object=request %}
+<!-- End Document Modal Form -->
+<!-- Start Note Modal Form -->
+{% include 'segments/notes/note_modal.html' with user_type="manager" job_object=object note_form=note_form request_object=request %}
+<!-- End Note Modal Form -->
 
-  {% endblock dashboard_content %}
+{% endblock dashboard_content %}
 
-  {% block externaljs %}
-  {% comment  %}
-    <script src="{% static 'js/manager/jobs/details.js' %}" defer type="module"></script>
-    <script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
-  {% endcomment %}
-  <script src="{% static 'js/apps/notes/notes.js' %}" defer type="module"></script>
-  <script src="{% static 'js/apps/task/task.js' %}" defer type="module"></script>
-  <script src="{% static 'js/apps/documents/documents.js' %}" defer type="module"></script>
+{% block externaljs %}
+{% comment  %}
+<script src="{% static 'js/manager/jobs/details.js' %}" defer type="module"></script>
+<script src="{% static 'js/manager/client/segments/tasks.js' %}" defer type="module"></script>
+{% endcomment %}
+<script src="{% static 'js/apps/notes/notes.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/jobs/jobs.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/task/task.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/documents/documents.js' %}" defer type="module"></script>
 
-  <script src="{% static 'js/segments/jobs/update_job_status.js' %}" defer type="module"></script>
-  {% endblock externaljs %}
+<script src="{% static 'js/segments/jobs/update_job_status.js' %}" defer type="module"></script>
+{% endblock externaljs %}

@@ -4,7 +4,8 @@
 {% if enable_create_btn == True %}
 {% include 'components/core/table_list/create_btn.html' with btn_id="addTaskBtn" app_name=app_name perms=perms only %}
 {% endif %}
-<table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="tasksTableComponent">
+<table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
+  id="tasksTableComponent">
   <thead>
     <tr>
       {% if is_show_checkboxes is True %}
@@ -42,8 +43,8 @@
       </td>
       {% endif %}
       <td data-label="Title">
-        <a
-          href="{% fetch_app_url_for_user app_name='task' path_name='update' object_pk=task_object.pk %}" class="taskUpdateBtn" data-item-id="{{ task_object.pk }}">{{ task_object.title|truncatechars:15 }}</a>
+        <a href="{% fetch_app_url_for_user app_name='task' path_name='update' object_pk=task_object.pk %}"
+          class="taskUpdateBtn" data-item-id="{{ task_object.pk }}">{{ task_object.title|truncatechars:15 }}</a>
       </td>
       {% if is_show_job_column is True %}
       <td data-label="Job">
@@ -60,8 +61,16 @@
       {% endif %}
       <td data-label="Manager">
         {% if task_object.job.managed_by %}
-        <a href="{% fetch_user_details_url base_user=user_type user_object=task_object.job.managed_by %}" target="_blank"
-        class="is-block">{{ task_object.job.managed_by }} <i class="fas fa-external-link-alt fa-xs"></i></a>
+
+        {% if request.user.user_type == "bookkeeper" %}
+        <a class="disabledAnchorElement">{{ task_object.job.managed_by }} <i
+            class="fas fa-external-link-alt fa-xs"></i></a>
+        {% else %}
+        <a href="{% fetch_user_details_url base_user=user_type user_object=task_object.job.managed_by %}"
+          target="_blank" class="is-block">{{ task_object.job.managed_by }} <i
+            class="fas fa-external-link-alt fa-xs"></i></a>
+        {% endif %}
+
         {% else %}
         {% include 'components/core/red_text.html' with text="no manager" only %}
         {% endif %}
@@ -74,12 +83,12 @@
       </td>
       {% if is_show_start_date is True %}
       <td data-label="Start Date">
-          {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.start_date user_type=user_type only %}
+        {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.start_date user_type=user_type only %}
       </td>
       {% endif %}
 
       <td data-label="Due Date">
-          {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.due_date user_type=user_type only %}
+        {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.due_date user_type=user_type only %}
       </td>
       {% if is_show_created_at is True %}
       <td data-label="Created">

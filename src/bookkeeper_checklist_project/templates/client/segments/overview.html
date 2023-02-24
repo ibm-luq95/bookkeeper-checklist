@@ -80,9 +80,17 @@
             {% for bookkeeper in client_object.bookkeepers.all %}
             <tr>
               <td data-label="Full Name">
+                
+                {% if request.user.user_type == "bookkeeper" %}
+                <a href="">
+                  {{ bookkeeper.user.fullname }}
+                </a>
+                {% else %}
                 <a href="{% fetch_user_details_url base_user=user_type user_object=bookkeeper.user %}">
                   {{ bookkeeper.user.fullname }}
                 </a>
+                {% endif %}
+                  
               </td>
             </tr>
             {% empty %}

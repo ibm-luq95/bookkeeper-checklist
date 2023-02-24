@@ -49,4 +49,3 @@ class CompanyServiceForm(BaseModelFormMixin, SaveCreatedByFormMixin):
 
     class Meta(BaseModelFormMixin.Meta):
         model = CompanyService
-        # widgets = {"password": forms.PasswordInput(attrs={"autocomplete": "new-password"})}

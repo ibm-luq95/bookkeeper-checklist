@@ -1,43 +1,66 @@
 "use strict";
 import {
-    checkIfInputSingleOrList,
-    fetchUrlPathByName,
-    formInputSerializer,
-    sendRequest,
-  } from "../../utils/helpers.js";
-  import { MicroModalHandler } from "../../utils/model-box.js";
-  import { showToastNotification } from "../../utils/notifications.js";
+  checkIfInputSingleOrList,
+  fetchUrlPathByName,
+  formInputSerializer,
+  sendRequest,
+} from "../../utils/helpers.js";
+import { MicroModalHandler } from "../../utils/model-box.js";
+import { showToastNotification } from "../../utils/notifications.js";
 
-  document.addEventListener("DOMContentLoaded", (readyEvent) => {
-    const jobFormModalId = "job-form-modal";
-    const jobFormModalElement = document.querySelector(`#${jobFormModalId}`);
-    const jobModalTitleElement =
-      jobFormModalElement.querySelector(".modal__title");
-    const jobModalSubmitBtn = jobFormModalElement.querySelector(
-      "button[type='submit']"
-    );
-    // const jobsFormWrapper = document.querySelector("div#jobsFormWrapper");
-    const managerJobsLoaderBtn = document.querySelector(
-      "button#managerJobsLoaderBtn"
-    );
-    // const jobsForm = jobsFormWrapper.querySelector("form#jobsForm");
+document.addEventListener("DOMContentLoaded", (readyEvent) => {
+  const jobFormModalId = "job-form-modal";
+  const jobFormModalElement = document.querySelector(`#${jobFormModalId}`);
+  const updateJobBtn = document.querySelector("button#updateJobBtn");
+  if (jobFormModalElement) {
+    const jobModalTitleElement = jobFormModalElement.querySelector(".modal__title");
+    const jobModalSubmitBtn = jobFormModalElement.querySelector("button[type='submit']");
     const jobsForm = jobFormModalElement.querySelector("form");
     const jobsFormFieldset = jobsForm.querySelector("fieldset");
-    const addJobBtn = document.querySelector("button#addJobBtn");
-    const managerDeleteJobBtn = document.querySelectorAll(
-      "button.managerDeleteJobBtn"
-    );
+  }
 
-    const managerViewJobBtn = document.querySelectorAll(
-      "button.managerViewJobBtn"
-    );
+  // const jobsFormWrapper = document.querySelector("div#jobsFormWrapper");
+  const managerJobsLoaderBtn = document.querySelector("button#managerJobsLoaderBtn");
+  // const jobsForm = jobsFormWrapper.querySelector("form#jobsForm");
 
+  const addJobBtn = document.querySelector("button#addJobBtn");
+  const managerDeleteJobBtn = document.querySelectorAll("button.managerDeleteJobBtn");
+
+  const managerViewJobBtn = document.querySelectorAll("button.managerViewJobBtn");
+
+  // update job btn click event
+  if (updateJobBtn) {
+    updateJobBtn.addEventListener("click", (event) => {
+      const currentTarget = event.currentTarget;
+      const jobModalTitleElement = jobFormModalElement.querySelector(".modal__title");
+      const jobModalSubmitBtn = jobFormModalElement.querySelector("button[type='submit']");
+      const jobsForm = jobFormModalElement.querySelector("form");
+      managerJobsLoaderBtn.hidden = true;
+      const callBacks = {
+        onOpenCallBack: async () => {
+          const updateJobUrl = await fetchUrlPathByName("jobs:api:update");
+          jobsForm.elements["_method"].value = "PUT";
+          jobsForm.setAttribute("method", "PUT");
+          jobsForm.setAttribute("action", updateJobUrl["urlPath"]);
+          jobModalTitleElement.textContent = "Update job";
+          jobModalSubmitBtn.textContent = "Update";
+        },
+        onCloseCallback: () => {
+          jobModalSubmitBtn.disabled = false;
+          // jobsForm.reset();
+        },
+      };
+      // console.log(currentTarget.dataset);
+      const modalHandler = new MicroModalHandler(jobFormModalId, callBacks);
+    });
+  }
+
+  // add job btn click event
+  if (addJobBtn) {
     addJobBtn.addEventListener("click", (event) => {
       const callBacks = {
         onOpenCallBack: async () => {
-          const createJobUrl = await fetchUrlPathByName(
-            "jobs:api:create"
-          );
+          const createJobUrl = await fetchUrlPathByName("jobs:api:create");
           jobModalSubmitBtn.textContent = "Create";
           jobsForm.elements["_method"].value = "POST";
           jobsForm.setAttribute("method", "POST");
@@ -51,7 +74,9 @@ import {
       };
       const modalHandler = new MicroModalHandler(jobFormModalId, callBacks);
     });
+  }
 
+  if (typeof jobsForm !== "undefined") {
     // create new job form event
     jobsForm.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -66,7 +91,7 @@ import {
         Array.from(jobsForm.elements).forEach((element) => {
           element.classList.remove("is-danger");
         });
-
+  
         // check if bookkeeper exists
         if (jobsForm["bookkeeper"]) {
           // check if bookkeeper single or multiple
@@ -113,7 +138,7 @@ import {
             }
           }
         }
-
+  
         // throw new Error("s");
         const formInputs = formInputSerializer({
           formElement: jobsForm,
@@ -144,10 +169,7 @@ import {
           })
           .catch((error) => {
             console.error(error);
-            showToastNotification(
-              `${JSON.stringify(error["user_error_msg"])}`,
-              "danger"
-            );
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
             const userErrors = error["user_error_msg"];
             for (const key in userErrors) {
               if (Object.hasOwnProperty.call(userErrors, key)) {
@@ -166,179 +188,164 @@ import {
         managerJobsLoaderBtn.hidden = true;
       }
     });
+    
+  }
+ 
 
-    // delete job buttons
-    managerDeleteJobBtn.forEach((btn) => {
-      // @audit
-      btn.addEventListener("click", async (event) => {
-        // const deleteJobUrl = window.localStorage.getItem("DeleteJobUrl");
+  // delete job buttons
+  managerDeleteJobBtn.forEach((btn) => {
+    // @audit
+    btn.addEventListener("click", async (event) => {
+      // const deleteJobUrl = window.localStorage.getItem("DeleteJobUrl");
 
-        const jobId = event.currentTarget.dataset["jobId"];
-        const jobTitle = event.currentTarget.dataset["jobTitle"];
-        const deleteJobUrl = await fetchUrlPathByName("jobs:api:delete");
-        const requestOptions = {
-          method: "DELETE",
-          dataToSend: { jobId: jobId },
-          url: deleteJobUrl["urlPath"],
-        };
-        const msg = confirm(`Do you want to delete ${jobTitle}?`);
-        if (msg) {
+      const jobId = event.currentTarget.dataset["jobId"];
+      const jobTitle = event.currentTarget.dataset["jobTitle"];
+      const deleteJobUrl = await fetchUrlPathByName("jobs:api:delete");
+      const requestOptions = {
+        method: "DELETE",
+        dataToSend: { jobId: jobId },
+        url: deleteJobUrl["urlPath"],
+      };
+      const msg = confirm(`Do you want to delete ${jobTitle}?`);
+      if (msg) {
+        const request = sendRequest(requestOptions);
+        request
+          .then((data) => {
+            // console.log(data);
+            // check if job contains any tasks
+            if (data["is_allowed_deleted"] === false) {
+              showToastNotification(data["msg"], "info");
+            } else {
+              showToastNotification(data["msg"], "success");
+              setTimeout(() => {
+                window.location.reload();
+              }, 500);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          });
+      }
+    });
+  });
+
+  // view job buttons
+  managerViewJobBtn.forEach((btn) => {
+    btn.addEventListener("click", async (event) => {
+      const jobsUpdateFormFieldSet = jobsForm.querySelector("fieldset");
+      const jobId = event.currentTarget.dataset["jobId"];
+      // const url = window.localStorage.getItem("RetrieveJobUrl");
+      const retrieveUrl = await fetchUrlPathByName("jobs:api:retrieve");
+      const updateJobUrl = await fetchUrlPathByName("jobs:api:update");
+
+      // job-details-update-modal @audit
+      const callBacks = {
+        onOpenCallBack: () => {
+          // console.log("Open update job");
+          jobModalTitleElement.textContent = "Update job";
+          jobModalSubmitBtn.textContent = "Update";
+          jobsForm.setAttribute("action", updateJobUrl["urlPath"]);
+          jobsForm.setAttribute("method", "PUT");
+          jobsForm["_method"].value = "PUT";
+          const requestOptions = {
+            method: "POST",
+            dataToSend: { jobId: jobId },
+            url: retrieveUrl["urlPath"],
+          };
           const request = sendRequest(requestOptions);
           request
             .then((data) => {
               // console.log(data);
-              // check if job contains any tasks
-              if (data["is_allowed_deleted"] === false) {
-                showToastNotification(data["msg"], "info");
-              } else {
-                showToastNotification(data["msg"], "success");
-                setTimeout(() => {
-                  window.location.reload();
-                }, 500);
+              const jobObject = data["job"];
+              const bookkeepers = jobObject["bookkeeper"];
+              const bookkeepersIds = bookkeepers.map((element) => element["id"]);
+              const tasks = jobObject["tasks"];
+              // console.log(jobObject);
+              jobsForm["title"].value = jobObject["title"];
+              jobsForm["description"].value = jobObject["description"];
+              jobsForm["due_date"].value = jobObject["due_date"];
+              jobsForm["job_type"].value = jobObject["job_type"];
+              jobsForm["status"].value = jobObject["status"];
+              // jobsForm["client"].value = jobObject["client"];
+              jobsForm["note"].value = jobObject["note"];
+              jobsForm["jobId"].value = jobObject["id"];
+
+              // RadioNodeList: multiple radio inputs,
+              // HTMLInputElement: one radio input
+              // console.log(jobsForm["jobId"].value);
+              // check the bookkeeper array length
+              if (bookkeepersIds.length > 0) {
+                // check if the bookkeeper one or more than one input
+                if (jobsForm["bookkeeper"].constructor.name === "HTMLInputElement") {
+                  // one input
+                  const filtered = bookkeepersIds.some(
+                    (ele) => ele == jobsForm["bookkeeper"].value,
+                  );
+                  if (filtered === true) {
+                    jobsForm["bookkeeper"].checked = true;
+                  }
+                } else if (jobsForm["bookkeeper"].constructor.name === "RadioNodeList") {
+                  // two inputs
+                  jobsForm["bookkeeper"].forEach((input) => {
+                    const filtered = bookkeepersIds.some((ele) => ele == input.value);
+                    // check if filtered is true
+                    if (filtered === true) {
+                      input.checked = true;
+                    }
+                  });
+                }
               }
+
+              // generate tasks checkbox elements
+              if (tasks.length > 0) {
+                tasks.forEach((taskElement) => {
+                  const fieldElement = document.createElement("div");
+                  fieldElement.classList.add(...["field", "jobUpdateTasksField"]);
+                  const label = document.createElement("label");
+                  label.classList.add(...["checkbox", "is-block", "my-2"]);
+                  const taskCheckbox = document.createElement("input");
+                  taskCheckbox.type = "checkbox";
+                  taskCheckbox.name = "tasks";
+                  taskCheckbox.checked = true;
+                  taskCheckbox.value = taskElement["id"];
+                  taskCheckbox.classList.add(...["mr-1"]);
+                  label.textContent = taskElement["title"];
+                  label.prepend(taskCheckbox);
+                  fieldElement.appendChild(label);
+                  jobsUpdateFormFieldSet.appendChild(fieldElement);
+                });
+              }
+              // console.log(tasks);
+
+              /* Array.from(jobsUpdateForm.elements).forEach((element) => {
+                    console.log(element);
+                  }); */
+              // showToastNotification(data["msg"], "success");
+              /* setTimeout(() => {
+                    window.location.reload();
+                  }, 500); */
             })
             .catch((error) => {
               console.error(error);
-              showToastNotification(
-                `${JSON.stringify(error["user_error_msg"])}`,
-                "danger"
-              );
+              showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+            })
+            .finally(() => {
+              jobsFormFieldset.disabled = false;
+              managerJobsLoaderBtn.hidden = true;
             });
-        }
-      });
-    });
-
-    // view job buttons
-    managerViewJobBtn.forEach((btn) => {
-      btn.addEventListener("click", async (event) => {
-        const jobsUpdateFormFieldSet = jobsForm.querySelector("fieldset");
-        const jobId = event.currentTarget.dataset["jobId"];
-        // const url = window.localStorage.getItem("RetrieveJobUrl");
-        const retrieveUrl = await fetchUrlPathByName("jobs:api:retrieve");
-        const updateJobUrl = await fetchUrlPathByName("jobs:api:update");
-
-        // job-details-update-modal @audit
-        const callBacks = {
-          onOpenCallBack: () => {
-            // console.log("Open update job");
-            jobModalTitleElement.textContent = "Update job";
-            jobModalSubmitBtn.textContent = "Update";
-            jobsForm.setAttribute("action", updateJobUrl["urlPath"]);
-            jobsForm.setAttribute("method", "PUT");
-            jobsForm["_method"].value = "PUT";
-            const requestOptions = {
-              method: "POST",
-              dataToSend: { jobId: jobId },
-              url: retrieveUrl["urlPath"],
-            };
-            const request = sendRequest(requestOptions);
-            request
-              .then((data) => {
-                // console.log(data);
-                const jobObject = data["job"];
-                const bookkeepers = jobObject["bookkeeper"];
-                const bookkeepersIds = bookkeepers.map(
-                  (element) => element["id"]
-                );
-                const tasks = jobObject["tasks"];
-                // console.log(jobObject);
-                jobsForm["title"].value = jobObject["title"];
-                jobsForm["description"].value = jobObject["description"];
-                jobsForm["due_date"].value = jobObject["due_date"];
-                jobsForm["job_type"].value = jobObject["job_type"];
-                jobsForm["status"].value = jobObject["status"];
-                // jobsForm["client"].value = jobObject["client"];
-                jobsForm["note"].value = jobObject["note"];
-                jobsForm["jobId"].value = jobObject["id"];
-
-                // RadioNodeList: multiple radio inputs,
-                // HTMLInputElement: one radio input
-                // console.log(jobsForm["jobId"].value);
-                // check the bookkeeper array length
-                if (bookkeepersIds.length > 0) {
-                  // check if the bookkeeper one or more than one input
-                  if (
-                    jobsForm["bookkeeper"].constructor.name === "HTMLInputElement"
-                  ) {
-                    // one input
-                    const filtered = bookkeepersIds.some(
-                      (ele) => ele == jobsForm["bookkeeper"].value
-                    );
-                    if (filtered === true) {
-                      jobsForm["bookkeeper"].checked = true;
-                    }
-                  } else if (
-                    jobsForm["bookkeeper"].constructor.name === "RadioNodeList"
-                  ) {
-                    // two inputs
-                    jobsForm["bookkeeper"].forEach((input) => {
-                      const filtered = bookkeepersIds.some(
-                        (ele) => ele == input.value
-                      );
-                      // check if filtered is true
-                      if (filtered === true) {
-                        input.checked = true;
-                      }
-                    });
-                  }
-                }
-
-                // generate tasks checkbox elements
-                if (tasks.length > 0) {
-                  tasks.forEach((taskElement) => {
-                    const fieldElement = document.createElement("div");
-                    fieldElement.classList.add(
-                      ...["field", "jobUpdateTasksField"]
-                    );
-                    const label = document.createElement("label");
-                    label.classList.add(...["checkbox", "is-block", "my-2"]);
-                    const taskCheckbox = document.createElement("input");
-                    taskCheckbox.type = "checkbox";
-                    taskCheckbox.name = "tasks";
-                    taskCheckbox.checked = true;
-                    taskCheckbox.value = taskElement["id"];
-                    taskCheckbox.classList.add(...["mr-1"]);
-                    label.textContent = taskElement["title"];
-                    label.prepend(taskCheckbox);
-                    fieldElement.appendChild(label);
-                    jobsUpdateFormFieldSet.appendChild(fieldElement);
-                  });
-                }
-                // console.log(tasks);
-
-                /* Array.from(jobsUpdateForm.elements).forEach((element) => {
-                    console.log(element);
-                  }); */
-                // showToastNotification(data["msg"], "success");
-                /* setTimeout(() => {
-                    window.location.reload();
-                  }, 500); */
-              })
-              .catch((error) => {
-                console.error(error);
-                showToastNotification(
-                  `${JSON.stringify(error["user_error_msg"])}`,
-                  "danger"
-                );
-              })
-              .finally(() => {
-                jobsFormFieldset.disabled = false;
-                managerJobsLoaderBtn.hidden = true;
-              });
-          },
-          onCloseCallback: () => {
-            console.warn("Close Update job");
-            const allTasksFields = document.querySelectorAll(
-              "div.jobUpdateTasksField"
-            );
-            allTasksFields.forEach((element) => {
-              element.remove();
-            });
-            jobsForm.reset();
-          },
-        };
-        new MicroModalHandler(jobFormModalId, callBacks);
-        /* jobsUpdateForm.addEventListener("submit", (event) => {
+        },
+        onCloseCallback: () => {
+          console.warn("Close Update job");
+          const allTasksFields = document.querySelectorAll("div.jobUpdateTasksField");
+          allTasksFields.forEach((element) => {
+            element.remove();
+          });
+          jobsForm.reset();
+        },
+      };
+      new MicroModalHandler(jobFormModalId, callBacks);
+      /* jobsUpdateForm.addEventListener("submit", (event) => {
             event.preventDefault();
             const currentTarget = event.currentTarget;
             const updateUrl = currentTarget.action;
@@ -420,6 +427,6 @@ import {
                 );
               });
           }); */
-      });
     });
   });
+});

@@ -82,12 +82,12 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
             # cpprint(self.request.user.has_perm("bookkeeper.bookkeeper_user"))
             # debugging_print("#################################")
             context.setdefault("bookkeeper", bookkeeper)
-            bookkeeper_helper = BookkeeperHelper(bookkeeper)
-            context.setdefault("clients", bookkeeper_helper.get_clients())
-            context.setdefault(
-                "total_past_due_total", bookkeeper_helper.get_past_due_tasks_total
-            )
-            context.setdefault("last_tasks", bookkeeper_helper.get_last_tasks())
+            # bookkeeper_helper = BookkeeperHelper(bookkeeper)
+            # context.setdefault("clients", bookkeeper_helper.get_clients())
+            # context.setdefault(
+            #     "total_past_due_total", bookkeeper_helper.get_past_due_tasks_total
+            # )
+            # context.setdefault("last_tasks", bookkeeper_helper.get_last_tasks())
             return context
 
         except Exception as ex:

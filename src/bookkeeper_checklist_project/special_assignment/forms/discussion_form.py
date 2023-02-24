@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-#
 from typing import Optional
 
+from django import forms
+
 from core.constants.form import EXCLUDED_FIELDS
 from core.forms import BaseModelFormMixin
 from core.utils import get_trans_txt
@@ -23,9 +25,9 @@ class DiscussionForm(BaseModelFormMixin):
 
         self.fields["body"].widget.attrs.update({"rows": 5, "cols": 10})
 
-        self.fields["title"].widget.attrs.update(
-            {"placeholder": get_trans_txt("Optional title for the reply")}
-        )
+        # self.fields["title"].widget.attrs.update(
+        #     {"placeholder": get_trans_txt("Optional title for the reply")}
+        # )
 
         # check if special assignment is passed
         if special_assignment:
@@ -33,7 +35,7 @@ class DiscussionForm(BaseModelFormMixin):
             self.fields["special_assignment"].widget.attrs.update(
                 {"class": "readonly-select cursor-not-allowed", "readonly": "readonly"}
             )
-            self.fields["replies"].queryset = Discussion.objects.select_related().filter(
+            self.fields["replies"].queryset = Discussion.objects.filter(
                 special_assignment=special_assignment
             )
             self.fields.pop("job")
@@ -70,3 +72,4 @@ class DiscussionForm(BaseModelFormMixin):
     class Meta(BaseModelFormMixin.Meta):
         model = Discussion
         exclude = EXCLUDED_FIELDS + ["is_seen"]
+

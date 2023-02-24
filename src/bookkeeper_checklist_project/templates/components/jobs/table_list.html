@@ -45,9 +45,17 @@
 
       <td data-label="Manager">
         {% if job_object.managed_by is not None %}
-        <a href="{% fetch_user_details_url base_user=user_type user_object=job_object.managed_by %}" target="_blank">
-          {{ job_object.managed_by }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
-        </a>
+          
+          {% if request.user.user_type == "bookkeeper" %}
+          <a href="" class="disabledAnchorElement">
+            {{ job_object.managed_by }}
+          </a>
+          {% else %}
+          <a href="{% fetch_user_details_url base_user=user_type user_object=job_object.managed_by %}" target="_blank">
+            {{ job_object.managed_by }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
+          </a>
+          {% endif %}
+            
         {% else %}
         {% include 'components/core/red_text.html' with text="No staff member for this job" only %}
         {% endif %}
@@ -66,7 +74,7 @@
         <span class="tag">{{ job_object.get_job_type_display }}</span>
       </td>
       <td data-label="Status" class="is-progress-cell">
-        {% include 'components/core/table_list/status_tag.html' with status=job_object.status tag_size="is-small" status_label=job_object.get_status_display %}
+        {% include 'components/core/table_list/status_tag.html' with status=job_object.status tag_size="is-small" status_label=job_object.get_status_display only %}
       </td>
       <td data-label="Start Date">
         {% include 'components/core/table_list/table_cell_created.html' with created_at=job_object.start_date user_type=user_type only %}

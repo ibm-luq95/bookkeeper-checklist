@@ -30,12 +30,9 @@ document.addEventListener("readystatechange", (ev) => {
     });
 
     // Return an array of bulmaCollapsible instances (empty if no DOM node found)
-    const bulmaCollapsibleInstances = bulmaCollapsible.attach(
-      ".is-collapsible",
-      {
-        expand: false,
-      }
-    );
+    const bulmaCollapsibleInstances = bulmaCollapsible.attach(".is-collapsible", {
+      expand: false,
+    });
 
     // Loop into instances
     /* bulmaCollapsibleInstances.forEach((bulmaCollapsibleInstance) => {
@@ -44,18 +41,26 @@ document.addEventListener("readystatechange", (ev) => {
     }); */
 
     // add is-active to left side a elements
-    const leftSideActiveElement = document.querySelector(
-      "a.left-side-item.is-active"
-    );
+    const leftSideActiveElement = document.querySelector("a.left-side-item.is-active");
     const leftSideElements = document.querySelectorAll("a.left-side-item");
     // console.log(leftSideElements);
     leftSideElements.forEach((element) => {
       element.addEventListener("click", (event) => {
         const currentTarget = event.currentTarget;
-        leftSideActiveElement.classList.remove("is-active")
+        leftSideActiveElement.classList.remove("is-active");
         // console.log("click");
         currentTarget.classList.add("is-active");
       });
     });
+
+    // disabled anchor elements
+    const disabledAnchorElements = document.querySelectorAll("a.disabledAnchorElement");
+    if (disabledAnchorElements) {
+      disabledAnchorElements.forEach((element) => {
+        element.addEventListener("click", (event) => {
+          event.preventDefault();
+        });
+      });
+    }
   }
 });

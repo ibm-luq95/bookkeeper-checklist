@@ -20,7 +20,12 @@
           <fieldset form="{{ user_type }}JobForm">
           <input type="hidden" name="_method" value="" />
           <input type="hidden" name="created_by" value="{{ request_object.user.pk }}" />
-          <input type="hidden" name="jobId" value="" />
+          
+          {% if jobId %}
+          <input type="hidden" name="jobId" value="{{ jobId }}" />
+            
+          {% endif %}
+            
             {{ job_form|crispy }}
           </fieldset>
 
@@ -29,7 +34,7 @@
       <footer class="modal__footer">
         <button type="submit" form="{{ user_type }}JobForm"
           class="modal__btn modal__btn-primary bkchlst-input is-disabled" disabled>
-          Create
+          
         </button>
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">
           Close

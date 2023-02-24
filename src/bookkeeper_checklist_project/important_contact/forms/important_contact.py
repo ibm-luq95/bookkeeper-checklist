@@ -42,6 +42,3 @@ class ImportantContactForm(BaseModelFormMixin, SaveCreatedByFormMixin):
 
     class Meta(BaseModelFormMixin.Meta):
         model = ImportantContact
-        # widgets = {
-        #     "account_url": forms.URLInput()
-        # }

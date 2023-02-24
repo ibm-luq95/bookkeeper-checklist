@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+import textwrap
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -43,7 +44,7 @@ class Job(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
         related_name="jobs",
         null=True,
         blank=True,
-        help_text=JOB_HELP_MESSAGES.get("managed_by")
+        help_text=JOB_HELP_MESSAGES.get("managed_by"),
     )
     title = models.CharField(
         _("title"), max_length=100, null=False, help_text=JOB_HELP_MESSAGES.get("title")
@@ -81,7 +82,8 @@ class Job(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
         ]
 
     def __str__(self) -> str:
-        return self.title
+        # return self.title
+        return textwrap.shorten(self.title, width=40, placeholder="...")
 
     # def get_absolute_url(self):
     #     return reverse("manager:jobs:details", kwargs={"pk": self.pk})

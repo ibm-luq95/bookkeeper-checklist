@@ -133,7 +133,7 @@ class SpecialAssignmentUpdateView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = get_trans_txt("Update special assignment")
+        context.setdefault("title", get_trans_txt("Update special assignment"))
         return context
 
     def get_success_url(self):

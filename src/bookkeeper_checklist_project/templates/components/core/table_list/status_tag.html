@@ -21,7 +21,9 @@
     <span class="tag {{ tag_size }} is-danger is-light">{{ status_label }}</span>
 
   {% else %}
-  {{ status_label }}
+  <span class="tag {{ tag_size }}">
+    {{ status_label }}
+  </span>
   {% endif %}
 {% endwith %}
 

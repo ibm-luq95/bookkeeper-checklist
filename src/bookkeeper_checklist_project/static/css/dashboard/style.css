@@ -356,3 +356,7 @@ div.scrollable:hover::-webkit-scrollbar-thumb {
   margin-right: 3px;
   content: "▸";
 }
+
+select[multiple] {
+  height: 20rem !important;
+}

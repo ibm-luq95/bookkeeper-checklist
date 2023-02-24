@@ -90,6 +90,7 @@ class JobDetailsView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         job_object = self.get_object()
+        job_form = JobForm(instance=job_object, is_updated=True)
         discussion_form = DiscussionForm(initial={"job": job_object})
         document_form = DocumentForm(
             initial={
@@ -112,6 +113,7 @@ class JobDetailsView(
         context.setdefault("task_form", task_form)
         context.setdefault("document_form", document_form)
         context.setdefault("note_form", note_form)
+        context.setdefault("job_form", job_form)
         context.setdefault("discussion_form", discussion_form)
         return context
 

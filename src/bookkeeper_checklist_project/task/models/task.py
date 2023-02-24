@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-#
+import textwrap
+
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 # from client.models import Client
 from core.choices import TaskStatusEnum, TaskTypeEnum
 from core.models import (
     BaseModelMixin,
-    UserForeignKeyMixin,
     CreatedByMixin,
     StartAndDueDateMixin,
 )
@@ -54,14 +54,12 @@ class Task(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
         _("additional notes"),
         null=True,
         blank=True,
-        help_text=_("Additional note " "for the task"),
+        help_text=_("Additional note for the task"),
     )
 
     def __str__(self) -> str:
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse("bookkeeper:tasks:details", kwargs={"pk": self.pk})
+        # return self.title
+        return textwrap.shorten(self.title, width=40, placeholder="...")
 
     def get_is_completed_label(self) -> str:
         if self.is_completed is True:

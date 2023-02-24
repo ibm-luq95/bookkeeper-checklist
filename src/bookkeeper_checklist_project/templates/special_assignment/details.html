@@ -6,10 +6,10 @@
 {% block dashboard_content %}
 <section class="box block">
   <div class="columns is-flex is-justify-content-space-between pt-5">
-    <header class="">
+    <header>
       <h5 class="title is-size-5">{{ object|capfirst }}</h5>
     </header>
-    <div class="">
+    <div>
 
       {% if object.status == "rejected" %}
       <span class="tag is-danger is-light is-medium mt-1">{{ object.get_status_display|capfirst }}</span>
@@ -20,14 +20,22 @@
         {{ object.get_status_display|capfirst }}
       </span>
       {% endif %}
-      <a href="{% url 'special_assignment:update' object.pk %}" title="Update assignment" class="button is-success">
+      {# check change permission #}
+      {% if perms.special_assignment.change_specialassignment %}
+      {# check if the special assignment owner is the current user #}
+      {% if object.assigned_by == request.user %}
+      <a href="{% url 'special_assignment:update' object.pk %}" aria-label="Update assignment"
+        class="button is-success hint--bottom">
         <i class="fa-solid fa-pencil"></i>
       </a>
+      {% endif %}
+
+      {% endif %}
 
     </div>
   </div>
-  <hr>
-  <br>
+  <hr />
+  <br />
   <section class="container">
     <section id="special-assignment-block" class="mb-5">
       <article class="media">
@@ -48,7 +56,7 @@
                   <strong>{{ object.title|capfirst }}</strong> <small><a
                       href="">@{{ object.get_managed_user }}</a></small>
                   <small>{{ object.created_at|naturaltime }}</small>
-                  <br>
+                  <br />
                   {{ object.body|capfirst }}
                 </p>
                 <nav class="level is-mobile">
@@ -63,8 +71,7 @@
                         <span class="icon is-small"><i class="fas fa-heart"></i></span>
                       </a> -->
                     {% if object.attachment %}
-                    <a class="level-item has-tooltip-arrow has-tooltipl-multiline has-tooltip-text-centered"
-                      title="There is attachment file" download="{{ object.attachment.url }}" target="_blank"
+                    <a class="hint--left" aria-label="There is attachment file" download="{{ object.attachment.url }}"
                       href="{{ object.attachment.url }}">
                       <span class="icon is-small">
                         <i class="fa-solid fa-paperclip"></i>
@@ -72,7 +79,6 @@
                     </a>
 
                     {% endif %}
-
 
                   </div>
                 </nav>
@@ -121,21 +127,19 @@
                   <h2 class="title subtitle is-size-6 is-inline mx-3">
 
                     {% if object.is_seen is True %}
-                    <i title="Seen" class="fa-solid fa-eye"></i>
+                    <i aria-label="Seen" class="fa-solid fa-eye hint--top is-inline-block"></i>
                     {% else %}
-                    <i title="Not seen" class="fa-solid fa-eye-slash"></i>
+                    <i aria-label="Not seen" class="fa-solid fa-eye-slash hint--top is-inline-block"></i>
                     {% endif %}
                   </h2>
                 </div>
                 <hr />
+                {% if object.get_managed_user.user == request.user %}
                 <section>
-                  <form action="{% url 'special_assignment:api:special_assignment:update-status' %}"
-                    method="PUT" id="updateSpecialAssignmentStatusForm">
+                  <form action="{% url 'special_assignment:api:special_assignment:update-status' %}" method="put"
+                    id="updateSpecialAssignmentStatusForm">
                     <fieldset form="updateSpecialAssignmentStatusForm">
                       {% csrf_token %}
-
-
-
                       <input type="hidden" name="special_assignment" value="{{ object.pk }}" />
                       <div class="field">
                         <label class="label" for="status">Status</label>
@@ -163,9 +167,10 @@
                     </fieldset>
                   </form>
                 </section>
+                {% endif %}
+
               </div>
             </div>
-
 
           </div>
         </div>
@@ -183,11 +188,12 @@
         </p>
       </figure>
       <div class="media-content">
-        <form action="{% url 'special_assignment:api:discussion:create' %}" method="POST"
-          id="managerAddReplyForm" enctype="multipart/form-data">
+        <form action="{% url 'special_assignment:api:discussion:create' %}" method="post" id="managerAddReplyForm"
+          enctype="multipart/form-data">
           <fieldset form="managerAddReplyForm">
-            {% csrf_token %}
             <legend class="is-size-5 mb-2">Add reply</legend>
+            {% if perms.special_assignment.add_discussion %}
+            {% csrf_token %}
             {{discussion_form| crispy}}
             <!-- <div class="field">
                 <p class="control">
@@ -201,12 +207,12 @@
                   form="managerAddReplyForm">Post reply</button>
               </p>
             </div>
+            {% else %}
+            {% include 'components/core/no_permissions.html' with msg="no permissions to add any reply" %}
+            {% endif %}
+
           </fieldset>
-
-
         </form>
-
-
       </div>
     </article>
     <!-- End Reply Form -->
@@ -227,14 +233,13 @@
         <div class="content">
           <p>
             <strong>{{ reply.get_managed_user }}</strong>
-            <br>
+            <br />
             {{ reply.body|capfirst }}
-            <br>
+            <br />
             <small>
               {% if reply.attachment %}
-              <a class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-text-centered"
-                title="There is attachment file" download="{{ reply.attachment.url }}" target="_blank"
-                href="{{ reply.attachment.url }}">
+              <a class="hint--right" aria-label="There is attachment file" download="{{ reply.attachment.url }}"
+                target="_blank" href="{{ reply.attachment.url }}">
                 <span class="icon is-small">
                   <i class="fa-solid fa-paperclip"></i>
                 </span>
@@ -261,14 +266,13 @@
             <div class="content">
               <p>
                 <strong>{{ discussion_reply.get_managed_user }}</strong>
-                <br>
+                <br />
                 {{ discussion_reply.body|capfirst }}
-                <br>
+                <br />
                 <small>
                   {% if discussion_reply.attachment %}
-                  <a class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-text-centered"
-                    title="There is attachment file" download="{{ discussion_reply.attachment.url }}" target="_blank"
-                    href="{{ discussion_reply.attachment.url }}">
+                  <a class="hint--top" aria-label="There is attachment file"
+                    download="{{ discussion_reply.attachment.url }}" href="{{ discussion_reply.attachment.url }}">
                     <span class="icon is-small">
                       <i class="fa-solid fa-paperclip"></i>
                     </span>
@@ -285,23 +289,15 @@
           </div>
         </article>
         {% endfor %}
-
-
         {% endif %}
-
-
-
 
       </div>
     </article>
-
-
     {% empty %}
     <div class="notification is-warning has-text-weight-bold my-3">
       No replies
     </div>
     {% endfor %}
-
 
     <!-- End Discussion -->
   </section>
@@ -309,5 +305,5 @@
 
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/manager/special_assignment/details.js' %}" defer type="module"></script>
+<script src="{% static 'js/apps/special_assignment/details.js' %}" defer type="module"></script>
 {% endblock externaljs %}

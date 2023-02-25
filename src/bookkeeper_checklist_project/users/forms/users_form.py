@@ -81,7 +81,7 @@ class UserChangeForm(UserChangeForm):
             all_initial_permissions = []
             content_type_object = ContentType.objects.filter(
                 model__in=[
-                    # user_object.user_type,
+                    user_object.user_type,
                     "Client",
                     "CompanyService",
                     "Job",

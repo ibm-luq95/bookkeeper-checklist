@@ -183,17 +183,22 @@ class ClientUpdateView(
     template_name_suffix = "_update_form"
     form_class = ClientForm
     success_url = reverse_lazy("client:list")
-    success_message = "Client update successfully"
+    success_message = get_trans_txt("Client update successfully")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = "Update client"
+        context.setdefault("title", get_trans_txt("Update client"))
         # important_contact_form = ImportantContactForm(
         #     instance=self.get_object().important_contact
         # )
         # context.setdefault("important_contact_form", important_contact_form)
         return context
+    
+    def get_form_kwargs(self):
+        kwargs = super(ClientUpdateView, self).get_form_kwargs()
+        kwargs.update({"user": self.request.user})
+        return kwargs
 
 
 class ClientDeleteView(

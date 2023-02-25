@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from core.constants import BOOKKEEPER_GROUP_NAME, MANAGER_GROUP_NAME, ASSISTANT_GROUP_NAME
+# from core.utils import debugging_print
 
 
 class Command(BaseCommand):
@@ -68,14 +69,14 @@ class Command(BaseCommand):
                             group_obj = Group.objects.create(name=MANAGER_GROUP_NAME)
                         case _:
                             raise Exception(f"The {model} not exists!")
-                    for perm in permissions:
-                        pe = Permission.objects.filter(codename=perm)
-                        if pe:
-                            pe = pe.first()
-                            group_obj.permissions.add(pe)
-                            group_obj.save()
-                        else:
-                            self.stdout_output("error", f"Permission {perm} not exists!")
+                    # for perm in permissions:
+                    #     pe = Permission.objects.filter(codename=perm)
+                    #     if pe:
+                    #         pe = pe.first()
+                    #         group_obj.permissions.add(pe)
+                    #         group_obj.save()
+                    #     else:
+                    #         self.stdout_output("error", f"Permission {perm} not exists!")
                     # debugging_print(group_obj.permissions.all())
                     self.stdout_output(
                         "success", f"Group {group_obj.name} created successfully"

@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-#
+from typing import Optional
 from notes.models import Note
-from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
+from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin, RemoveFieldsMixin
 
 
-class NoteForm(BaseModelFormMixin, SaveCreatedByFormMixin):
-    def __init__(self, client=None, note_section=None, created_by=None, *args, **kwargs):
+class NoteForm(BaseModelFormMixin, SaveCreatedByFormMixin, RemoveFieldsMixin):
+    def __init__(
+        self,
+        client=None,
+        note_section=None,
+        created_by=None,
+        removed_fields: Optional[list] = None,
+        *args,
+        **kwargs,
+    ):
         super(NoteForm, self).__init__(*args, **kwargs)
+        RemoveFieldsMixin.__init__(self, removed_fields=removed_fields)
         if client is not None:
             self.fields["client"].initial = client
             self.fields.pop("task")

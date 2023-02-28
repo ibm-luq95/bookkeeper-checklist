@@ -21,7 +21,7 @@
                     {% comment %} <figure class="avatar">
                         <img src="https://via.placeholder.com/150">
                     </figure> {% endcomment %}
-                    <form method="POST" id="login-form" action="{% url 'users:login' %}">
+                    <form method="POST" id="login-form" action="{% url 'users:auth:login' %}">
                         {% csrf_token %}
                         <fieldset form="login-form">
                             {{form| crispy}}

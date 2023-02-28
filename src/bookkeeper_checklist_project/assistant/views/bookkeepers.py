@@ -10,7 +10,7 @@ from .mixins import AssistantAccessMixin
 
 class BookkeepersListView(LoginRequiredMixin, AssistantAccessMixin, ListView):
     template_name = "assistant/bookkeepers/list.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Bookkeeper
 
     def get_context_data(self, **kwargs):
@@ -22,7 +22,7 @@ class BookkeepersListView(LoginRequiredMixin, AssistantAccessMixin, ListView):
 
 class BookkeepersDetailsView(LoginRequiredMixin, AssistantAccessMixin, DetailView):
     template_name = "assistant/bookkeepers/details.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Bookkeeper
 
     def get_context_data(self, **kwargs):

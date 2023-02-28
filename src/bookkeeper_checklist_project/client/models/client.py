@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-#
 from PIL import Image
+from django.core import validators
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from core.choices import ClientStatusEnum
@@ -26,9 +26,26 @@ class Client(BaseModelMixin):
         BaseModelMixin (models.Model): Django base model mixin
     """
 
+    bookkeepers = models.ManyToManyField(
+        to="bookkeeper.Bookkeeper", related_name="clients", blank=True
+    )
     name = models.CharField(_("name"), max_length=50, null=True)
     email = models.EmailField(_("email"), max_length=50, null=True)
     industry = models.CharField(_("industry"), max_length=50, null=True)
+    website = models.URLField(_("website"), null=True, blank=True)
+    street = models.CharField(_("street"), max_length=50, null=True, blank=True)
+    city = models.CharField(_("city"), max_length=20, null=True, blank=True)
+    state = models.CharField(_("state"), max_length=20, null=True, blank=True)
+    phone_number = models.CharField(
+        _("phone_number"), max_length=50, null=True, blank=True
+    )
+    postcode = models.CharField(
+        _("postcode"),
+        max_length=10,
+        null=True,
+        blank=True,
+        validators=[validators.integer_validator],
+    )
     is_active = models.BooleanField(_("is active"), default=True)
     company_logo = models.ImageField(
         _("company logo"),
@@ -68,8 +85,8 @@ class Client(BaseModelMixin):
                 image.thumbnail(output_size)
                 image.save(self.company_logo.path)
 
-    def get_absolute_url(self):
-        return reverse("manager:client:details", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("manager:client:details", kwargs={"pk": self.pk})
 
     def get_tasks_count(self):
         return self.jobs.all()
@@ -78,7 +95,7 @@ class Client(BaseModelMixin):
         all_tasks_count = []
         if self.jobs.count() <= 0:
             return 0
-        for job in self.jobs.select_related().filter():
+        for job in self.jobs.all():
             all_tasks_count.append(job.tasks.count())
 
         # print("#############")
@@ -90,12 +107,24 @@ class Client(BaseModelMixin):
 
     def get_managed_bookkeepers(self) -> set | None:
         all_bookkeepers = []
-        jobs = self.jobs.select_related().filter()
+        jobs = self.jobs.all()
         if jobs:
             for job in jobs:
                 # print(job)
-                for bookkeeper in job.bookkeeper.select_related().filter():
+                for bookkeeper in job.bookkeeper.all():
                     all_bookkeepers.append(bookkeeper)
             return set(all_bookkeepers)
         else:
             return None
+
+    def get_all_tasks(self) -> list | None:
+        all_tasks = []
+        jobs = self.jobs.all()
+        if jobs:
+            for job in jobs:
+                tasks = job.tasks.all()
+                print(tasks)
+                if tasks:
+                    for task in tasks:
+                        all_tasks.append(task)
+        return all_tasks

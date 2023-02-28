@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-#
+import textwrap
+
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 # from client.models import Client
 from core.choices import TaskStatusEnum, TaskTypeEnum
-from core.models import BaseModelMixin, UserForeignKeyMixin, CreatedByMixin
+from core.models import (
+    BaseModelMixin,
+    CreatedByMixin,
+    StartAndDueDateMixin,
+)
 from jobs.models import Job
 
 
-class Task(BaseModelMixin, CreatedByMixin):
+class Task(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
     """Tasks for every job
 
     Args:
@@ -38,16 +43,23 @@ class Task(BaseModelMixin, CreatedByMixin):
         choices=TaskStatusEnum.choices,
     )
     is_completed = models.BooleanField(_("is completed"), default=False)
-    hints = models.CharField(_("hints"), max_length=60, null=True, blank=True)
-    additional_notes = models.TextField(_("additional notes"), null=True, blank=True)
-    start_date = models.DateField(_("start date"), null=True, blank=True)
-    due_date = models.DateField(_("due date"))
+    hints = models.CharField(
+        _("hints"),
+        max_length=60,
+        null=True,
+        blank=True,
+        help_text=_("Hints help to this task"),
+    )
+    additional_notes = models.TextField(
+        _("additional notes"),
+        null=True,
+        blank=True,
+        help_text=_("Additional note for the task"),
+    )
 
     def __str__(self) -> str:
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse("bookkeeper:tasks:details", kwargs={"pk": self.pk})
+        # return self.title
+        return textwrap.shorten(self.title, width=40, placeholder="...")
 
     def get_is_completed_label(self) -> str:
         if self.is_completed is True:

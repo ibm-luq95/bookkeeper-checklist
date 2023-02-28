@@ -4,6 +4,7 @@ from client_account.models import ClientAccount
 from company_services.helpers import PasswordHasher
 from core.constants.form import EXCLUDED_FIELDS
 from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
+from core.forms.widgets import CustomPasswordInputWidget
 
 
 class ClientAccountForm(BaseModelFormMixin, SaveCreatedByFormMixin):
@@ -26,9 +27,7 @@ class ClientAccountForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         if created_by is not None:
             self.created_by = created_by
 
-    account_password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}), required=False
-    )
+    account_password = forms.CharField(widget=CustomPasswordInputWidget, required=False)
 
     def clean_account_password(self):
         data = self.cleaned_data["account_password"]
@@ -51,6 +50,3 @@ class ClientAccountForm(BaseModelFormMixin, SaveCreatedByFormMixin):
     class Meta(BaseModelFormMixin.Meta):
         model = ClientAccount
         exclude = EXCLUDED_FIELDS
-        # widgets = {
-        #     "account_url": forms.URLInput()
-        # }

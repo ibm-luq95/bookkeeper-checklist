@@ -1,0 +1,29 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+{% load url_helpers %}
+
+
+{% block dashboard_content %}
+
+<section id="{{ request.user.user_type }}-{{ app_label }}-list" class="box block">
+  {# Start Include Header List Component #}
+  {% include 'components/core/dashboard/header_title.html' with user_type=request.user.user_type app_name=app_label page_header=page_header list_type=list_type is_archived_enabled=True perms=perms only %}
+  {# End Include Header List Component #}
+  <div>
+    {# Start Include Filter Form Component #}
+    {% include 'components/core/forms/filter_form.html' with object_list=object_list user_type=request.user.user_type action_url=app_label|add:":list" reset_url=app_label|add:":list" filter_form=filter_form only %}
+    {# End Include Filter Form Component #}
+
+    {# Start Include Jobs Table List Component #}
+    {% include 'components/jobs/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label app_name=app_label enabled_action_btns='update,delete,details' perms=perms is_show_created_at=is_show_created_at is_show_client_column=True request=request only %}
+    {# End Include Jobs Table List Component #}
+
+    {# Start Include Pagination Component #}
+    {% include 'components/core/pagination.html' with page_obj=page_obj only %}
+    {# Start Include Pagination Component #}
+  </div>
+
+  {% endblock dashboard_content %}
+
+  {% block externaljs %}
+  {% endblock externaljs %}

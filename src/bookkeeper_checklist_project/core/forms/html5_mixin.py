@@ -25,7 +25,7 @@ class Html5Mixin:
                     self.fields[name].widget.input_type = "email"
                 elif isinstance(field, forms.URLField):
                     self.fields[name].widget.input_type = "url"
-                    self.fields[name].widget.attrs.update({"class": "input"})
+                    self.fields[name].widget.attrs.update({"class": "input", "value": "https://"})
                 elif isinstance(field, forms.DateField):
                     self.fields[name].widget.input_type = "date"
                     self.fields[name].widget.attrs.update({"class": "input"})

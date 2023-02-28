@@ -17,7 +17,7 @@ class UserCreateView(
     LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, CreateView
 ):
     # model = get_user_model()
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "manager/users/create.html"
     form_class = CustomUserCreationForm
     http_method_names = ["post", "get"]
@@ -76,7 +76,7 @@ class UserCreateView(
 
 class UserDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
     model = get_user_model()
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name: str = "manager/users/details.html"
 
     def get_context_data(self, **kwargs):
@@ -87,7 +87,7 @@ class UserDetailsView(LoginRequiredMixin, ManagerAccessMixin, DetailView):
 
 
 class UserUpdateView(LoginRequiredMixin, ManagerAccessMixin, SuccessMessageMixin, FormView):
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     template_name = "manager/users/update.html"
     http_method_names = ["post", "get"]
     form_class = UpdateUserForm

@@ -9,21 +9,28 @@ from django.utils.translation import gettext as _
 from client.models import Client
 from core.choices import DocumentTypesEnum
 from core.models import BaseModelMixin, CreatedByMixin
+from core.utils import debugging_print
 from jobs.models import Job
 from task.models import Task
 
 
+# def saved_document_file_path(instance, filename):
+#     file_path = ""
+#     file_suffix = secrets.token_urlsafe(7)
+#     if instance.document_section == "client":
+#         # if instance.client:
+#         file_path = f"documents/clients/{instance.client.pk}/{file_suffix}_{filename}"
+#     elif instance.document_section == "task":
+#         # if instance.task:
+#         file_path = f"documents/tasks/{instance.task.pk}/{file_suffix}_{filename}"
+#     elif instance.document_section == "job":
+#         # if instance.job:
+#         file_path = f"documents/jobs/{instance.job.pk}/{file_suffix}_{filename}"
+#
+#     return file_path
 def saved_document_file_path(instance, filename):
-    file_path = ""
     file_suffix = secrets.token_urlsafe(7)
-    if instance.client:
-        file_path = f"documents/clients/{instance.client.pk}/{file_suffix}_{filename}"
-    if instance.task:
-        file_path = f"documents/tasks/{instance.task.pk}/{file_suffix}_{filename}"
-    if instance.job:
-        file_path = f"documents/jobs/{instance.job.pk}/{file_suffix}_{filename}"
-
-    return file_path
+    return f"documents/{file_suffix}_{filename}"
 
 
 class Documents(BaseModelMixin, CreatedByMixin):
@@ -51,5 +58,6 @@ class Documents(BaseModelMixin, CreatedByMixin):
         to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
     )
 
-    def get_absolute_url(self):
-        return reverse("documents:manager:details", kwargs={"pk": self.pk})
+    def delete(self, *args, **kwargs):
+        self.document_file.storage.delete(self.document_file.name)
+        super(Documents, self).delete(*args, **kwargs)

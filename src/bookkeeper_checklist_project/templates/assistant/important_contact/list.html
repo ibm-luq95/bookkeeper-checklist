@@ -105,8 +105,8 @@
           <td>
 
             {% for client in object.client.filter %}
-            <a target="_blank" href="{% url 'manager:client:details' client.pk %}">
-              {{ client.name }} <i class="fas fa-external-link-alt is-small"></i>
+            <a target="_blank" href="{% url 'client:manager:details:overview:overview:overview:overview:overview' client.pk %}">
+              {{ client.name }} <i class="fas fa-external-link-alt is-small fa-xs fa-xs"></i>
             </a>
             <br />
             {% empty %}
@@ -123,10 +123,10 @@
 
           <td class="has-text-centered">
             <div class="buttons are-small justify-center">
-              <a href="{% url 'manager:important_contact:update' object.pk %}" class="button is-success is-light">
+              <a href="{% url 'important_contact:manager:update' object.pk %}" class="button is-success is-light">
                 <i class="fa-solid fa-pencil"></i>
               </a>
-              <a href="{% url 'manager:important_contact:delete' object.pk %}" class="button is-danger is-light">
+              <a href="{% url 'important_contact:manager:delete' object.pk %}" class="button is-danger is-light">
                 <i class="fa-solid fa-trash"></i>
               </a>
             </div>
@@ -141,7 +141,7 @@
       <!-- <button class="delete"></button> -->
       No contact(s)
       <a class="is-primary is-inverted is-hoverable is-hovered mx-1"
-        href="{% url 'manager:important_contact:create' %}">Create contact</a>
+        href="{% url 'important_contact:manager:create' %}">Create contact</a>
     </div>
     {% endif %}
   </div>

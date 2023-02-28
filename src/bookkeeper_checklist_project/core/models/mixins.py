@@ -14,7 +14,9 @@ class BaseModelMixin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     metadata = models.JSONField(_("metadata"), null=True, blank=True, default=dict)
     is_deleted = models.BooleanField(_("is_deleted"), default=False)
-    created_at = models.DateTimeField(_("created_at"), default=timezone.now, editable=False)
+    created_at = models.DateTimeField(
+        _("created_at"), default=timezone.now, editable=False
+    )
     updated_at = models.DateTimeField(
         _("updated_at"), auto_now=True, blank=True, null=True, editable=False
     )
@@ -27,6 +29,10 @@ class BaseModelMixin(models.Model):
         abstract = True
         # ordering = ["-created_at", "-updated_at"]
         ordering = ["-created_at"]
+        permissions = [
+            ("can_view_list", "Can view list view"),
+            ("view_archive", "Can view archive"),
+        ]
 
     def soft_delete(self):
         self.is_deleted = True
@@ -73,6 +79,29 @@ class CreatedByMixin(models.Model):
         blank=True,
         editable=False,
     )
+
+    class Meta:
+        abstract = True
+
+
+class GetObjectSectionMixin(models.Model):
+    class Meta:
+        abstract = True
+
+    def get_object_section(self):
+        if self.job:
+            return self.job
+        elif self.client:
+            return self.client
+        elif self.task:
+            return self.task
+
+
+class StartAndDueDateMixin(models.Model):
+    start_date = models.DateField(
+        _("start date"), default=timezone.now, null=True, blank=True
+    )
+    due_date = models.DateField(_("due date"), default=timezone.now, null=True, blank=True)
 
     class Meta:
         abstract = True

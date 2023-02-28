@@ -19,7 +19,7 @@ class Assistant(BaseModelMixin, StaffMemberMixin):
         choices=AssistantTypeEnum.choices,
         default=AssistantTypeEnum.ALL,
     )
-    clients = models.ManyToManyField(to=Client, blank=True)
+    # clients = models.ManyToManyField(to=Client, blank=True, related_name="assistants")
 
     class Meta:
         # proxy = True
@@ -28,6 +28,12 @@ class Assistant(BaseModelMixin, StaffMemberMixin):
             ("can_access_bookkeeper", _("Can access bookkeeper account details")),
             ("can_edit_bookkeeper", _("Can edit bookkeeper account details")),
             ("can_access_client", _("Can access client(s) account details")),
+            ("can_assign_bookkeeper_to_client", _("Assign bookkeeper to client")),
+            (
+                "assistant_has_full_manager_permissions",
+                "Assistant has full manager permissions",
+            ),
+            ("can_edit_users", "Can edit users"),
         ]
 
     def __str__(self) -> str:

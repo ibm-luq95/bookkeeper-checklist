@@ -6,10 +6,10 @@ from manager.views import (
     ManagerDeleteView,
     ManagerArchiveView,
     ManagerUpdateView,
+    ManagerDetailsView,
 )
 
 app_name = "manager"
-
 
 urlpatterns = [
     # path("api/", include("manager.urls.api"), name="manager-bookkeeper-api-urls"),
@@ -17,6 +17,6 @@ urlpatterns = [
     path("archive", ManagerArchiveView.as_view(), name="archive"),
     path("create", ManagerCreateView.as_view(), name="create"),
     path("update/<uuid:pk>", ManagerUpdateView.as_view(), name="update"),
-    # path("<uuid:pk>", BookkeepersDetailsView.as_view(), name="details"),
+    path("<uuid:pk>", ManagerDetailsView.as_view(), name="details"),
     path("delete/<uuid:pk>", ManagerDeleteView.as_view(), name="delete"),
 ]

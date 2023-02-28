@@ -336,7 +336,6 @@ Job - {{ object.title }}
   </div>
 
   <!-- Start Document Form -->
-  {% url 'documents:api:bookkeeper:create' as create_document_action_url %}
   {% include 'segments/documents/document_modal.html' with user_type="bookkeeper" job_object=object document_form=document_form request_object=request %}
   <!-- End Document Form -->
   <!-- Start Note Modal Form -->
@@ -349,21 +348,6 @@ Job - {{ object.title }}
   {% endblock dashboard_content %}
 
   {% block externaljs %}
-  <script defer>
-    window.localStorage.setItem("BookkeeperDocumentsApiRetrieveUrl", "{% url 'documents:api:bookkeeper:retrieve' %}");
-    window.localStorage.setItem("BookkeeperDocumentsApiDeleteUrl", "{% url 'documents:api:bookkeeper:delete' %}");
-    window.localStorage.setItem("BookkeeperDocumentsApiCreateUrl", "{% url 'documents:api:bookkeeper:create' %}");
-    window.localStorage.setItem("BookkeeperNotesApiCreateUrl", "{% url 'notes:api:bookkeeper:create' %}");
-    window.localStorage.setItem("BookkeeperNotesApiRetrieveUrl", "{% url 'notes:api:bookkeeper:retrieve' %}");
-    window.localStorage.setItem("BookkeeperNotesApiUpdateUrl", "{% url 'notes:api:bookkeeper:update' %}");
-    window.localStorage.setItem("BookkeeperNotesApiDeleteUrl", "{% url 'notes:api:bookkeeper:delete' %}");
-    window.localStorage.setItem("BookkeeperTasksApiRetrieveUrl", "{% url 'task:api:bookkeeper:retrieve' %}");
-    window.localStorage.setItem("BookkeeperTasksApiCreateUrl", "{% url 'task:api:bookkeeper:create' %}");
-    window.localStorage.setItem("BookkeeperTasksApiUpdateUrl", "{% url 'task:api:bookkeeper:update' %}");
-    window.localStorage.setItem("BookkeeperTasksApiDeleteUrl", "{% url 'task:api:bookkeeper:delete' %}");
-    window.localStorage.setItem("BookkeeperTaskCompletedUrl", "{% url 'task:api:bookkeeper:set-task-completed' %}");
-
-  </script>
   <script src="{% static 'js/bookkeeper/jobs/sections/documents.js' %}" defer type="module"></script>
   <script src="{% static 'js/bookkeeper/jobs/sections/notes.js' %}" defer type="module"></script>
   <script src="{% static 'js/bookkeeper/jobs/sections/tasks.js' %}" defer type="module"></script>

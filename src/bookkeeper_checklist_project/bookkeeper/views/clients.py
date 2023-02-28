@@ -15,7 +15,7 @@ logger = get_formatted_logger(__file__)
 
 class ClientsListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
     template_name = "bookkeeper/clients/list.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Client
 
     def get_context_data(self, **kwargs):
@@ -45,7 +45,7 @@ class ClientsDetailsView(
     LoginRequiredMixin, BookkeeperAccessMixin, UserPassesTestMixin, DetailView
 ):
     template_name = "bookkeeper/clients/details.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Client
     http_method_names = ["get"]
 

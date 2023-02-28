@@ -12,7 +12,7 @@ from .mixins import AssistantAccessMixin
 
 class JobListView(LoginRequiredMixin, AssistantAccessMixin, ListView):
     template_name = "assistant/job/list.html"
-    login_url = reverse_lazy("users:login")
+    login_url = reverse_lazy("users:auth:login")
     model = Job
 
     def get_context_data(self, **kwargs):

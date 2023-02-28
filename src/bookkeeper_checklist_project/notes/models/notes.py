@@ -4,12 +4,12 @@ from django.utils.translation import gettext as _
 
 from client.models import Client
 from core.choices import NoteTypesEnum
-from core.models import BaseModelMixin, CreatedByMixin
+from core.models import BaseModelMixin, CreatedByMixin, GetObjectSectionMixin
 from jobs.models import Job
 from task.models import Task
 
 
-class Note(BaseModelMixin, CreatedByMixin):
+class Note(BaseModelMixin, CreatedByMixin, GetObjectSectionMixin):
     """Notes model for bookkeeper, assistant, and manager
 
     Args:
@@ -35,7 +35,7 @@ class Note(BaseModelMixin, CreatedByMixin):
         choices=NoteTypesEnum.choices,
     )
 
-    class Meta:
+    class Meta(BaseModelMixin.Meta):
         verbose_name_plural = "notes"
 
     def __str__(self):

@@ -1,0 +1,33 @@
+{% with tag_size|default:'is-small' as tag_size %}
+  {% if status == "not_started" or status == "archived" %}
+    <span class="tag {{ tag_size }}">{{ status_label }}</span>
+  {% elif status == "in_progress" %}
+    <span class="tag {{ tag_size }} is-warning">{{ status_label }}</span>
+  {% elif status == "completed" %}
+    <span class="tag {{ tag_size }} is-success">{{ status_label }}</span>
+  {% elif status == "complete" %}
+    <span class="tag {{ tag_size }} is-success">{{ status_label }}</span>
+  {% elif status == "archive" %}
+    <span class="tag {{ tag_size }} is-light">{{ status_label }}</span>
+  {% elif status == "not_complete" %}
+    <span class="tag {{ tag_size }} is-info">{{ status_label }}</span>
+  {% elif status == "rejected" %}
+    <span class="tag {{ tag_size }} is-danger is-light">{{ status_label }}</span>
+  {% elif status == "past_due" %}
+    <span class="tag {{ tag_size }} is-danger">{{ status_label }}</span>
+  {% elif status == "enabled" %}
+    <span class="tag {{ tag_size }} is-primary is-light">{{ status_label }}</span>
+  {% elif status == "disabled" %}
+    <span class="tag {{ tag_size }} is-danger is-light">{{ status_label }}</span>
+
+  {% else %}
+  <span class="tag {{ tag_size }}">
+    {{ status_label }}
+  </span>
+  {% endif %}
+{% endwith %}
+
+
+{% comment %}
+{% firstof "is-medium" as tag_size %}
+{% endcomment %}

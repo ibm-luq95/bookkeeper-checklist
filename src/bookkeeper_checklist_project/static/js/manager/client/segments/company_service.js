@@ -14,7 +14,7 @@ import { MicroModalHandler } from "../../../utils/model-box.js";
 import { showToastNotification } from "../../../utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", (readyEvent) => {
-  //company-services:api:manager:create
+  //company_services:api:manager:create
   const modalId = "company-services-form-modal";
   const modalElement = document.querySelector(`#${modalId}`);
   const modalTitleElement = modalElement.querySelector(".modal__title");
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         companyServiceForm["_method"].value = "POST";
 
         const createUrl = await fetchUrlPathByName(
-          "company-services:api:manager:create"
+          "company_services:api:manager:create"
         );
         companyServiceForm.setAttribute("action", createUrl["urlPath"]);
       },

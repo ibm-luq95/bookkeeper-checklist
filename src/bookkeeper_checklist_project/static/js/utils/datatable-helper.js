@@ -49,14 +49,15 @@ class DataTableHelper {
       responsive: true,
       autoWidth: this.isAutoWidth,
       processing: true,
-      fixedHeader: true,
-      fixedColumns: true,
-      dom: "Bfrtip",
+      // fixedHeader: true,
+      // fixedColumns: true,
+      searching: true,
+      // dom: "Bfrtip",
 
-      columnDefs: [
-        // { width: "1%", targets: 0 },
-        { targets: this.lastIndexThNumber, orderable: false },
-      ],
+      // columnDefs: [
+      //   // { width: "1%", targets: 0 },
+      //   { targets: this.lastIndexThNumber, orderable: false },
+      // ],
     };
     // check if disable default order
     if (this.disableDefaultOrder === true) {
@@ -83,7 +84,7 @@ class DataTableHelper {
       }
     }
     // check if button passed
-    if (this.buttons) {
+   /*  if (this.buttons) {
       this.tableOptions["buttons"] = this.buttons;
     } else {
       this.tableOptions["buttons"] = [
@@ -91,8 +92,10 @@ class DataTableHelper {
         "csv",
         "pdf",
       ];
-    }
+    } */
+    // console.log(this.tableOptions);
     // call DataTable object
+    // debugger;
     new DataTable(this.tableID, this.tableOptions);
     // $(this.tableID).DataTable(this.tableOptions);
   }

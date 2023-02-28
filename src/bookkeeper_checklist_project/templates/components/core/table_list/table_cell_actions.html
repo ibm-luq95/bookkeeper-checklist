@@ -1,0 +1,78 @@
+{% load url_helpers %}
+{% load authorization_tags %}
+{% load development_tags %}
+{% spaceless %}
+
+  {% if is_enabled is True %}
+    <div class="buttons is-right are-small">
+      {% if "details" in enabled_action_btns %}
+{% check_user_permissions perms=perms app_name=app_name perm_name="view" as check_permission %}
+        {% if check_permission is True %}
+          <a href="{% fetch_url_by_name_pk details_url=details_url object_pk=object_pk %}"
+             class="button is-info is-light hint--top"
+             aria-label="Show">
+            <span class="icon is-small">
+              <i class="fa-solid fa-eye"></i>
+            </span>
+          </a>
+        {% endif %}
+
+      {% endif %}
+
+      {% if "update" in enabled_action_btns %}
+{% check_user_permissions perms=perms app_name=app_name perm_name="change" as check_permission %}
+        {% if check_permission is True %}
+          <a href="{% fetch_url_by_name_pk action_urls_pattern=action_urls_pattern|add:':update' object_pk=object_pk %}"
+             class="button is-success is-light hint--top {% if action_btn_css_class %} {{ action_btn_css_class|add:'UpdateBtn' }} {% endif %}"
+             aria-label="Update" data-item-id="{{ object_pk }}">
+            <span class="icon is-small">
+              <i class="fa-solid fa-pencil"></i>
+            </span>
+          </a>
+        {% endif %}
+
+
+      {% endif %}
+
+      {% if "delete" in enabled_action_btns %}
+{% check_user_permissions perms=perms app_name=app_name perm_name="delete" as check_permission %}
+        {% if check_permission is True %}
+          <a href="{% fetch_url_by_name_pk action_urls_pattern=action_urls_pattern|add:':delete' object_pk=object_pk %}"
+             class="button is-danger is-light hint--top {% if action_btn_css_class %} {{ action_btn_css_class|add:'DeleteBtn' }} {% endif %}"
+             aria-label="Delete" data-item-id="{{ object_pk }}">
+            <span class="icon is-small">
+              <i class="fa-solid fa-trash"></i>
+            </span>
+          </a>
+        {% endif %}
+
+      {% endif %}
+
+
+    </div>
+  {% else %}
+    <div class="buttons is-right are-small">
+      <a href=""
+         class="button is-info is-light">
+        <span class="icon is-small">
+          <i class="fa-solid fa-eye"></i>
+        </span>
+      </a>
+      <a href=""
+         class="button is-success is-light">
+        <span class="icon is-small">
+          <i class="fa-solid fa-pencil"></i>
+        </span>
+      </a>
+      <a href=""
+         class="button is-danger is-light">
+        <span class="icon is-small">
+          <i class="fa-solid fa-trash"></i>
+        </span>
+      </a>
+
+    </div>
+  {% endif %}
+
+
+{% endspaceless %}

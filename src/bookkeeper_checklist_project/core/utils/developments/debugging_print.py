@@ -4,6 +4,7 @@ import logging
 import os
 import traceback
 from typing import Any
+from decouple import config
 
 if os.environ.get("STAGE_ENVIRONMENT") == "PRODUCTION":
     from prettyprinter import cpprint
@@ -11,7 +12,7 @@ if os.environ.get("STAGE_ENVIRONMENT") == "PRODUCTION":
 
 logger = logging.getLogger(__name__)
 
-IS_DEBUGGING = ast.literal_eval(os.environ.get("DEBUG"))
+IS_DEBUGGING = config("DEBUG", cast=bool)
 
 
 def debugging_print(txt_object, **kwargs):

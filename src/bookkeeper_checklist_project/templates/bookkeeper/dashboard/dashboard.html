@@ -13,14 +13,14 @@
     <div class="tile is-ancestor has-text-centered">
         <div class="tile is-parent">
             <article class="tile is-child box">
-                <p class="title">{{ clients.count }}</p>
+                <p class="title">{{ bookkeeper.clients.count }}</p>
                 <p class="subtitle">Clients</p>
             </article>
         </div>
 
         <div class="tile is-parent">
             <article class="tile is-child box">
-                <p class="title">{{ bookkeeper.jobs.count }}</p>
+                <p class="title">{{ bookkeeper.user.jobs.count }}</p>
                 <p class="subtitle">Jobs</p>
             </article>
         </div>
@@ -54,8 +54,7 @@
                     <table class="table is-fullwidth is-striped">
                         <tbody>
 
-                            {% if clients.count > 0 %}
-                            {% for client in clients %}
+                            {% for client in bookkeeper.clients.all %}
                             <tr>
                                 <td width="5%" class="pl-5">
                                     <i class="fa-solid fa-user"></i>
@@ -73,18 +72,28 @@
                                     </a>
                                 </td>
                             </tr>
+                            {% empty %}
+                            <tr>
+                            <tr class="is-empty">
+                                <td colspan="3">
+                                    <section class="section">
+                                        <div class="content has-text-grey has-text-centered">
+                                            <p><span class="icon is-large"><i
+                                                        class="fa-solid fa-face-meh fa-3x"></i></span></p>
+                                            <p>Nothing's there &hellip;</p>
+                                        </div>
+                                    </section>
+                                </td>
+                            </tr>
+                            </tr>
                             {% endfor %}
-                            {% else %}
-                            <div class="notification is-warning mb-0">No Client(s).</div>
-                            {% endif %}
-
 
                         </tbody>
                     </table>
                 </div>
             </div>
             <footer class="card-footer">
-                <a href="{% url 'bookkeeper:client:list' %}" class="card-footer-item">View
+                <a href="{% url 'client:list' %}" class="card-footer-item">View
                     All</a>
             </footer>
         </div>

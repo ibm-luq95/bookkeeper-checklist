@@ -17,7 +17,7 @@ import { MicroModalHandler } from "../../../utils/model-box.js";
 import { showToastNotification } from "../../../utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", (readyEvent) => {
-  //documents:api:manager:delete
+  //documents:api:delete
   const modalId = "document-form-modal";
   const modalElement = document.querySelector(`#${modalId}`);
   const modalTitleElement = modalElement.querySelector(".modal__title");
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           documentForm["_method"].value = "POST";
 
           const createUrl = await fetchUrlPathByName(
-            "documents:api:manager:create"
+            "documents:api:create"
           );
           documentForm.setAttribute("action", createUrl["urlPath"]);
         },
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         const dataset = currentTarget.dataset;
         const documentId = dataset["documentId"];
         // const url = window.localStorage.getItem("RetrieveDocumentUrl");
-        const url = await fetchUrlPathByName("documents:api:manager:retrieve");
+        const url = await fetchUrlPathByName("documents:api:retrieve");
         const requestOptions = {
           method: "POST",
           dataToSend: { documentId: documentId },

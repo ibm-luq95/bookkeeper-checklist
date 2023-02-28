@@ -1,0 +1,123 @@
+{% load url_helpers %}
+<div class="columns is-flex is-mobile is-gapless is-justify-content-space-around">
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Tasks</h1>
+          <h2 class="subtitle is-5">{{ client_object.get_total_tasks_for_all_jobs }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Documents</h1>
+          <h2 class="subtitle is-5">{{ client_object.documents.select_related.count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Notes</h1>
+          <h2 class="subtitle is-5">{{ client_object.notes.select_related.count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Assignments</h1>
+          <h2 class="subtitle is-5">{{ client_object.special_assignments.select_related.count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-2">
+    <div class="card assistant-client-details-widget">
+      <div class="card-content">
+        <div class="content">
+          <h1 class="title is-4">Services</h1>
+          <h2 class="subtitle is-5">{{ client_object.company_services.select_related.count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Start Bookkeeper Widget -->
+<div class="columns is-flex">
+  <div class="column is-4">
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title has-text-weight-semibold has-text-dark">
+          Bookkeepers
+        </p>
+        <!-- <button class="card-header-icon" aria-label="more options">
+          <span class="icon">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </button> -->
+      </header>
+      <div class="card-content p-1">
+        <table class="table is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp">
+          <thead>
+            <tr>
+              <th>Full Name</th>
+              <!-- <th>Email Address</th> -->
+              <!-- <th>Phone Number</th> -->
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bookkeeper in client_object.bookkeepers.all %}
+            <tr>
+              <td data-label="Full Name">
+                
+                {% if request.user.user_type == "bookkeeper" %}
+                <a href="">
+                  {{ bookkeeper.user.fullname }}
+                </a>
+                {% else %}
+                <a href="{% fetch_user_details_url base_user=user_type user_object=bookkeeper.user %}">
+                  {{ bookkeeper.user.fullname }}
+                </a>
+                {% endif %}
+                  
+              </td>
+            </tr>
+            {% empty %}
+            <tr class="is-empty">
+              <td colspan="4">
+                <section class="section">
+                  <div class="content has-text-grey has-text-centered">
+                    <p>
+                      <span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span>
+                    </p>
+                    <p>Nothing's there&hellip;</p>
+                  </div>
+                </section>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+      <!-- <footer class="card-footer">
+        <a href="#" class="card-footer-item">Save</a>
+        <a href="#" class="card-footer-item">Edit</a>
+        <a href="#" class="card-footer-item">Delete</a>
+      </footer> -->
+    </div>
+
+  </div>
+</div>
+<!-- End Bookkeeper Widget -->

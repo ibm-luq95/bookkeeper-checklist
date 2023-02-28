@@ -1,0 +1,93 @@
+{% load url_helpers %}
+{% load development_tags %}
+{% spaceless %}
+  {% comment  %}
+  {% fetch_app_url_for_user app_name=user_type user_type=object_user_type path_name='details' object_pk=user_object.pk %}
+  {% endcomment %}
+  {% if is_enabled is True %}
+    <div class="buttons is-right are-small">
+
+      {% if "details" in enabled_action_btns %}
+        <a href="{% fetch_user_details_url base_user=user_type user_object=user_object %}"
+           class="button is-info is-light is-small is-responsive hint--top"
+           aria-label="Show {{ object_user_type|capfirst }}"
+           target="_blank">
+          <span class="icon is-small">
+            <i class="fa-solid fa-user"></i>
+          </span>
+
+        </a>
+      {% endif %}
+
+
+
+      {% if "update" in enabled_action_btns %}
+        <a href="{% fetch_url_by_name_pk action_urls_pattern=action_urls_pattern|add:':update' object_pk=object_pk %}"
+           class="button is-success is-light hint--top"
+           aria-label="Update">
+          <span class="icon is-small">
+            <i class="fa-solid fa-pencil"></i>
+          </span>
+        </a>
+      {% endif %}
+
+      {% if "delete" in enabled_action_btns %}
+        <a href="{% fetch_url_by_name_pk action_urls_pattern=action_urls_pattern|add:':delete' object_pk=object_pk %}"
+           class="button is-danger is-light hint--top"
+           aria-label="Delete">
+          <span class="icon is-small">
+            <i class="fa-solid fa-trash"></i>
+          </span>
+        </a>
+      {% endif %}
+      {% if perms.manager.manager_user or perms.assistant.can_edit_users %}
+        {% if "edit_user" in enabled_action_btns %}
+
+          <a href="{% fetch_app_url_for_user app_name='users' user_type=user_type path_name='update-password' object_pk=object_pk %}"
+             class="button is-link is-light is-small is-responsive hint--top-left"
+             aria-label="Edit user credentials">
+            <span class="icon is-small">
+              <i class="fa-solid fa-user-pen"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endif %}
+
+
+    </div>
+  {% else %}
+    <div class="buttons is-right are-small">
+      <a href=""
+         class="button is-info is-light">
+        <span class="icon is-small">
+          <i class="fa-solid fa-eye"></i>
+        </span>
+      </a>
+      <a href=""
+         class="button is-success is-light">
+        <span class="icon is-small">
+          <i class="fa-solid fa-pencil"></i>
+        </span>
+      </a>
+      <a href=""
+         class="button is-danger is-light">
+        <span class="icon is-small">
+          <i class="fa-solid fa-trash"></i>
+        </span>
+      </a>
+      {% if perms.manager.manager_user %}
+        {% if "edit_user" in enabled_action_btns %}
+          <a href="{% fetch_app_url_for_user app_name='users' user_type=user_type path_name='update-password' object_pk=object_pk %}"
+             class="button is-link is-light is-small is-responsive hint--top-left"
+             aria-label="Edit user credentials">
+            <span class="icon is-small">
+              <i class="fa-solid fa-user-pen"></i>
+            </span>
+          </a>
+        {% endif %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+
+{% endspaceless %}

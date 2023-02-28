@@ -1,0 +1,19 @@
+{% spaceless %}
+  <div class="field has-addons">
+    <div class="control">
+      <input class="input is-small"
+             {% if is_readonly is True %} readonly {% endif %}
+             type="url"
+             id="url-{{ object_pk }}"
+             value="{{ url }}"/>
+    </div>
+    <div class="control">
+      <button type="button"
+              class="button is-small copyInputBtn"
+              data-text-type="url"
+              data-copied-value="{{ url }}">
+        <i class="fa-solid fa-copy"></i>
+      </button>
+    </div>
+  </div>
+{% endspaceless %}

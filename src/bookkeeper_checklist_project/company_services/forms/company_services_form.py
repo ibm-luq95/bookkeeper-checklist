@@ -3,6 +3,7 @@ from django import forms
 from company_services.helpers import PasswordHasher
 from company_services.models import CompanyService
 from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
+from core.forms.widgets import CustomPasswordInputWidget
 
 
 class CompanyServiceForm(BaseModelFormMixin, SaveCreatedByFormMixin):
@@ -27,9 +28,7 @@ class CompanyServiceForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         #     # pass
         #     self.initial["password"] = self.updated_object.decrypted_password
 
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}), required=False
-    )
+    password = forms.CharField(widget=CustomPasswordInputWidget, required=False)
 
     def clean_password(self):
         data = self.cleaned_data["password"]
@@ -50,4 +49,3 @@ class CompanyServiceForm(BaseModelFormMixin, SaveCreatedByFormMixin):
 
     class Meta(BaseModelFormMixin.Meta):
         model = CompanyService
-        # widgets = {"password": forms.PasswordInput(attrs={"autocomplete": "new-password"})}

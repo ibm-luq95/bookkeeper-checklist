@@ -26,15 +26,19 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         console.log(data);
         showToastNotification(data["msg"], "success");
         setTimeout(() => {
-          window.location.reload();
+          if (data["status"] === "completed" || data["status"] === "archived") {
+            const currentUrl = document.referrer;
+            window.location.href = currentUrl;
+            // history.go(-1);
+          } else {
+            window.location.reload();
+          }
+          // window.location.reload();
         }, 500);
       })
       .catch((error) => {
         console.error(error);
-        showToastNotification(
-          `${JSON.stringify(error["user_error_msg"])}`,
-          "danger"
-        );
+        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
       })
       .finally(() => {});
   });

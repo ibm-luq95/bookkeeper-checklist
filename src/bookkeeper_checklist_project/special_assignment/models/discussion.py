@@ -40,7 +40,7 @@ class Discussion(BaseModelMixin, TeamMembersMixin):
     job = models.ForeignKey(
         to=Job, on_delete=models.CASCADE, related_name="discussions", null=True, blank=True
     )
-    title = models.CharField(_("title"), max_length=100, null=True, blank=True)
+    # title = models.CharField(_("title"), max_length=100, null=True, blank=True)
     body = models.TextField(_("body"))
     replies = models.ForeignKey(
         to="self",

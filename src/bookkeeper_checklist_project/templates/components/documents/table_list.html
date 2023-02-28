@@ -1,0 +1,59 @@
+{% extends 'components/core/table_list/table_list_layout.html' %}
+{% block table_content_block %}
+{% if enable_create_btn == True %}
+{% include 'components/core/table_list/create_btn.html' with btn_id="addDocumentBtn" app_name=app_name perms=perms only %}
+{% endif %}
+<table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp" id="documentsTableComponent">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Section</th>
+      <th>Download</th>
+      {% if is_show_created_at is True %}<th>Created</th>{% endif %}
+      <th class="no-sort"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for document_object in object_list %}
+    <tr>
+
+      <td data-label="Title">
+        <a href="{{ document_object.document_file.url }}">{{ document_object.title|truncatechars:25 }}</a>
+      </td>
+      <td data-label="Section">{{ document_object.get_document_section_display }}</td>
+
+      <td data-label="Download">
+        <a class="button is-small" href="{{ document_object.document_file.url }}"
+          download="{{ document_object.document_file.url }}">
+          <i class="fa-solid fa-download"></i>
+        </a>
+      </td>
+      {% if is_show_created_at is True %}
+      <td data-label="Created">
+        {% include 'components/core/table_list/table_cell_created.html' with created_at=document_object.created_at user_type=request.user.user_type only %}
+      </td>
+
+      {% endif %}
+
+      <td class="is-actions-cell">
+        {% include 'components/core/table_list/table_cell_actions.html' with object_pk=document_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_name=app_name only %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr class="is-empty">
+      <td colspan="0">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span>
+            </p>
+            <p>Nothing's there&hellip;</p>
+          </div>
+        </section>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock table_content_block %}

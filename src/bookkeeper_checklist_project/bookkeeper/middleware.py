@@ -42,4 +42,4 @@ class BookkeeperMiddleware:
                         "You not allowed to login, please contact the administrator",
                     )
                     logout(request)
-                    return redirect(reverse_lazy("users:login"))
+                    return redirect(reverse_lazy("users:auth:login"))

@@ -1,0 +1,38 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+{% load url_helpers %}
+
+{% block dashboard_content %}
+<section id="{{ request.user.user_type }}-{{ app_label }}-list" class="block box">
+    {# Start Include Header List Component #}
+    {% include 'components/core/dashboard/header_title.html' with user_type=request.user.user_type app_name="jobs:templates" page_header=page_header list_type=list_type is_archived_enabled=False perms=perms only %}
+    {# End Include Header List Component #}
+
+    <div>
+        
+        {# Start Include Filter Form Component #}
+        {% include 'components/core/forms/filter_form.html' with object_list=object_list user_type=request.user.user_type action_url="jobs:list" reset_url="jobs:list" filter_form=filter_form only %}
+        {# End Include Filter Form Component #}
+
+        {# Start Include Table List Component #}
+        {% include 'components/jobs/templates/list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' perms=perms app_name=app_label request=request only %}
+        {# End Include Table List Component #}
+
+        {# Start Include Pagination Component #}
+        {% include 'components/core/pagination.html' with page_obj=page_obj only %}
+        {# Start Include Pagination Component #}
+        
+        {# Start Include Job Template Modal #}
+        {% include 'segments/jobs/templates/template_details_modal.html' %}
+        {# Start Include Job Template Modal #}
+    </div>
+
+</section>
+
+{% endblock dashboard_content %}
+{% block externaljs %}
+{% comment  %}
+<script src="{% static 'js/components/jobs/templates/job_template_details_modal.js' %}" defer type="module"></script>
+{% endcomment %}
+<script src="{% static 'js/apps/jobs/templates/list.js' %}" defer type="module"></script>
+{% endblock externaljs %}

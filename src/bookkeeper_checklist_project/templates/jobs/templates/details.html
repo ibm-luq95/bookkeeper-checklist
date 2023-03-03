@@ -1,0 +1,321 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <section id="job-template-details-section">
+        {# Start navbar #}
+        <div class="box">
+            <div class="is-flex is-justify-content-space-between">
+                <div>
+                    <div class="dropdown">
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                <span>Options</span>
+                                <span class="icon is-small">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a href="#" class="dropdown-item">Create job</a>
+                                <a href="#" class="dropdown-item">Create job for multiple clients</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="buttons">
+                        <a href="{% url 'jobs:templates:update' object.pk %}"
+                           target="_blank"
+                           class="button is-primary hint--top"
+                           aria-label="Edit job">
+                            <i class="fa-solid fa-pencil fa-xs"></i>&nbsp;Edit
+                        </a>
+                        <a href="#"
+                           class="button is-link hint--top"
+                           aria-label="Clone this template">
+                            <i class="fa-solid fa-copy fa-xs"></i>&nbsp;Clone
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# End navbar #}
+        {# Start job title #}
+        <header class="box has-ribbon">
+            <div class="ribbon">Template</div>
+            <h5 class="is-size-6 mt-3">{{ object.title }}</h5>
+        </header>
+        {# End job title #}
+        {# Start job description #}
+        <div id="job-description" class="box has-ribbon">
+            {% if object.status == "draft" %}
+                <div class="ribbon is-warning">{{ object.get_status_display }}</div>
+            {% else %}
+                <div class="ribbon is-primary">{{ object.get_status_display }}</div>
+            {% endif %}
+            <div class="columns">
+                <div class="column is-10">
+                    <div class="content">
+                        <h4>Description</h4>
+                        <!-- light-border p-2 -->
+                        <article>
+                            {{ object.description }}
+                        </article>
+                        <hr />
+                        <!-- Job categories -->
+                        <h5 class="mb-4">Categories</h5>
+                        <div class="tags">
+                            {% for category in object.categories.all %}
+                                <a class="tag is-info is-light">{{ category.name }}</a>
+                            {% empty %}
+                                <h6 class="has-text-danger is-size-6">No categories</h6>
+                            {% endfor %}
+                        </div>
+                        <!-- Job categories -->
+                    </div>
+                </div>
+                <div class="column pt-5">
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image hint--top" aria-label="Managed by">
+                                <i class="fa-solid fa-user fa-2x"></i>
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>Manager</strong>
+                                    <br />
+                                    <a href=""><small>@johnsmith</small></a>
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image hint--top" aria-label="Due Date">
+                                <!-- <i class="fa-solid fa-calendar-clock fa-2x"></i> -->
+                                <i class="fa-solid fa-calendar-days fa-2x"></i>
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>Due Date</strong>
+                                    <br />
+                                    {% if object.due_date %}
+                                        <small>{{ object.due_date|date }}</small>
+                                    {% else %}
+                                        <small class="has-text-danger">No due date</small>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image hint--top" aria-label="Job type">
+                                <i class="fa-solid fa-briefcase fa-2x"></i>
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>Job type</strong>
+                                    <br />
+                                    {% if object.job_type %}
+                                        <small>{{ object.get_job_type_display }}</small>
+                                    {% else %}
+                                        <small class="has-text-danger">No type</small>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        {# End job description #}
+        {# Start tasks, documents, notes #}
+        <div class="box">
+            <div class="columns is-flex">
+                <div class="column">
+                    <div class="content">
+                        <h5>Tasks</h5>
+                        <!-- <hr /> -->
+                        <button class="button is-fullwidth hint--top is-light is-primary"
+                                aria-label="Add new task"
+                                id="addNewTaskBtn">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <br />
+                        <table class="table sortable is-striped is-hoverable is-fullwidth">
+                            <tbody>
+                                {% for task in object.tasks.all %}
+                                    <tr>
+                                        <!-- <td width="10%" class="is-justify-content-center is-flex">
+                                    <button class="button is-small is-light is-info hint--top more-tasks-btn" aria-label="More" type="button">
+                                        <span class="icon is-small">
+                                            <i class="fa-solid fa-angle-right fa-xs"></i>
+                                        </span>
+                                    </button>
+                                </td> -->
+                                        <td>
+                                            <details>
+                                                <summary>
+                                                    {{ task.title|truncatechars:35 }}
+                                                </summary>
+                                                <div class="content mt-5">
+                                                    <h5>Task Items</h5>
+                                                    <ul>
+                                                        {% for item in task.items.all %}
+                                                            <li>
+                                                                <a href="">{{ item.title }}</a>
+                                                            </li>
+                                                        {% empty %}
+                                                            <li>No items</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </details>
+                                        </td>
+                                        <td>
+                                            <div class="buttons has-addons are-small is-justify-content-end">
+                                                <button type="button"
+                                                        class="button is-small is-light is-link hint--top"
+                                                        aria-label="Show details">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-eye fa-xs"></i>
+                                                    </span>
+                                                </button>
+                                                <button type="button"
+                                                        class="button is-small is-light is-success hint--top"
+                                                        aria-label="Add new task items">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-plus fa-xs"></i>
+                                                    </span>
+                                                </button>
+                                                <button type="button"
+                                                        class="button is-small is-light is-info hint--top"
+                                                        aria-label="Edit task details">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-pencil fa-xs"></i>
+                                                    </span>
+                                                </button>
+                                                <button type="button"
+                                                        class="button is-small is-light is-danger hint--top"
+                                                        aria-label="Delete task">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-trash fa-xs"></i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <div class="notification is-warning is-light">No tasks</div>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <h5>Documents</h5>
+                        <!-- <hr /> -->
+                        <button class="button is-fullwidth hint--top is-light is-primary"
+                                aria-label="Add new document">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <br />
+                        <div class="list has-visible-pointer-controls">
+                            {% for document in object.documents.all %}
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">
+                                            <a href="">{{ document.title }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="list-item-controls">
+                                        <div class="buttons is-right">
+                                            <button type="button"
+                                                    class="button is-small is-light is-info hint--top"
+                                                    aria-label="Edit document">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-pencil fa-xs"></i>
+                                                </span>
+                                            </button>
+                                            <button type="button"
+                                                    class="button is-small is-light is-danger hint--top"
+                                                    aria-label="Delete document">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-trash fa-xs"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="notification is-warning is-light">
+                                    No documents
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <h5>
+                            Notes
+                        </h5>
+                        <!-- <hr /> -->
+                        <button class="button is-fullwidth hint--top is-light is-primary"
+                                aria-label="Add new note">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <br />
+                        <div class="list has-visible-pointer-controls">
+                            {% for note in object.notes.all %}
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">
+                                            <a href="">
+                                                {{ note.title }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="list-item-controls">
+                                        <div class="buttons is-right">
+                                            <button type="button"
+                                                    class="button is-small is-light is-info hint--top"
+                                                    aria-label="Edit note">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-pencil fa-xs"></i>
+                                                </span>
+                                            </button>
+                                            <button type="button"
+                                                    class="button is-small is-light is-danger hint--top"
+                                                    aria-label="Delete note">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-trash fa-xs"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="notification is-warning is-light">
+                                    No notes
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# End tasks, documents, notes #}
+    </section>
+{% endblock dashboard_content %}
+{% block externaljs %}
+{% endblock externaljs %}

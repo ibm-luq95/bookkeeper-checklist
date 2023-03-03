@@ -21,10 +21,10 @@ class BaseModelFormMixin(Html5Mixin, forms.ModelForm):
 
     class Meta:
         exclude = EXCLUDED_FIELDS
-        widgets = {
-            "notes": forms.TextInput(),
-            "note": forms.TextInput(),
-        }
+        # widgets = {
+        #     "notes": forms.TextInput(),
+        #     "note": forms.TextInput(),
+        # }
 
     def clean(self) -> dict[str, Any] | None:
         cleaned_data = super().clean()

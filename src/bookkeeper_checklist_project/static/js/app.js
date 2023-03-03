@@ -30,9 +30,9 @@ document.addEventListener("readystatechange", (ev) => {
     });
 
     // Return an array of bulmaCollapsible instances (empty if no DOM node found)
-    const bulmaCollapsibleInstances = bulmaCollapsible.attach(".is-collapsible", {
-      expand: false,
-    });
+    // const bulmaCollapsibleInstances = bulmaCollapsible.attach(".is-collapsible", {
+    //   expand: false,
+    // });
 
     // Loop into instances
     /* bulmaCollapsibleInstances.forEach((bulmaCollapsibleInstance) => {
@@ -62,5 +62,46 @@ document.addEventListener("readystatechange", (ev) => {
         });
       });
     }
+
+    const triggers = document.querySelectorAll(".dropdown .dropdown-trigger");
+
+    triggers.forEach(function (trigger) {
+      let isOpen = false;
+      trigger.addEventListener("click", function () {
+        if (isOpen) {
+          trigger.parentElement.classList.remove("is-active");
+          isOpen = false;
+        } else {
+          trigger.parentElement.classList.add("is-active");
+          isOpen = true;
+        }
+      });
+    });
+
+    const dropdowns = document.querySelectorAll(".dropdown:not(.is-hoverable)");
+
+    /*
+     * Close dropdowns by removing `is-active` class.
+     */
+    function closeDropdowns() {
+      dropdowns.forEach(function (el) {
+        el.classList.remove("is-active");
+      });
+    }
+    // Close dropdowns if ESC pressed
+    document.addEventListener("keydown", function (event) {
+      let e = event || window.event;
+      if (e.key === "Esc" || e.key === "Escape") {
+        closeDropdowns();
+      }
+    });
+
+    // document.addEventListener("click", function (e) {
+    //   // closeDropdowns();
+    //   console.log(e.target);
+    //   // dropdowns.forEach(function (el) {
+    //   //   el.classList.remove("is-active");
+    //   // });
+    // });
   }
 });

@@ -1,0 +1,160 @@
+{% spaceless %}
+<div class="modal micromodal-slide" id="job-template-details" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div class="modal__container has-ribbon" style="max-width: unset;width: 70%;" role="dialog" aria-modal="true"
+            aria-labelledby="jobTemplateTitle">
+            <div class="ribbon is-primary" id="jobTemplateStatusRibbon">
+                <div
+                    class="custom-loader-progress-loader custom-loader-progress-loader-white job-abstract-loader-component">
+                </div>
+            </div>
+            <header class="modal__header">
+
+                <h2 class="modal__title" id="jobTemplateTitle">
+                    <div class="custom-loader loader-width-small m-0 job-abstract-loader-component"></div>
+                </h2>
+                <!-- <button class="modal__close" aria-label="Close modal" data-micromodal-close></button> -->
+            </header>
+            <main class="modal__content" id="job-template-details-content">
+                <div class="content">
+                    {# Start Job Description #}
+                    <div>
+                        <div id="jobTemplateDescriptionWrapper">
+                            <div class="custom-loader loader-width-medium job-abstract-loader-component"></div>
+                            <article id="jobTemplateDescription" class="mb-4 p-2 light-border">
+                            </article>
+                        </div>
+
+                    </div>
+                    {# End Job Description #}
+
+                    {# Start Type & Status #}
+                    <div class="columns my-4 is-flex is-justify-content-space-between is-flex-direction-row">
+                        <div class="column">
+                            <div class="columns is-flex is-justify-content-center is-flex-direction-row">
+                                <div class="column is-2">
+                                    <strong>Status:</strong>
+                                </div>
+                                <div class="column">
+                                    <div id="jobTemplateStatusWrapper">
+                                        <div class="tag is-medium content-wrapper" hidden></div>
+                                        <div class="custom-loader-progress-loader job-abstract-loader-component"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="columns is-flex is-justify-content-center is-flex-direction-row">
+                                <div class="column is-2">
+                                    <strong>Type:</strong>
+                                </div>
+                                <div class="column">
+                                    <div id="jobTemplateTypeWrapper">
+                                        <div class="tag is-medium content-wrapper" hidden></div>
+                                        <div class="custom-loader-progress-loader job-abstract-loader-component"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {# End Type & Status #}
+
+                    {# Start Tasks #}
+                    <div class="columns">
+                        <div class="column">
+                            <div id="jobTemplateTasksWrapper" class="mb-4">
+                                <h6 class="job-template-label">Tasks</h6>
+                                <div class="content-wrapper" hidden></div>
+                                <div class="custom-loader loader-width-medium job-abstract-loader-component"></div>
+                                <div class="notification m-auto notification-width-50" hidden>
+                                    <strong>No tasks</strong>
+                                </div>
+                                <!-- <ol>
+                                    <li>Task 1</li>
+                                    <li>Task 2</li>
+                                    <li>Task 3</li>
+                                    <li>Task 4</li>
+                                </ol> -->
+                            </div>
+                        </div>
+                    </div>
+                    {# End Tasks #}
+
+                    {# Start Documents #}
+                    <div class="columns">
+                        <div class="column">
+                            <div id="jobTemplateDocumentsWrapper" class="mb-4">
+                                <h6 class="job-template-label">Documents</h6>
+                                <div class="content-wrapper" hidden></div>
+                                <div class="custom-loader loader-width-medium job-abstract-loader-component"></div>
+                                <div class="notification m-auto notification-width-50" hidden>
+                                    <strong>No documents</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {# End Documents #}
+
+                    {# Start Notes #}
+                    <div class="columns">
+                        <div class="column">
+                            <div id="jobTemplateNotesWrapper" class="mb-4">
+                                <h6 class="job-template-label">Notes</h6>
+                                <div class="content-wrapper" hidden></div>
+                                <div class="custom-loader loader-width-medium job-abstract-loader-component"></div>
+                                <div class="notification m-auto notification-width-50" hidden>
+                                    <strong>No notes</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {# End Notes #}
+
+                    {# Start Categories #}
+                    <div class="columns my-5 is-flex">
+                        <div class="column is-2">
+                            <h6 class="job-template-label">Categories</h6>
+                        </div>
+                        <div class="column">
+                            <div id="jobTemplateCategoriesWrapper">
+                                <div class="content-wrapper" hidden>
+                                    <div class="tags are-small">
+                                        <!-- <a class="tag is-primary is-light">One</a> -->
+                                    </div>
+                                </div>
+                                <div class="custom-loader loader-width-small job-abstract-loader-component"></div>
+                                <div class="notification m-auto notification-width-50" hidden>
+                                    <strong>No categories</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {# End Categories #}
+
+                    {# Start Created AT #}
+                    <div class="columns my-5 is-flex">
+                        <div class="column is-2">
+                            <strong>Created at</strong>
+                        </div>
+                        <div class="column">
+                            <div id="jobTemplateCreatedAtWrapper">
+                                <div class="custom-loader-progress-loader job-abstract-loader-component"></div>
+                                <time class="hint--top" aria-label="Created at" datetime="" hidden></time>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    {# End Created AT #}
+                </div>
+            </main>
+            <footer class="modal__footer">
+                <a href="#" class="modal__btn modal__btn-primary is-primary button mx-3" id="jobTemplateEditLink">Edit</a>
+                <button class="modal__btn button is-danger modal__btn-danger" data-micromodal-close aria-label="Close this dialog window">Close</button>
+            </footer>
+        </div>
+    </div>
+</div>
+
+{% endspaceless %}

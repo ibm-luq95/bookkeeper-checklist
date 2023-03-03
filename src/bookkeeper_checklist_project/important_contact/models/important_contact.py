@@ -47,6 +47,7 @@ class ImportantContact(BaseModelMixin, CreatedByMixin):
     contact_phone = models.CharField(_("phone"), max_length=80, null=False, blank=True)
     contact_website = models.URLField(_("website"), null=True, blank=True)
     contact_notes = models.TextField(_("notes"), null=True, blank=True)
+    custom_fields = models.JSONField(_("custom_fields"), null=True, blank=True)
 
     def __str__(self):
         # return f"Contact {self.contact_label} for client {self.client}"

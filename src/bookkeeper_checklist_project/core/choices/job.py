@@ -10,6 +10,7 @@ from core.constants.status_labels import (
     CON_PAST_DUE,
     CON_COMPLETED,
     CON_NOT_COMPLETED,
+    CON_DRAFT,
 )
 from core.constants.types_labels import (
     CON_NO_TYPE,
@@ -41,3 +42,4 @@ class JobStatusEnum(models.TextChoices):
     COMPLETED = CON_COMPLETED, _(stringcase.sentencecase(CON_COMPLETED))
     NOT_COMPLETED = CON_NOT_COMPLETED, _(stringcase.sentencecase(CON_NOT_COMPLETED))
     ARCHIVED = CON_ARCHIVED, _(stringcase.sentencecase(CON_ARCHIVED))
+    DRAFT = CON_DRAFT, _(stringcase.sentencecase(CON_DRAFT))

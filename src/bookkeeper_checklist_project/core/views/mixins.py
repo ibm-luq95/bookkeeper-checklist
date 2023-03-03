@@ -12,6 +12,7 @@ class BaseListViewMixin:
         context.setdefault("is_show_created_at", False)
         if hasattr(self.model, "_meta"):
             context.setdefault("app_label", self.model._meta.app_label)
+            # context.setdefault("app_label", self.model._meta.model_name)
         return context
 
 

@@ -2,7 +2,6 @@
 {% load static %}
 {% load url_helpers %}
 
-
 {% block dashboard_content %}
 
 <section id="{{ request.user.user_type }}-{{ app_label }}-list" class="box block">
@@ -22,7 +21,7 @@
     {% include 'components/core/pagination.html' with page_obj=page_obj only %}
     {# Start Include Pagination Component #}
   </div>
-
+</section>
   {% endblock dashboard_content %}
 
   {% block externaljs %}

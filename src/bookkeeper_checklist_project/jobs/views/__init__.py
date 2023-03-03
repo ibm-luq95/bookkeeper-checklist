@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-#
 from .jobs import (
     JobListView,
     JobArchiveListView,
@@ -5,4 +6,10 @@ from .jobs import (
     JobDetailsView,
     JobDeleteView,
     JobUpdateView,
+)
+from .templates import (
+    JobTemplatesListView,
+    JobTemplateFactoryView,
+    JobTemplateDetailsView,
+    JobTemplateUpdateView,
 )

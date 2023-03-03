@@ -85,6 +85,8 @@ class UserChangeForm(UserChangeForm):
                     "Client",
                     "CompanyService",
                     "Job",
+                    "JobTemplate",
+                    "JobCategory",
                     "Task",
                     "SpecialAssignment",
                     "Discussion",

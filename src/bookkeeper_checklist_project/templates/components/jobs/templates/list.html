@@ -1,0 +1,75 @@
+{% load url_helpers %}
+{%  for object in object_list  %}
+{% if forloop.counter0|divisibleby:4 %} <div class="columns is-flex"> {%  endif %}
+    <div class="column is-3 is-flex">
+        <div class="card has-ribbon card-static">
+
+            {% if object.status == "draft" %}
+            <div class="ribbon is-warning">{{ object.get_status_display }}</div>
+            {% else %}
+            <div class="ribbon is-primary">Template</div>
+            {% endif %}
+
+            <header class="card-header">
+                <p class="card-header-title has-text-black">
+                    <a href="{% url 'jobs:templates:details' object.pk %}">
+                        {{ object.title|truncatechars:25 }}
+                    </a>
+                </p>
+                <!-- <button class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button> -->
+            </header>
+            <div class="card-content ">
+                <div class="content">
+                    <article>
+                        <p>{{ object.description|truncatechars:80 }}</p>
+
+                        <p>
+                            {% if object.tasks.all %}
+                            <strong>Tasks: </strong> {{ object.tasks.count }}
+                            {% endif %}
+                        </p>
+
+                        <p>
+                            {% if object.documents.all %}
+                            <strong>Documents: </strong> {{ object.documents.count }}
+                            {% endif %}
+                        </p>
+
+                        <p>
+                            {% if object.notes.all %}
+                            <strong>Notes: </strong> {{ object.notes.count }}
+                            {% endif %}
+                        </p>
+
+                        {% if object.categories.all %}
+
+                        {% for category in object.categories.all  %}
+                        <a href="#" class="hint--top" aria-label="Category">#{{ category }}</a>
+                        {% endfor %}
+
+                        {% endif %}
+                    </article>
+
+                </div>
+            </div>
+            <footer class="card-footer card-footer-mt-auto">
+                <!-- <a href="#" class="card-footer-item">Save</a>
+              <a href="#" class="card-footer-item">Edit</a>
+              <a href="#" class="card-footer-item">Delete</a> -->
+                <button type="button" data-job-id="{{ object.pk }}"
+                    class="button is-fullwidth is-responsive job-template-preview-btn hint--top"
+                    aria-label="more details">
+                    Preview &nbsp; <i class="fa-solid fa-eye fa-xs"></i>
+                </button>
+            </footer>
+        </div>
+    </div>
+    {%  if forloop.counter|divisibleby:4 or forloop.last %}</div><!-- columns closing -->
+{%  endif %}
+{% empty %}
+No templates
+{% endfor %}

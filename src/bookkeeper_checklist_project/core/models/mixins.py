@@ -1,3 +1,4 @@
+import textwrap
 import uuid
 
 from django.contrib.auth import get_user_model
@@ -102,6 +103,36 @@ class StartAndDueDateMixin(models.Model):
         _("start date"), default=timezone.now, null=True, blank=True
     )
     due_date = models.DateField(_("due date"), default=timezone.now, null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class StartDateOnlyMixin(models.Model):
+    start_date = models.DateField(
+        _("start date"), default=timezone.now, null=True, blank=True
+    )
+
+    class Meta:
+        abstract = True
+
+
+class DueDateOnlyMixin(models.Model):
+    due_date = models.DateField(_("due date"), default=timezone.now, null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class StrModelMixin(models.Model):
+    def __str__(self) -> str:
+        if hasattr(self, "title"):
+            return textwrap.shorten(self.title, width=40, placeholder="...")
+            # return self.title
+        elif hasattr(self, "body"):
+            return textwrap.shorten(self.body, width=40, placeholder="...")
+        elif hasattr(self, "name"):
+            return textwrap.shorten(self.name, width=40, placeholder="...")
 
     class Meta:
         abstract = True

@@ -2,9 +2,7 @@
 
 // init and create method to all objects, get object type
 Object.prototype.getConstructorName = function () {
-  const str = (
-    this.prototype ? this.prototype.constructor : this.constructor
-  ).toString();
+  const str = (this.prototype ? this.prototype.constructor : this.constructor).toString();
   const cname = str.match(/function\s(\w*)/)[1];
   const aliases = ["", "anonymous", "Anonymous"];
   return aliases.indexOf(cname) > -1 ? "Function" : cname;

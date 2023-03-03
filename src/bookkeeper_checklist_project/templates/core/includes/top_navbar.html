@@ -71,8 +71,8 @@
           <a class="navbar-link">Jobs</a>
 
           <div class="navbar-dropdown">
-            {% if perms.manager.manager_user or perms.jobs.list_abstract_job_template %}<a class="navbar-item"
-              href="">Templates</a>{% endif %}
+            {% if perms.manager.manager_user or perms.jobtemplate.can_view_list %}<a class="navbar-item"
+              href="{% url 'jobs:templates:list' %}">Templates</a>{% endif %}
             <a class="navbar-item" href="{% url 'jobs:list' %}">List all jobs</a>
 
             {% if perms.jobs.add_job %}
@@ -112,7 +112,6 @@
               {% elif request.user.user_type == 'bookkeeper' %}
               {{ request.user.bookkeeper.get_not_seen_special_assignments.count }}
               {% endif %}
-
 
             </span>
           </a>

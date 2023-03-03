@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 from core.choices import ClientStatusEnum
 from core.models import BaseModelMixin
 from core.utils import FileValidator
+from . import ClientCategory
 from important_contact.models import ImportantContact
 
 file_validator = FileValidator(
@@ -26,6 +27,7 @@ class Client(BaseModelMixin):
         BaseModelMixin (models.Model): Django base model mixin
     """
 
+    categories = models.ManyToManyField(to=ClientCategory, related_name="client", blank=True)
     bookkeepers = models.ManyToManyField(
         to="bookkeeper.Bookkeeper", related_name="clients", blank=True
     )

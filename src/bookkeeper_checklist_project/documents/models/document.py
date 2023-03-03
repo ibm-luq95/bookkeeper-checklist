@@ -58,6 +58,6 @@ class Documents(BaseModelMixin, CreatedByMixin):
         to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
     )
 
-    def delete(self, *args, **kwargs):
-        self.document_file.storage.delete(self.document_file.name)
-        super(Documents, self).delete(*args, **kwargs)
+    # def delete(self, *args, **kwargs):
+    #     self.document_file.storage.delete(self.document_file.name)
+    #     super(Documents, self).delete(*args, **kwargs)

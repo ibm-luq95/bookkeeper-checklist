@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-#
 import textwrap
+
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.urls import reverse
+from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
-from django.utils import timezone
 
-from assistant.models import Assistant
-from bookkeeper.models import Bookkeeper
 from client.models import Client
 from core.choices import JobStatusEnum, JobTypeEnum
 from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin
@@ -24,12 +22,6 @@ class Job(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
         BaseModelMixin (models.Model): Django model base mixin
     """
 
-    # bookkeeper = models.ManyToManyField(
-    #     to=Bookkeeper, help_text=JOB_HELP_MESSAGES.get("bookkeeper"), related_name="jobs"
-    # )
-    # assistants = models.ManyToManyField(
-    #     to=Assistant, related_name="jobs", help_text=JOB_HELP_MESSAGES.get("assistant")
-    # )
     client = models.ForeignKey(
         to=Client,
         on_delete=models.PROTECT,  # TODO: check if this should be null not protected

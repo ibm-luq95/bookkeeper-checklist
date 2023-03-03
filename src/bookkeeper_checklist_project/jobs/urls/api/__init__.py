@@ -20,15 +20,5 @@ urlpatterns = [
     path("update", UpdateJobApiView.as_view(), name="update"),
     path("delete", DeleteJobApiView.as_view(), name="delete"),
     path("update-status", UpdateJobStatusApiView.as_view(), name="update-job-status"),
-    # path(
-    #     "manager/",
-    #     include("jobs.urls.api.manager"),
-    #     name="manager-jobs-api-urls",
-    # ),
-    # path(
-    #     "bookkeeper/",
-    #     include("jobs.urls.api.bookkeeper"),
-    #     name="bookkeeper-jobs-api-urls",
-    # ),
-    # path("jobs/", include("jobs.urls.api.jobs"), name="jobs-api-urls"),
+    path("templates/", include("jobs.urls.api.templates"), name="jobs-api-templates-urls"),
 ]

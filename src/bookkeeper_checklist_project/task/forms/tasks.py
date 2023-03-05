@@ -10,7 +10,7 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         "title",
         "job",
         "task_type",
-        "task_status",
+        "status",
         "start_date",
         "due_date",
         "additional_notes",

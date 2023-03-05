@@ -19,7 +19,7 @@ from company_services.forms import CompanyServiceForm
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.constants.status_labels import CON_ARCHIVED
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin, ArchiveListViewMixin
 from documents.forms import DocumentForm
 from important_contact.forms import ImportantContactForm
 from jobs.forms import JobForm
@@ -34,6 +34,7 @@ class ClientListView(
     PermissionRequiredMixin,
     ManagerAssistantAccessMixin,
     BaseListViewMixin,
+    ListViewMixin,
     ListView,
 ):
     permission_required = "client.can_view_list"
@@ -68,13 +69,14 @@ class ClientArchiveListView(
     PermissionRequiredMixin,
     ManagerAssistantAccessMixin,
     BaseListViewMixin,
+    ArchiveListViewMixin,
     ListView,
 ):
     permission_required = "client.view_archive"
     template_name = "client/list.html"
     model = Client
     # queryset = Client.objects.prefetch_related("jobs").filter(Q(status=CON_ARCHIVED))
-    queryset = Client.original_objects.prefetch_related("jobs").filter(Q(status=CON_ARCHIVED))
+    # queryset = Client.original_objects.prefetch_related("jobs").filter(Q(status=CON_ARCHIVED))
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "archive"
 

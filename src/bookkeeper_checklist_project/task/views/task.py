@@ -5,9 +5,8 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
-from core.constants.status_labels import CON_ARCHIVED, CON_COMPLETED
-from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
+from core.utils import get_trans_txt, debugging_print
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin, ArchiveListViewMixin
 from task.forms import TaskForm
 from task.models import Task
 from core.constants import LIST_VIEW_PAGINATE_BY
@@ -20,6 +19,7 @@ class TasksListView(
     ManagerAssistantAccessMixin,
     PermissionRequiredMixin,
     BaseListViewMixin,
+    ListViewMixin,
     ListView,
 ):
     permission_required = "task.can_view_list"
@@ -51,14 +51,12 @@ class TasksArchiveListView(
     ManagerAssistantAccessMixin,
     PermissionRequiredMixin,
     BaseListViewMixin,
+    ArchiveListViewMixin,
     ListView,
 ):
     permission_required = "task.can_view_archive"
     template_name = "task/list.html"
     model = Task
-    queryset = Task.original_objects.filter(
-        Q(task_status__in=[CON_ARCHIVED, CON_COMPLETED])
-    )
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "archive"
 
@@ -85,7 +83,7 @@ class TaskCreateView(
     CreateView,
 ):
     permission_required = "task.add_task"
-    model = Task
+    # model = Task
     template_name = "task/create.html"
     form_class = TaskForm
     http_method_names = ["post", "get"]
@@ -123,12 +121,19 @@ class TaskUpdateView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", get_trans_txt("Update Task"))
+        debugging_print(self.get_object().status)
         return context
 
     def get_success_url(self):
         task = self.get_object()
         url = reverse_lazy("task:update", kwargs={"pk": task.pk})
         return url
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        debugging_print(form.cleaned_data)
+        return super().form_valid(form)
 
 
 class TaskDeleteView(

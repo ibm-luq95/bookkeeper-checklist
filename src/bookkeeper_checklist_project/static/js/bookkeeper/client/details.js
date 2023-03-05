@@ -188,7 +188,7 @@ document.addEventListener("readystatechange", (ev) => {
                         taskElement["title"].substring(0, 20) + "...";
                       if (
                         taskElement["is_completed"] === true ||
-                        taskElement["task_status"] === "completed"
+                        taskElement["status"] === "completed"
                       ) {
                         tdTaskTitleTd.classList.add("completed-task-item");
                         checkboxElement.checked = true;
@@ -211,7 +211,7 @@ document.addEventListener("readystatechange", (ev) => {
                         "task-td-status"
                       );
                       tdTaskStatusTd.textContent =
-                        taskElement["task_status_display"];
+                        taskElement["status_display"];
 
                       // task created at
                       const taskCreatedAtTd = document.createElement("td");

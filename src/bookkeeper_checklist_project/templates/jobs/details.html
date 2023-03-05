@@ -3,9 +3,12 @@
 
 {% block dashboard_content %}
 
-<section id="manager-job-details">
+<section id="manager-job-details" class="is-relative">
+
+  {% include 'components/core/ribbon_status.html' with object=object %}
 
   <div class="box">
+
     <div class="columns is-desktop">
       <div class="column is-8">
         <div class="card">
@@ -18,6 +21,7 @@
           <div class="card-content">
             <div class="content">
               <article>
+
                 <section>
                   {{ object.description }}
                 </section>
@@ -67,14 +71,14 @@
                 <!-- <button class="button is-responsive">Small</button> -->
                 <!-- <button class="button is-responsive">Small</button> -->
               </div>
-              
+
               {% if perms.task.can_view_list %}
-              {% include 'components/task/table_list.html' with client_object=object object_list=object.tasks.all user_type=request.user.user_type enable_create_btn=False perms=perms app_name="task" details_url="task:update" action_urls_pattern="task" enabled_action_btns='update,delete' is_show_checkboxes=True is_show_job_column=False is_show_start_date=False request=request only %}
+              {% include 'components/task/table_list.html' with client_object=object object_list=object.tasks.all user_type=request.user.user_type enable_create_btn=False perms=perms app_name="task" details_url="task:update" action_urls_pattern="task" enabled_action_btns='update,delete' is_show_checkboxes=True is_show_job_column=False is_show_start_date=False request=request %}
               {% else %}
               {% include 'components/core/no_permissions.html' with msg="no permissions to see tasks" %}
               {% endif %}
-                
-              
+
+
 
             </div>
             <!-- <footer class="card-footer">
@@ -96,11 +100,12 @@
                 <div class="content">
 
                   {% if perms.jobs.change_job %}
-                  <button id="updateJobBtn" class="button is-fullwidth has-text-weight-bold hint--top" aria-label="Update job details">
+                  <button id="updateJobBtn" class="button is-fullwidth has-text-weight-bold hint--top"
+                    aria-label="Update job details">
                     Edit Job
                   </button>
                   <!-- Start Jobs Form -->
-                  {% include 'segments/jobs/job_modal.html' with user_type=request.user.user_type job_form=job_form request_object=request jobId=object.pk only %}
+                  {% include 'segments/jobs/job_modal.html' with user_type=request.user.user_type job_form=job_form request_object=request jobId=object.pk %}
                   <!-- End Jobs Form -->
                   {% endif %}
 
@@ -124,7 +129,13 @@
                     <strong>Managed by</strong>
                     <!-- <small>@johnsmith</small> <small>31m</small> -->
                     <br />
+                    
+                    {% if object.managed_by %}
                     {{ object.managed_by }}
+                    {% else %}
+                      <span class="has-text-danger">No manager</span>
+                    {% endif %}
+                      
                   </p>
                 </div>
 
@@ -150,6 +161,15 @@
                     {% if object.client %}
                     <a href="{% url 'client:details:overview' object.client.pk %}"
                       target="_blank">{{ object.client }}</a>
+                      
+                      {% if object.client.status == "archived" %}
+                      &nbsp;
+                      <span class="tag is-warning is-rounded">
+                        {{ object.client.get_status_display }}
+                      </span>
+                      {% endif %}
+                        
+                      
                     {% else %}
                     No client
                     {% endif %}
@@ -189,6 +209,8 @@
                                     </span> -->
                   {{ document.title }}
                 </a>
+                &nbsp;&nbsp;&nbsp;
+                <span class="tag is-small is-warning is-rounded">{{ document.get_status_display }}</span>
                 <div class="field is-grouped is-grouped-right ml-3">
                   <p class="control">
                     <button data-document-id="{{ document.pk }}" data-document-title="{{ document.title }}"
@@ -202,6 +224,7 @@
                       href="{% url 'documents:update' document.pk %}" target="_blank">
                       <i class="fa-solid fa-pencil"></i>
                     </a>
+
                   </p>
                 </div>
 
@@ -242,6 +265,8 @@
                                     </span> -->
                   {{ note.title }}
                 </a>
+                &nbsp;&nbsp;&nbsp;
+                <span class="tag is-small is-warning is-rounded">{{ note.get_status_display }}</span>
                 <button data-note-id="{{ note.pk }}" data-note-title="{{ note.title }}"
                   class="button is-danger is-light is-small managerDeleteNoteBtn bkchlst-input ml-5 is-rounded" disabled
                   type="button">

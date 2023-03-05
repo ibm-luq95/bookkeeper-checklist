@@ -68,15 +68,15 @@
           </td>
           <td>
 
-            {% if object.status == "completed" %}
+            {% if object.status == CON_COMPLETED %}
             <span class="tag is-small is-success is-light has-text-weight-bold">
               {{ object.get_status_display }}
             </span>
-            {% elif object.status == "rejected" %}
+            {% elif object.status == CON_REJECTED %}
             <span class="tag is-small is-danger is-light has-text-weight-bold">
               {{ object.get_status_display }}
             </span>
-            {% elif object.status == "in_progress" %}
+            {% elif object.status == CON_IN_PROGRESS %}
             <span class="tag is-small is-info is-light has-text-weight-bold">
               {{ object.get_status_display }}
             </span>
@@ -85,7 +85,6 @@
               {{ object.get_status_display }}
             </span>
             {% endif %}
-
 
           </td>
           <td>

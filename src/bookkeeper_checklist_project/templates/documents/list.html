@@ -17,14 +17,14 @@
     {# End Include Filter Form Component #}
 
     {# Start Include Table List Component #}
-    {% include 'components/documents/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' app_name=app_label perms=perms is_show_created_at=is_show_created_at only %}
+    {% include 'components/documents/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' app_name=app_label perms=perms is_show_created_at=is_show_created_at %}
     {# End Include Table List Component #}
 
     {# Start Include Pagination Component #}
     {% include 'components/core/pagination.html' with page_obj=page_obj only %}
     {# Start Include Pagination Component #}
   </div>
-
+</section>
   {% endblock dashboard_content %}
 
   {% block externaljs %}

@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from client.models import Client
 from core.serializers import CreatedBySerializerMixin
-from jobs.models import Job
+from jobs.models import Job, JobProxy
 from task.models import Task
 
 
@@ -12,10 +12,10 @@ class TaskSerializer(serializers.ModelSerializer, CreatedBySerializerMixin):
     task_type_display = serializers.CharField(
         source="get_task_type_display", required=False
     )
-    task_status_display = serializers.CharField(
-        source="get_task_status_display", required=False
+    status_display = serializers.CharField(
+        source="get_status_display", required=False
     )
-    job = serializers.PrimaryKeyRelatedField(queryset=Job.objects.all(), many=False)
+    job = serializers.PrimaryKeyRelatedField(queryset=JobProxy.objects.all(), many=False)
 
     class Meta:
         model = Task
@@ -28,7 +28,7 @@ class TaskSerializer(serializers.ModelSerializer, CreatedBySerializerMixin):
             "updated_at",
             "is_completed",
         )
-        depth = 1
+        depth = 2
 
     # def update(self, instance, validated_data):
     #     instance = super(TaskSerializer, self).update(instance, validated_data)

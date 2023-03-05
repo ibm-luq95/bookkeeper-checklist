@@ -23,7 +23,7 @@
           </td>
           <td data-label="Content">{{ note_object.body|truncatechars:30 }}</td>
           <td data-label="Note Section">
-            {% include 'components/core/table_list/status_tag.html' with status=note_object.note_section tag_size="is-medium" status_label=note_object.get_note_section_display only %}
+            {% include 'components/core/table_list/status_tag.html' with status=note_object.note_section tag_size="is-medium" status_label=note_object.get_note_section_display %}
           </td>
           {% if is_show_created_at is True %}
             <td data-label="Created">

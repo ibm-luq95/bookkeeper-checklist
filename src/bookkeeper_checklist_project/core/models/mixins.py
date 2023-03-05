@@ -1,3 +1,4 @@
+import textwrap
 import uuid
 
 from django.contrib.auth import get_user_model
@@ -6,11 +7,26 @@ from django.forms.models import model_to_dict
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
+from core.choices import StatusEnum
 from core.models import SoftDeleteManager
 from core.utils import sort_dict
 
 
-class BaseModelMixin(models.Model):
+class DiffingMixin:
+    def __init__(self, *args, **kwargs):
+        super(DiffingMixin, self).__init__(*args, **kwargs)
+        self._original_state = dict(self.__dict__)
+
+    def get_changed_columns(self) -> dict:
+        missing = object()
+        result = {}
+        for key, value in self._original_state.items():
+            if key != self.__dict__.get(key, missing):
+                result[key] = value
+        return result
+
+
+class BaseModelMixin(DiffingMixin, models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     metadata = models.JSONField(_("metadata"), null=True, blank=True, default=dict)
     is_deleted = models.BooleanField(_("is_deleted"), default=False)
@@ -102,6 +118,45 @@ class StartAndDueDateMixin(models.Model):
         _("start date"), default=timezone.now, null=True, blank=True
     )
     due_date = models.DateField(_("due date"), default=timezone.now, null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class StartDateOnlyMixin(models.Model):
+    start_date = models.DateField(
+        _("start date"), default=timezone.now, null=True, blank=True
+    )
+
+    class Meta:
+        abstract = True
+
+
+class DueDateOnlyMixin(models.Model):
+    due_date = models.DateField(_("due date"), default=timezone.now, null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class StrModelMixin(models.Model):
+    def __str__(self) -> str:
+        if hasattr(self, "title"):
+            return textwrap.shorten(self.title, width=40, placeholder="...")
+            # return self.title
+        elif hasattr(self, "body"):
+            return textwrap.shorten(self.body, width=40, placeholder="...")
+        elif hasattr(self, "name"):
+            return textwrap.shorten(self.name, width=40, placeholder="...")
+
+    class Meta:
+        abstract = True
+
+
+class GeneralStatusFieldMixin(models.Model):
+    status = models.CharField(
+        _("status"), max_length=10, choices=StatusEnum.choices, default=StatusEnum.ENABLED
+    )
 
     class Meta:
         abstract = True

@@ -7,3 +7,9 @@ from .client import (
     ClientDetailsOverviewRedirectView,
     ClientArchiveListView,
 )
+from .category import (
+    ClientCategoryListView,
+    ClientCategoryCreateView,
+    ClientCategoryUpdateView,
+    ClientCategoryDeleteView,
+)

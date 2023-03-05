@@ -1,0 +1,7 @@
+{% spaceless %}
+    {% if object.status == CON_COMPLETED or object.status == CON_DRAFT or object.status == CON_ARCHIVED or object.status == CON_PAST_DUE %}
+        <div class="custom-ribbon custom-ribbon-top-right {% if object.status == CON_COMPLETED %} custom-ribbon-success {% elif object.status == CON_ARCHIVED or object.status == CON_DRAFT %} custom-ribbon-warning {% elif object.status == CON_PAST_DUE %} custom-ribbon-danger {% endif %}">
+            <span>{{ object.get_status_display }}</span>
+        </div>
+    {% endif %}
+{% endspaceless %}

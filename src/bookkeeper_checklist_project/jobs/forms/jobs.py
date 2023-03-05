@@ -8,7 +8,7 @@ from bookkeeper.models import Bookkeeper
 from django.utils.safestring import mark_safe
 from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
 from core.utils import debugging_print
-from jobs.models import Job
+from jobs.models import Job, JobProxy
 from users.models import CustomUser
 
 
@@ -49,7 +49,7 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
             if hasattr(self.instance.client, "bookkeepers"):
 
                 all_client_bookkeepers = self.instance.client.bookkeepers.all()
-                debugging_print(all_client_bookkeepers)
+                # debugging_print(all_client_bookkeepers)
                 bookkeepers_pks = [bookkeeper.user.pk for bookkeeper in all_client_bookkeepers]
                 self.fields["managed_by"].queryset = CustomUser.objects.filter(
                     pk__in=bookkeepers_pks
@@ -76,4 +76,4 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         return data
 
     class Meta(BaseModelFormMixin.Meta):
-        model = Job
+        model = JobProxy

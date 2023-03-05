@@ -15,7 +15,7 @@ class TaskFilter(django_filters.FilterSet):
         model = Task
         fields = {
             "task_type": ["exact"],
-            "task_status": ["exact"],
+            "status": ["exact"],
             "job__title": ["icontains"],
             # "job__bookkeeper": ["exact"]
             # "company_name": ["icontains"],

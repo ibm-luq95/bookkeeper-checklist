@@ -8,7 +8,7 @@ from django.utils.translation import gettext as _
 
 from client.models import Client
 from core.choices import DocumentTypesEnum
-from core.models import BaseModelMixin, CreatedByMixin
+from core.models import BaseModelMixin, CreatedByMixin, GeneralStatusFieldMixin
 from core.utils import debugging_print
 from jobs.models import Job
 from task.models import Task
@@ -33,7 +33,7 @@ def saved_document_file_path(instance, filename):
     return f"documents/{file_suffix}_{filename}"
 
 
-class Documents(BaseModelMixin, CreatedByMixin):
+class Documents(BaseModelMixin, GeneralStatusFieldMixin, CreatedByMixin):
     title = models.CharField(_("title"), max_length=70, null=False, blank=False)
     document_section = models.CharField(
         _("document section"),
@@ -58,6 +58,6 @@ class Documents(BaseModelMixin, CreatedByMixin):
         to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
     )
 
-    def delete(self, *args, **kwargs):
-        self.document_file.storage.delete(self.document_file.name)
-        super(Documents, self).delete(*args, **kwargs)
+    # def delete(self, *args, **kwargs):
+    #     self.document_file.storage.delete(self.document_file.name)
+    #     super(Documents, self).delete(*args, **kwargs)

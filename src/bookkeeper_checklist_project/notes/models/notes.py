@@ -3,13 +3,18 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 from client.models import Client
-from core.choices import NoteTypesEnum
-from core.models import BaseModelMixin, CreatedByMixin, GetObjectSectionMixin
+from core.choices import NoteTypesEnum, NoteStatusEnum
+from core.models import (
+    BaseModelMixin,
+    CreatedByMixin,
+    GetObjectSectionMixin,
+    GeneralStatusFieldMixin,
+)
 from jobs.models import Job
 from task.models import Task
 
 
-class Note(BaseModelMixin, CreatedByMixin, GetObjectSectionMixin):
+class Note(BaseModelMixin, CreatedByMixin, GetObjectSectionMixin, GeneralStatusFieldMixin):
     """Notes model for bookkeeper, assistant, and manager
 
     Args:

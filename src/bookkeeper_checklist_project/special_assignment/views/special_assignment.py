@@ -8,7 +8,7 @@ from django.views.generic import ListView, DeleteView, CreateView, UpdateView, D
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.constants.status_labels import CON_ARCHIVED, CON_COMPLETED
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin, ArchiveListViewMixin
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from special_assignment.filters import SpecialAssignmentFilter
 from special_assignment.forms import SpecialAssignmentForm, DiscussionForm
@@ -20,6 +20,7 @@ class SpecialAssignmentListView(
     ManagerAssistantAccessMixin,
     PermissionRequiredMixin,
     BaseListViewMixin,
+    ListViewMixin,
     ListView,
 ):
     permission_required = "special_assignment.can_view_list"
@@ -51,6 +52,7 @@ class SpecialAssignmentArchiveListView(
     ManagerAssistantAccessMixin,
     PermissionRequiredMixin,
     BaseListViewMixin,
+    ArchiveListViewMixin,
     ListView,
 ):
     permission_required = "special_assignment.can_view_archive"

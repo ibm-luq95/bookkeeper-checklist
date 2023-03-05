@@ -5,7 +5,7 @@
 {% block dashboard_content %}
 
 {# Start Include Update Form Component #}
-{% include 'components/core/forms/create_update_form.html' with user_type=request.user.user_type form=form title=title submit_btn_label="update" app_name="important_contact" csrf_token=csrf_token form_type="update" only %}
+{% include 'components/core/forms/create_update_form.html' with user_type=request.user.user_type form=form title=title submit_btn_label="update" app_name="important_contact" csrf_token=csrf_token form_type="update" %}
 {# End Include Update Form Component #}
 
 {% endblock dashboard_content %}

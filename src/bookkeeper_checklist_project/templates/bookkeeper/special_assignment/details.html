@@ -6,14 +6,14 @@
 {% block dashboard_content %}
 <section class="box block">
   <div class="columns is-flex is-justify-content-space-between pt-5">
-    <header class="">
+    <header>
       <h5 class="title is-size-5">{{ object|capfirst }}</h5>
     </header>
-    <div class="">
+    <div>
 
-      {% if object.status == "rejected" %}
+      {% if object.status == CON_REJECTED %}
       <span class="tag is-danger is-light is-medium mt-1">{{ object.get_status_display|capfirst }}</span>
-      {% elif object.status == "completed" %}
+      {% elif object.status == CON_COMPLETED %}
       <span class="tag is-success is-light is-medium mt-1">{{ object.get_status_display|capfirst }}</span>
       {% else %}
       <span class="tag is-medium mt-1">

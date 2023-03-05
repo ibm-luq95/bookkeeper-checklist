@@ -12,12 +12,12 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   const jobFormModalId = "job-form-modal";
   const jobFormModalElement = document.querySelector(`#${jobFormModalId}`);
   const updateJobBtn = document.querySelector("button#updateJobBtn");
-  if (jobFormModalElement) {
+  const jobsForm = jobFormModalElement.querySelector("form");
+  // if (jobFormModalElement) {
     const jobModalTitleElement = jobFormModalElement.querySelector(".modal__title");
     const jobModalSubmitBtn = jobFormModalElement.querySelector("button[type='submit']");
-    const jobsForm = jobFormModalElement.querySelector("form");
     const jobsFormFieldset = jobsForm.querySelector("fieldset");
-  }
+  // }
 
   // const jobsFormWrapper = document.querySelector("div#jobsFormWrapper");
   const managerJobsLoaderBtn = document.querySelector("button#managerJobsLoaderBtn");
@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           jobsForm.elements["_method"].value = "PUT";
           jobsForm.setAttribute("method", "PUT");
           jobsForm.setAttribute("action", updateJobUrl["urlPath"]);
+          console.log(jobsForm.getAttribute("action"));
           jobModalTitleElement.textContent = "Update job";
           jobModalSubmitBtn.textContent = "Update";
         },
@@ -75,119 +76,119 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       const modalHandler = new MicroModalHandler(jobFormModalId, callBacks);
     });
   }
+  jobsForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    try {
+      // const updateJobUrl = await fetchUrlPathByName("jobs:api:update");
+      // const currentTarget = event.currentTarget;
+      jobsFormFieldset.disabled = true;
+      managerJobsLoaderBtn.hidden = false;
+      const bookkeepersArray = new Array();
+      const assistantsArray = new Array();
+      const tasksArray = new Array();
+      Array.from(jobsForm.elements).forEach((element) => {
+        element.classList.remove("is-danger");
+      });
 
+      // check if bookkeeper exists
+      if (jobsForm["bookkeeper"]) {
+        // check if bookkeeper single or multiple
+        if (checkIfInputSingleOrList(jobsForm["bookkeeper"]) === "multiple") {
+          jobsForm["bookkeeper"].forEach((input) => {
+            if (input.checked === true) {
+              bookkeepersArray.push(input.value);
+            }
+          });
+        } else {
+          if (jobsForm["bookkeeper"].checked === true) {
+            bookkeepersArray.push(jobsForm["bookkeeper"].value);
+          }
+        }
+      }
+      // check if assistants exists
+      if (jobsForm["assistants"]) {
+        // check if assistants single or multiple
+        if (checkIfInputSingleOrList(jobsForm["assistants"]) === "multiple") {
+          jobsForm["assistants"].forEach((input) => {
+            if (input.checked === true) {
+              assistantsArray.push(input.value);
+            }
+          });
+        } else {
+          if (jobsForm["assistants"].checked === true) {
+            assistantsArray.push(jobsForm["assistants"].value);
+          }
+        }
+      }
+      // check if tasks exists
+      if (jobsForm["tasks"]) {
+        // check if tasks one element or multiple
+        if (checkIfInputSingleOrList(jobsForm["tasks"]) === "multiple") {
+          // in case multiple tasks
+          jobsForm["tasks"].forEach((input) => {
+            if (input.checked === true) {
+              tasksArray.push(input.value);
+            }
+          });
+        } else {
+          if (jobsForm["tasks"].checked === true) {
+            tasksArray.push(jobsForm["tasks"].value);
+          }
+        }
+      }
+
+      // throw new Error("s");
+      const formInputs = formInputSerializer({
+        formElement: jobsForm,
+        excludedFields: ["bookkeeper", "tasks", "_method", "assistants"],
+        isOrdered: true,
+      });
+      formInputs["tasks"] = tasksArray;
+      formInputs["bookkeeper"] = bookkeepersArray;
+      formInputs["assistants"] = assistantsArray;
+      if (jobsForm["_method"].value === "PUT") {
+        formInputs["jobId"] = jobsForm["jobId"].value;
+      }
+      // console.log(formInputs);
+      // throw new Error("Stop");
+      const requestOptions = {
+        method: jobsForm["_method"].value,
+        dataToSend: formInputs,
+        url: jobsForm.action,
+      };
+      const request = sendRequest(requestOptions);
+      request
+        .then((data) => {
+          console.log(data);
+          showToastNotification(data["msg"], "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        })
+        .catch((error) => {
+          console.error(error);
+          showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
+          const userErrors = error["user_error_msg"];
+          for (const key in userErrors) {
+            if (Object.hasOwnProperty.call(userErrors, key)) {
+              const element = userErrors[key];
+              jobsForm[key].classList.add(...["is-danger"]);
+            }
+          }
+        })
+        .finally(() => {
+          jobsFormFieldset.disabled = false;
+          managerJobsLoaderBtn.hidden = true;
+        });
+    } catch (error) {
+      console.error(error);
+      jobsFormFieldset.disabled = false;
+      managerJobsLoaderBtn.hidden = true;
+    }
+  });
   if (typeof jobsForm !== "undefined") {
     // create new job form event
-    jobsForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      try {
-        const updateJobUrl = await fetchUrlPathByName("jobs:api:update");
-        const currentTarget = event.currentTarget;
-        jobsFormFieldset.disabled = true;
-        managerJobsLoaderBtn.hidden = false;
-        const bookkeepersArray = new Array();
-        const assistantsArray = new Array();
-        const tasksArray = new Array();
-        Array.from(jobsForm.elements).forEach((element) => {
-          element.classList.remove("is-danger");
-        });
-  
-        // check if bookkeeper exists
-        if (jobsForm["bookkeeper"]) {
-          // check if bookkeeper single or multiple
-          if (checkIfInputSingleOrList(jobsForm["bookkeeper"]) === "multiple") {
-            jobsForm["bookkeeper"].forEach((input) => {
-              if (input.checked === true) {
-                bookkeepersArray.push(input.value);
-              }
-            });
-          } else {
-            if (jobsForm["bookkeeper"].checked === true) {
-              bookkeepersArray.push(jobsForm["bookkeeper"].value);
-            }
-          }
-        }
-        // check if assistants exists
-        if (jobsForm["assistants"]) {
-          // check if assistants single or multiple
-          if (checkIfInputSingleOrList(jobsForm["assistants"]) === "multiple") {
-            jobsForm["assistants"].forEach((input) => {
-              if (input.checked === true) {
-                assistantsArray.push(input.value);
-              }
-            });
-          } else {
-            if (jobsForm["assistants"].checked === true) {
-              assistantsArray.push(jobsForm["assistants"].value);
-            }
-          }
-        }
-        // check if tasks exists
-        if (jobsForm["tasks"]) {
-          // check if tasks one element or multiple
-          if (checkIfInputSingleOrList(jobsForm["tasks"]) === "multiple") {
-            // in case multiple tasks
-            jobsForm["tasks"].forEach((input) => {
-              if (input.checked === true) {
-                tasksArray.push(input.value);
-              }
-            });
-          } else {
-            if (jobsForm["tasks"].checked === true) {
-              tasksArray.push(jobsForm["tasks"].value);
-            }
-          }
-        }
-  
-        // throw new Error("s");
-        const formInputs = formInputSerializer({
-          formElement: jobsForm,
-          excludedFields: ["bookkeeper", "tasks", "_method", "assistants"],
-          isOrdered: true,
-        });
-        formInputs["tasks"] = tasksArray;
-        formInputs["bookkeeper"] = bookkeepersArray;
-        formInputs["assistants"] = assistantsArray;
-        if (jobsForm["_method"].value === "PUT") {
-          formInputs["jobId"] = jobsForm["jobId"].value;
-        }
-        // console.log(formInputs);
-        // throw new Error("Stop");
-        const requestOptions = {
-          method: jobsForm["_method"].value,
-          dataToSend: formInputs,
-          url: jobsForm.action,
-        };
-        const request = sendRequest(requestOptions);
-        request
-          .then((data) => {
-            console.log(data);
-            showToastNotification(data["msg"], "success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 500);
-          })
-          .catch((error) => {
-            console.error(error);
-            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
-            const userErrors = error["user_error_msg"];
-            for (const key in userErrors) {
-              if (Object.hasOwnProperty.call(userErrors, key)) {
-                const element = userErrors[key];
-                jobsForm[key].classList.add(...["is-danger"]);
-              }
-            }
-          })
-          .finally(() => {
-            jobsFormFieldset.disabled = false;
-            managerJobsLoaderBtn.hidden = true;
-          });
-      } catch (error) {
-        console.error(error);
-        jobsFormFieldset.disabled = false;
-        managerJobsLoaderBtn.hidden = true;
-      }
-    });
+   
     
   }
  

@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.api.permissions import ManagerApiPermission, BaseApiPermissionMixin
+from core.constants.status_labels import CON_COMPLETED
 from core.utils import get_formatted_logger, debugging_print
 from task.models import Task
 from task.serializers import CreateTaskSerializer, TaskSerializer
@@ -33,7 +34,7 @@ class CreateTaskApiView(APIView):
             serializer = TaskSerializer(data=data)
             if not serializer.is_valid():
                 raise APIException(serializer.error_messages)
-            debugging_print(serializer.validated_data)
+            # debugging_print(serializer.validated_data)
             serializer.save()
             return Response(
                 data={"msg": "Task created successfully!"}, status=status.HTTP_201_CREATED
@@ -187,15 +188,15 @@ class SetTaskCompletedApiView(APIView):
                 task_object = Task.objects.get(pk=task)
                 # if current_user != task_object.created_by:
                 #     raise PermissionDenied(
-                #         {"user_error_msg": "You dont have permission to update this task!"}
+                #         {"user_error_msg": "You don't have permission to update this task!"}
                 #     )
                 task_object.is_completed = True
-                task_object.task_status = "completed"
+                task_object.status = CON_COMPLETED
                 task_object.save()
                 job_object = task_object.job
                 # check if all tasks done set the job completed
                 if len(job_object.get_all_not_completed_tasks()) == 0:
-                    job_object.status = "complete"
+                    job_object.status = CON_COMPLETED
                     job_object.save()
             return Response(
                 data={"msg": "Task set to completed successfully!", "tasks": tasks},

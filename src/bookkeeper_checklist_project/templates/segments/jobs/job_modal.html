@@ -16,8 +16,8 @@
       </header>
       <main class="modal__content" id="job-form-modal-content">
         <form action="" method="" id="{{ user_type }}JobForm">
-          {% csrf_token %}
           <fieldset form="{{ user_type }}JobForm">
+            {% csrf_token %}
           <input type="hidden" name="_method" value="" />
           <input type="hidden" name="created_by" value="{{ request_object.user.pk }}" />
           

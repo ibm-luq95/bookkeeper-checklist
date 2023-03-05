@@ -8,12 +8,18 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from core.choices import JobStatusEnum
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.constants.status_labels import CON_COMPLETED, CON_ARCHIVED
-from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
+from core.utils import get_trans_txt, debugging_print
+from core.views.mixins import (
+    BaseListViewMixin,
+    BaseLoginRequiredMixin,
+    DetailsViewMixin,
+    ListViewMixin,
+    ArchiveListViewMixin,
+)
 from documents.forms import DocumentForm
 from jobs.filters import JobFilter
 from jobs.forms import JobForm
-from jobs.models import Job
+from jobs.models import Job, JobProxy
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from notes.forms import NoteForm
 from special_assignment.forms import DiscussionForm
@@ -25,11 +31,12 @@ class JobListView(
     PermissionRequiredMixin,
     ManagerAssistantAccessMixin,
     BaseListViewMixin,
+    ListViewMixin,
     ListView,
 ):
     permission_required = "jobs.can_view_list"
     template_name = "jobs/list.html"
-    model = Job
+    model = JobProxy
     list_type = "list"
     paginate_by = LIST_VIEW_PAGINATE_BY
 
@@ -56,7 +63,7 @@ class JobCreateView(
     SuccessMessageMixin,
     CreateView,
 ):
-    model = Job
+    model = JobProxy
     permission_required = "jobs.add_job"
     template_name = "jobs/create.html"
     form_class = JobForm
@@ -80,10 +87,11 @@ class JobDetailsView(
     BaseLoginRequiredMixin,
     PermissionRequiredMixin,
     ManagerAssistantAccessMixin,
+    DetailsViewMixin,
     DetailView,
 ):
     template_name = "jobs/details.html"
-    model = Job
+    model = JobProxy
     permission_required = "jobs.view_job"
 
     def get_context_data(self, **kwargs):
@@ -131,7 +139,7 @@ class JobUpdateView(
     form_class = JobForm
     http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Job updated successfully")
-    model = Job
+    model = JobProxy
     success_url = reverse_lazy("jobs:list")
 
     def get_context_data(self, **kwargs):
@@ -160,7 +168,7 @@ class JobDeleteView(
     DeleteView,
 ):
     permission_required = "jobs.delete_job"
-    model = Job
+    model = JobProxy
     template_name = "jobs/delete.html"
     # form_class = JobForm
     # http_method_names = ["post", "get"]
@@ -170,16 +178,19 @@ class JobDeleteView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = get_trans_txt("Delete job")
+        context.setdefault("title", get_trans_txt("Delete job"))
         return context
 
 
 class JobArchiveListView(
-    BaseLoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin, ListView
+    BaseLoginRequiredMixin,
+    ManagerAccessMixin,
+    BaseListViewMixin,
+    ArchiveListViewMixin,
+    ListView,
 ):
     template_name = "jobs/list.html"
-    model = Job
-    queryset = Job.original_objects.filter(Q(status__in=[CON_COMPLETED, CON_ARCHIVED]))
+    model = JobProxy
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "archive"
 

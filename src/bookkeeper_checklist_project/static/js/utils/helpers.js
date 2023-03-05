@@ -32,7 +32,7 @@ const fadeIn = (el, display) => {
   el.style.display = display || "block";
 
   (function fade() {
-    const val = parseFloat(el.style.opacity);
+    let val = parseFloat(el.style.opacity);
     if (!((val += 0.1) > 1)) {
       el.style.opacity = val;
       requestAnimationFrame(fade);
@@ -62,15 +62,12 @@ const sendRequest = (options) => {
       const controller = new AbortController(); // the AbortController
       const { signal } = controller;
       const headers = new Headers({
-        "Content-Type":
-          options["contentType"] ?? "application/json;charset=utf-8",
+        "Content-Type": options["contentType"] ?? "application/json;charset=utf-8",
         // "Content-Type": `Content-Type: application/pdf`,
         // "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest",
-        "X-CSRFToken": options["token"]
-          ? options["token"]
-          : getCookie("csrftoken"),
+        "X-CSRFToken": options["token"] ? options["token"] : getCookie("csrftoken"),
         // "Content-Disposition": "attachment; filename=upload.jpg",
       });
       // const formData = Object.fromEntries(options["dataToSend"].entries());
@@ -117,15 +114,12 @@ const sendGetRequest = (options) => {
       const controller = new AbortController(); // the AbortController
       const { signal } = controller;
       const headers = new Headers({
-        "Content-Type":
-          options["contentType"] ?? "application/json;charset=utf-8",
+        "Content-Type": options["contentType"] ?? "application/json;charset=utf-8",
         // "Content-Type": `Content-Type: application/pdf`,
         // "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest",
-        "X-CSRFToken": options["token"]
-          ? options["token"]
-          : getCookie("csrftoken"),
+        "X-CSRFToken": options["token"] ? options["token"] : getCookie("csrftoken"),
         // "Content-Disposition": "attachment; filename=upload.jpg",
       });
       // const formData = Object.fromEntries(options["dataToSend"].entries());
@@ -171,13 +165,7 @@ class UploadFileRequest {
    * @param {string} requestMethod request type, default POST
    * @param {boolean} isDebugging logging output
    */
-  constructor(
-    url,
-    formDataObject,
-    csrfToken,
-    requestMethod,
-    isDebugging = false
-  ) {
+  constructor(url, formDataObject, csrfToken, requestMethod, isDebugging = false) {
     this.url = url;
     this.formData = formDataObject;
     this.csrfToken = csrfToken;
@@ -221,11 +209,7 @@ class UploadFileRequest {
 
         if (this.isDebugging === true) {
           // this.ajaxObject.addEventListener("progress", this.uploadProgressHandler, false);
-          this.ajaxObject.upload.addEventListener(
-            "progress",
-            this.uploadProgressHandler,
-            false
-          );
+          this.ajaxObject.upload.addEventListener("progress", this.uploadProgressHandler, false);
           // set upload error handler
         }
 
@@ -248,7 +232,7 @@ class UploadFileRequest {
             console.warn("Load event!");
             console.log(event);
           },
-          false
+          false,
         );
         this.ajaxObject.send(this.formData);
         // eslint-disable-next-line no-unused-vars
@@ -342,9 +326,7 @@ const formInputSerializer = ({
   });
   // check if returnAsFormData is true
   if (returnAsFormData === false) {
-    return isOrdered === true
-      ? orderObjectItems(serializedObject)
-      : serializedObject;
+    return isOrdered === true ? orderObjectItems(serializedObject) : serializedObject;
   } else {
     const formData = new FormData();
     for (const key in serializedObject) {
@@ -377,9 +359,7 @@ const setFormInputValues = (formElement, objectOfValues) => {
       if (error instanceof TypeError) {
         // in case the input or element not exists
         if (DEBUG === true) {
-          console.warn(
-            `The element ${name} not exists in the form ${formElement.id}`
-          );
+          console.warn(`The element ${name} not exists in the form ${formElement.id}`);
         }
       }
     }
@@ -389,8 +369,9 @@ const setFormInputValues = (formElement, objectOfValues) => {
 /**
  * Fetch the url path by url name
  * @param {string} urlName URL name to fetch url
+ * @param {string} pk PK value
  */
-const fetchUrlPathByName = async (urlName) => {
+const fetchUrlPathByName = async (urlName, pk = null) => {
   try {
     const controller = new AbortController(); // the AbortController
     const { signal } = controller;
@@ -400,12 +381,17 @@ const fetchUrlPathByName = async (urlName) => {
       "X-Requested-With": "XMLHttpRequest",
       "X-CSRFToken": getCookie("csrftoken"),
     });
+    const dataToSend = { urlName: urlName };
+    if (pk) {
+      dataToSend["pk"] = pk;
+    }
+
     const fetchOptions = {
       method: "POST",
       mode: "same-origin",
       credentials: "include",
       cache: "no-cache",
-      body: JSON.stringify({ urlName: urlName }),
+      body: JSON.stringify(dataToSend),
     };
     const request = new Request(FETCHURLNAMEURL, {
       headers: headers,

@@ -5,5 +5,5 @@ class TaskConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "task"
 
-    def ready(self) -> None:
-        import task.signals
+    # def ready(self) -> None:
+    #     import task.signals

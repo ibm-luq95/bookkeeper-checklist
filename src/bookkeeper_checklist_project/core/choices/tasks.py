@@ -8,6 +8,9 @@ from core.constants.status_labels import (
     CON_COMPLETED,
     CON_IN_PROGRESS,
     CON_NOT_STARTED,
+    CON_DRAFT,
+    CON_NOT_COMPLETED,
+    CON_PAST_DUE,
 )
 from core.constants.types_labels import (
     CON_NO_TYPE,
@@ -25,7 +28,10 @@ class TaskStatusEnum(models.TextChoices):
     NOT_STARTED = CON_NOT_STARTED, _(stringcase.sentencecase(CON_NOT_STARTED))
     IN_PROGRESS = CON_IN_PROGRESS, _(stringcase.sentencecase(CON_IN_PROGRESS))
     COMPLETED = CON_COMPLETED, _(stringcase.sentencecase(CON_COMPLETED))
+    NOT_COMPLETED = CON_NOT_COMPLETED, _(stringcase.sentencecase(CON_NOT_COMPLETED))
+    PAST_DUE = CON_PAST_DUE, _(stringcase.sentencecase(CON_PAST_DUE))
     ARCHIVED = CON_ARCHIVED, _(stringcase.sentencecase(CON_ARCHIVED))
+    DRAFT = CON_DRAFT, _(stringcase.sentencecase(CON_DRAFT))
 
 
 class TaskTypeEnum(models.TextChoices):

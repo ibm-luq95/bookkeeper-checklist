@@ -15,7 +15,7 @@
     {# End Include Filter Form Component #}
     <hr />
     {# Start Include Client Table List Component #}
-    {% include 'components/important_contact/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' perms=perms app_name=app_label is_show_created_at=is_show_created_at only %}
+    {% include 'components/important_contact/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" action_urls_pattern=app_label enabled_action_btns='update,delete' perms=perms app_name=app_label is_show_created_at=is_show_created_at %}
     {# End Include Client Table List Component #}
 
     {# Start Include Pagination Component #}

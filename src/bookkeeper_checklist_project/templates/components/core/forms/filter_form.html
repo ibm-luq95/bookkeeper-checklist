@@ -5,10 +5,10 @@
 {% if filter_form %}
 <div class="filter-form">
 
-  <form action="{% fetch_url_by_name_pk url_name=action_url %}" method="GET" id="filterFormComponent">
+  <form action="{% fetch_url_by_name_pk url_name=action_url %}" method="get" id="filterFormComponent">
     <fieldset form="filterFormComponent" {% if object_list.count == 0 %} disabled {% endif %}>
       {%  for form_item in filter_form  %}
-      {% if forloop.counter0|divisibleby:5 %} <div class="columns"> {%  endif %}
+      {% if forloop.counter0|divisibleby:4 %} <div class="columns is-flex"> {%  endif %}
         <div class="column">
           <div class="field">
             <!-- <label class="label">Label</label> -->
@@ -23,8 +23,8 @@
 
           </div>
         </div><!-- column -->
-        {%  if forloop.counter|divisibleby:5 or forloop.last %}</div><!-- columns closing -->
-      <hr>{%  endif %}
+        {%  if forloop.counter|divisibleby:4 or forloop.last %}</div><!-- columns closing -->
+      <hr />{%  endif %}
       {%  endfor %}
 
       <div class="field is-grouped is-grouped-right">

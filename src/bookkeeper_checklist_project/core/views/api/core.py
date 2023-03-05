@@ -22,7 +22,11 @@ class FetchUrlApiView(APIView):
         try:
             data = request.data
             url_name = data.get("urlName")
-            url_path = reverse_lazy(url_name)
+            pk = data.get("pk", None)
+            if pk is not None:
+                url_path = reverse_lazy(url_name, kwargs={"pk": pk})
+            else:
+                url_path = reverse_lazy(url_name)
             return Response(
                 {"urlPath": url_path},
                 status=status.HTTP_200_OK,

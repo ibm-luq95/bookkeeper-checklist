@@ -1,0 +1,22 @@
+{% extends 'core/layouts/dashboard.html' %}
+{% load static %}
+{% load define_action %}
+{% load url_helpers %}
+{% block dashboard_content %}
+    <section id="{{ request.user.user_type }}-{{ app_label }}-list" class="box">
+        {# Start Include Header List Component #}
+        {% include 'components/core/dashboard/header_title.html' with user_type=request.user.user_type app_name=app_label page_header=page_header list_type=list_type is_archived_enabled=True perms=perms only %}
+        {# End Include Header List Component #}
+        <hr />
+        <div>
+            {# Start Include Client Table List Component #}
+            {% include 'components/client/category/table_list.html' with object_list=object_list user_type=request.user.user_type details_url="client:category" action_urls_pattern="client:category" app_name=app_label enabled_action_btns='update,delete' perms=perms is_show_created_at=is_show_created_at request=request only %}
+            {# End Include Client Table List Component #}
+            {# Start Include Pagination Component #}
+            {% include 'components/core/pagination.html' with page_obj=page_obj only %}
+            {# Start Include Pagination Component #}
+        </div>
+    </section>
+{% endblock dashboard_content %}
+{% block externaljs %}
+{% endblock externaljs %}

@@ -22,12 +22,12 @@
     <meta name="author" content="Ibrahim Luqman" />
     <meta name="title" content="{{ get_web_app_settings.title }}" />
     <meta name="language" content="English" />
-    <link rel="canonical" href="URL">
-    <meta name="subject" content="WEBSITE PAGE SUBJECT">
-    <meta name="copyright" content="COPYRIGHT_HOLDERS">
-    <meta name="revised" content="REVISION_DATE">
-    <meta name='classification' content='Business'>
-    <meta name='url' content='{{ get_web_app_settings.url }}'>
+    <link rel="canonical" href="URL" />
+    <meta name="subject" content="WEBSITE PAGE SUBJECT" />
+    <meta name="copyright" content="COPYRIGHT_HOLDERS" />
+    <meta name="revised" content="REVISION_DATE" />
+    <meta name="classification" content="Business" />
+    <meta name="url" content="{{ get_web_app_settings.url }}" />
     {% comment %}
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     {% endcomment %}
@@ -36,20 +36,27 @@
     <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-badge.css' %}" />
     <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-list.css' %}" />
     <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-tooltip.css' %}" />
+    
+    {% comment  %}
+    <link rel="stylesheet" href="{% static 'vendors/DataTables/datatables.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendors/bulma-collapsible/css/bulma-collapsible.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendors/DataTables/Buttons-2.2.3/css/buttons.bulma.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendors/DataTables/FixedHeader-3.2.4/css/fixedHeader.bulma.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendors/DataTables/Responsive-2.3.0/css/responsive.bulma.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendors/DataTables/DateTime-1.1.2/css/dataTables.dateTime.css' %}" />
+    {% endcomment %}
 
     <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-helpers.css' %}" />
     <link rel="stylesheet" href="{% static 'css/vendors/micromodal/micromodal.css' %}" />
     <link rel="stylesheet" href="{% static 'css/vendors/toastify/toastify.css' %}" />
     <link rel="stylesheet" href="{% static 'css/vendors/bulma-table/main.css' %}" />
-    <link rel="stylesheet" href="{% static 'vendors/DataTables/datatables.css' %}" />
-    <link rel="stylesheet" href="{% static 'vendors/bulma-collapsible/css/bulma-collapsible.min.css' %}" />
+
     <link rel="stylesheet" href="{% static 'css/bulma-extensions/bulma-ribbon.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'vendors/DataTables/Buttons-2.2.3/css/buttons.bulma.css' %}" />
-    <link rel="stylesheet" href="{% static 'vendors/DataTables/FixedHeader-3.2.4/css/fixedHeader.bulma.css' %}" />
-    <link rel="stylesheet" href="{% static 'vendors/DataTables/Responsive-2.3.0/css/responsive.bulma.css' %}" />
-    <link rel="stylesheet" href="{% static 'vendors/DataTables/DateTime-1.1.2/css/dataTables.dateTime.css' %}" />
+
     <link rel="stylesheet" href="{% static 'css/vendors/hintcss/hint.min.css' %}" />
     <link rel="stylesheet" href="{% static 'vendors/sortable-tablesort/sortable-base.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendors/tingle/tingle.css' %}" />
+    
     <link rel="stylesheet" href="{% static 'css/dashboard/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/dashboard/inline-form.css' %}" />
     {% block externalcss %}
@@ -99,30 +106,31 @@
     </main>
 
     <script src="{% url 'js_settings' %}" defer></script>
-    <script type="text/javascript" src="{% static 'js/vendors/jquery/jquery.min.js' %}">
-      < script type = "text/javascript"
-      src = "{% static 'vendors/DataTables/jQuery-3.6.0/jquery-3.6.0.js' %}" >
-
-    </script>
+    <script type="text/javascript" src="{% static 'js/vendors/jquery/jquery.min.js' %}"></script>
+    {% comment  %}
+      <script type = "text/javascript" src = "{% static 'vendors/DataTables/jQuery-3.6.0/jquery-3.6.0.js' %}" ></script>
+      <script type="text/javascript" src="{% static 'vendors/DataTables/datatables.js' %}"></script>
+      <script type="text/javascript" src="{% static 'vendors/DataTables/Buttons-2.2.3/js/buttons.bulma.js' %}">
+      </script>
+      <script type="text/javascript" src="{% static 'vendors/DataTables/FixedHeader-3.2.4/js/fixedHeader.bulma.js' %}">
+      </script>
+      <script type="text/javascript" src="{% static 'vendors/DataTables/Responsive-2.3.0/js/responsive.bulma.js' %}">
+      </script>
+      <script type="text/javascript" src="{% static 'vendors/DataTables/DateTime-1.1.2/js/dataTables.dateTime.js' %}">
+      </script>
+      <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/pdfmake.js' %}"></script>
+      <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/vfs_fonts.js' %}"></script>
+    {% endcomment %}
     <script src="{% static 'js/chart.js' %}" type="text/javascript" defer></script>
     <script src="{% static 'js/all.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'js/vendors/micromodal/micromodal.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendors/bulma-collapsible/js/bulma-collapsible.min.js' %}" defer>
-    </script>
+
     <script type="text/javascript" src="{% static 'js/vendors/toastify/toastify.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/vendors/clipboard/clipboard.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendors/DataTables/datatables.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendors/DataTables/Buttons-2.2.3/js/buttons.bulma.js' %}">
-    </script>
-    <script type="text/javascript" src="{% static 'vendors/DataTables/FixedHeader-3.2.4/js/fixedHeader.bulma.js' %}">
-    </script>
-    <script type="text/javascript" src="{% static 'vendors/DataTables/Responsive-2.3.0/js/responsive.bulma.js' %}">
-    </script>
-    <script type="text/javascript" src="{% static 'vendors/DataTables/DateTime-1.1.2/js/dataTables.dateTime.js' %}">
-    </script>
-    <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/pdfmake.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/vfs_fonts.js' %}"></script>
+
     <script type="text/javascript" src="{% static 'vendors/sortable-tablesort/sortable.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendors/tingle/tingle.js' %}"></script>
+    
     <script type="module" src="{% static 'js/utils/datatable-helper.js' %}" defer></script>
     <script type="module" src="{% static 'js/apps/core/inputs.js' %}" defer></script>
     <script type="module" src="{% static 'js/apps/core/table_list_components.js' %}" defer></script>

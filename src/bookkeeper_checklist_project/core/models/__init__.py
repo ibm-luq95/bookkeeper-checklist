@@ -9,6 +9,8 @@ from .mixins import (
     StartDateOnlyMixin,
     DueDateOnlyMixin,
     StrModelMixin,
+    GeneralStatusFieldMixin,
+    DiffingMixin,
 )
 from .quote import Quote
 from .staff_member_mixin import StaffMemberMixin

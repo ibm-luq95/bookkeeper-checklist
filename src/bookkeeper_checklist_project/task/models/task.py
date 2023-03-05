@@ -1,29 +1,31 @@
 # -*- coding: utf-8 -*-#
-import textwrap
 
 from django.db import models
 from django.utils.translation import gettext as _
 
 # from client.models import Client
 from core.choices import TaskStatusEnum, TaskTypeEnum
+from core.constants.status_labels import CON_COMPLETED
 from core.models import (
     BaseModelMixin,
     CreatedByMixin,
     StartAndDueDateMixin,
+    StrModelMixin,
 )
 from jobs.models import Job
 
 
-class Task(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
+class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
     """Tasks for every job
 
     Args:
         BaseModelMixin (models.Model): The base django model mixin
     """
 
-    # client = models.ForeignKey(
-    #     to=Client, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
-    # )
+    # def __init__(self, *args, **kwargs):
+    #     super(Task, self).__init__(*args, **kwargs)
+    #     self.__original_model = self.model
+
     job = models.ForeignKey(
         to=Job, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
     )
@@ -35,12 +37,14 @@ class Task(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
         blank=True,
         choices=TaskTypeEnum.choices,
     )
-    task_status = models.CharField(
-        _("task status"),
+    status = models.CharField(
+        _("status"),
         max_length=15,
         null=True,
         blank=True,
         choices=TaskStatusEnum.choices,
+        default=TaskStatusEnum.NOT_STARTED
+        # db_column="status"
     )
     is_completed = models.BooleanField(_("is completed"), default=False)
     hints = models.CharField(
@@ -57,12 +61,15 @@ class Task(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
         help_text=_("Additional note for the task"),
     )
 
-    def __str__(self) -> str:
-        # return self.title
-        return textwrap.shorten(self.title, width=40, placeholder="...")
-
     def get_is_completed_label(self) -> str:
         if self.is_completed is True:
             return "Completed"
         else:
             return "Not completed"
+
+    def save(self, *args, **kwargs):
+        if self.status == CON_COMPLETED:
+            self.is_completed = True
+        else:
+            self.is_completed = False
+        super().save(*args, **kwargs)

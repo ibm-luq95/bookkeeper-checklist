@@ -7,14 +7,14 @@ from client.models import Client
 from client.serializers import ClientSerializer
 from core.constants import EXCLUDED_FIELDS
 from core.serializers import CreatedBySerializerMixin
-from jobs.models import Job
+from jobs.models import Job, JobProxy
 from task.serializers import TaskSerializer
 from users.models import CustomUser
 
 
 class CreateJobSerializer(serializers.ModelSerializer, CreatedBySerializerMixin):
     class Meta:
-        model = Job
+        model = JobProxy
         exclude = (
             "metadata",
             "is_deleted",
@@ -35,16 +35,16 @@ class JobSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
     client = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all(), many=False)
     managed_by = serializers.PrimaryKeyRelatedField(
-        queryset=CustomUser.objects.all(), many=False
+        queryset=CustomUser.objects.all(), many=False, allow_null=True
     )
 
     # bookkeeper = BookkeeperSerializer(many=True, read_only=True)
     # assistants = AssistantSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Job
+        model = JobProxy
         exclude = EXCLUDED_FIELDS
-        depth = 2
+        depth = 3
 
     def validate(self, data):
         """

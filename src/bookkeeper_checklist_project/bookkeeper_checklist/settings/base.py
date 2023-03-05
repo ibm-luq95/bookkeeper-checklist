@@ -102,6 +102,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "site_settings.context_processors.return_all_context",
+                "core.context_processors.access_constants",
                 "maintenance_mode.context_processors.maintenance_mode",
             ],
         },

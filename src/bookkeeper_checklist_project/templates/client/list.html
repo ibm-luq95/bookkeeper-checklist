@@ -17,7 +17,7 @@
     {# Start Include Client Table List Component #}
 
     {% if request.user.user_type == "bookkeeper" %}
-    {% define_var request.user.bookkeeper.clients.all as  clients_list %}
+    {% define_var request.user.bookkeeper.clients.all as clients_list %}
     {% else %}
     {% define_var object_list as clients_list  %}
     {% endif %}

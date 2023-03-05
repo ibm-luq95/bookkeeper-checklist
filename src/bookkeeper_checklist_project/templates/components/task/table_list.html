@@ -77,9 +77,9 @@
 
       </td>
       <td data-label="Type">
-        {% include 'components/core/tag.html' with tag_text=task_object.get_task_type_display only %}</td>
+        {% include 'components/core/tag.html' with tag_text=task_object.get_task_type_display %}</td>
       <td data-label="Status" class="is-progress-cell">
-        {% include 'components/core/table_list/status_tag.html' with status=task_object.task_status tag_size="is-small" status_label=task_object.get_task_status_display only %}
+        {% include 'components/core/table_list/status_tag.html' with status=task_object.status tag_size="is-small" status_label=task_object.get_status_display %}
       </td>
       {% if is_show_start_date is True %}
       <td data-label="Start Date">
@@ -88,7 +88,7 @@
       {% endif %}
 
       <td data-label="Due Date">
-        {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.due_date user_type=user_type only %}
+        {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.due_date user_type=user_type %}
       </td>
       {% if is_show_created_at is True %}
       <td data-label="Created">

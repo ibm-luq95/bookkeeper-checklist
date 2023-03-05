@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin
 from documents.filters import DocumentsFilter
 from documents.forms import DocumentForm
 from documents.models import Documents
@@ -18,6 +18,7 @@ class ListDocumentView(
     ManagerAssistantAccessMixin,
     PermissionRequiredMixin,
     BaseListViewMixin,
+    ListViewMixin,
     ListView,
 ):
     permission_required = "documents.can_view_list"
@@ -116,7 +117,12 @@ class UpdateDocumentView(
     def get_form_kwargs(self):
         """Return the keyword arguments for instantiating the form."""
         kwargs = super().get_form_kwargs()
-        kwargs.update({"is_update": True})
+        sections = ["job", "client", "task"]
+        object = self.get_object()
+        for sec in sections:
+            if sec == object.document_section:
+                sections.remove(sec)
+        kwargs.update({"is_update": True, "removed_fields": sections})
         return kwargs
 
 

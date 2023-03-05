@@ -2,10 +2,9 @@
 {% load static %}
 {% load url_helpers %}
 
-
 {% block dashboard_content %}
 <section class="box block has-ribbon" id="assistant-client-details">
-
+  {% include 'components/core/ribbon_status.html' with object=object %}
   {% comment %}
   <div class="ribbon is-warning">Default</div>
   {% endcomment %}
@@ -20,6 +19,7 @@
           {% else %}
           <img src="{% static 'imgs/default_client.jpg' %}" loading="lazy" alt="{{ object.name }}" />
           {% endif %}
+
         </p>
       </figure>
       <div class="media-content">
@@ -29,7 +29,7 @@
             &nbsp;
             <small title="Created at">{{ object.created_at|date }}</small>
             &nbsp;
-            <span class="tag mb-1 is-inline-block">{{ object.get_status_display }}</span>
+            <span class="tag mb-1 is-inline-block is-rounded">{{ object.get_status_display }}</span>
             <br />
             {{ object.industry }}
           </p>
@@ -38,6 +38,30 @@
               {{ object.email }}
             </a>
           </p>
+          <p>
+            {% if perms.client.change_client %}
+            <a href="{% url 'client:update' object.pk %}" target="_blank"
+              class="button is-primary is-light hint--right is-responsive" aria-label="Update client details">
+              Update
+            </a>
+            {% endif %}
+          </p>
+          <p>
+
+            {% if object.categories.all %}
+            <div class="tags">
+              {% for category in object.categories.all %}
+              <a class="tag">
+                {{ category.name }}
+              </a>
+              {% endfor %}
+            </div>
+
+
+            {% endif %}
+
+          </p>
+
         </div>
         <nav class="level is-mobile">
           <div class="level-left">
@@ -53,17 +77,11 @@
           </div>
         </nav>
       </div>
-      <div class="media-right">
-
-        {% if perms.client.change_client %}
-        <a href="{% url 'client:update' object.pk %}" target="_blank"
-          class="button is-primary is-light hint--bottom is-rounded" aria-label="Update client details">
-          Update
-        </a>
-        {% endif %}
+      <!-- <div class="media-right">
 
 
-      </div>
+
+      </div> -->
     </article>
   </div>
   <!-- end client media -->

@@ -13,7 +13,7 @@ from client.views import (
 app_name = "client"
 
 urlpatterns = [
-    # path("api/", include("client.urls.api"), name="client-api-urls"),
+    path("category/", include("client.urls.category"), name="client-category-urls"),
     path("", ClientListView.as_view(), name="list"),
     path("archive/", ClientArchiveListView.as_view(), name="archive"),
     path("create", ClientCreateView.as_view(), name="create"),

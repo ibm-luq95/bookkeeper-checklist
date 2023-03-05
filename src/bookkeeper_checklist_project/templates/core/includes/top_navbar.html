@@ -47,7 +47,6 @@
             <a class="navbar-item" href="{% url 'client:create' %}">Create new client</a>
 
             {% endif %}
-
             {% if perms.client_account.can_view_list or request.user.user_type == 'manager' %}
             <a class="navbar-item" href="{% url 'accounts:list' %}">Client accounts</a>
 
@@ -56,6 +55,10 @@
             {% if perms.important_contact.can_view_list or request.user.user_type == 'manager' %}
             <a class="navbar-item" href="{% url 'important_contact:list' %}">Client contact</a>
 
+            {% endif %}
+            {% if perms.clientcategory.can_view_list %}
+            <hr class="dropdown-divider" />
+            <a class="navbar-item" href="{% url 'client:category:list' %}">Categories</a>
             {% endif %}
             <!-- <hr class="dropdown-divider" />
               <a class="navbar-item" href="">Client report</a> -->
@@ -71,13 +74,18 @@
           <a class="navbar-link">Jobs</a>
 
           <div class="navbar-dropdown">
-            {% if perms.manager.manager_user or perms.jobtemplate.can_view_list %}<a class="navbar-item"
-              href="{% url 'jobs:templates:list' %}">Templates</a>{% endif %}
+            
             <a class="navbar-item" href="{% url 'jobs:list' %}">List all jobs</a>
 
             {% if perms.jobs.add_job %}
             <a class="navbar-item" href="{% url 'jobs:create' %}">Create new job</a>
             {% endif %}
+            <hr class="dropdown-divider" />
+            {% if perms.manager.manager_user or perms.jobtemplate.can_view_list %}
+            <a class="navbar-item"
+              href="{% url 'jobs:templates:list' %}">Templates&nbsp;&nbsp; <span class="tag is-link is-small is-rounded">ALPHA</span>
+            </a>
+              {% endif %}
           </div>
         </div>
         {% endif %}

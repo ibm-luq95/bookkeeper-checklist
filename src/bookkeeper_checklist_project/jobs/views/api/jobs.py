@@ -11,8 +11,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.api.permissions import ManagerApiPermission, BaseApiPermissionMixin
-from core.utils import get_formatted_logger
-from jobs.models import Job
+from core.utils import get_formatted_logger, debugging_print
+from jobs.models import Job, JobProxy
 from jobs.serializers import CreateJobSerializer, JobSerializer
 from task.models import Task
 
@@ -74,7 +74,7 @@ class RetrieveJobApiView(APIView):
     def post(self, request: Request, *args, **kwargs):
         try:
             data = request.data
-            job_object = Job.objects.get(pk=data.get("jobId"))
+            job_object = JobProxy.objects.get(pk=data.get("jobId"))
             serializer = JobSerializer(instance=job_object)
             return Response(
                 data={"job": serializer.data},
@@ -110,11 +110,13 @@ class UpdateJobApiView(APIView):
     def put(self, request: Request, *args, **kwargs):
         try:
             data = request.data
-            job_object = Job.objects.get(pk=data.get("jobId"))
+            job_object = JobProxy.objects.get(pk=data.get("jobId"))
             del data["jobId"]
-            serializer = JobSerializer(instance=job_object, data=data, partial=True)
+            # serializer = JobSerializer(instance=job_object, data=data, partial=True)
+            serializer = JobSerializer(instance=job_object, data=data)
             if not serializer.is_valid(raise_exception=True):
                 raise APIException(serializer.errors)
+            debugging_print(serializer.validated_data)
             serializer.save()
             tasks = data.get("tasks")
             # bookkeepers = data.get("bookkeeper")
@@ -127,9 +129,9 @@ class UpdateJobApiView(APIView):
 
             # update tasks
             tasks_objects_list = []
-            for task in tasks:
-                tasks_objects_list.append(Task.objects.get(pk=task))
-            job_object.tasks.set(tasks_objects_list)
+            # for task in tasks:
+            #     tasks_objects_list.append(Task.objects.get(pk=task))
+            # job_object.tasks.set(tasks_objects_list)
             return Response(
                 data={"job": serializer.data, "msg": "Job updated successfully!"},
                 status=status.HTTP_200_OK,
@@ -170,7 +172,7 @@ class DeleteJobApiView(APIView):
                 "not_completed_tasks": 0,
             }
             data = request.data
-            job_object = Job.objects.get(pk=data.get("jobId"))
+            job_object = JobProxy.objects.get(pk=data.get("jobId"))
             # debugging_print(job_object.get_all_not_completed_tasks())
             response_msg_data["not_completed_tasks"] = len(
                 job_object.get_all_not_completed_tasks()
@@ -222,10 +224,11 @@ class UpdateJobStatusApiView(APIView):
             data = request.data
             job_id = data.get("jobId")
             job_status = data.get("status")
-            job = Job.objects.filter(pk=job_id)
-            job.update(status=job_status)
-            job = Job.original_objects.filter(pk=job_id)
-            data = {"msg": "Status updated successfully!", "status": job.first().status}
+            job = JobProxy.original_objects.filter(pk=job_id).first()
+            # job.update(status=job_status)
+            job.status = job_status
+            job.save()
+            data = {"msg": "Status updated successfully!", "status": job.status}
             return Response(
                 data=data,
                 status=status.HTTP_200_OK,

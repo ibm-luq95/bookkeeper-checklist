@@ -15,7 +15,7 @@
     {# End Include Filter Form Component #}
 
     {# Start Include Client Table List Component #}
-    {% include 'components/client_account/table_list.html' with object_list=object_list user_type=request.user.user_type details_url="accounts:details" action_urls_pattern="accounts" perms=perms enabled_action_btns='update,delete' perm_app_name="clientaccount" is_show_client_column=True app_name=app_label is_show_created_at=is_show_created_at only %}
+    {% include 'components/client_account/table_list.html' with object_list=object_list user_type=request.user.user_type details_url="accounts:details" action_urls_pattern="accounts" perms=perms enabled_action_btns='update,delete' perm_app_name="clientaccount" is_show_client_column=True app_name=app_label is_show_created_at=is_show_created_at %}
     {# End Include Client Table List Component #}
 
     {# Start Include Pagination Component #}

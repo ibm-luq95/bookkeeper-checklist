@@ -74,7 +74,7 @@
         <span class="tag">{{ job_object.get_job_type_display }}</span>
       </td>
       <td data-label="Status" class="is-progress-cell">
-        {% include 'components/core/table_list/status_tag.html' with status=job_object.status tag_size="is-small" status_label=job_object.get_status_display only %}
+        {% include 'components/core/table_list/status_tag.html' with status=job_object.status tag_size="is-small" status_label=job_object.get_status_display %}
       </td>
       <td data-label="Start Date">
         {% include 'components/core/table_list/table_cell_created.html' with created_at=job_object.start_date user_type=user_type only %}

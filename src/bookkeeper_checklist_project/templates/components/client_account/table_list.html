@@ -49,7 +49,7 @@
         {% include 'components/core/inputs/password.html' with password=account_object.decrypted_account_password object_pk=account_object.pk is_readonly=True only %}
       </td>
       <td data-label="Status">
-        {% include 'components/core/table_list/status_tag.html' with status=account_object.status tag_size="is-small" status_label=account_object.get_status_display only %}
+        {% include 'components/core/table_list/status_tag.html' with status=account_object.status tag_size="is-small" status_label=account_object.get_status_display %}
       </td>
       {% if is_show_created_at is True %}
       <td data-label="Created">

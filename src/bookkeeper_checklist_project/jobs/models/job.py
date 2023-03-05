@@ -68,6 +68,9 @@ class Job(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
         _("note"), null=True, help_text=JOB_HELP_MESSAGES.get("note"), blank=True
     )
 
+    # not_filtered_objects = JobManager()
+    # objects = JobManager()
+
     class Meta(BaseModelMixin.Meta):
         permissions = BaseModelMixin.Meta.permissions + [
             ("list_abstract_job_template", "List abstract job template")

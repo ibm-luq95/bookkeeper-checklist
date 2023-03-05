@@ -2,7 +2,7 @@
 import django_filters
 from django import forms
 
-from jobs.models import Job
+from jobs.models import Job, JobProxy
 from bookkeeper.models import get_all_bookkeepers_as_choices
 
 
@@ -25,7 +25,7 @@ class JobFilter(django_filters.FilterSet):
     # )
 
     class Meta:
-        model = Job
+        model = JobProxy
         # form = JobFilterForm
         fields = {
             "title": ["icontains"],

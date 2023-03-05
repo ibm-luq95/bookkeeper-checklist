@@ -27,7 +27,7 @@ class Client(BaseModelMixin):
         BaseModelMixin (models.Model): Django base model mixin
     """
 
-    categories = models.ManyToManyField(to=ClientCategory, related_name="client", blank=True)
+    categories = models.ManyToManyField(to=ClientCategory, related_name="clients", blank=True)
     bookkeepers = models.ManyToManyField(
         to="bookkeeper.Bookkeeper", related_name="clients", blank=True
     )
@@ -39,7 +39,7 @@ class Client(BaseModelMixin):
     city = models.CharField(_("city"), max_length=20, null=True, blank=True)
     state = models.CharField(_("state"), max_length=20, null=True, blank=True)
     phone_number = models.CharField(
-        _("phone_number"), max_length=50, null=True, blank=True
+        _("phone number"), max_length=50, null=True, blank=True
     )
     postcode = models.CharField(
         _("postcode"),

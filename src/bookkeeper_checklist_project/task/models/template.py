@@ -17,7 +17,7 @@ class TaskTemplate(BaseModelMixin, StartAndDueDateMixin, StrModelMixin):
         blank=True,
         choices=TaskTypeEnum.choices,
     )
-    task_status = models.CharField(
+    status = models.CharField(
         _("task status"),
         max_length=15,
         null=True,

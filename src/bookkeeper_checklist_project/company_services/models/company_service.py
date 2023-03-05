@@ -5,10 +5,10 @@ from django.utils.translation import gettext as _
 from client.models import Client
 from company_services.helpers import PasswordHasher
 from core.choices import ServiceNameEnum
-from core.models import BaseModelMixin, CreatedByMixin
+from core.models import BaseModelMixin, CreatedByMixin, GeneralStatusFieldMixin
 
 
-class CompanyService(BaseModelMixin, CreatedByMixin):
+class CompanyService(BaseModelMixin, GeneralStatusFieldMixin, CreatedByMixin):
     """This represents the company services
 
     Args:

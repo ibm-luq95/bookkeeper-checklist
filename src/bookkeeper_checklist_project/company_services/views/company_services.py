@@ -9,7 +9,7 @@ from company_services.forms import CompanyServiceForm
 from company_services.models import CompanyService
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 
 
@@ -18,6 +18,7 @@ class CompanyServicesListView(
     PermissionRequiredMixin,
     ManagerAssistantAccessMixin,
     BaseListViewMixin,
+    ListViewMixin,
     ListView,
 ):
     permission_required = "company_services.can_view_list"

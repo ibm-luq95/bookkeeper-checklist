@@ -7,7 +7,7 @@ from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 from client.models import Client
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin
+from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin
 from notes.models import Note
 from notes.forms import NoteForm
 from notes.filters import NotesFilter
@@ -19,6 +19,7 @@ class NoteListView(
     ManagerAssistantAccessMixin,
     PermissionRequiredMixin,
     BaseListViewMixin,
+    ListViewMixin,
     ListView,
 ):
     template_name = "notes/list.html"
@@ -92,9 +93,18 @@ class NotesUpdateView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        important_contact = self.get_object()
         context.setdefault("title", get_trans_txt("Update note"))
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super(NotesUpdateView, self).get_form_kwargs()
+        sections = ["job", "client", "task"]
+        object = self.get_object()
+        for sec in sections:
+            if sec == object.note_section:
+                sections.remove(sec)
+        kwargs.update({"removed_fields": sections})
+        return kwargs
 
 
 class NoteDeleteView(

@@ -3,11 +3,12 @@
 
 <section id="{{ user_type }}-{{ form_type }}-{{ app_name }}-form">
   <div class="box block has-ribbon">
+    {% include 'components/core/ribbon_status.html' with object=form.instance %}
     {% if is_show_ribbon is True %}
     {% if object.created_by != request.user %}<div class="ribbon is-medium is-warning">Not the owner</div>{% endif %}
     {% endif %}
 
-    <form method="POST" id="{{ form_type }}-{{ app_name }}-form" {% if is_file_form is True %}
+    <form method="post" id="{{ form_type }}-{{ app_name }}-form" {% if is_file_form is True %}
       enctype="multipart/form-data" {% endif %}>
       <fieldset form="{{ form_type }}-{{ app_name }}-form">
         <div class="columns is-flex is-justify-content-space-between mt-1">

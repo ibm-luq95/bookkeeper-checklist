@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-#
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Q
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 from company_services.models import CompanyService
 from core.choices import CustomUserStatusEnum
+from core.constants.status_labels import CON_ARCHIVED
 from core.models import SoftDeleteManager, BaseQuerySetMixin
 from core.utils import get_trans_txt
 
@@ -57,7 +59,9 @@ class StaffMemberMixin(models.Model):
             return get_trans_txt("Deactivate")
 
     def get_not_seen_special_assignments(self):
-        return self.special_assignments.filter(is_seen=False)
+        return self.special_assignments.filter(
+            Q(is_seen=False) & ~Q(status__in=[CON_ARCHIVED])
+        )
 
     def get_user_jobs(self) -> BaseQuerySetMixin:
         if hasattr(self, "jobs"):

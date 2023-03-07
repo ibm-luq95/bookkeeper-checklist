@@ -21,21 +21,6 @@ class Bookkeeper(BaseModelMixin, StaffMemberMixin):
         # return f"Bookkeeper -> {self.user.fullname}"
         return f"{self.user.fullname}"
 
-    def get_tasks_count(self):
-        all_tasks = []
-        all_jobs = self.user.jobs.all()
-        for job in all_jobs:
-            all_tasks.append(job.tasks.count())
-        return sum(all_tasks)
-
-    @property
-    def get_clients_total(self) -> int:
-        total_list = set()
-        jobs = self.jobs.select_related()
-        for job in jobs:
-            total_list.add(str(job.client.pk))
-        return len(total_list)
-
 
 def get_all_bookkeepers_as_choices() -> list:
     all_bookkeepers = []

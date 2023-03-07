@@ -10,26 +10,11 @@ from core.constants.status_labels import (
     CON_ENABLED,
     CON_NOT_STARTED,
 )
-from core.utils import debugging_print
 
 
 class ClientProxy(Client):
     class Meta:
         proxy = True
-
-    def get_total_tasks_for_all_jobs(self) -> int:
-        all_tasks_count = []
-        if self.jobs.count() <= 0:
-            return 0
-        for job in self.jobs.all():
-            all_tasks_count.append(job.tasks.count())
-
-        # print("#############")
-        # print(self.name)
-        # print(len(all_tasks_count))
-        # print(self.jobs.count())
-        # print("#############")
-        return sum(all_tasks_count)  # TODO: check if sum or len to use
 
     def get_managed_bookkeepers(self) -> set | None:
         all_bookkeepers = []

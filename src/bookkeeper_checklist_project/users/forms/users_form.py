@@ -131,7 +131,7 @@ class UserChangeForm(UserChangeForm):
             "is_superuser",
             "is_active",
             "user_permissions",
-            # "groups"
+            # "groups",
         ]
 
 

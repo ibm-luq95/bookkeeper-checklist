@@ -12,7 +12,7 @@ class RepliesQuerySet(BaseQuerySetMixin):
 
 class SpecialAssignmentQuerySet(BaseQuerySetMixin):
     def get_not_seen_special_assignment(self):
-        return self.filter(is_seen=False)
+        return self.filter(Q(is_seen=False) & ~Q(status__in=[CON_ARCHIVED]))
 
 
 class RepliesManager(SoftDeleteManager):
@@ -23,8 +23,11 @@ class RepliesManager(SoftDeleteManager):
 
 class SpecialAssignmentsManager(SoftDeleteManager):
     def get_queryset(self) -> SpecialAssignmentQuerySet:
+        # queryset = SpecialAssignmentQuerySet(self.model, using=self._db).filter(
+        #     Q(is_deleted=False),
+        #     ~Q(status__in=[CON_COMPLETED, CON_ARCHIVED]),
+        # )
         queryset = SpecialAssignmentQuerySet(self.model, using=self._db).filter(
             Q(is_deleted=False),
-            ~Q(status__in=[CON_COMPLETED, CON_ARCHIVED]),
         )
         return queryset

@@ -1,11 +1,10 @@
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from client.models import Client
+from client.models import ClientProxy
 from company_services.helpers.hasher import PasswordHasher
-from core.models import BaseModelMixin, CreatedByMixin
 from core.choices import ClientAccountStatusEnum
+from core.models import BaseModelMixin, CreatedByMixin
 
 
 class ClientAccount(BaseModelMixin, CreatedByMixin):
@@ -16,7 +15,7 @@ class ClientAccount(BaseModelMixin, CreatedByMixin):
     """
 
     client = models.ForeignKey(
-        to=Client,
+        to=ClientProxy,
         on_delete=models.RESTRICT,
         null=True,
         related_name="client_accounts",

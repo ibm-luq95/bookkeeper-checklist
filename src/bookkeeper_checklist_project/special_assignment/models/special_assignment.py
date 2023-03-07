@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 
-from client.models import Client
+from client.models import ClientProxy
 from core.choices.special_assignment import SpecialAssignmentStatusEnum
 from core.models import BaseModelMixin, TeamMembersMixin, StartAndDueDateMixin
 from core.utils import get_trans_txt
@@ -31,7 +31,7 @@ file_validator = FileValidator(
 
 class SpecialAssignment(BaseModelMixin, StartAndDueDateMixin, TeamMembersMixin):
     client = models.ForeignKey(
-        to=Client, on_delete=models.PROTECT, related_name="special_assignments"
+        to=ClientProxy, on_delete=models.PROTECT, related_name="special_assignments"
     )
     title = models.CharField(_("title"), max_length=70, null=False, blank=False)
     body = models.TextField(_("body"))

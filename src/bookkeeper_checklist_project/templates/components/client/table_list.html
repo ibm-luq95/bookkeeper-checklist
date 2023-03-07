@@ -12,6 +12,7 @@
       <th>Contacts</th>
       <th>Jobs</th>
       <th>Tasks</th>
+      <th>Assignments</th>
       {% if is_show_created_at is True %}
       <th>Created</th>
 
@@ -51,7 +52,7 @@
       <td data-label="Status">
         {% include 'components/core/table_list/status_tag.html' with status=client_object.status tag_size="is-small" status_label=client_object.get_status_display %}
       </td>
-      <td data-label="Industry">{{ client_object.industry|truncatechars:20 }}</td>
+      <td data-label="Industry">{{ client_object.industry|truncatechars:30 }}</td>
       <td data-label="Contacts">
 
         <div class="scrollable">
@@ -68,6 +69,9 @@
       </td>
       <td data-label="Jobs">{{ client_object.jobs.count }}</td>
       <td data-label="Tasks">{{ client_object.get_total_tasks_for_all_jobs }}</td>
+      <td data-label="Assignments">
+        {{ client_object.special_assignments.count }}
+      </td>
       {% if is_show_created_at is True %}
       <td data-label="Created">
         {% include 'components/core/table_list/table_cell_created.html' with created_at=client_object.created_at user_type=user_type only %}

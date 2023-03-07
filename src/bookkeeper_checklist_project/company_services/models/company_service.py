@@ -2,7 +2,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-from client.models import Client
+from client.models import ClientProxy
 from company_services.helpers import PasswordHasher
 from core.choices import ServiceNameEnum
 from core.models import BaseModelMixin, CreatedByMixin, GeneralStatusFieldMixin
@@ -16,7 +16,7 @@ class CompanyService(BaseModelMixin, GeneralStatusFieldMixin, CreatedByMixin):
     """
 
     client = models.ForeignKey(
-        to=Client,
+        to=ClientProxy,
         on_delete=models.PROTECT,
         null=True,
         blank=True,

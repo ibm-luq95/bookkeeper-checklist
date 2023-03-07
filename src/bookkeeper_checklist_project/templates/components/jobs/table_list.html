@@ -34,7 +34,8 @@
       {% if is_show_client_column is True %}
       <td data-label="Client">
         {% if job_object.client %}
-        <a href="{% fetch_url_by_name_pk details_url='client:details:overview' object_pk=job_object.client.pk %}" target="_blank">
+        <a href="{% fetch_url_by_name_pk details_url='client:details:overview' object_pk=job_object.client.pk %}"
+          target="_blank">
           {{ job_object.client.name }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
         </a>
         {% else %}
@@ -45,17 +46,17 @@
 
       <td data-label="Manager">
         {% if job_object.managed_by is not None %}
-          
-          {% if request.user.user_type == "bookkeeper" %}
-          <a href="" class="disabledAnchorElement">
-            {{ job_object.managed_by }}
-          </a>
-          {% else %}
-          <a href="{% fetch_user_details_url base_user=user_type user_object=job_object.managed_by %}" target="_blank">
-            {{ job_object.managed_by }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
-          </a>
-          {% endif %}
-            
+
+        {% if request.user.user_type == "bookkeeper" %}
+        <a href="" class="disabledAnchorElement">
+          {{ job_object.managed_by }}
+        </a>
+        {% else %}
+        <a href="{% fetch_user_details_url base_user=user_type user_object=job_object.managed_by %}" target="_blank">
+          {{ job_object.managed_by }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
+        </a>
+        {% endif %}
+
         {% else %}
         {% include 'components/core/red_text.html' with text="No staff member for this job" only %}
         {% endif %}
@@ -71,7 +72,7 @@
       </td>
       <td data-label="Task(s)">{{ job_object.tasks.count }}</td>
       <td data-label="Type">
-        <span class="tag">{{ job_object.get_job_type_display }}</span>
+        {% include 'components/core/tag.html' with tag_text=job_object.get_job_type_display tag_size="is-small" %}
       </td>
       <td data-label="Status" class="is-progress-cell">
         {% include 'components/core/table_list/status_tag.html' with status=job_object.status tag_size="is-small" status_label=job_object.get_status_display %}

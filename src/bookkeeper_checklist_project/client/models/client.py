@@ -27,7 +27,9 @@ class Client(BaseModelMixin):
         BaseModelMixin (models.Model): Django base model mixin
     """
 
-    categories = models.ManyToManyField(to=ClientCategory, related_name="clients", blank=True)
+    categories = models.ManyToManyField(
+        to=ClientCategory, related_name="clients", blank=True
+    )
     bookkeepers = models.ManyToManyField(
         to="bookkeeper.Bookkeeper", related_name="clients", blank=True
     )
@@ -92,41 +94,3 @@ class Client(BaseModelMixin):
 
     def get_tasks_count(self):
         return self.jobs.all()
-
-    def get_total_tasks_for_all_jobs(self) -> int:
-        all_tasks_count = []
-        if self.jobs.count() <= 0:
-            return 0
-        for job in self.jobs.all():
-            all_tasks_count.append(job.tasks.count())
-
-        # print("#############")
-        # print(self.name)
-        # print(len(all_tasks_count))
-        # print(self.jobs.count())
-        # print("#############")
-        return sum(all_tasks_count)  # TODO: check if sum or len to use
-
-    def get_managed_bookkeepers(self) -> set | None:
-        all_bookkeepers = []
-        jobs = self.jobs.all()
-        if jobs:
-            for job in jobs:
-                # print(job)
-                for bookkeeper in job.bookkeeper.all():
-                    all_bookkeepers.append(bookkeeper)
-            return set(all_bookkeepers)
-        else:
-            return None
-
-    def get_all_tasks(self) -> list | None:
-        all_tasks = []
-        jobs = self.jobs.all()
-        if jobs:
-            for job in jobs:
-                tasks = job.tasks.all()
-                print(tasks)
-                if tasks:
-                    for task in tasks:
-                        all_tasks.append(task)
-        return all_tasks

@@ -21,6 +21,16 @@
           {% endif %}
 
         </p>
+        <p>
+          {% if perms.client.change_client %}
+          <a href="{% url 'client:update' object.pk %}" target="_blank"
+            class="button is-primary is-light hint--top is-hoverable is-responsive is-medium" aria-label="Update client details">
+            <span class="icon is-medium">
+              <i class="fa-solid fa-pencil fa-1x"></i>
+            </span>
+          </a>
+          {% endif %}
+        </p>
       </figure>
       <div class="media-content">
         <div class="content">
@@ -29,7 +39,7 @@
             &nbsp;
             <small title="Created at">{{ object.created_at|date }}</small>
             &nbsp;
-            <span class="tag mb-1 is-inline-block is-rounded">{{ object.get_status_display }}</span>
+            {% include 'components/core/table_list/status_tag.html' with status=object.status tag_size="is-small" status_label=object.get_status_display %}
             <br />
             {{ object.industry }}
           </p>
@@ -38,14 +48,7 @@
               {{ object.email }}
             </a>
           </p>
-          <p>
-            {% if perms.client.change_client %}
-            <a href="{% url 'client:update' object.pk %}" target="_blank"
-              class="button is-primary is-light hint--right is-responsive" aria-label="Update client details">
-              Update
-            </a>
-            {% endif %}
-          </p>
+
           <p>
 
             {% if object.categories.all %}
@@ -57,11 +60,9 @@
               {% endfor %}
             </div>
 
-
             {% endif %}
-
           </p>
-
+          
         </div>
         <nav class="level is-mobile">
           <div class="level-left">

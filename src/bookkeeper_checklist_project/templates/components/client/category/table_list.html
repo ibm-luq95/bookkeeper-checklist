@@ -1,52 +1,48 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
 {% load url_helpers %}
 {% block table_content_block %}
-
-  <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
-         id="clientCategoriesTableComponent">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Clients</th>
-        {% if is_show_created_at is True %}<th>Created</th>{% endif %}
-        <th class="no-sort"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for category in object_list %}
+  <div class="table-container">
+    <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
+           id="clientCategoriesTableComponent">
+      <thead>
         <tr>
-          <td data-label="Name">
-            <span class="tag is-medium is-rounded">
-                {{ category.name }}
-            </span>
-          </td>
-          <td data-label="Clients">
-            {{ category.clients.count }}
-          </td>
-         
-          {% if is_show_created_at is True %}
-            <td data-label="Created">
-              {% include 'components/core/table_list/table_cell_created.html' with created_at=note_object.created_at user_type=user_type %}
+          <th>Name</th>
+          <th>Clients</th>
+          {% if is_show_created_at is True %}<th>Created</th>{% endif %}
+          <th class="no-sort"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in object_list %}
+          <tr>
+            <td data-label="Name">
+              <span class="tag is-medium is-rounded">{{ category.name }}</span>
             </td>
-          {% endif %}
-          <td class="is-actions-cell">
-            {% include 'components/core/table_list/table_cell_actions.html' with object_pk=category.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms only %}
-          </td>
-        </tr>
-      {% empty %}
-        <tr class="is-empty">
-          <td colspan="0">
-            <section class="section">
-              <div class="content has-text-grey has-text-centered">
-                <p>
-                  <span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span>
-                </p>
-                <p>Nothing's there...</p>
-              </div>
-            </section>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+            <td data-label="Clients">{{ category.clients.count }}</td>
+            {% if is_show_created_at is True %}
+              <td data-label="Created" data-sort="{{ category.created_at|date:"Ymd" }}">
+                {% include 'components/core/table_list/table_cell_created.html' with created_at=category.created_at user_type=user_type %}
+              </td>
+            {% endif %}
+            <td class="is-actions-cell">
+              {% include 'components/core/table_list/table_cell_actions.html' with object_pk=category.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr class="is-empty">
+            <td colspan="0">
+              <section class="section">
+                <div class="content has-text-grey has-text-centered">
+                  <p>
+                    <span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span>
+                  </p>
+                  <p>Nothing's there...</p>
+                </div>
+              </section>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock table_content_block %}

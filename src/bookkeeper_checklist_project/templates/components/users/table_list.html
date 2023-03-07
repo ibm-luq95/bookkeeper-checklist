@@ -1,56 +1,61 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
 {% block table_content_block %}
-  <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
-         id="usersTableComponent">
-    <thead>
-      <tr>
-        <th>Full Name</th>
-        <th>Type</th>
-        <th>Email</th>
-        <th>Active</th>
-        <th>Last Login</th>
-        <th>Updated</th>
-        {% if is_show_created_at is True %}<th>Created</th>{% endif %}
-        <th class="no-sort"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user_object in object_list %}
+  <div class="table-container">
+    <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
+           id="usersTableComponent">
+      <thead>
         <tr>
-          <td data-label="Full Name">{{ user_object.fullname }}</td>
-          <td data-label="Type">{{ user_object.get_user_type_display }}</td>
-          <td data-label="Email">
-            <a href="mailto:{{ user_object.email }}">{{ user_object.email }}</a>
-
-          </td>
-          <td data-label="Active">{% include 'components/core/is_seen.html' with is_seen=user_object.is_active only %}</td>
-
-          <td data-label="Last Login">{% include 'components/core/table_list/table_cell_created.html' with created_at=user_object.last_login only %}</td>
-          {% if is_show_created_at is True %}
-            <td data-label="Created">{% include 'components/core/table_list/table_cell_created.html' with created_at=user_object.date_joined only %}</td>
-
-          {% endif %}
-
-          <td data-label="Updated">{% include 'components/core/table_list/table_cell_created.html' with created_at=user_object.updated_at only %}</td>
-          <td class="is-actions-cell">
-{% include 'components/core/table_list/users_table_cell_actions.html' with object_pk=user_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_label=app_label user_object=user_object only %}
-          </td>
+          <th>Full Name</th>
+          <th>Type</th>
+          <th>Email</th>
+          <th>Active</th>
+          <th>Last Login</th>
+          <th>Updated</th>
+          {% if is_show_created_at is True %}<th>Created</th>{% endif %}
+          <th class="no-sort"></th>
         </tr>
-      {% empty %}
-        <tr class="is-empty">
-          <td colspan="7">
-            <section class="section">
-              <div class="content has-text-grey has-text-centered">
-                <p>
-                  <span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span>
-                </p>
-                <p>Nothing's there&hellip;</p>
-              </div>
-            </section>
-          </td>
-        </tr>
-      {% endfor %}
-
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for user_object in object_list %}
+          <tr>
+            <td data-label="Full Name">{{ user_object.fullname }}</td>
+            <td data-label="Type">{{ user_object.get_user_type_display }}</td>
+            <td data-label="Email">
+              <a href="mailto:{{ user_object.email }}">{{ user_object.email }}</a>
+            </td>
+            <td data-label="Active">{% include 'components/core/is_seen.html' with is_seen=user_object.is_active only %}</td>
+            <td data-label="Last Login">
+              {% include 'components/core/table_list/table_cell_created.html' with created_at=user_object.last_login only %}
+            </td>
+            {% if is_show_created_at is True %}
+              <td data-label="Created"
+                  data-sort="{{ user_object.created_at|date:"Ymd" }}">
+                {% include 'components/core/table_list/table_cell_created.html' with created_at=user_object.date_joined only %}
+              </td>
+            {% endif %}
+            <td data-label="Updated"
+                data-sort="{{ user_object.due_date|date:"Ymd" }}">
+              {% include 'components/core/table_list/table_cell_created.html' with created_at=user_object.updated_at only %}
+            </td>
+            <td class="is-actions-cell">
+              {% include 'components/core/table_list/users_table_cell_actions.html' with object_pk=user_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_label=app_label user_object=user_object only %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr class="is-empty">
+            <td colspan="7">
+              <section class="section">
+                <div class="content has-text-grey has-text-centered">
+                  <p>
+                    <span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span>
+                  </p>
+                  <p>Nothing's there&hellip;</p>
+                </div>
+              </section>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock table_content_block %}

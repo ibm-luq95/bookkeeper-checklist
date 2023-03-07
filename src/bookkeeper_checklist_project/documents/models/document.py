@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from client.models import ClientProxy
 from core.choices import DocumentTypesEnum
 from core.models import BaseModelMixin, CreatedByMixin, GeneralStatusFieldMixin
-from jobs.models import Job
+from jobs.models import JobProxy
 from task.models import Task
 
 
@@ -51,7 +51,7 @@ class Documents(BaseModelMixin, GeneralStatusFieldMixin, CreatedByMixin):
         related_name="documents",
     )
     job = models.ForeignKey(
-        to=Job, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
+        to=JobProxy, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
     )
     task = models.ForeignKey(
         to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"

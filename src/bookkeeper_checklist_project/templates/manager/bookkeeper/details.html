@@ -9,17 +9,14 @@
 {% block dashboard_content %}
 
 <section id="manager-bookkeepers-details">
-  <header>
-    <h3 class="title is-3"></h3>
-  </header>
-  <hr />
+  {% include 'components/core/ribbon_status.html' with object=object.user %}
   <div class="box">
     <div class="columns">
-      <div class="container profile">
+      <div class="container profile is-fluid">
         <!-- Start update modal -->
         {% include 'manager/bookkeeper/segments/update_bookkeeper_modal.html' with object=object %}
         <!-- End update modal -->
-        <div class="section profile-heading">
+        <div class="section profile-heading px-3">
           <div class="columns is-mobile is-multiline">
             <div class="column is-2">
               <span class="header-icon user-profile-image">
@@ -32,31 +29,32 @@
                 {% endif %}
               </span>
             </div>
-            <div class="column is-4-tablet is-10-mobile name">
+            <div class="column is-2-tablet is-10-mobile name">
               <p>
-                <span class="title is-bold">{{ object.user.fullname }}</span>
-                <br />
-
+                <span class="title is-bold is-3">{{ object.user.fullname }}</span>
                 <br />
               </p>
               <p class="tagline">
 
-                <a class="button is-primary is-outlined" href="#" id="edit-preferences"
-                  style="margin: 5px 0">Preferences</a>
+                <a class="button is-primary is-outlined mt-5" id="edit-preferences">Preferences</a>
 
               </p>
             </div>
-            <div class="column is-2-tablet is-4-mobile has-text-centered">
+            <div class="column is-2-tablet is-5-mobile has-text-centered">
               <p class="stat-val">{{ object.user.jobs.count }}</p>
               <p class="stat-key">Jobs</p>
             </div>
-            <div class="column is-2-tablet is-4-mobile has-text-centered">
+            <div class="column is-2-tablet is-5-mobile has-text-centered">
               <p class="stat-val">{{ object.get_tasks_count }}</p>
               <p class="stat-key">Tasks</p>
             </div>
-            <div class="column is-2-tablet is-4-mobile has-text-centered">
+            <div class="column is-2-tablet is-5-mobile has-text-centered">
               <p class="stat-val">{{ object.clients.count }}</p>
               <p class="stat-key">Clients</p>
+            </div>
+            <div class="column is-2-tablet is-5-mobile has-text-centered">
+              <p class="stat-val">{{ object.special_assignments.count }}</p>
+              <p class="stat-key">Assignments</p>
             </div>
           </div>
         </div>
@@ -98,19 +96,26 @@
           </div>
           <div id="tab-content">
             <section class="is-active" data-content="1">
-                1
+              {# Start Include Jobs Table List Component #}
+              {% include 'components/jobs/table_list.html' with object_list=object.user.jobs.all user_type=request.user.user_type details_url="jobs"|add:":details" action_urls_pattern="jobs" app_name="jobs" enabled_action_btns='details' perms=perms is_show_created_at=is_show_created_at is_show_client_column=True is_show_manager=False %}
+              {# End Include Jobs Table List Component #}
             </section>
             <section data-content="2">
-              {% include 'components/client/table_list.html' with clients_list=object.clients.all user_type=request.user.user_type details_url="client"|add:":details:overview" action_urls_pattern="client" app_name="client" perms=perms is_show_created_at=False only %}
+              {# Start Include Client Table List Component #}
+              {% include 'components/client/table_list.html' with object_list=object.clients.all user_type=request.user.user_type details_url="client"|add:":details:overview" action_urls_pattern="client" app_name="client" enabled_action_btns='details' is_show_created_at=is_show_created_at request=request is_show_managed_by=False %}
+              {# End Include Client Table List Component #}
             </section>
 
-
             <section data-content="3">
-              tasks
+              {# Start Include Task Table List Component #}
+              {% include 'components/task/table_list.html' with object_list=object.get_tasks user_type=request.user.user_type details_url='task'|add:":details" action_urls_pattern='task' enabled_action_btns='update' perms=perms app_name='task' is_show_created_at=is_show_created_at is_show_job_column=True is_show_start_date=True request=request is_show_manager=False %}
+              {# End Include Task Table List Component #}
             </section>
 
             <section data-content="4">
-              special assignment
+              {# Start Include Special Assignments Table List Component #}
+              {% include 'components/special_assignment/table_list.html' with object_list=object.special_assignments.all user_type=request.user.user_type details_url='special_assignment'|add:":details" action_urls_pattern='special_assignment' enabled_action_btns='details' app_name='special_assignment' perms=perms is_show_created_at=is_show_created_at request=request is_show_manager=False %}
+              {# End Include Special Assignments Table List Component #}
             </section>
 
           </div>
@@ -121,7 +126,6 @@
 
   </div>
 </section>
-
 
 {% endblock dashboard_content %}
 

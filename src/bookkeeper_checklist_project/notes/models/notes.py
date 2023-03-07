@@ -9,7 +9,7 @@ from core.models import (
     GetObjectSectionMixin,
     GeneralStatusFieldMixin,
 )
-from jobs.models import Job
+from jobs.models import JobProxy
 from task.models import Task
 
 
@@ -30,7 +30,7 @@ class Note(BaseModelMixin, CreatedByMixin, GetObjectSectionMixin, GeneralStatusF
         related_name="notes",
     )
     job = models.ForeignKey(
-        to=Job, on_delete=models.SET_NULL, null=True, blank=True, related_name="notes"
+        to=JobProxy, on_delete=models.SET_NULL, null=True, blank=True, related_name="notes"
     )
     task = models.ForeignKey(
         to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="notes"

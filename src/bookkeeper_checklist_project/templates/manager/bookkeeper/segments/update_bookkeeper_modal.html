@@ -9,47 +9,55 @@
             <div class="field">
                 <label class="label">First Name</label>
                 <p class="control">
-                    <input class="input" value="{{ object.user.first_name }}" placeholder="Text input" type="text" />
+                    <input class="input"
+                           value="{{ object.user.first_name }}"
+                           placeholder="Text input"
+                           type="text"/>
                 </p>
             </div>
-
             <div class="field">
                 <label class="label">Last Name</label>
                 <p class="control has-icon has-icon-right">
-                    <input class="input" placeholder="Text input" value="{{ object.user.last_name }}" type="text" />
+                    <input class="input"
+                           placeholder="Text input"
+                           value="{{ object.user.last_name }}"
+                           type="text"/>
                 </p>
             </div>
-
             <div class="field">
                 <label class="label">Email</label>
                 <p class="control has-icon has-icon-right">
-                    <input class="input" placeholder="Email input" type="email" value="{{ object.user.email }}" />
+                    <input class="input"
+                           placeholder="Email input"
+                           type="email"
+                           value="{{ object.user.email }}"/>
                     <!-- <i class="fa fa-warning"></i>
                     <span class="help is-danger">This email is invalid</span> -->
                 </p>
             </div>
-
-            <div class="field">
+            {% comment  %}
+                <div class="field">
                 <label class="label">Date of Birth</label>
                 <div class="control">
                     <input type="date" class="input" name="date_of_birth" id="date_of_birth" />
                 </div>
             </div>
+            {% endcomment %}
             <div class="field">
                 <label class="label">Bio</label>
                 <p class="control">
                     <textarea class="textarea" placeholder="Describe Yourself!">{{object.bio}}</textarea>
                 </p>
             </div>
-
             <div class="field">
                 <label class="label">Phone Number</label>
                 <p class="control has-icon has-icon-right">
-                    <input class="input" placeholder="Text input" type="text" value="+1 *** *** 0535" />
+                    <input class="input"
+                           placeholder="Text input"
+                           type="text"
+                           value="+1 *** *** 0535"/>
                 </p>
             </div>
-
-
         </section>
         <footer class="modal-card-foot">
             <a class="button is-primary modal-save">Save changes</a>

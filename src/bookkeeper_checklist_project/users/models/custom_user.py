@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from core.choices import CustomUserTypeEnum
+from core.choices import CustomUserTypeEnum, CustomUserStatusEnum
 from core.models.mixins import BaseModelMixin
 from core.utils import get_formatted_logger
 from .manager import CustomUserManager
@@ -36,6 +36,12 @@ class CustomUser(BaseModelMixin, AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_("date_joined"), default=timezone.now)
     user_type = models.CharField(
         _("user type"), choices=CustomUserTypeEnum.choices, max_length=15
+    )
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        choices=CustomUserStatusEnum.choices,
+        default=CustomUserStatusEnum.ENABLED,
     )
 
     USERNAME_FIELD = "email"

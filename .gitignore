@@ -337,3 +337,4 @@ jsconfig.json
 src/bookkeeper_checklist_project/templates/template_boilerplate.html
 .editorconfig
 src/bookkeeper_checklist_project/chromedriver
+.htmlhintrc

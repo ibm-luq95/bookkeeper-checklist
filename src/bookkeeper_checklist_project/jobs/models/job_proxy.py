@@ -33,19 +33,20 @@ class JobProxy(Job):
             tasks = self.tasks.all()
             notes = self.notes.all()
             if status == CON_ARCHIVED or status == CON_COMPLETED:
+                # Set notes to archived
                 if notes:
                     notes.update(status=CON_ARCHIVED)
                 # Set documents to archived
                 if documents:
                     documents.update(status=CON_ARCHIVED)
-                    # Set tasks to archived
+                # Set tasks to archived
                 if tasks:
                     tasks.update(status=CON_ARCHIVED)
             else:
                 # Set notes to enabled
                 if notes:
                     notes.filter(Q(status=CON_ARCHIVED)).update(status=CON_ENABLED)
-                # # Set documents to enabled
+                # Set documents to enabled
                 if documents:
                     documents.filter(Q(status=CON_ARCHIVED)).update(status=CON_ENABLED)
                 # Set tasks to archived

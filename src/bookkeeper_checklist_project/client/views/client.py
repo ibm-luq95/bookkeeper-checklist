@@ -14,7 +14,7 @@ from django.views.generic import (
 
 from client.filters import ClientFilter
 from client.forms import ClientForm
-from client.models import Client
+from client.models import Client, ClientProxy
 from company_services.forms import CompanyServiceForm
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.constants.status_labels import CON_ARCHIVED
@@ -39,7 +39,7 @@ class ClientListView(
 ):
     permission_required = "client.can_view_list"
     template_name = "client/list.html"
-    model = Client
+    model = ClientProxy
     # queryset = Client.objects.filter(~Q(status="archive")).prefetch_related("jobs")
     # queryset = Client.objects.prefetch_related(
     #     "jobs", "jobs__created_by", "important_contacts"
@@ -74,7 +74,7 @@ class ClientArchiveListView(
 ):
     permission_required = "client.view_archive"
     template_name = "client/list.html"
-    model = Client
+    model = ClientProxy
     # queryset = Client.objects.prefetch_related("jobs").filter(Q(status=CON_ARCHIVED))
     # queryset = Client.original_objects.prefetch_related("jobs").filter(Q(status=CON_ARCHIVED))
     paginate_by = LIST_VIEW_PAGINATE_BY
@@ -127,7 +127,7 @@ class ClientDetailsView(
     BaseLoginRequiredMixin, PermissionRequiredMixin, ManagerAssistantAccessMixin, DetailView
 ):
     template_name = "client/details.html"
-    model = Client
+    model = ClientProxy
     permission_required = "client.view_client"
 
     def get_context_data(self, **kwargs):
@@ -181,7 +181,7 @@ class ClientUpdateView(
 ):
     permission_required = "client.change_client"
     template_name = "client/update.html"
-    model = Client
+    model = ClientProxy
     template_name_suffix = "_update_form"
     form_class = ClientForm
     success_url = reverse_lazy("client:list")
@@ -210,7 +210,7 @@ class ClientDeleteView(
     SuccessMessageMixin,
     DeleteView,
 ):
-    model = Client
+    model = ClientProxy
     permission_required = "client.delete_client"
     template_name = "client/delete.html"
     success_message: str = "Client deleted successfully!"

@@ -1,9 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext as _
 
-from client.models import Client
-from core.choices import NoteTypesEnum, NoteStatusEnum
+from client.models import ClientProxy
+from core.choices import NoteTypesEnum
 from core.models import (
     BaseModelMixin,
     CreatedByMixin,
@@ -24,7 +23,11 @@ class Note(BaseModelMixin, CreatedByMixin, GetObjectSectionMixin, GeneralStatusF
     title = models.CharField(_("title"), max_length=60, null=False)
     body = models.TextField(_("body"), null=False)
     client = models.ForeignKey(
-        to=Client, on_delete=models.SET_NULL, null=True, blank=True, related_name="notes"
+        to=ClientProxy,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="notes",
     )
     job = models.ForeignKey(
         to=Job, on_delete=models.SET_NULL, null=True, blank=True, related_name="notes"

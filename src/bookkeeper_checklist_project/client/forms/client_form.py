@@ -7,7 +7,7 @@ from django.db import transaction
 from django.utils.safestring import mark_safe
 
 from bookkeeper.models import Bookkeeper
-from client.models import Client
+from client.models import Client, ClientProxy
 from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
 from core.utils import debugging_print
 from important_contact.forms import ImportantContactForm
@@ -37,7 +37,7 @@ class ClientForm(BaseModelFormMixin, SaveCreatedByFormMixin):
                     self.fields.get("bookkeepers").help_text = mark_safe(help_txt)
 
     class Meta(BaseModelFormMixin.Meta):
-        model = Client
+        model = ClientProxy
         # fields = "__all__"
         widgets = {
             "bookkeepers": forms.CheckboxSelectMultiple(),
@@ -50,21 +50,5 @@ class ClientForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         with transaction.atomic():
             if commit:
                 client.save()
-            # important_contacts = self.cleaned_data.get("important_contacts")
-            # bookkeepers = self.cleaned_data.get("bookkeepers")
-            # if important_contacts:
-            #     for contact in important_contacts:
-            #         client.important_contacts.add(contact)
-            # if bookkeepers:
-            #     for bookkeeper in bookkeepers:
-            #         client.bookkeepers.add(bookkeeper)
-            # client.save()
             self.save_m2m()
             return client
-
-
-class ClientCreationMultiForm(MultiModelForm):
-    form_classes = {
-        "client": ClientForm,
-        "important_contact": ImportantContactForm,
-    }

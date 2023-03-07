@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-#
 import secrets
 
-from django.contrib.auth import get_user_model
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from client.models import Client
+from client.models import ClientProxy
 from core.choices import DocumentTypesEnum
 from core.models import BaseModelMixin, CreatedByMixin, GeneralStatusFieldMixin
-from core.utils import debugging_print
 from jobs.models import Job
 from task.models import Task
 
@@ -42,10 +39,12 @@ class Documents(BaseModelMixin, GeneralStatusFieldMixin, CreatedByMixin):
         blank=True,
         choices=DocumentTypesEnum.choices,
     )
-    document_file = models.FileField(_("document file"), upload_to=saved_document_file_path)
+    document_file = models.FileField(
+        _("document file"), upload_to=saved_document_file_path
+    )
 
     client = models.ForeignKey(
-        to=Client,
+        to=ClientProxy,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

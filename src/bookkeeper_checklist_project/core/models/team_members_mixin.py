@@ -3,7 +3,7 @@ from django.db import models
 import re
 
 from assistant.models import Assistant
-from bookkeeper.models import Bookkeeper
+from bookkeeper.models import BookkeeperProxy
 from manager.models import Manager
 from core.utils import foreign_key_snake_case_plural
 
@@ -24,7 +24,7 @@ class TeamMembersMixin(models.Model):
         blank=True,
     )
     bookkeeper = CustomForeignKey(
-        to=Bookkeeper,
+        to=BookkeeperProxy,
         on_delete=models.PROTECT,
         related_name="%(class)s",
         null=True,

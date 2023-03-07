@@ -89,8 +89,14 @@ class Client(BaseModelMixin):
                 image.thumbnail(output_size)
                 image.save(self.company_logo.path)
 
-    # def get_absolute_url(self):
-    #     return reverse("manager:client:details", kwargs={"pk": self.pk})
+    def get_total_tasks_for_all_jobs(self) -> int:
+        all_tasks_count = []
+        if self.jobs.count() <= 0:
+            return 0
+        for job in self.jobs.all():
+            all_tasks_count.append(job.tasks.count())
+
+        return sum(all_tasks_count)  # TODO: check if sum or len to use
 
     def get_tasks_count(self):
         return self.jobs.all()

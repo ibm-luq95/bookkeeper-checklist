@@ -22,18 +22,13 @@ class StaffMemberMixin(models.Model):
     profile_picture = models.ImageField(
         _("profile picture"), upload_to="profile_pictures/", null=True, blank=True
     )
-    status = models.CharField(
-        _("status"),
-        max_length=10,
-        choices=CustomUserStatusEnum.choices,
-        default=CustomUserStatusEnum.ENABLED,
-    )
-    company_services = models.ForeignKey(
-        to=CompanyService,
-        on_delete=models.PROTECT,
-        null=True,
-        related_name="%(class)s",
-    )
+
+    # company_services = models.ForeignKey(
+    #     to=CompanyService,
+    #     on_delete=models.PROTECT,
+    #     null=True,
+    #     related_name="%(class)s",
+    # )
     bio = models.TextField(_("bio"), null=True, blank=True)
 
     # objects = SoftDeleteManager()

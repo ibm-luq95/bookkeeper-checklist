@@ -3,7 +3,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-# from client.models import Client
 from core.choices import TaskStatusEnum, TaskTypeEnum
 from core.constants.status_labels import CON_COMPLETED
 from core.models import (
@@ -12,7 +11,7 @@ from core.models import (
     StartAndDueDateMixin,
     StrModelMixin,
 )
-from jobs.models import Job
+from jobs.models import JobProxy
 
 
 class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
@@ -27,7 +26,7 @@ class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
     #     self.__original_model = self.model
 
     job = models.ForeignKey(
-        to=Job, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
+        to=JobProxy, on_delete=models.PROTECT, related_name="tasks", null=True, blank=True
     )
     title = models.CharField(_("title"), max_length=80, null=True)
     task_type = models.CharField(

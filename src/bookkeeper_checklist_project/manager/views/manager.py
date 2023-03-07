@@ -20,7 +20,7 @@ class ManagerListView(LoginRequiredMixin, ManagerAccessMixin, BaseListViewMixin,
     model = Manager
     queryset = (
         Manager.objects.select_related()
-        .filter(~Q(status="archive"))
+        .filter(~Q(user__status="archive"))
         .order_by("-created_at")
     )
     list_type = "list"
@@ -70,7 +70,7 @@ class ManagerArchiveView(
     template_name: str = "manager/manager/archive_list.html"
     model = Manager
     queryset = (
-        Manager.objects.select_related().filter(Q(status="archive")).order_by("-created_at")
+        Manager.objects.select_related().filter(Q(user__status="archive")).order_by("-created_at")
     )
     list_type = "archive"
 

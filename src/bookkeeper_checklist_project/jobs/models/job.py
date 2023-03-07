@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-#
-import textwrap
 
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -7,15 +6,15 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
-from client.models import Client
+from client.models import ClientProxy
 from core.choices import JobStatusEnum, JobTypeEnum
-from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin
+from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin, StrModelMixin
 
 # from task.models import Task
 from .help_messages import JOB_HELP_MESSAGES
 
 
-class Job(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
+class Job(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
     """This is the job for every bookkeeper and assistant
 
     Args:
@@ -23,7 +22,7 @@ class Job(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
     """
 
     client = models.ForeignKey(
-        to=Client,
+        to=ClientProxy,
         on_delete=models.PROTECT,  # TODO: check if this should be null not protected
         null=True,
         blank=True,
@@ -75,10 +74,6 @@ class Job(BaseModelMixin, StartAndDueDateMixin, CreatedByMixin):
         permissions = BaseModelMixin.Meta.permissions + [
             ("list_abstract_job_template", "List abstract job template")
         ]
-
-    def __str__(self) -> str:
-        # return self.title
-        return textwrap.shorten(self.title, width=40, placeholder="...")
 
     # def get_absolute_url(self):
     #     return reverse("manager:jobs:details", kwargs={"pk": self.pk})

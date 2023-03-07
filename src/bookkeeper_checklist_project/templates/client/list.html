@@ -21,7 +21,7 @@
     {% else %}
     {% define_var object_list as clients_list  %}
     {% endif %}
-    {% include 'components/client/table_list.html' with object_list=clients_list user_type=request.user.user_type details_url=app_label|add:":details:overview" action_urls_pattern=app_label app_name=app_label enabled_action_btns='update,delete,details' perms=perms is_show_created_at=is_show_created_at request=request %}
+    {% include 'components/client/table_list.html' with object_list=clients_list user_type=request.user.user_type details_url=app_label|add:":details:overview" action_urls_pattern=app_label app_name=app_label enabled_action_btns='update,delete,details' perms=perms is_show_created_at=is_show_created_at request=request is_show_managed_by=True %}
     {# End Include Client Table List Component #}
 
     {# Start Include Pagination Component #}

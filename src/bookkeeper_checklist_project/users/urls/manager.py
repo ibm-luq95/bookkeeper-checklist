@@ -7,6 +7,7 @@ from users.views import (
     ManagerUsersChangeView,
     ManagerUsersDeleteView,
     ManagerUpdateUserPasswordView,
+    ManagerForceChangePasswordView,
 )
 
 app_name = "manager"
@@ -19,6 +20,13 @@ urlpatterns = [
     path("update/<uuid:pk>", ManagerUsersChangeView.as_view(), name="update"),
     path("delete/<uuid:pk>", ManagerUsersDeleteView.as_view(), name="delete"),
     path(
-        "update_password/<uuid:pk>", ManagerUpdateUserPasswordView.as_view(), name="update-password"
+        "update_password/<uuid:pk>",
+        ManagerUpdateUserPasswordView.as_view(),
+        name="update-password",
+    ),
+    path(
+        "force_change_password/<uuid:pk>",
+        ManagerForceChangePasswordView.as_view(),
+        name="force-change-password",
     ),
 ]

@@ -6,4 +6,5 @@ from .manager import (
     ManagerUsersChangeView,
     ManagerUsersDeleteView,
     ManagerUpdateUserPasswordView,
+    ManagerForceChangePasswordView
 )

@@ -15,7 +15,7 @@
     {# End Include Filter Form Component #}
 
     {# Start Include Table List Component #}
-    {% include 'components/users/table_list.html' with object_list=object_list user_type=request.user.user_type details_url="users:manager:details" action_urls_pattern="users:manager" enabled_action_btns='update,delete,edit_user,details' app_label=app_label perms=perms is_show_created_at=is_show_created_at  %}
+    {% include 'components/users/table_list.html' with object_list=object_list user_type=request.user.user_type details_url="users:manager:details" action_urls_pattern="users:manager" enabled_action_btns='update,delete,edit_user,details,change_password' app_label=app_label perms=perms is_show_created_at=is_show_created_at  %}
     {# End Include Table List Component #}
 
     {# Start Include Pagination Component #}

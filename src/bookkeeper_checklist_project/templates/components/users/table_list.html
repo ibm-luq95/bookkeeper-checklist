@@ -38,7 +38,7 @@
               {% include 'components/core/table_list/table_cell_created.html' with created_at=user_object.updated_at only %}
             </td>
             <td class="is-actions-cell">
-              {% include 'components/core/table_list/users_table_cell_actions.html' with object_pk=user_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_label=app_label user_object=user_object only %}
+              {% include 'components/core/table_list/users_table_cell_actions.html' with object_pk=user_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_label=app_label user_object=user_object %}
             </td>
           </tr>
         {% empty %}

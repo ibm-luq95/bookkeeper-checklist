@@ -42,7 +42,7 @@ urlpatterns = [
         DeleteTaskApiView.as_view(),
         name="delete",
     ),
-    # path("manager/", include("task.urls.api.manager"), name="manager-task-api-urls"),
+    path("templates/", include("task.urls.api.templates"), name="task-templates-api-urls"),
     # path(
     #     "bookkeeper/", include("task.urls.api.bookkeeper"), name="bookkeeper-task-api-urls"
     # ),

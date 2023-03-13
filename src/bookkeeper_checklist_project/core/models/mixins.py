@@ -10,6 +10,7 @@ from django.utils.translation import gettext as _
 from core.choices import StatusEnum
 from core.models import SoftDeleteManager
 from core.utils import sort_dict
+from core.utils.developments.debugging_print import debugging_print
 
 
 class DiffingMixin:
@@ -27,6 +28,16 @@ class DiffingMixin:
 
 
 class BaseModelMixin(DiffingMixin, models.Model):
+    # this will use in get_fields_as_list, and will use in serializers fields attribute
+    EXCLUDED_FIELDS = (
+        "id",
+        "metadata",
+        "is_deleted",
+        "updated_at",
+        "created_at",
+        "deleted_at",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     metadata = models.JSONField(_("metadata"), null=True, blank=True, default=dict)
     is_deleted = models.BooleanField(_("is_deleted"), default=False)
@@ -72,6 +83,20 @@ class BaseModelMixin(DiffingMixin, models.Model):
         data.setdefault("created_at", self.created_at)
         data.setdefault("updated_at", self.updated_at)
         return sort_dict(data)
+
+    @property
+    # @classmethod
+    def get_fields_as_list(self) -> list:
+        fields_list = []
+        debugging_print(self)
+        # for field in self._meta.get_fields(include_parents=False):
+        #     debugging_print(field)
+        # debugging_print(self._meta.fields)
+        keys_list = list(self.get_instance_as_dict.keys())
+        for item in keys_list:
+            if item not in BaseModelMixin.EXCLUDED_FIELDS:
+                fields_list.append(item)
+        return fields_list
 
 
 class UserForeignKeyMixin(models.Model):

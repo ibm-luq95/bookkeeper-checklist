@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       })
       .catch((error) => {
         console.error(error);
-        showToastNotification("Error while add new document!", "danger");
+        showToastNotification("Error while add new discussion!", "danger");
       })
       .finally(() => {});
   });

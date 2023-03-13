@@ -8,10 +8,13 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
 from core.views.mixins import BaseLoginRequiredMixin, BaseListViewMixin
+from documents.forms import DocumentTemplateForm
 from jobs.filters import JobTemplateFilter
 from jobs.forms import JobTemplateForm
 from manager.views.mixins import ManagerAssistantAccessMixin
 from jobs.models import JobTemplate
+from notes.forms import NoteTemplateForm
+from task.forms import TaskItemForm, TaskTemplateForm
 
 
 class JobTemplateDetailsView(
@@ -28,6 +31,10 @@ class JobTemplateDetailsView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", "Job Template Details")
+        context.setdefault("task_item_form", TaskItemForm())
+        context.setdefault("task_template_form", TaskTemplateForm())
+        context.setdefault("document_template_form", DocumentTemplateForm())
+        context.setdefault("note_template_form", NoteTemplateForm())
         return context
 
 

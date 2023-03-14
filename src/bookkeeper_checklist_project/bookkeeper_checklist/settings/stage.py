@@ -1,13 +1,16 @@
-from decouple import config
 from .base import *
+import mimetypes
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(", ")
+# SITE_NAME = "dev.beachwoodfinancial.com"
+
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(",")
 
 DEBUG = config("DEBUG", cast=bool)
 
 INSTALLED_APPS = INSTALLED_APPS + [
     "debug_toolbar",
     "django_extensions",
+    "request_viewer",
 ]
 
 MIDDLEWARE = MIDDLEWARE + [
@@ -77,6 +80,8 @@ DEBUG_TOOLBAR_CONFIG = {
 # ENCRYPT_KEY
 ENCRYPT_KEY = bytes(config("ENCRYPT_KEY"), "ascii")
 
+mimetypes.add_type("application/javascript", ".js", True)
+
 # Django production deployment settings
 # CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", cast=bool)
 # SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", cast=bool)
@@ -85,8 +90,3 @@ ENCRYPT_KEY = bytes(config("ENCRYPT_KEY"), "ascii")
 # SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", cast=bool)
 # SECURE_HSTS_PRELOAD = config("SECURE_HSTS_PRELOAD", cast=bool)
 # USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST", cast=bool)
-
-if DEBUG:
-    import mimetypes
-
-    mimetypes.add_type("application/javascript", ".js", True)

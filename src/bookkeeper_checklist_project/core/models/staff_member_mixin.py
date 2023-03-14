@@ -23,12 +23,6 @@ class StaffMemberMixin(models.Model):
         _("profile picture"), upload_to="profile_pictures/", null=True, blank=True
     )
 
-    # company_services = models.ForeignKey(
-    #     to=CompanyService,
-    #     on_delete=models.PROTECT,
-    #     null=True,
-    #     related_name="%(class)s",
-    # )
     bio = models.TextField(_("bio"), null=True, blank=True)
 
     # objects = SoftDeleteManager()
@@ -57,7 +51,3 @@ class StaffMemberMixin(models.Model):
         return self.special_assignments.filter(
             Q(is_seen=False) & ~Q(status__in=[CON_ARCHIVED])
         )
-
-    def get_user_jobs(self) -> BaseQuerySetMixin:
-        if hasattr(self, "jobs"):
-            return self.jobs.all()

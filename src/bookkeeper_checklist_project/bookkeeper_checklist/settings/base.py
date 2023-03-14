@@ -307,11 +307,11 @@ FORMATTERS = (
 )
 
 HANDLERS = {
-    # "console_handler": {
-    #     "class": "logging.StreamHandler",
-    #     "formatter": "simple",
-    #     "level": "DEBUG",
-    # },
+    "console_handler": {
+        "class": "logging.StreamHandler",
+        "formatter": "simple",
+        "level": "INFO",
+    },
     "info_handler": {
         "class": "logging.handlers.RotatingFileHandler",
         "filename": BASE_DIR / "logs" / "info.log",
@@ -337,8 +337,8 @@ HANDLERS = {
 LOGGERS = (
     {
         "django": {
-            # "handlers": ["console_handler", "info_handler"],
-            "handlers": ["info_handler"],
+            "handlers": ["console_handler", "info_handler"],
+            # "handlers": ["info_handler"],
             "level": "INFO",
         },
         "django.request": {

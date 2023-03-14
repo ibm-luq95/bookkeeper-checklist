@@ -5,8 +5,14 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
+from bookkeeper.models import BookkeeperProxy
 from core.utils import get_trans_txt, debugging_print
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin, ArchiveListViewMixin
+from core.views.mixins import (
+    BaseListViewMixin,
+    BaseLoginRequiredMixin,
+    ListViewMixin,
+    ArchiveListViewMixin,
+)
 from task.forms import TaskForm
 from task.models import Task
 from core.constants import LIST_VIEW_PAGINATE_BY
@@ -42,6 +48,10 @@ class TasksListView(
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        if self.request.user.user_type == "bookkeeper":
+            queryset = BookkeeperProxy.objects.get(
+                pk=self.request.user.bookkeeper.pk
+            ).get_all_tasks_qs()
         self.filterset = TaskFilter(self.request.GET, queryset=queryset)
         return self.filterset.qs
 

@@ -1,5 +1,6 @@
-{% extends 'core/layouts/dashboard.html' %}
-
+{% extends "core/layouts/dashboard.html" %}
+{% load development_tags %}
+{% load url_helpers %}
 {% block dashboard_content %}
 <section class="hero is-info welcome is-small">
     <div class="hero-body">
@@ -114,7 +115,7 @@
                     {% for task in last_tasks %}
                     <div class="list-item">
                         <div class="list-item-title">
-                            <a href="{% url 'bookkeeper:tasks:details' task.pk %}" class="has-text-dark">
+                            <a href="{% fetch_app_url_for_user app_name='task' path_name='update' object_pk=task.pk %}" class="has-text-dark">
                                 {{ task.title }}
                             </a>
                         </div>
@@ -129,7 +130,7 @@
                 </div>
             </div>
             <footer class="card-footer">
-                <a href="{% url 'bookkeeper:tasks:list' %}" class="card-footer-item">View
+                <a href="{% url 'task:list' %}" class="card-footer-item">View
                     All</a>
             </footer>
         </div>

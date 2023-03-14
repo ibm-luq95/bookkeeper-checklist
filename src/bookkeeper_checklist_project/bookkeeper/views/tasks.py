@@ -13,7 +13,7 @@ from task.forms import TaskForm
 from task.models import Task
 from .mixins import BookkeeperAccessMixin
 
-logger = get_formatted_logger(__file__)
+logger = get_formatted_logger()
 
 
 class TaskListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):

@@ -7,7 +7,7 @@ from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from core.cache import CacheHandler
+from core.cache import BWCacheHandler
 from core.constants import BOOKKEEPER_GROUP_NAME, MANAGER_GROUP_NAME, ASSISTANT_GROUP_NAME
 from core.constants.site_settings import WEB_APP_SETTINGS_KEY
 from core.utils import ProjectError
@@ -17,7 +17,7 @@ from users.models import CustomUser
 
 # TODO: remove the custom logger before push (only for development)
 # ###### [Custom Logger] #########
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 # ###### [Custom Logger] #########
@@ -68,11 +68,11 @@ def log_user_login(sender, request, user, **kwargs):
     # if user.user_type == "manager":
     site_settings = SiteSettings.objects.select_related().filter(slug="web-app").first()
     if site_settings:
-        CacheHandler.set_item(WEB_APP_SETTINGS_KEY, site_settings)
+        BWCacheHandler.set_item(WEB_APP_SETTINGS_KEY, site_settings)
 
 
 @receiver(user_logged_out)
 def log_user_logout(sender, request, user, **kwargs):
     stage = os.environ.get("STAGE_ENVIRONMENT")
     if stage == "DEV" and user.user_type == "manager":
-        CacheHandler.clear()
+        BWCacheHandler.clear()

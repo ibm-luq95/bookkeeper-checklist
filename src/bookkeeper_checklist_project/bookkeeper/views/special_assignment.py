@@ -10,7 +10,7 @@ from special_assignment.forms import DiscussionForm, SpecialAssignmentForm
 from special_assignment.models import SpecialAssignment
 from .mixins import BookkeeperAccessMixin
 
-logger = get_formatted_logger(__file__)
+logger = get_formatted_logger()
 
 
 class SpecialAssignmentsListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):

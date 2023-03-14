@@ -13,7 +13,7 @@ from core.utils import get_formatted_logger
 from notes.models import Note
 from notes.serializers import CreateNoteSerializer, NoteSerializer
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class CreateNoteApiView(APIView):

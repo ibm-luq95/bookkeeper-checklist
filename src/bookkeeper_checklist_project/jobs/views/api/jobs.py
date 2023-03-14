@@ -16,7 +16,7 @@ from jobs.models import Job, JobProxy
 from jobs.serializers import CreateJobSerializer, JobSerializer
 from task.models import Task
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class CreateJobApiView(APIView):

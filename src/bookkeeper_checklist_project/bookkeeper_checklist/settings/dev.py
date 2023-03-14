@@ -17,6 +17,8 @@ INSTALLED_APPS = INSTALLED_APPS + [
 ]
 
 MIDDLEWARE = MIDDLEWARE + [
+    "request_viewer.middleware.RequestViewerMiddleware",
+    "request_viewer.middleware.ExceptionMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 

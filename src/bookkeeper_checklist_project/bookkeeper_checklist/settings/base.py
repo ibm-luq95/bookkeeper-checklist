@@ -85,8 +85,6 @@ MIDDLEWARE = [
     "core.middleware.DynamicSiteMiddleware",
     "bookkeeper.middleware.BookkeeperMiddleware",
     "maintenance_mode.middleware.MaintenanceModeMiddleware",
-    "request_viewer.middleware.RequestViewerMiddleware",
-    "request_viewer.middleware.ExceptionMiddleware",
     # "django_hide.middleware.CSRFHIDEMiddleware",
     # "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
 ]

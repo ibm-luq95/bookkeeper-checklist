@@ -2,6 +2,7 @@
 from django import template
 from django.db.models import Q
 
+from bookkeeper.models import Bookkeeper, BookkeeperProxy
 from client.models import Client
 from core.models import BaseQuerySetMixin
 
@@ -24,3 +25,14 @@ def get_jobs_by_type(client: Client, job_type: str) -> BaseQuerySetMixin:
 
     jobs = client.jobs.filter(query_filter).select_related()
     return jobs
+
+
+@register.filter(name="get_clients_for_bookkeeper_proxy")
+def get_clients_for_bookkeeper_proxy(bookkeeper: Bookkeeper) -> BaseQuerySetMixin:
+    return BookkeeperProxy.objects.get(pk=bookkeeper.pk).clients.all()
+
+
+@register.filter(name="get_tasks_for_bookkeeper_proxy")
+def get_tasks_for_bookkeeper_proxy(bookkeeper: Bookkeeper) -> BaseQuerySetMixin | None:
+    bookkeeper_proxy = BookkeeperProxy.objects.get(pk=bookkeeper.pk)
+    return bookkeeper_proxy.get_all_tasks_qs()

@@ -15,5 +15,16 @@ class TaskTemplateSerializer(
 
     class Meta:
         model = TaskTemplate
-        exclude = EXCLUDED_FIELDS
+        # exclude = EXCLUDED_FIELDS
         depth = 2
+        fields = [
+            "title",
+            "job_template",
+            "notes",
+            "task_type",
+            "status",
+            "attachment",
+            "items",
+            "status_display",
+            "task_type_display"
+        ]

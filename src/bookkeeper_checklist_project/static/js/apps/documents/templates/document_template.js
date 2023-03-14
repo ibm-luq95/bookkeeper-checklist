@@ -29,8 +29,11 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           const currentTarget = event.currentTarget;
           const url = currentTarget.action;
           const formData = new FormData();
+          const jobTemplate = currentTarget["job_template"];
+          console.log(jobTemplate);
           formData.append("title", currentTarget["title"].value);
           formData.append("template_file", currentTarget["template_file"].files[0]);
+          formData.append("job_template", [jobTemplate.value]);
           const uploadRequest = new UploadFileRequest(
             url,
             formData,

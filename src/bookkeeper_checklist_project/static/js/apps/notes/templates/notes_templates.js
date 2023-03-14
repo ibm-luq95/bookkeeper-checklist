@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         });
         fieldset.disabled = true;
         const jobTemplate = formInputs["job_template"];
-        formInputs["job_template"] = [jobTemplate];
+        formInputs["job_template"] = [jobTemplate.value];
         console.log(formInputs);
         const requestOptions = {
           method: currentTarget.method,

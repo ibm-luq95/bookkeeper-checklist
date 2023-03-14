@@ -9,7 +9,7 @@ from core.utils import get_formatted_logger
 
 # TODO: remove the custom logger before push (only for development)
 # ###### [Custom Logger] #########
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 # ###### [Custom Logger] #########

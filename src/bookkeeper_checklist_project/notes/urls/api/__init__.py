@@ -26,10 +26,5 @@ urlpatterns = [
         name="update",
     ),
     path("delete-note", DeleteNoteApiView.as_view(), name="delete"),
-    # path("manager/", include("notes.urls.api.manager"), name="manager-notes-api-urls"),
-    # path(
-    #     "bookkeeper/",
-    #     include("notes.urls.api.bookkeeper"),
-    #     name="bookkeeper-notes-api-urls",
-    # ),
+    path("templates/", include("notes.urls.api.templates"), name="notes-templates-api-urls"),
 ]

@@ -1,0 +1,33 @@
+{% load crispy_forms_tags %}
+
+{% spaceless %}
+    <div class="modal" id="notes-template-form-modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Create new notes template</p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <form action="{% url 'notes:api:templates:create' %}"
+                      method="post"
+                      id="createNoteTemplateForm">
+                    <fieldset form="createNoteTemplateForm">
+                        {% csrf_token %}
+                        <input type="hidden"
+                               name="job_template"
+                               id="job_template"
+                               value="{{ job_template_object.pk }}"/>
+                        {{ note_template_form|crispy }}
+                    </fieldset>
+                </form>
+            </section>
+            <footer class="modal-card-foot is-justify-content-end">
+                <button form="createNoteTemplateForm"
+                        type="submit"
+                        class="button is-success is-responsive submit-btn">Add</button>
+                <button class="button close-modal-btn is-responsive is-light is-danger">Cancel</button>
+            </footer>
+        </div>
+    </div>
+{% endspaceless %}

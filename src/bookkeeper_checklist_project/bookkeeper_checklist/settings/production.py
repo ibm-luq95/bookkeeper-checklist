@@ -1,8 +1,9 @@
-from decouple import config
 from .base import *
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(", ")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(",")
 DEBUG = config("DEBUG", cast=bool)
+
+# SITE_NAME = "app.beachwoodfinancial.com"
 
 # Database configurations
 DATABASES = {

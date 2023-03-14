@@ -1,38 +1,39 @@
 {% extends 'core/layouts/dashboard.html' %}
+
 {% load static %}
+
 {% block dashboard_content %}
     <section id="job-template-details-section">
         {# Start navbar #}
         <div class="box">
             <div class="is-flex is-justify-content-space-between">
                 <div>
-                    <div class="dropdown">
-                        <div class="dropdown-trigger">
-                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                                <span>Options</span>
-                                <span class="icon is-small">
-                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                            <div class="dropdown-content">
-                                <a href="#" class="dropdown-item">Create job</a>
-                                <a href="#" class="dropdown-item">Create job for multiple clients</a>
-                            </div>
-                        </div>
-                    </div>
+                    <select name="options"
+                            id="jobTemplateDetailsOptions"
+                            class="bkchlst-input input"
+                            disabled>
+                        <option value="" selected disabled>
+                            Options
+                        </option>
+                        <option value="create_job">
+                            Create job
+                        </option>
+                        <option value="create_job_for_multiple_clients">
+                            Create job for multiple
+                            clients
+                        </option>
+                    </select>
                 </div>
                 <div>
                     <div class="buttons">
                         <a href="{% url 'jobs:templates:update' object.pk %}"
                            target="_blank"
-                           class="button is-primary hint--top"
+                           class="button is-primary hint--top bkchlst-input is-disabled"
                            aria-label="Edit job">
                             <i class="fa-solid fa-pencil fa-xs"></i>&nbsp;Edit
                         </a>
                         <a href="#"
-                           class="button is-link hint--top"
+                           class="button is-link hint--top bkchlst-input is-disabled"
                            aria-label="Clone this template">
                             <i class="fa-solid fa-copy fa-xs"></i>&nbsp;Clone
                         </a>
@@ -141,12 +142,13 @@
         <div class="box">
             <div class="columns is-flex">
                 <div class="column">
-                    <div class="content">
+                    <div class="content scrollable h-300">
                         <h5>Tasks</h5>
                         <!-- <hr /> -->
                         <button class="button is-fullwidth hint--top is-light is-primary"
-                                aria-label="Add new task"
-                                id="addNewTaskBtn">
+                                aria-label="Add new template task"
+                                id="addNewTaskTemplateBtn"
+                                data-target="task-template-form-modal">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                         <br />
@@ -163,15 +165,19 @@
                                 </td> -->
                                         <td>
                                             <details>
-                                                <summary>
-                                                    {{ task.title|truncatechars:35 }}
+                                                <summary class="has-cursor-pointer disable-text-selection font-size-14px">
+                                                    {{ task.title|truncatechars:25 }}
                                                 </summary>
                                                 <div class="content mt-5">
-                                                    <h5>Task Items</h5>
-                                                    <ul>
+                                                    <!-- <hr /> -->
+                                                    <p class="font-size-13px is-italic">{{ task.title }}</p>
+                                                    <h6 class="font-size-14px">Task Items</h6>
+                                                    <ul id="task-items-ul-wrapper">
                                                         {% for item in task.items.all %}
                                                             <li>
-                                                                <a href="">{{ item.title }}</a>
+                                                                <a class="task-template-item font-size-13px"
+                                                                   data-task-parent-pk="{{ task.pk }}"
+                                                                   data-element-pk="{{ item.pk }}">{{ item.title|truncatechars:25 }}</a>
                                                             </li>
                                                         {% empty %}
                                                             <li>No items</li>
@@ -183,29 +189,38 @@
                                         <td>
                                             <div class="buttons has-addons are-small is-justify-content-end">
                                                 <button type="button"
-                                                        class="button is-small is-light is-link hint--top"
-                                                        aria-label="Show details">
+                                                        class="button task-template-trigger bkchlst-input is-small is-light is-link hint--top show-task-template-details-btn"
+                                                        aria-label="Show details"
+                                                        data-task-pk="{{ task.pk }}"
+                                                        data-target="task-template-details-modal"
+                                                        disabled>
                                                     <span class="icon is-small">
                                                         <i class="fas fa-eye fa-xs"></i>
                                                     </span>
                                                 </button>
                                                 <button type="button"
-                                                        class="button is-small is-light is-success hint--top"
-                                                        aria-label="Add new task items">
+                                                        class="button bkchlst-input is-small is-light is-success hint--top add-new-task-item-btn"
+                                                        aria-label="Add new task items"
+                                                        data-task-pk="{{ task.pk }}"
+                                                        disabled>
                                                     <span class="icon is-small">
                                                         <i class="fas fa-plus fa-xs"></i>
                                                     </span>
                                                 </button>
                                                 <button type="button"
-                                                        class="button is-small is-light is-info hint--top"
-                                                        aria-label="Edit task details">
+                                                        class="button bkchlst-input is-small is-light is-info hint--top edit-task-template-btn"
+                                                        aria-label="Edit task details"
+                                                        data-task-pk="{{ task.pk }}"
+                                                        disabled>
                                                     <span class="icon is-small">
                                                         <i class="fas fa-pencil fa-xs"></i>
                                                     </span>
                                                 </button>
                                                 <button type="button"
-                                                        class="button is-small is-light is-danger hint--top"
-                                                        aria-label="Delete task">
+                                                        class="button is-small is-light is-danger hint--top delete-task-template-btn bkchlst-input"
+                                                        aria-label="Delete task"
+                                                        data-task-pk="{{ task.pk }}"
+                                                        disabled>
                                                     <span class="icon is-small">
                                                         <i class="fas fa-trash fa-xs"></i>
                                                     </span>
@@ -225,30 +240,35 @@
                         <h5>Documents</h5>
                         <!-- <hr /> -->
                         <button class="button is-fullwidth hint--top is-light is-primary"
-                                aria-label="Add new document">
+                                aria-label="Add new document"
+                                id="addTemplateDocumentBtn"
+                                data-target="document-template-form-modal">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                         <br />
-                        <div class="list has-visible-pointer-controls">
+                        <div class="list has-visible-pointer-controls scrollable h-300">
                             {% for document in object.documents.all %}
                                 <div class="list-item">
                                     <div class="list-item-content">
                                         <div class="list-item-title">
-                                            <a href="">{{ document.title }}</a>
+                                            <a href="{{ document.template_file }}"
+                                               download="{{ document.template_file }}">{{ document.title }}</a>
                                         </div>
                                     </div>
                                     <div class="list-item-controls">
                                         <div class="buttons is-right">
                                             <button type="button"
-                                                    class="button is-small is-light is-info hint--top"
-                                                    aria-label="Edit document">
+                                                    class="button is-small is-light is-info hint--top bkchlst-input document-template-edit-btn"
+                                                    aria-label="Edit document"
+                                                    disabled>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-pencil fa-xs"></i>
                                                 </span>
                                             </button>
                                             <button type="button"
-                                                    class="button is-small is-light is-danger hint--top"
-                                                    aria-label="Delete document">
+                                                    class="button is-small is-light is-danger hint--top bkchlst-input document-template-delete-btn"
+                                                    aria-label="Delete document"
+                                                    disabled>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-trash fa-xs"></i>
                                                 </span>
@@ -257,25 +277,23 @@
                                     </div>
                                 </div>
                             {% empty %}
-                                <div class="notification is-warning is-light">
-                                    No documents
-                                </div>
+                                <div class="notification is-warning is-light">No documents</div>
                             {% endfor %}
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="content">
-                        <h5>
-                            Notes
-                        </h5>
+                        <h5>Notes</h5>
                         <!-- <hr /> -->
                         <button class="button is-fullwidth hint--top is-light is-primary"
-                                aria-label="Add new note">
+                                aria-label="Add new note"
+                                data-target="notes-template-form-modal"
+                                id="addTemplateNotesBtn">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                         <br />
-                        <div class="list has-visible-pointer-controls">
+                        <div class="list has-visible-pointer-controls scrollable h-300">
                             {% for note in object.notes.all %}
                                 <div class="list-item">
                                     <div class="list-item-content">
@@ -288,15 +306,17 @@
                                     <div class="list-item-controls">
                                         <div class="buttons is-right">
                                             <button type="button"
-                                                    class="button is-small is-light is-info hint--top"
-                                                    aria-label="Edit note">
+                                                    class="button bkchlst-input is-small is-light is-info hint--top note-template-edit-btn"
+                                                    aria-label="Edit note"
+                                                    disabled>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-pencil fa-xs"></i>
                                                 </span>
                                             </button>
                                             <button type="button"
-                                                    class="button is-small is-light is-danger hint--top"
-                                                    aria-label="Delete note">
+                                                    class="button bkchlst-input is-small is-light is-danger hint--top note-template-delete-btn"
+                                                    aria-label="Delete note"
+                                                    disabled>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-trash fa-xs"></i>
                                                 </span>
@@ -316,6 +336,46 @@
         </div>
         {# End tasks, documents, notes #}
     </section>
+    <!-- Start Task Item Template Modal Form -->
+
+    {% include "segments/tasks/templates/task_item_modal.html" with user_type="manager" task_item_form=task_item_form request_object=request %}
+
+    <!-- End Task Item Template Modal Form -->
+    <!-- Start Task Template Modal Form -->
+
+    {% include "segments/tasks/templates/task_template_details_modal.html" with user_type="manager" task_template_form=task_template_form request_object=request %}
+
+    <!-- End Task Template Modal Form -->
+    <!-- Start Task Template Modal Form -->
+
+    {% include "segments/tasks/templates/task_template_form_modal.html" with user_type="manager" task_template_form=task_template_form request_object=request job_template_object=object %}
+
+    <!-- End Task Template Modal Form -->
+    <!-- Start Document Template Modal Form -->
+
+    {% include "segments/documents/templates/document_template_modal_form.html" with user_type="manager" document_template_form=document_template_form request_object=request job_template_object=object %}
+
+    <!-- End Document Template Modal Form -->
+    <!-- Start Document Template Modal Form -->
+
+    {% include "segments/notes/templates/note_templates_form_modal.html" with user_type="manager" note_template_form=note_template_form request_object=request job_template_object=object %}
+
+    <!-- End Document Template Modal Form -->
 {% endblock dashboard_content %}
 {% block externaljs %}
+    <script src="{% static 'js/apps/task/templates/task_item.js' %}"
+            defer
+            type="module"></script>
+    <script src="{% static 'js/apps/task/templates/task_template.js' %}"
+            defer
+            type="module"></script>
+    <script src="{% static 'js/apps/documents/templates/document_template.js' %}"
+            defer
+            type="module"></script>
+    <script src="{% static 'js/apps/notes/templates/notes_templates.js' %}"
+            defer
+            type="module"></script>
+    <script src="{% static 'js/apps/jobs/templates/details.js' %}"
+            defer
+            type="module"></script>
 {% endblock externaljs %}

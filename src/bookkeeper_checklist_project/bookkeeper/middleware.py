@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-#
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
-from core.cache import CacheHandler
+from core.cache import BWCacheHandler
 from core.constants.site_settings import WEB_APP_SETTINGS_KEY
 
 
@@ -23,16 +24,16 @@ class BookkeeperMiddleware:
 
         return response
 
-    def process_view(self, request, view_func, view_args, view_kwargs):
-
+    def process_view(
+        self, request: HttpRequest, view_func, view_args: list, view_kwargs: dict
+    ):
         if request.user.is_authenticated:
-
             # check if the user type is bookkeeper or assistants
             if (
                 request.user.user_type == "bookkeeper"
                 or request.user.user_type == "assistants"
             ):
-                site_settings = CacheHandler.get_item(WEB_APP_SETTINGS_KEY)
+                site_settings = BWCacheHandler.get_item(WEB_APP_SETTINGS_KEY)
                 if (
                     site_settings.can_bookkeepers_login is False
                     or site_settings.can_assistants_login is False

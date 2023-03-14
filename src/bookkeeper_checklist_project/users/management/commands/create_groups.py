@@ -5,10 +5,13 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from core.constants import BOOKKEEPER_GROUP_NAME, MANAGER_GROUP_NAME, ASSISTANT_GROUP_NAME
+from core.management.mixins import CommandStdOutputMixin
+
+
 # from core.utils import debugging_print
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CommandStdOutputMixin):
     help = "Create groups for manager, bookkeeper, assistant"
     apps_name = ("manager", "bookkeeper", "assistant")
     groups_names = (BOOKKEEPER_GROUP_NAME, ASSISTANT_GROUP_NAME, MANAGER_GROUP_NAME)
@@ -83,16 +86,6 @@ class Command(BaseCommand):
                     )
         except Exception as ex:
             self.stdout_output("error", str(ex))
-
-    def stdout_output(self, type, msg):
-        if type == "error":
-            self.stdout.write(self.style.ERROR(msg))
-        elif type == "success":
-            self.stdout.write(self.style.SUCCESS(msg))
-        elif type == "info":
-            self.stdout.write(self.style.NOTICE(msg))
-        elif type == "warn":
-            self.stdout.write(self.style.WARNING(msg))
 
     def clear_groups(self):
         try:

@@ -14,7 +14,7 @@ from core.utils import get_formatted_logger, debugging_print
 from documents.models import Documents
 from documents.serializers import DocumentSerializer
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class CreateDocumentApiView(APIView):

@@ -4,7 +4,7 @@ from typing import Any, Union, Optional
 from django.core.cache import cache
 
 
-class CacheHandler:
+class BWCacheHandler:
     """This is cache mixin, which will use with any object need to handle cache"""
 
     @staticmethod
@@ -34,8 +34,8 @@ class CacheHandler:
             None: If key not exists
             Any: Any object store in the cache
         """
-        # print(f"############ {CacheHandler.check(key)} ############")
-        if CacheHandler.check(key):
+        # print(f"############ {BWCacheHandler.check(key)} ############")
+        if BWCacheHandler.check(key):
             return cache.get(key)
         else:
             return None

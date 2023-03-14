@@ -278,8 +278,8 @@ SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60  # group by minute
 
 # Django log viewer package config
 # LOG_VIEWER_FILES = ['logfile1', 'logfile2', ...]
-LOG_VIEWER_FILES_PATTERN = "*.log*"
-LOG_VIEWER_FILES_DIR = "logs/"
+# LOG_VIEWER_FILES_PATTERN = "*.log*"
+LOG_VIEWER_FILES_DIR = BASE_DIR / "logs"
 LOG_VIEWER_PAGE_LENGTH = 25  # total log lines per-page
 LOG_VIEWER_MAX_READ_LINES = 1000  # total log lines will be read
 LOG_VIEWER_FILE_LIST_MAX_ITEMS_PER_PAGE = 25  # Max log files loaded in Datatable per page

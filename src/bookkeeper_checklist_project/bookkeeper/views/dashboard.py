@@ -5,11 +5,13 @@ import requests
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
+from django.views.generic.detail import SingleObjectMixin
 
 from bookkeeper.helpers import BookkeeperHelper
 from core.models import Quote
 from core.utils import get_formatted_logger
 from .mixins import BookkeeperAccessMixin
+from ..models import BookkeeperProxy
 
 # TODO: remove the custom logger before push (only for development)
 # ###### [Custom Logger] #########
@@ -22,6 +24,15 @@ logger = get_formatted_logger()
 class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
     template_name = "bookkeeper/dashboard/dashboard.html"
     login_url = reverse_lazy("users:auth:login")
+    model = BookkeeperProxy
+
+    # def dispatch(self, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     return super().dispatch(*args, **kwargs)
+
+    # def get_queryset(self):
+    #     print(type(self.request.user.bookkeeper))
+    #     return self.request.user.bookkeeper
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -74,7 +85,8 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
             context["title"] = "Bookkeeper - Dashboard"
             context.setdefault("quote_text", quote_text)
             context["bookkeeper_name"] = self.request.user.fullname
-            bookkeeper = self.request.user.bookkeeper
+            # bookkeeper = self.request.user.bookkeeper
+            bookkeeper = BookkeeperProxy.objects.get(pk=self.request.user.bookkeeper.pk)
             # debugging_print("#################################")
             # debugging_print(self.request.user.bookkeeper.special_assignments.select_related())
             # debugging_print(self.request.user.bookkeeper)
@@ -87,7 +99,7 @@ class DashboardView(LoginRequiredMixin, BookkeeperAccessMixin, TemplateView):
             # context.setdefault(
             #     "total_past_due_total", bookkeeper_helper.get_past_due_tasks_total
             # )
-            # context.setdefault("last_tasks", bookkeeper_helper.get_last_tasks())
+            context.setdefault("last_tasks", bookkeeper.get_last_tasks())
             return context
 
         except Exception as ex:

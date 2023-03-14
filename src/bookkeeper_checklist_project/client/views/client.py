@@ -12,6 +12,7 @@ from django.views.generic import (
     RedirectView,
 )
 
+from bookkeeper.models import BookkeeperProxy
 from client.filters import ClientFilter
 from client.forms import ClientForm
 from client.models import Client, ClientProxy
@@ -19,7 +20,12 @@ from company_services.forms import CompanyServiceForm
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.constants.status_labels import CON_ARCHIVED
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin, ArchiveListViewMixin
+from core.views.mixins import (
+    BaseListViewMixin,
+    BaseLoginRequiredMixin,
+    ListViewMixin,
+    ArchiveListViewMixin,
+)
 from documents.forms import DocumentForm
 from important_contact.forms import ImportantContactForm
 from jobs.forms import JobForm
@@ -60,6 +66,10 @@ class ClientListView(
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        if self.request.user.user_type == "bookkeeper":
+            queryset = BookkeeperProxy.objects.get(
+                pk=self.request.user.bookkeeper.pk
+            ).clients.all()
         self.filterset = ClientFilter(self.request.GET, queryset=queryset)
         return self.filterset.qs
 
@@ -124,7 +134,10 @@ class ClientCreateView(
 
 
 class ClientDetailsView(
-    BaseLoginRequiredMixin, PermissionRequiredMixin, ManagerAssistantAccessMixin, DetailView
+    BaseLoginRequiredMixin,
+    PermissionRequiredMixin,
+    ManagerAssistantAccessMixin,
+    DetailView,
 ):
     template_name = "client/details.html"
     model = ClientProxy
@@ -147,9 +160,13 @@ class ClientDetailsView(
         tasks_form = TaskForm(initial={"client": client})
         context.setdefault("important_contact_form", important_contact_form)
         document_form = DocumentForm(
-            initial={"document_section": "client", "client": client}, removed_fields=["job", "task"]
+            initial={"document_section": "client", "client": client},
+            removed_fields=["job", "task"],
         )
-        note_form = NoteForm(initial={"note_section": "client", "client": client}, removed_fields=["job", "task"])
+        note_form = NoteForm(
+            initial={"note_section": "client", "client": client},
+            removed_fields=["job", "task"],
+        )
         context.setdefault("document_form", document_form)
         context.setdefault("note_form", note_form)
         context.setdefault("company_services_form", company_services_form)
@@ -196,7 +213,7 @@ class ClientUpdateView(
         # )
         # context.setdefault("important_contact_form", important_contact_form)
         return context
-    
+
     def get_form_kwargs(self):
         kwargs = super(ClientUpdateView, self).get_form_kwargs()
         kwargs.update({"user": self.request.user})

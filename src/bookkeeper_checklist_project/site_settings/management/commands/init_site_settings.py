@@ -3,10 +3,11 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from core.management.mixins import CommandStdOutputMixin
 from site_settings.models import SiteSettings
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CommandStdOutputMixin):
     help = "Initialize web application settings"
 
     def handle(self, *args, **options):
@@ -22,13 +23,3 @@ class Command(BaseCommand):
                 self.stdout_output("success", "Site Settings Created Successfully!")
         except Exception as ex:
             self.stdout_output("error", str(ex))
-
-    def stdout_output(self, type, msg):
-        if type == "error":
-            self.stdout.write(self.style.ERROR(msg))
-        elif type == "success":
-            self.stdout.write(self.style.SUCCESS(msg))
-        elif type == "info":
-            self.stdout.write(self.style.NOTICE(msg))
-        elif type == "warn":
-            self.stdout.write(self.style.WARNING(msg))

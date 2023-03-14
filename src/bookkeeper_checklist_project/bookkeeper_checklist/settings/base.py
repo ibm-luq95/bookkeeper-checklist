@@ -10,8 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import os
-import ast
 from decouple import config
 from pathlib import Path
 from django.contrib.messages import constants as messages
@@ -34,6 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# SITE_NAME = "127.0.0.1"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,9 +44,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
-    # "django_extensions",
+    "django.contrib.sites",
+    "log_viewer",
     "maintenance_mode",
-    # "django.contrib.sites",
     "django_filters",
     "rest_framework",
     # "rest_framework.authtoken",
@@ -82,8 +82,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "core.middleware.DynamicSiteMiddleware",
     "bookkeeper.middleware.BookkeeperMiddleware",
     "maintenance_mode.middleware.MaintenanceModeMiddleware",
+    "request_viewer.middleware.RequestViewerMiddleware",
+    "request_viewer.middleware.ExceptionMiddleware",
     # "django_hide.middleware.CSRFHIDEMiddleware",
     # "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
 ]
@@ -130,6 +133,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 7,
+        },
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -190,26 +196,6 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
-]
-
-# Enabling password validation
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-        "OPTIONS": {
-            "min_length": 7,
-        },
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
 ]
 
 MESSAGE_TAGS = {
@@ -283,53 +269,106 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = config(
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = ast.literal_eval(
 #     os.environ.get("SESSION_EXPIRE_AFTER_LAST_ACTIVITY")
 # )
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = config("SESSION_EXPIRE_AFTER_LAST_ACTIVITY", cast=bool)
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = config(
+    "SESSION_EXPIRE_AFTER_LAST_ACTIVITY", cast=bool
+)
 
 # SESSION_TIMEOUT_REDIRECT = "/"
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60  # group by minute
 
-# LOGGING = {
-#     "version": 1,
-#     "handlers": {
-#         "console": {
-#             "level": "DEBUG",
-#             "class": "logging.StreamHandler",
-#             # "filename": BASE_DIR / "debug.log",
-#         },
-#     },
-#     "loggers": {
-#         "werkzeug": {
-#             "handlers": ["console"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         },
-#     },
-# }
-LOGGING = {
-    "version": 1,
-    # The version number of our log
-    "disable_existing_loggers": False,
-    # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
-    # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
-    "handlers": {
-        "file": {
-            "level": "ERROR",
-            "class": "logging.FileHandler",
-            "filename": BASE_DIR / "errors.log",
+# Django log viewer package config
+# LOG_VIEWER_FILES = ['logfile1', 'logfile2', ...]
+# LOG_VIEWER_FILES_PATTERN = "*.log*"
+LOG_VIEWER_FILES_DIR = BASE_DIR / "logs"
+LOG_VIEWER_PAGE_LENGTH = 25  # total log lines per-page
+LOG_VIEWER_MAX_READ_LINES = 1000  # total log lines will be read
+LOG_VIEWER_FILE_LIST_MAX_ITEMS_PER_PAGE = 25  # Max log files loaded in Datatable per page
+LOG_VIEWER_PATTERNS = ["[INFO]", "[DEBUG]", "[WARNING]", "[ERROR]", "[CRITICAL]"]
+LOG_VIEWER_EXCLUDE_TEXT_PATTERN = (
+    None  # String regex expression to exclude the log from line
+)
+# Optionally you can set the next variables in order to customize the admin:
+LOG_VIEWER_FILE_LIST_TITLE = "Log viewer"
+# LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
+
+# Logger
+FORMATTERS = (
+    {
+        "verbose": {
+            "format": "{levelname} {asctime:s} - {name} {threadName} {thread:d} {module} {filename} {lineno:d} {name} {funcName} {process:d} {message}",
+            "style": "{",
+            # "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+        "simple": {
+            "format": "{levelname} {asctime:s} {name} {module} {filename} {lineno:d} {funcName} {message}",
+            # "format": "{levelname} {asctime:s} - {name} {module} {filename} {lineno:d} {funcName}",
+            "style": "{",
+            # "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
-    # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
-    "loggers": {
-        # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
-        "": {
-            "handlers": [
-                "file"
-            ],  # notice how file variable is called in handler which has been defined above
-            "level": "ERROR",
+)
+
+HANDLERS = {
+    # "console_handler": {
+    #     "class": "logging.StreamHandler",
+    #     "formatter": "simple",
+    #     "level": "DEBUG",
+    # },
+    "info_handler": {
+        "class": "logging.handlers.RotatingFileHandler",
+        "filename": BASE_DIR / "logs" / "info.log",
+        "mode": "a",
+        "encoding": "utf-8",
+        "formatter": "verbose",
+        "level": "WARNING",
+        "backupCount": 5,
+        "maxBytes": 1024 * 1024 * 5,  # 5 MB
+    },
+    "error_handler": {
+        "class": "logging.handlers.RotatingFileHandler",
+        "filename": BASE_DIR / "logs" / "errors.log",
+        "mode": "a",
+        "formatter": "verbose",
+        # "level": "WARNING",
+        "level": "ERROR",
+        "backupCount": 5,
+        "maxBytes": 1024 * 1024 * 5,  # 5 MB
+    },
+}
+
+LOGGERS = (
+    {
+        "django": {
+            # "handlers": ["console_handler", "info_handler"],
+            "handlers": ["info_handler"],
+            "level": "INFO",
+        },
+        "django.request": {
+            "handlers": ["error_handler"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "django.template": {
+            "handlers": ["error_handler"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "django.server": {
+            "handlers": ["error_handler"],
+            "level": "INFO",
             "propagate": True,
         },
     },
+)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": FORMATTERS[0],
+    "handlers": HANDLERS,
+    "loggers": LOGGERS[0],
 }
+
 # check if cache enabled
 # if ast.literal_eval(os.environ.get("IS_CACHE_ENABLED")) is True:
 if config("IS_CACHE_ENABLED", cast=bool) is True:

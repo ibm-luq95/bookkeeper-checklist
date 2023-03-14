@@ -10,7 +10,7 @@ from important_contact.forms import ImportantContactForm
 from jobs.models import Job
 from .mixins import BookkeeperAccessMixin
 
-logger = get_formatted_logger(__file__)
+logger = get_formatted_logger()
 
 
 class ClientsListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):

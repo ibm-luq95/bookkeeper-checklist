@@ -7,3 +7,9 @@ from .task import (
     DeleteTaskApiView,
     UpdateTaskApiView,
 )
+from .templates import (
+    CreateTaskItemApiView,
+    TaskTemplateRetrieveAPIView,
+    TaskTemplateDeleteAPIView,
+    CreateTaskTemplateApiView,
+)

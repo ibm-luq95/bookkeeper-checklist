@@ -337,6 +337,9 @@ div.scrollable {
 
   /* border: 1px solid #e4e4e4b9; */
 }
+div.scrollable.h-300 {
+  max-height: 300px !important;
+}
 div.scrollable::-webkit-scrollbar {
   transition: all 250ms ease-in !important;
   background-color: transparent;
@@ -437,12 +440,28 @@ select[multiple] {
   font-size: 14px !important;
 }
 
+.font-size-13px {
+  font-size: 13px !important;
+}
+.font-size-14px {
+  font-size: 14px !important;
+}
+.disable-text-selection {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
 .light-border {
   border: 1px solid rgb(233, 224, 224);
 }
 
 .custom-loader.loader-width-xlarge {
   width: 100%;
+}
+
+.break-words-with-width {
+  word-break: break-word !important;
+  width: 70%;
 }
 .custom-loader {
   margin: auto;

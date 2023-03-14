@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
+# from django.contrib.sites.models import Site
 
 from core.cache import CacheViewMixin
 from core.utils import get_trans_txt
@@ -13,6 +14,10 @@ from bookkeeper.models import Bookkeeper
 
 
 # from django.contrib.auth.models import Permission
+
+from core.utils import get_formatted_logger
+
+logger = get_formatted_logger()
 
 
 class DashboardHomeView(LoginRequiredMixin, ManagerAccessMixin, CacheViewMixin, TemplateView):
@@ -30,6 +35,10 @@ class DashboardHomeView(LoginRequiredMixin, ManagerAccessMixin, CacheViewMixin, 
         all_special_assignments = SpecialAssignment.objects.select_related().filter()
         all_clients = Client.objects.select_related().filter()
         all_bookkeepers = Bookkeeper.objects.select_related().filter()[:5]
+        # logger.info("WWWWWWWWWWWWWWWWW")
+        # site = Site.objects.get_current()
+        # print(site)
+        # raise Exception("Stop")
         context.setdefault("all_tasks", all_tasks)
         context.setdefault("all_jobs", all_jobs)
         context.setdefault("all_clients", all_clients)

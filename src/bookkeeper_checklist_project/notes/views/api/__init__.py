@@ -5,3 +5,4 @@ from .notes import (
     RetrieveNoteApiView,
     DeleteNoteApiView,
 )
+from .templates import CreateNoteTemplateApiView

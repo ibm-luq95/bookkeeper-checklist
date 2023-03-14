@@ -12,7 +12,7 @@ from company_services.serializers import CreateCompanyServicesSerializer
 from core.api.permissions import BaseApiPermissionMixin
 from core.utils import get_formatted_logger
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class CreateCompanyServiceApiView(APIView):

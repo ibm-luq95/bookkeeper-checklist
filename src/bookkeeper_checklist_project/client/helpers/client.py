@@ -3,7 +3,7 @@ import traceback
 
 from core.utils import ProjectError, get_formatted_logger
 
-logger = get_formatted_logger(__file__)
+logger = get_formatted_logger()
 
 
 class ClientHelper:

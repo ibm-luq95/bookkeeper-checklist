@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-#
 import logging
 from logging import Logger
+from typing import Optional
 
 
 class CustomFormatter(logging.Formatter):
@@ -27,13 +28,13 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-def get_formatted_logger(file_name: str) -> Logger:
-    logger = logging.getLogger(file_name)
-    logger.setLevel(logging.DEBUG)
+def get_formatted_logger(logger_name: Optional[str] = None) -> Logger:
+    logger = logging.getLogger("django" or logger_name)
+    # logger.setLevel(logging.DEBUG)
 
     # create console handler with a higher log level
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(CustomFormatter())
-    logger.addHandler(ch)
+    # ch = logging.StreamHandler()
+    # ch.setLevel(logging.DEBUG)
+    # ch.setFormatter(CustomFormatter())
+    # logger.addHandler(ch)
     return logger

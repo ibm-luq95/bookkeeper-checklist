@@ -14,7 +14,7 @@ from task.forms import TaskForm
 from .mixins import BookkeeperAccessMixin
 from core.choices import JobStatusEnum
 
-logger = get_formatted_logger(__file__)
+logger = get_formatted_logger()
 
 
 class JobListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):

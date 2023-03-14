@@ -31,7 +31,7 @@ class Client(BaseModelMixin):
         to=ClientCategory, related_name="clients", blank=True
     )
     bookkeepers = models.ManyToManyField(
-        to="bookkeeper.Bookkeeper", related_name="clients", blank=True
+        to="bookkeeper.BookkeeperProxy", related_name="clients", blank=True
     )
     name = models.CharField(_("name"), max_length=50, null=True)
     email = models.EmailField(_("email"), max_length=50, null=True)

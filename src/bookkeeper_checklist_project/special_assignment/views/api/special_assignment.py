@@ -13,7 +13,7 @@ from special_assignment.serializers import SpecialAssignmentSerializer
 from core.api.permissions import BaseApiPermissionMixin
 from core.utils import get_formatted_logger, debugging_print
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class CreateSpecialAssignmentApiView(APIView):

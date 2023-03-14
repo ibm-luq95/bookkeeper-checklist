@@ -16,7 +16,7 @@ from task.models import Task
 from task.serializers import CreateTaskSerializer, TaskSerializer
 from pprint import pprint
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class CreateTaskApiView(APIView):

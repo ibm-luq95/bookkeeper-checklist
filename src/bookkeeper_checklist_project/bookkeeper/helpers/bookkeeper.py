@@ -8,7 +8,7 @@ from core.models import BaseQuerySetMixin
 from core.utils import ProjectError, get_formatted_logger
 from jobs.models import Job
 
-logger = get_formatted_logger(__file__)
+logger = get_formatted_logger()
 
 
 class BookkeeperHelper:

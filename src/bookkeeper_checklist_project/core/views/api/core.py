@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 
 from core.utils import get_formatted_logger
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class FetchUrlApiView(APIView):

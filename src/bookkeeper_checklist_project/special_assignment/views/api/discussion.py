@@ -13,7 +13,7 @@ from core.api.permissions import ManagerApiPermission, BaseApiPermissionMixin
 from core.utils import get_formatted_logger, debugging_print
 from special_assignment.serializers import DiscussionSerializer
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class CreateDiscussionApiView(APIView):

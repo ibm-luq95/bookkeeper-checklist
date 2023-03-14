@@ -13,7 +13,7 @@ from important_contact.serializers import ImportantContactSerializer
 from core.api.permissions import BaseApiPermissionMixin
 from core.utils import get_formatted_logger, debugging_print
 
-logger = get_formatted_logger(__name__)
+logger = get_formatted_logger()
 
 
 class CreateImportantContactApiView(APIView):

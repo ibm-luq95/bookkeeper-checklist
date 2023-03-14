@@ -1,7 +1,7 @@
-from core.admin import BaseAdminModelMixin
 from django.contrib import admin
 
-from .models import CompanyService
+from company_services.models import CompanyService
+from core.admin import BaseAdminModelMixin
 
 
 @admin.register(CompanyService)

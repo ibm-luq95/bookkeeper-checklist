@@ -1,20 +1,23 @@
-from decouple import config
+import mimetypes
+
 from .base import *
 
-# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(", ")
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(", ")
+# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(",")
 
-# DEBUG = ast.literal_eval(os.environ.get("DEBUG"))
+mimetypes.add_type("application/javascript", ".js", True)
+# SITE_NAME = "127.0.0.1"
+
 DEBUG = config("DEBUG", cast=bool)
 
 INSTALLED_APPS = INSTALLED_APPS + [
     "debug_toolbar",
     "django_extensions",
+    "request_viewer",
 ]
 
 MIDDLEWARE = MIDDLEWARE + [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    # "django_session_timeout.middleware.SessionTimeoutMiddleware"
 ]
 
 # Database configurations
@@ -32,14 +35,6 @@ DATABASES = {
         },
     }
 }
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#         # "NAME": "/home/ibrahim/bookkeeper-checklist/src/bookkeeper_checklist_project/db.sqlite3",
-#     }
-# }
-
 
 # Set Cache Configurations
 
@@ -95,7 +90,5 @@ GRAPH_MODELS = {
 # ENCRYPT_KEY = bytes(os.environ.get("ENCRYPT_KEY"), "ascii")
 ENCRYPT_KEY = bytes(config("ENCRYPT_KEY"), "ascii")
 
-if DEBUG:
-    import mimetypes
-
-    mimetypes.add_type("application/javascript", ".js", True)
+# django-request-viewer configs
+REQUEST_VIEWER = {"LIVE_MONITORING": False, "WHITELISTED_PATH": []}

@@ -34,7 +34,7 @@ class BackupForm(BaseModelFormMixin):
     def save(self, commit=True):
         backup_obj = super().save(commit=False)
         name = self.cleaned_data.get("name")
-        backup_file = settings.BASE_DIR / "db_backups" / f"{name}.json"
+        backup_file = settings.BASE_DIR / "db_backups" / f"{name}.yaml"
         try:
             # Save the provided password in hashed format
             with transaction.atomic():

@@ -46,7 +46,7 @@ class RestoreDBApiView(APIView):
                 if not file_name.exists():
                     raise APIException("Backup file not exists!")
                 pyminizip.uncompress(file_name.as_posix(), "123", dist_folder.as_posix(), 0)
-                json_file_name = file_name.as_posix().replace(".zip", ".json")
+                json_file_name = file_name.as_posix().replace(".zip", ".yaml")
                 debugging_print(json_file_name)
                 # with open(file_name, "r") as f:
                 management.call_command(
@@ -54,7 +54,7 @@ class RestoreDBApiView(APIView):
                     json_file_name,
                     # "--ignorenonexistent",
                     exclude=EXCLUDED,
-                    format="json",
+                    format="yaml",
                     # stdout=f,
                 )
                 Path(json_file_name).unlink()

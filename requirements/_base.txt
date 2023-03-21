@@ -15,6 +15,7 @@ Pillow
 psycopg2-binary
 python-dotenv
 python-decouple
+pyminizip
 python-magic
 stringcase
 redis

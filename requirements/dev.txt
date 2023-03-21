@@ -28,6 +28,9 @@ prettytable
 pycodestyle
 pydocstyle
 pygraphviz
+pyparsing
+pydot
+docutils
 pylama
 pylint
 pylint-django

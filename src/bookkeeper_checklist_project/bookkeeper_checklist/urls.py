@@ -23,6 +23,7 @@ urlpatterns = [
     path("bookkeeper/", include("bookkeeper.urls"), name="bookkeeper-urls"),
     path("assistant/", include("assistant.urls"), name="assistant-urls"),
     path("accounts/", include("client_account.urls"), name="client-account-urls"),
+    path("db/", include("db_backup_restore.urls"), name="db-backup-restore-urls"),
     path("manager/", include("manager.urls"), name="manager-urls"),
     path("core/", include("core.urls"), name="core-urls"),
     path("documents/", include("documents.urls"), name="documents-urls"),
@@ -57,6 +58,7 @@ if settings.DEBUG:
     urlpatterns.append(
         path("request-logs/", include("request_viewer.urls")),
     )
+    urlpatterns.append(path('admin/doc/', include('django.contrib.admindocs.urls')))
     urlpatterns.append(path("admin/", admin.site.urls))
 else:
     urlpatterns.append(path("secret/", admin.site.urls))

@@ -1,0 +1,40 @@
+{% extends "core/layouts/dashboard.html" %}
+
+{% block dashboard_content %}
+    <div class="box">
+        <header class="is-flex is-justify-content-space-between">
+            <div>
+                <h4 class="title is-size-4">{{ object.name }}</h4>
+            </div>
+            <div>
+                <a href="{% url 'db_backup_restore:restore:prepare-restore' object.pk %}"
+                   class="button is-link">Restore</a>
+            </div>
+        </header>
+        <hr />
+        <section>
+            <div class="columns">
+                <div class="column is-1">
+                    <h5 class="title is-size-5">Status</h5>
+                </div>
+                <div class="column">{{ object.get_status_display }}</div>
+            </div>
+            <div class="columns">
+                <div class="column is-1">
+                    <h5 class="title is-size-5">Created AT</h5>
+                </div>
+                <div class="column">{{ object.created_at }}</div>
+            </div>
+            <div class="columns">
+                <div class="column is-1">
+                    <h5 class="title is-size-5">Restored</h5>
+                </div>
+                <div class="column">
+
+                    {% include "components/core/is_seen.html" with is_seen=object.is_restored %}
+
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock dashboard_content %}

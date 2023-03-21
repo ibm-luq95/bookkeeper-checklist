@@ -14,6 +14,9 @@ from decouple import config
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
+import _locale
+_locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent  # default
 BASE_DIR = (
@@ -69,6 +72,7 @@ INSTALLED_APPS = [
     "jobs.apps.JobsConfig",
     "task.apps.TaskConfig",
     "special_assignment.apps.SpecialAssignmentConfig",
+    "db_backup_restore.apps.DbBackupRestoreConfig",
 ]
 
 MIDDLEWARE = [
@@ -337,8 +341,8 @@ HANDLERS = {
 LOGGERS = (
     {
         "django": {
-            "handlers": ["console_handler", "info_handler"],
-            # "handlers": ["info_handler"],
+            # "handlers": ["console_handler", "info_handler"],  # with new console logger
+            "handlers": ["info_handler"],   # with default console logger
             "level": "INFO",
         },
         "django.request": {

@@ -1,2 +1,3 @@
 # -*- coding: utf-8 -*-#
 LIST_VIEW_PAGINATE_BY = 10
+DEFAULT_FULL_DATE_TIME_FORMAT = "jS F Y H:i A"

@@ -41,7 +41,7 @@ class BackupForm(BaseModelFormMixin):
                 # debugging_print(dir(backup_obj.backup_path))
                 if backup_file.exists() is True:
                     raise forms.ValidationError(f"Backup file exists - {backup_file}")
-                with open(backup_file, "w") as f:
+                with open(backup_file, "w", encoding="utf-8") as f:
                     management.call_command(
                         dumpdata.Command(),
                         exclude=EXCLUDED,

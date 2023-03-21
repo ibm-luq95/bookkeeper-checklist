@@ -1,0 +1,40 @@
+{% extends "core/layouts/dashboard.html" %}
+
+{% load static %}
+
+{% block dashboard_content %}
+    <div class="box">
+        <header>
+            <h5 class="is-size-5 title">Restoring - {{ object.name }}</h5>
+        </header>
+        <hr />
+        <section>
+            <div id="restoreAlert" class="notification is-warning" hidden>
+                Please wait while restore complete..
+              </div>
+            <div class="columns">
+                <div class="column is-1">Created</div>
+                <div class="column">{{ object.created_at }}</div>
+            </div>
+            <div class="columns">
+                <div class="column is-1">Last restore</div>
+                <div class="column">{{ object.restored_at }}</div>
+            </div>
+            <hr />
+            <div>
+                <button class="button is-primary is-rounded"
+                        type="button"
+                        id="restoreDbBtn"
+                        data-object-pk="{{ object.pk }}"
+                        data-name="{{ object.name }}">
+                    Restore
+                </button>
+            </div>
+        </section>
+    </div>
+{% endblock dashboard_content %}
+{% block externaljs %}
+    <script src="{% static 'js/apps/db_backup_restore/restore/restore.js' %}"
+            defer
+            type="module"></script>
+{% endblock externaljs %}

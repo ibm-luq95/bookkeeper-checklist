@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "jobs.apps.JobsConfig",
     "task.apps.TaskConfig",
     "special_assignment.apps.SpecialAssignmentConfig",
+    "db_backup_restore.apps.DbBackupRestoreConfig",
 ]
 
 MIDDLEWARE = [
@@ -337,8 +338,8 @@ HANDLERS = {
 LOGGERS = (
     {
         "django": {
-            "handlers": ["console_handler", "info_handler"],
-            # "handlers": ["info_handler"],
+            # "handlers": ["console_handler", "info_handler"],  # with new console logger
+            "handlers": ["info_handler"],   # with default console logger
             "level": "INFO",
         },
         "django.request": {

@@ -29,7 +29,7 @@ class DBBackupListView(
     ListView,
 ):
     permission_required = "db_backup_restore.can_view_list"
-    template_name = "db_backup_restore/backup/list.html"
+    template_name = "db_backup_restore/db_backup/list.html"
     model = DBBackup
     list_type = "list"
     paginate_by = LIST_VIEW_PAGINATE_BY
@@ -58,7 +58,7 @@ class DBBackupCreateView(
 ):
     model = DBBackup
     permission_required = "db_backup_restore.can_add"
-    template_name = "db_backup_restore/backup/create.html"
+    template_name = "db_backup_restore/db_backup/create.html"
     form_class = BackupForm
     http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("DB backup created successfully")
@@ -76,7 +76,7 @@ class DBBackupDetailsView(
     PermissionRequiredMixin,
     DetailView,
 ):
-    template_name = "db_backup_restore/backup/details.html"
+    template_name = "db_backup_restore/db_backup/details.html"
     model = DBBackup
     permission_required = "db_backup_restore.view_dbbackup"
 

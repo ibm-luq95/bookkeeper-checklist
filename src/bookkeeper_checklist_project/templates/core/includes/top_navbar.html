@@ -1,224 +1,183 @@
 {% if request.user.is_authenticated %}
-
-{% comment %}
+  {% comment %}
 {{ perms.manager.manager_user }}
 {{ perms.bookkeeper.bookkeeper_user }}
 {{ perms.assistant.assistant_user }}
-{% endcomment %}
-
-<nav class="navbar is-white">
-  <div class="container is-fluid">
-    <div class="navbar-brand">
-      {% if request.user.user_type == "bookkeeper" %}
-      <a class="navbar-item brand-text" href="{% url 'bookkeeper:dashboard' %}">Bookkeeper</a>
-      {% elif request.user.user_type == "assistant" %}
-      <a class="navbar-item brand-text" href="{% url 'assistant:dashboard' %}">Assistant</a>
-      {% elif request.user.user_type == "manager" %}
-      <a class="navbar-item brand-text" href="{% url 'manager:dashboard' %}">Management</a>
-      {% endif %}
-
-      <div class="navbar-burger burger" data-target="navMenu">
-        <span></span>
-        <span></span>
-        <span></span>
+  {% endcomment %}
+  <nav class="navbar is-white">
+    <div class="container is-fluid">
+      <div class="navbar-brand">
+        {% if request.user.user_type == "bookkeeper" %}
+          <a class="navbar-item brand-text"
+             href="{% url 'bookkeeper:dashboard' %}">Bookkeeper</a>
+        {% elif request.user.user_type == "assistant" %}
+          <a class="navbar-item brand-text" href="{% url 'assistant:dashboard' %}">Assistant</a>
+        {% elif request.user.user_type == "manager" %}
+          <a class="navbar-item brand-text" href="{% url 'manager:dashboard' %}">Management</a>
+        {% endif %}
+        <div class="navbar-burger burger" data-target="navMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
-    </div>
-    <div id="navMenu" class="navbar-menu">
-      <div class="navbar-start">
-        {% if perms.manager.manager_user or request.user.user_type == 'manager' %}
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">Users</a>
-
-          <div class="navbar-dropdown">
-            <a href="{% url 'users:manager:list' %}" class="navbar-item">List all users</a>
-
-          </div>
-        </div>
-        {% endif %}
-
-        <!-- Start Client Item -->
-        {% if perms.client.can_view_list or request.user.user_type == 'manager' %}
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">Clients</a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="{% url 'client:list' %}">List all clients</a>
-            {% if perms.client.add_client or request.user.user_type == 'manager' %}
-            <a class="navbar-item" href="{% url 'client:create' %}">Create new client</a>
-
-            {% endif %}
-            {% if perms.client_account.can_view_list or request.user.user_type == 'manager' %}
-            <a class="navbar-item" href="{% url 'accounts:list' %}">Client accounts</a>
-
-            {% endif %}
-
-            {% if perms.important_contact.can_view_list or request.user.user_type == 'manager' %}
-            <a class="navbar-item" href="{% url 'important_contact:list' %}">Client contact</a>
-
-            {% endif %}
-            {% if perms.clientcategory.can_view_list %}
-            <hr class="dropdown-divider" />
-            <a class="navbar-item" href="{% url 'client:category:list' %}">Categories</a>
-            {% endif %}
-            <!-- <hr class="dropdown-divider" />
+      <div id="navMenu" class="navbar-menu">
+        <div class="navbar-start">
+          {% if perms.manager.manager_user or request.user.user_type == 'manager' %}
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">Users</a>
+              <div class="navbar-dropdown">
+                <a href="{% url 'users:manager:list' %}" class="navbar-item">List all users</a>
+              </div>
+            </div>
+          {% endif %}
+          <!-- Start Client Item -->
+          {% if perms.client.can_view_list or request.user.user_type == 'manager' %}
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">Clients</a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="{% url 'client:list' %}">List all clients</a>
+                {% if perms.client.add_client or request.user.user_type == 'manager' %}
+                  <a class="navbar-item" href="{% url 'client:create' %}">Create new client</a>
+                {% endif %}
+                {% if perms.client_account.can_view_list or request.user.user_type == 'manager' %}
+                  <a class="navbar-item" href="{% url 'accounts:list' %}">Client accounts</a>
+                {% endif %}
+                {% if perms.important_contact.can_view_list or request.user.user_type == 'manager' %}
+                  <a class="navbar-item" href="{% url 'important_contact:list' %}">Client contact</a>
+                {% endif %}
+                {% if perms.clientcategory.can_view_list %}
+                  <hr class="dropdown-divider" />
+                  <a class="navbar-item" href="{% url 'client:category:list' %}">Categories</a>
+                {% endif %}
+                <!-- <hr class="dropdown-divider" />
               <a class="navbar-item" href="">Client report</a> -->
-          </div>
-        </div>
-        {% endif %}
-        <!-- End Client Item -->
-
-
-        <!-- Start Company Service ItemJobs Item -->
-        {% if perms.jobs.can_view_list or request.user.user_type == 'manager' %}
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">Jobs</a>
-
-          <div class="navbar-dropdown">
-            
-            <a class="navbar-item" href="{% url 'jobs:list' %}">List all jobs</a>
-
-            {% if perms.jobs.add_job %}
-            <a class="navbar-item" href="{% url 'jobs:create' %}">Create new job</a>
+              </div>
+            </div>
+          {% endif %}
+          <!-- End Client Item -->
+          <!-- Start Company Service ItemJobs Item -->
+          {% if perms.jobs.can_view_list or request.user.user_type == 'manager' %}
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">Jobs</a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="{% url 'jobs:list' %}">List all jobs</a>
+                {% if perms.jobs.add_job %}
+                  <a class="navbar-item" href="{% url 'jobs:create' %}">Create new job</a>
+                {% endif %}
+                <hr class="dropdown-divider" />
+                {% if perms.manager.manager_user or perms.jobtemplate.can_view_list %}
+                <a class="navbar-item" href="{% url 'jobs:templates:list' %}">Templates&nbsp;&nbsp; <span class="tag is-link is-small is-rounded">ALPHA</span>
+              </a>
             {% endif %}
-            <hr class="dropdown-divider" />
-            {% if perms.manager.manager_user or perms.jobtemplate.can_view_list %}
-            <a class="navbar-item"
-              href="{% url 'jobs:templates:list' %}">Templates&nbsp;&nbsp; <span class="tag is-link is-small is-rounded">ALPHA</span>
-            </a>
-              {% endif %}
           </div>
         </div>
-        {% endif %}
-        <!-- End Jobs Item -->
-
-        <!-- Start Task Item -->
-        {% if perms.task.can_view_list or request.user.user_type == 'manager' %}
+      {% endif %}
+      <!-- End Jobs Item -->
+      <!-- Start Task Item -->
+      {% if perms.task.can_view_list or request.user.user_type == 'manager' %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">Tasks</a>
-
           <div class="navbar-dropdown">
             <a href="{% url 'task:list' %}" class="navbar-item">List all tasks</a>
             <a href="{% url 'task:create' %}" class="navbar-item">Create task</a>
-
           </div>
         </div>
-        {% endif %}
-        <!-- End Task Item -->
-
-
-        <!-- Start Special Assignment Item -->
-        {% if perms.special_assignment.can_view_list or request.user.user_type == 'manager' %}
+      {% endif %}
+      <!-- End Task Item -->
+      <!-- Start Special Assignment Item -->
+      {% if perms.special_assignment.can_view_list or request.user.user_type == 'manager' %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
             Special Assignment
-            <span title="Badge top right" class="tag mx-2 is-small is-rounded is-primary is-light">
-
+            <span title="Badge top right"
+                  class="tag mx-2 is-small is-rounded is-primary is-light">
               {% if request.user.user_type == "manager" %}
-              {{ request.user.manager.get_not_seen_special_assignments.count }}
+                {{ request.user.manager.get_not_seen_special_assignments.count }}
               {% elif request.user.user_type == "assistant" %}
-              {{ request.user.assistant.get_not_seen_special_assignments.count }}
+                {{ request.user.assistant.get_not_seen_special_assignments.count }}
               {% elif request.user.user_type == 'bookkeeper' %}
-              {{ request.user.bookkeeper.get_not_seen_special_assignments.count }}
+                {{ request.user.bookkeeper.get_not_seen_special_assignments.count }}
               {% endif %}
-
             </span>
           </a>
-
           <div class="navbar-dropdown">
             <a href="{% url 'special_assignment:list' %}" class="navbar-item">List all assignments</a>
             <a href="{% url 'special_assignment:requested' %}" class="navbar-item">Requested assignments</a>
-            
             {% if perms.special_assignment.add_specialassignment %}
-            <hr class="dropdown-divider" />
-            <a href="{% url 'special_assignment:create' %}" class="navbar-item">Create new assignment</a>
+              <hr class="dropdown-divider" />
+              <a href="{% url 'special_assignment:create' %}" class="navbar-item">Create new assignment</a>
             {% endif %}
-              
-
           </div>
         </div>
-        {% endif %}
-        <!-- End Special Assignment Item -->
-
-        <!-- Start Company Service Item -->
-        {% if perms.company_services.can_view_list or request.user.user_type == 'manager' %}
+      {% endif %}
+      <!-- End Special Assignment Item -->
+      <!-- Start Company Service Item -->
+      {% if perms.company_services.can_view_list or request.user.user_type == 'manager' %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">Company Services</a>
-
           <div class="navbar-dropdown">
             <a class="navbar-item" href="{% url 'company_services:list' %}">List all services</a>
-
           </div>
         </div>
-        {% endif %}
-        <!-- End Company Service Item -->
-
-        <!-- Start Document Item -->
-        {% if perms.documents.can_view_list or request.user.user_type == 'manager' %}
+      {% endif %}
+      <!-- End Company Service Item -->
+      <!-- Start Document Item -->
+      {% if perms.documents.can_view_list or request.user.user_type == 'manager' %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
             Documents
           </a>
-
           <div class="navbar-dropdown">
             <a class="navbar-item" href="{% url 'documents:list' %}">
               List all documents
             </a>
             <!-- <a class="navbar-item" href="">
                               Update settings
-                          </a> -->
-
+</a> -->
           </div>
         </div>
-        {% endif %}
-        <!-- End Document Item -->
-
-        <!-- Start Notes Item -->
-        {% if perms.notes.can_view_list or request.user.user_type == 'manager' %}
+      {% endif %}
+      <!-- End Document Item -->
+      <!-- Start Notes Item -->
+      {% if perms.notes.can_view_list or request.user.user_type == 'manager' %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
             Notes
           </a>
-
           <div class="navbar-dropdown">
             <a class="navbar-item" href="{% url 'notes:list' %}">
               List all notes
             </a>
             <!-- <a class="navbar-item" href="">
                                       Update settings
-                                  </a> -->
-
+</a> -->
           </div>
         </div>
-        {% endif %}
-        <!-- End Notes Item -->
-
-        <!-- Start Site Settings Item -->
-        {% if perms.manager.manager_user and request.user.user_type == "manager" %}
+      {% endif %}
+      <!-- End Notes Item -->
+      <!-- Start Site Settings Item -->
+      {% if perms.manager.manager_user and request.user.user_type == "manager" %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
             Site Settings
           </a>
-
           <div class="navbar-dropdown">
             <a class="navbar-item" href="{% url 'site_settings:web-app-settings' %}">
               Web App Settings
             </a>
-            <!-- <a class="navbar-item" href="">
-                            Update settings
-                        </a> -->
-
+            <a class="navbar-item"
+               href="{% url 'db_backup_restore:backup:list' %}">
+              DB Backups
+            </a>
           </div>
         </div>
-
-        {% endif %}
-        <!-- End Site Settings Item -->
-
-
-      </div>
+      {% endif %}
+      <!-- End Site Settings Item -->
     </div>
-
-    <div class="navbar-end">
-      <!-- <div class="navbar-item">
+  </div>
+  <div class="navbar-end">
+    <!-- <div class="navbar-item">
                 <div class="buttons">
                     <a class="button is-primary">
                         <strong>Sign up</strong>
@@ -226,36 +185,31 @@
                     <a class="button is-light">Log in</a>
                 </div>
             </div> -->
-      <div class="navbar-item">
-        <div class="dropdown is-hoverable">
-          <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
-
-              <span>
-                <i class="fa-solid fa-user"></i>
-                {{ request.user.fullname }}
-                <!-- <span title="Badge top right"
-       class="badge">8</span> -->
-              </span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-            <div class="dropdown-content">
-              <!-- <a href="#" class="dropdown-item">Profile</a>
+    <div class="navbar-item">
+      <div class="dropdown is-hoverable">
+        <div class="dropdown-trigger">
+          <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
+            <span>
+              <i class="fa-solid fa-user"></i>
+              {{ request.user.fullname }}
+              <!-- <span title="Badge top right" class="badge">8</span> -->
+            </span>
+            <span class="icon is-small">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+          <div class="dropdown-content">
+            <!-- <a href="#" class="dropdown-item">Profile</a>
               <a href="#" class="dropdown-item">Modifiers</a>
               <hr class="dropdown-divider"> -->
-              <a href="{% url 'users:auth:logout' %}" class="dropdown-item">Logout</a>
-            </div>
+            <a href="{% url 'users:auth:logout' %}" class="dropdown-item">Logout</a>
           </div>
         </div>
       </div>
-
     </div>
-
-
   </div>
+</div>
 </nav>
 {% endif %}

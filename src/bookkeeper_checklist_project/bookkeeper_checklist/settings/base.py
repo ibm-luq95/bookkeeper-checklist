@@ -14,6 +14,9 @@ from decouple import config
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
+import _locale
+_locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent  # default
 BASE_DIR = (

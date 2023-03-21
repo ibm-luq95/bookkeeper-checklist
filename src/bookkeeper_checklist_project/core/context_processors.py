@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from core.constants.general import DEFAULT_FULL_DATE_TIME_FORMAT
 from core.constants.status_labels import (
     CON_ENABLED,
     CON_COMPLETED,
@@ -32,4 +33,5 @@ def access_constants(request) -> dict:
         "CON_PENDING": CON_PENDING,
         "CON_CANCELED": CON_CANCELED,
         "CON_DRAFT": CON_DRAFT,
+        "DEFAULT_FULL_DATE_TIME_FORMAT": DEFAULT_FULL_DATE_TIME_FORMAT,
     }

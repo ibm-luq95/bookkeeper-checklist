@@ -40,11 +40,14 @@
             </td>
             {% if is_show_manager is True %}
               <td data-label="Manager">
-                {% if request.user.user_type == "bookkeeper" %}
+                <a>{{ assignment_object.get_managed_user }}</a>
+                {% comment  %}
+                  {% if request.user.user_type == "bookkeeper" %}
                   <a href="">{{ assignment_object.get_managed_user }}</a>
                 {% else %}
                   <a href="{% fetch_user_details_url base_user=user_type user_object=assignment_object.get_managed_user.user %}">{{ assignment_object.get_managed_user }}</a>
                 {% endif %}
+                {% endcomment %}
               </td>
             {% endif %}
             <td data-label="Assigned by">

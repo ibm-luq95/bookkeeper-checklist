@@ -1,35 +1,33 @@
-{% extends 'core/layouts/dashboard.html' %}
+{% extends "core/layouts/dashboard.html" %}
+
 {% load static %}
+
 {% load url_helpers %}
 
 {% block dashboard_content %}
+  <section id="{{ request.user.user_type }}-{{ app_label }}-list">
+    <div class="block box">
+      {# Start Include Header List Component #}
+      {% #page-header-title page_header=page_header show_back_btn=True is_archived_enabled=False app_name=app_label list_type=list_type perms=perms app_name_tooltip=app_label %}{% /page-header-title %}
+      {# End Include Header List Component #}
+      {# Start Include Filter Form Component #}
 
-<section id="{{ request.user.user_type }}-{{ app_label }}-list">
-  <div class="block box">
-    {# Start Include Header List Component #}
-    {% include 'components/core/dashboard/header_title.html' with user_type=request.user.user_type app_name=app_label page_header=page_header list_type=list_type is_archived_enabled=False perms=perms only %}
-    {# End Include Header List Component #}
+      {% include "components/core/forms/filter_form.html" with object_list=object_list user_type=request.user.user_type action_url=app_label|add:":list" reset_url=app_label|add:":list" filter_form=filter_form only %}
 
-    {# Start Include Filter Form Component #}
-    {% include 'components/core/forms/filter_form.html' with object_list=object_list user_type=request.user.user_type action_url=app_label|add:":list" reset_url=app_label|add:":list" filter_form=filter_form only %}
-    {# End Include Filter Form Component #}
+      {# End Include Filter Form Component #}
+      {# Start Include Client Table List Component #}
 
-    {# Start Include Client Table List Component #}
-    {% include 'components/company_services/table_list.html' with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" is_show_client_column=True action_urls_pattern=app_label enabled_action_btns='update,delete' app_name=app_label perms=perms is_show_created_at=is_show_created_at %}
-    {# End Include Client Table List Component #}
+      {% include "components/company_services/table_list.html" with object_list=object_list user_type=request.user.user_type details_url=app_label|add:":details" is_show_client_column=True action_urls_pattern=app_label enabled_action_btns="update,delete" app_name=app_label perms=perms is_show_created_at=is_show_created_at %}
 
-    {# Start Include Pagination Component #}
-    {% include 'components/core/pagination.html' with page_obj=page_obj only %}
-    {# Start Include Pagination Component #}
-  </div>
-</section>
-
+      {# End Include Client Table List Component #}
+      {# Start Include Pagination Component #}
+      {% #pagination page_obj=page_obj %}{% /pagination %}
+      {# Start Include Pagination Component #}
+    </div>
+  </section>
 {% endblock dashboard_content %}
-
 {% block externaljs %}
+  {% comment %}
 
-{% comment %}
-
-{% endcomment %}
-
+  {% endcomment %}
 {% endblock externaljs %}

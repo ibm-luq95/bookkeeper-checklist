@@ -19,6 +19,7 @@ pyminizip
 PyYAML
 python-magic
 stringcase
+slippers
 redis
 requests
 Whitenoise

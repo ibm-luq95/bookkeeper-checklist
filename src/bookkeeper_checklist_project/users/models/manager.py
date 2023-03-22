@@ -54,7 +54,7 @@ class CustomUserManager(BaseUserManager):
             created_user = self.create_user(email, password, **extra_fields)
             # debugging_print("##############")
             if created_user.user_type == "manager":
-                manager = Manager.objects.select_related().create(user=created_user)
+                manager = Manager.objects.create(user=created_user)
                 # debugging_print(created_user)
                 # debugging_print(manager)
             # debugging_print("##############")

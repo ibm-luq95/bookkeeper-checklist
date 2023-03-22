@@ -1,0 +1,19 @@
+{% load nospaces %}
+
+{% nospaces %}
+<a class="{% if is_btn is True %}
+              button
+          {% endif %}
+          {% if is_rounded is True %}
+              is-rounded
+          {% endif %}
+          is-hoverable {{ color }} hint--top is-responsive {{ extra_css_classes }}"
+   aria-label="{{ tooltip }}"
+   {% attrs href onclick id %}>
+    {% if has_icon is True %}
+        {% #icon icon_name=icon_name icon_size=icon_size %}
+        {% /icon %}
+    {% endif %}
+    {{ text }}
+</a>
+{% endnospaces %}

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "log_viewer",
     "maintenance_mode",
+    "slippers",
     "django_filters",
     "rest_framework",
     # "rest_framework.authtoken",
@@ -112,6 +113,10 @@ TEMPLATES = [
                 "site_settings.context_processors.return_all_context",
                 "core.context_processors.access_constants",
                 "maintenance_mode.context_processors.maintenance_mode",
+            ],
+            "builtins": [
+                "core.templatetags.nospaces",
+                "slippers.templatetags.slippers",
             ],
         },
     },
@@ -344,8 +349,8 @@ HANDLERS = {
 LOGGERS = (
     {
         "django": {
-            # "handlers": ["console_handler", "info_handler"],  # with new console logger
-            "handlers": ["info_handler"],  # with default console logger
+            "handlers": ["console_handler", "info_handler"],  # with new console logger
+            # "handlers": ["info_handler"],  # with default console logger
             "level": "INFO",
         },
         "django.request": {

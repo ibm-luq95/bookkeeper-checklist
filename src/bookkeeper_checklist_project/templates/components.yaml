@@ -1,0 +1,12 @@
+components:
+  card: "components/core/v2/card.html"
+  button: "components/core/v2/button.html"
+  icon: "components/core/v2/icon.html"
+  icon-text: "components/core/v2/icon_text.html"
+  tag: "components/core/v2/tag.html"
+  page-header-title: "components/core/v2/page_header_title.html"
+  hyperlink: "components/core/v2/hyperlink.html"
+  pagination: "components/core/v2/pagination.html"
+  is-seen: "components/core/v2/is_seen.html"
+  red-text: "components/core/v2/red_text.html"
+  no-permissions: "components/core/v2/no_permissions.html"

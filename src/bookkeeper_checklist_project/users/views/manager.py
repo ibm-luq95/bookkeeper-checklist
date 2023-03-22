@@ -169,18 +169,19 @@ class ManagerUsersDeleteView(
 ):
     template_name = "users/delete.html"
     model = CustomUser
-    success_message = "User deleted successfully"
+    success_message = get_trans_txt("User deleted successfully")
+    success_url = reverse_lazy("users:manager:list")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.setdefault("title", get_trans_txt("delete user".capitalize()))
         return context
 
-    def get_success_url(self):
-        user_type = self.request.user.user_type
-        url_pattern = f"users:{user_type}:list"
-        url = reverse_lazy(url_pattern)
-        return url
+    # def get_success_url(self):
+    #     user_type = self.request.user.user_type
+    #     url_pattern = f"users:{user_type}:list"
+    #     url = reverse_lazy(url_pattern)
+    #     return url
 
 
 class ManagerForceChangePasswordView(

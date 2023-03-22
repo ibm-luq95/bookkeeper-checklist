@@ -33,7 +33,8 @@ class UserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = CREATE_USER_FORM_FIELDS + ["is_superuser", "is_active"]
+        # fields = CREATE_USER_FORM_FIELDS + ["is_superuser", "is_active"]
+        fields = CREATE_USER_FORM_FIELDS
 
     def clean_password2(self):
         # Check that the two password entries match

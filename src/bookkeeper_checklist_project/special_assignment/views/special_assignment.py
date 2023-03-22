@@ -8,7 +8,12 @@ from django.views.generic import ListView, DeleteView, CreateView, UpdateView, D
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.constants.status_labels import CON_ARCHIVED, CON_COMPLETED
 from core.utils import get_trans_txt
-from core.views.mixins import BaseListViewMixin, BaseLoginRequiredMixin, ListViewMixin, ArchiveListViewMixin
+from core.views.mixins import (
+    BaseListViewMixin,
+    BaseLoginRequiredMixin,
+    ListViewMixin,
+    ArchiveListViewMixin,
+)
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from special_assignment.filters import SpecialAssignmentFilter
 from special_assignment.forms import SpecialAssignmentForm, DiscussionForm
@@ -232,7 +237,14 @@ class RequestedSpecialAssignmentsListView(
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        manager = self.request.user.manager
+        current_user = self.request.user
+        manager = None
+        if hasattr(current_user, "manager"):
+            manager = self.request.user.manager
+        elif hasattr(current_user, "bookkeeper"):
+            manager = self.request.user.bookkeeper
+        elif hasattr(current_user, "assistant"):
+            manager = self.request.user.assistant
         queryset = manager.user.requested_assignments.filter(
             ~Q(status__in=[CON_ARCHIVED, CON_COMPLETED])
         )

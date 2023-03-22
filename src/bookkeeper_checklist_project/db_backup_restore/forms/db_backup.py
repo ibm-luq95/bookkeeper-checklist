@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-#
-from django import forms
 import pyminizip
+from django import forms
 from django.conf import settings
 from django.core import management
 from django.core.management.commands import dumpdata
-from django.core.files.base import ContentFile, File
 from django.db import transaction
 
 from core.forms import BaseModelFormMixin
-from core.utils import debugging_print
 from db_backup_restore.models import DBBackup
 
 EXCLUDED = (
@@ -52,12 +50,14 @@ class BackupForm(BaseModelFormMixin):
                         stdout=f,
                     )
                 # backup_obj.backup_path.name = f"{name}.json"
-                password = "123"
+                password = settings.BACKUP_KEY
                 # compress level
-                com_lvl = 5
+                com_lvl = settings.COMPRESS_LEVEL
                 # output file
                 output_path = settings.BASE_DIR / "db_backups" / f"{name}.zip"
-                pyminizip.compress(backup_file.as_posix(), None, output_path.as_posix(), password, com_lvl)
+                pyminizip.compress(
+                    backup_file.as_posix(), None, output_path.as_posix(), password, com_lvl
+                )
                 backup_obj.backup_path.name = f"{name}.zip"
 
                 if commit:

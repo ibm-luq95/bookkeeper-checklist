@@ -1,0 +1,10 @@
+{% nospaces %}
+<button class="button {{ color }}
+               {% if light is True %}
+                 is-light
+               {% endif %}
+               {{ extra_css_classes }}"
+        {% attrs id %}>
+  {{ btn_text }}
+</button>
+{% endnospaces %}

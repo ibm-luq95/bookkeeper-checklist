@@ -1,0 +1,67 @@
+{% load url_helpers %}
+{% load authorization_tags %}
+{% load string_helpers_tags %}
+
+{% nospaces %}
+<header class="columns is-flex is-justify-content-space-between">
+    <div class="column">
+        <div class="buttons is-left pt-1">
+            {% if show_back_btn is True %}
+                <p class="control">
+                    {% #hyperlink is_btn=True tooltip="back" has_icon=True icon_name="fa-arrow-left" color="is-warning" icon_size="is-small" onclick="history.back();" %}
+                    {% /hyperlink %}
+                </p>
+            {% endif %}
+            <p class="control is-relative">
+                <h3 class="title is-4 is-inline-block mx-3 is-relative page-header-item">{{ page_header }}</h3>
+            </p>
+        </div>
+    </div>
+    <div class="column">
+        <div class="buttons is-right pt-1">
+            {# Check if perm_app_name already passed #}
+            {% if perm_app_name %}
+                {% check_user_permissions perms=perms app_name=perm_app_name perm_name="add" as check_permission %}
+            {% else %}
+                {% check_user_permissions perms=perms app_name=app_name perm_name="add" as check_permission %}
+            {% endif %}
+            {# Check if perm_app_name already passed #}
+            {% if check_permission is True %}
+                <p class="control">
+                    {% fetch_app_url_for_user app_name=app_name path_name="create" as create_href %}
+                    {% #hyperlink is_btn=True tooltip="create new "|capfirst|add:app_name_tooltip href=create_href has_icon=True icon_name="fa-plus" color="is-primary" icon_size="is-small" %}
+                    {% /hyperlink %}
+                </p>
+            {% endif %}
+            {# Check if archive is enabled #}
+            {% if is_archived_enabled is True %}
+                {# Start check what kind of list #}
+                {% if list_type == "archive" %}
+                    <p class="control">
+                        {% fetch_app_url_for_user app_name=app_name path_name="list" as list_href %}
+                        {% #hyperlink is_btn=True tooltip=app_name_tooltip|to_title_case href=list_href has_icon=True icon_name="fa-list-ul" icon_size="is-small" color="is-info" %}
+                        {% /hyperlink %}
+                    </p>
+                {% elif list_type == "list" %}
+                    {# Check if perm_app_name already passed #}
+                    {% if perm_app_name %}
+                        {% check_user_permissions perms=perms app_name=perm_app_name perm_name="view_archive" is_include_app_name=False as check_permission %}
+                    {% else %}
+                        {% check_user_permissions perms=perms app_name=app_name perm_name="view_archive" is_include_app_name=False as check_permission %}
+                    {% endif %}
+                    {# Check if perm_app_name already passed #}
+                    {% if check_permission %}
+                        <p class="control">
+                            {% fetch_app_url_for_user app_name=app_name path_name="archive" as archive_href %}
+                            {% #hyperlink is_btn=True tooltip=app_name_tooltip|to_title_case|add:" archive" href=archive_href has_icon=True icon_name="fa-box-archive" color="is-info" icon_size="is-small" %}
+                            {% /hyperlink %}
+                        </p>
+                    {% endif %}
+                    {# End check what kind of list #}
+                {% endif %}
+                {# Check if archive is enabled #}
+            {% endif %}
+        </div>
+    </div>
+</header>
+{% endnospaces %}

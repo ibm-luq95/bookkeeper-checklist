@@ -2,8 +2,7 @@ import mimetypes
 
 from .base import *
 
-# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(",")
+# ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=str).split(",")
 
 mimetypes.add_type("application/javascript", ".js", True)
 # SITE_NAME = "127.0.0.1"

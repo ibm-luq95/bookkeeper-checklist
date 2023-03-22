@@ -11,11 +11,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from decouple import config
+from decouple import Csv
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
 import _locale
-_locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
+
+_locale._getdefaultlocale = lambda *args: ["en_US", "utf8"]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent  # default
@@ -33,7 +35,8 @@ SECRET_KEY = config("SECRET_KEY", cast=str)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
 # SITE_NAME = "127.0.0.1"
 
@@ -342,7 +345,7 @@ LOGGERS = (
     {
         "django": {
             # "handlers": ["console_handler", "info_handler"],  # with new console logger
-            "handlers": ["info_handler"],   # with default console logger
+            "handlers": ["info_handler"],  # with default console logger
             "level": "INFO",
         },
         "django.request": {
@@ -370,6 +373,10 @@ LOGGING = {
     "handlers": HANDLERS,
     "loggers": LOGGERS[0],
 }
+
+# Backup password
+BACKUP_KEY = config("BACKUP_KEY", cast=str)
+COMPRESS_LEVEL = config("COMPRESS_LEVEL", cast=int)
 
 # check if cache enabled
 # if ast.literal_eval(os.environ.get("IS_CACHE_ENABLED")) is True:

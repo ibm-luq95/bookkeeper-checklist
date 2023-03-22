@@ -7,6 +7,7 @@ from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from bookkeeper.models import BookkeeperProxy
 from core.cache import BWCacheHandler
 from core.constants import BOOKKEEPER_GROUP_NAME, MANAGER_GROUP_NAME, ASSISTANT_GROUP_NAME
 from core.constants.site_settings import WEB_APP_SETTINGS_KEY
@@ -26,9 +27,9 @@ logger = get_formatted_logger()
 @receiver(post_save, sender=CustomUser)
 def create_groups(sender, instance, created, **kwargs):
     try:
-        if created:
+        # raise Exception("D")
+        if created is True:
             with transaction.atomic():
-
                 # print("create group")
                 group = None
                 user = instance
@@ -54,9 +55,31 @@ def create_groups(sender, instance, created, **kwargs):
                 # print(group_object)
                 instance.groups.add(group_object)
                 instance.save()
-    except ProjectError as ex:
-        logger.error(ex.message)
-        logger.error(traceback.format_exc())
+        else:
+            # check if the user is deleted, this will use here instead of using post_delete signal
+            # because I used soft delete functionality
+            if (
+                instance.is_deleted is True
+                and instance.get_changed_columns().get("is_deleted") is False
+            ):
+                user_type = instance.user_type
+                if user_type == "bookkeeper":
+                    bookkeeper_obj = instance.bookkeeper
+                    bookkeeper_proxy_obj = BookkeeperProxy.objects.get(
+                        pk=bookkeeper_obj.pk
+                    )
+                    if hasattr(bookkeeper_proxy_obj, "clients"):
+                        clients = bookkeeper_proxy_obj.clients.all()
+                        if clients:
+                            for client in clients:
+                                # check if the bookkeeper exists in the client bookkeepers,
+                                # this step just in case
+                                contains = client.bookkeepers.contains(
+                                    bookkeeper_proxy_obj
+                                )
+                                if contains is True:
+                                    client.bookkeepers.remove(bookkeeper_proxy_obj)
+                                    client.save()
 
     except Exception as ex:
         logger.error(traceback.format_exc())
@@ -76,3 +99,6 @@ def log_user_logout(sender, request, user, **kwargs):
     stage = os.environ.get("STAGE_ENVIRONMENT")
     if stage == "DEV" and user.user_type == "manager":
         BWCacheHandler.clear()
+
+
+# post_delete.connect(delete_user_vacuum, sender=get_user_model())

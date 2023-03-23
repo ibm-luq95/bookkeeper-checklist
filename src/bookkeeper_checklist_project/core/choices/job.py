@@ -11,6 +11,9 @@ from core.constants.status_labels import (
     CON_COMPLETED,
     CON_NOT_COMPLETED,
     CON_DRAFT,
+    NEED_CLIENT_INFO,
+    STALLED,
+    HUNG_UP,
 )
 from core.constants.types_labels import (
     CON_NO_TYPE,
@@ -43,3 +46,9 @@ class JobStatusEnum(models.TextChoices):
     NOT_COMPLETED = CON_NOT_COMPLETED, _(stringcase.sentencecase(CON_NOT_COMPLETED))
     ARCHIVED = CON_ARCHIVED, _(stringcase.sentencecase(CON_ARCHIVED))
     DRAFT = CON_DRAFT, _(stringcase.sentencecase(CON_DRAFT))
+
+
+class JobStateEnum(models.TextChoices):
+    NEED_CLIENT_INFO = NEED_CLIENT_INFO, _(stringcase.sentencecase(NEED_CLIENT_INFO))
+    STALLED = STALLED, _(stringcase.sentencecase(STALLED))
+    HUNG_UP = HUNG_UP, _(stringcase.sentencecase(HUNG_UP))

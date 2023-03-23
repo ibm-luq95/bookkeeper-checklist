@@ -7,7 +7,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 from client.models import ClientProxy
-from core.choices import JobStatusEnum, JobTypeEnum
+from core.choices import JobStatusEnum, JobTypeEnum, JobStateEnum
 from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin, StrModelMixin
 
 # from task.models import Task
@@ -60,6 +60,14 @@ class Job(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
         choices=JobStatusEnum.choices,
         # default=JobStatusEnum.NOT_STARTED,
         help_text=JOB_HELP_MESSAGES.get("status"),
+    )
+    state = models.CharField(
+        _("state"),
+        max_length=20,
+        choices=JobStateEnum.choices,
+        help_text=JOB_HELP_MESSAGES.get("state"),
+        null=True,
+        blank=True,
     )
 
     # tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))

@@ -11,6 +11,10 @@ class BookkeeperProxy(Bookkeeper):
     class Meta:
         proxy = True
 
+    @property
+    def get_bookkeeper(self) -> Bookkeeper:
+        return Bookkeeper.objects.get(pk=self.pk)
+
     def get_tasks_count(self):
         all_tasks = []
         all_jobs = self.user.jobs.all()

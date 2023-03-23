@@ -15,6 +15,7 @@
           <th>Task</th>
           <th>Type</th>
           <th>Status</th>
+          <th>State</th>
           <th>Start Date</th>
           <th>Due Date</th>
           {% if is_show_created_at is True %}<th>Created</th>{% endif %}
@@ -67,6 +68,9 @@
             </td>
             <td data-label="Status" class="is-progress-cell">
               {% include 'components/core/table_list/status_tag.html' with status=job_object.status tag_size="is-small" status_label=job_object.get_status_display %}
+            </td>
+            <td data-label="State" class="is-progress-cell">
+              {% include 'components/core/table_list/status_tag.html' with status=job_object.state tag_size="is-small" status_label=job_object.get_state_display %}
             </td>
             <td data-label="Start Date"
                 data-sort="{{ job_object.start_date|date:"Ymd" }}">

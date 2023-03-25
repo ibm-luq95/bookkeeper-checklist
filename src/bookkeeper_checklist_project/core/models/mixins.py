@@ -50,6 +50,7 @@ class BaseModelMixin(DiffingMixin, models.Model):
     deleted_at = models.DateTimeField(_("deleted_at"), null=True, default=None, blank=True)
 
     objects = SoftDeleteManager()
+    # objects = models.Manager()
     original_objects = models.Manager()
 
     class Meta:
@@ -115,7 +116,7 @@ class UserForeignKeyMixin(models.Model):
 class CreatedByMixin(models.Model):
     created_by = models.ForeignKey(
         to=get_user_model(),
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         editable=False,

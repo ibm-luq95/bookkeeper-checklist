@@ -70,7 +70,7 @@ class Client(BaseModelMixin):
     # Do not remove this field and use CreatedByMixin, because there are several clients have been created
     created_by = models.ForeignKey(
         to=get_user_model(),
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
         related_name="created_clients",
         null=True,
         blank=True,

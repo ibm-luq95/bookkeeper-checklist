@@ -8,6 +8,7 @@ django-maintenance-mode
 django-session-timeout
 djangorestframework
 django-log-viewer
+django-import-export
 hiredis
 mysql-connector-python
 mysqlclient

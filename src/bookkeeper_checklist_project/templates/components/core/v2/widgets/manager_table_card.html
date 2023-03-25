@@ -1,0 +1,39 @@
+{% nospaces %}
+<div class="table-container">
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title has-text-black is-size-5">{{ card_title|title }}</p>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          <div class="table-container">
+            <table class="table is-hoverable is-bordered is-striped">
+              <!-- <thead>
+              <tr>
+                <th>Name</th>
+              </tr>
+            </thead> -->
+              <tbody>
+                {% for object in objects_list %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'manager:bookkeeper:details' object.pk %}">{{ bookkeeper.user.fullname }}</a>
+                    </td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="2">No bookkeeper</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a href="{% url 'manager:bookkeeper:list' %}"
+           class="card-footer-item has-text-black">All</a>
+      </footer>
+    </div>
+  </div>
+{% endnospaces %}

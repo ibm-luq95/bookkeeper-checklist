@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "log_viewer",
     "maintenance_mode",
     "slippers",
+    "import_export",
     "django_filters",
     "rest_framework",
     # "rest_framework.authtoken",
@@ -127,12 +128,12 @@ WSGI_APPLICATION = "bookkeeper_checklist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -371,13 +372,13 @@ LOGGERS = (
     },
 )
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": FORMATTERS[0],
-    "handlers": HANDLERS,
-    "loggers": LOGGERS[0],
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": FORMATTERS[0],
+#     "handlers": HANDLERS,
+#     "loggers": LOGGERS[0],
+# }
 
 # Backup password
 BACKUP_KEY = config("BACKUP_KEY", cast=str)

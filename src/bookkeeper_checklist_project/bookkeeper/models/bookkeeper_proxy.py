@@ -90,8 +90,8 @@ class BookkeeperProxy(Bookkeeper):
                         for task in job.tasks.filter():
                             if len(tasks_list) <= task_limit:
                                 tasks_list.append(task)
-            print(len(tasks_list))
-            print(type(tasks_list))
+            # print(len(tasks_list))
+            # print(type(tasks_list))
             return tasks_list
         except ProjectError as ex:
             logger.error(traceback.format_exc())

@@ -10,3 +10,5 @@ components:
   is-seen: "components/core/v2/is_seen.html"
   red-text: "components/core/v2/red_text.html"
   no-permissions: "components/core/v2/no_permissions.html"
+  manager-icon-card: "components/core/v2/widgets/manager_icon_card.html"
+  manager-table-card: "components/core/v2/widgets/manager_table_card.html"

@@ -80,6 +80,13 @@ def create_groups(sender, instance, created, **kwargs):
                                 if contains is True:
                                     client.bookkeepers.remove(bookkeeper_proxy_obj)
                                     client.save()
+                    bookkeeper_obj.delete()
+                if user_type == "assistant":
+                    assistant_obj = instance.assistant
+                    assistant_obj.delete()
+                if user_type == "manager":
+                    manager_obj = instance.manager
+                    manager_obj.delete()
 
     except Exception as ex:
         logger.error(traceback.format_exc())

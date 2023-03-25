@@ -5,7 +5,7 @@ from typing import Union
 from django.db import models
 from django.utils.translation import gettext as _
 
-from core.models import BaseModelMixin, TeamMembersMixin
+from core.models import BaseModelMixin, TeamMembersMixin, StrModelMixin
 from jobs.models import JobProxy
 from .managers import RepliesManager
 from .special_assignment import SpecialAssignment
@@ -29,7 +29,7 @@ file_validator = FileValidator(
 )
 
 
-class Discussion(BaseModelMixin, TeamMembersMixin):
+class Discussion(BaseModelMixin, TeamMembersMixin, StrModelMixin):
     special_assignment = models.ForeignKey(
         to=SpecialAssignment,
         on_delete=models.CASCADE,
@@ -38,7 +38,11 @@ class Discussion(BaseModelMixin, TeamMembersMixin):
         blank=True,
     )
     job = models.ForeignKey(
-        to=JobProxy, on_delete=models.CASCADE, related_name="discussions", null=True, blank=True
+        to=JobProxy,
+        on_delete=models.CASCADE,
+        related_name="discussions",
+        null=True,
+        blank=True,
     )
     # title = models.CharField(_("title"), max_length=100, null=True, blank=True)
     body = models.TextField(_("body"))
@@ -60,7 +64,3 @@ class Discussion(BaseModelMixin, TeamMembersMixin):
     is_seen = models.BooleanField(_("is_seen"), default=False)
 
     objects = RepliesManager()
-
-    def __str__(self) -> str:
-        # return self.title
-        return textwrap.shorten(self.body, width=40, placeholder="...")

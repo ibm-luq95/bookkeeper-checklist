@@ -33,6 +33,7 @@ class JobFilter(django_filters.FilterSet):
             "client__name": ["icontains"],
             "job_type": ["exact"],
             "status": ["exact"],
+            "state": ["exact"],
             # "due_date": ["gt", "lt"],
         }
         # fields = [

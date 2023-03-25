@@ -12,6 +12,7 @@ from core.constants.status_labels import (
     CON_NOT_COMPLETED,
     CON_DRAFT,
     NEED_CLIENT_INFO,
+    ON_TRACK,
     STALLED,
     HUNG_UP,
 )
@@ -52,3 +53,4 @@ class JobStateEnum(models.TextChoices):
     NEED_CLIENT_INFO = NEED_CLIENT_INFO, _(stringcase.sentencecase(NEED_CLIENT_INFO))
     STALLED = STALLED, _(stringcase.sentencecase(STALLED))
     HUNG_UP = HUNG_UP, _(stringcase.sentencecase(HUNG_UP))
+    ON_TRACK = ON_TRACK, _(stringcase.sentencecase(ON_TRACK))

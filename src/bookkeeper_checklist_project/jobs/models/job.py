@@ -65,6 +65,7 @@ class Job(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
         _("state"),
         max_length=20,
         choices=JobStateEnum.choices,
+        default=JobStateEnum.ON_TRACK,
         help_text=JOB_HELP_MESSAGES.get("state"),
         null=True,
         blank=True,

@@ -1,0 +1,18 @@
+{% nospaces %}
+<div class="card manager-dashboard-card-widget">
+    <div class="card-content pl-1">
+        <div class="content">
+            <div class="columns">
+                <div class="column is-2">
+                    <i class="fa-solid {{ icon_name }} {{ fa_icon_size }}"></i>
+                </div>
+                <div class="column pl-4">
+                    <p class="title is-6 manager-dashboard-label-widget has-text-weight-normal pl-2">
+                        {{ label|title }}: <span class="is-inline-block has-text-weight-bold">{{ value }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endnospaces %}

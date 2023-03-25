@@ -372,13 +372,13 @@ LOGGERS = (
     },
 )
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "formatters": FORMATTERS[0],
-#     "handlers": HANDLERS,
-#     "loggers": LOGGERS[0],
-# }
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": FORMATTERS[0],
+    "handlers": HANDLERS,
+    "loggers": LOGGERS[0],
+}
 
 # Backup password
 BACKUP_KEY = config("BACKUP_KEY", cast=str)

@@ -12,7 +12,6 @@ DEBUG = config("DEBUG", cast=bool)
 INSTALLED_APPS = INSTALLED_APPS + [
     "django.contrib.admindocs",
     "debug_toolbar",
-    "django_extensions",
     "request_viewer",
 ]
 

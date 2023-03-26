@@ -1,0 +1,17 @@
+{% nospaces %}
+{% var tag_color="is-primary" %}
+{% if status == all_cons.ONGOING %}
+    {% var tag_color="is-primary" %}
+{% elif status == all_cons.STALLED %}
+    {% var tag_color="is-danger" %}
+{% elif status == all_cons.NEED_INFO %}
+    {% var tag_color="is-warning" %}
+{% endif %}
+<span class="tag {{ tag_size }} {{ tag_color }}
+             {% if is_light is True %}
+                 is-light
+             {% endif %}
+             {{ extra_css_classes }}">
+    {{ label }}
+</span>
+{% endnospaces %}

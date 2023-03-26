@@ -4,6 +4,7 @@ components:
   icon: "components/core/v2/icon.html"
   icon-text: "components/core/v2/icon_text.html"
   tag: "components/core/v2/tag.html"
+  status-tag: "components/core/v2/status_tag.html"
   page-header-title: "components/core/v2/page_header_title.html"
   hyperlink: "components/core/v2/hyperlink.html"
   pagination: "components/core/v2/pagination.html"

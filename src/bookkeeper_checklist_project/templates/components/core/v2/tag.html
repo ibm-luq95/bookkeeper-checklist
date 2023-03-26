@@ -1,3 +1,9 @@
 {% nospaces %}
-
+<span class="tag {{ tag_size }}
+             {% if is_light is True %}
+                 is-light
+             {% endif %}
+             {{ extra_css_classes }}">
+    Tag label {{ tag_text }}
+</span>
 {% endnospaces %}

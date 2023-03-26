@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-#
-import textwrap
 
 from django.db import models
 from django.utils.translation import gettext as _
 
-from core.choices import JobStatusEnum, JobTypeEnum
-from core.models import BaseModelMixin, CreatedByMixin, DueDateOnlyMixin, StrModelMixin
+from core.choices import JobStatusEnum, JobTypeEnum, JobStateEnum
+from core.models import BaseModelMixin, DueDateOnlyMixin, StrModelMixin
 from documents.models import DocumentTemplate
 from jobs.models import JobCategory
 from notes.models import NoteTemplate
@@ -17,6 +16,14 @@ class JobTemplate(BaseModelMixin, DueDateOnlyMixin, StrModelMixin):
     description = models.TextField(_("description"))
     job_type = models.CharField(_("job type"), max_length=20, choices=JobTypeEnum.choices)
     status = models.CharField(_("status"), max_length=20, choices=JobStatusEnum.choices)
+    state = models.CharField(
+        _("state"),
+        max_length=20,
+        choices=JobStateEnum.choices,
+        default=JobStateEnum.ONGOING,
+        null=True,
+        blank=True,
+    )
     categories = models.ManyToManyField(
         to=JobCategory, related_name="job_template", blank=True
     )

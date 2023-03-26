@@ -35,6 +35,9 @@
                 <h6 class="is-size-6 has-text-grey">
                   Created AT: <time datetime="{{ object.created_at|date }}">{{ object.created_at|date }}</time>
                 </h6>
+                <span class="tag is-medium">
+                  {{ object.get_state_display }}
+                </span>
               </article>
 
               <br />

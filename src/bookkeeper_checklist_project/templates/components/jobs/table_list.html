@@ -82,9 +82,8 @@
 
             </td>
             <td data-label="State" class="is-progress-cell">
-
-              {% include "components/core/table_list/status_tag.html" with status=job_object.state tag_size="is-small" status_label=job_object.get_state_display %}
-
+              {% #status-tag all_cons=ALL_CONS label=job_object.get_state_display status=job_object.state is_light=False %}
+              {% /status-tag %}
             </td>
             <td data-label="Start Date"
                 data-sort="{{ job_object.start_date|date:"Ymd" }}">

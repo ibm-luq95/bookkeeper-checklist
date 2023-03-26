@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "django.contrib.sites",
+    "django_extensions",
     "log_viewer",
     "maintenance_mode",
     "slippers",

@@ -9,6 +9,7 @@ django-session-timeout
 djangorestframework
 django-log-viewer
 django-import-export
+django-extensions
 hiredis
 mysql-connector-python
 mysqlclient

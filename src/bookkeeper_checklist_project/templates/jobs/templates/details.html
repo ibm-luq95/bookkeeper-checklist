@@ -1,28 +1,45 @@
-{% extends 'core/layouts/dashboard.html' %}
+{% extends "core/layouts/dashboard.html" %}
 
 {% load static %}
 
 {% block dashboard_content %}
     <section id="job-template-details-section">
+        {# Start error alert #}
+        <div class="notification is-danger is-light"
+             id="jobTemplateDetailsErrorAlert"
+             hidden></div>
+        {# End error alert #}
         {# Start navbar #}
         <div class="box">
             <div class="is-flex is-justify-content-space-between">
                 <div>
-                    <select name="options"
-                            id="jobTemplateDetailsOptions"
-                            class="bkchlst-input input"
-                            disabled>
-                        <option value="" selected disabled>
-                            Options
-                        </option>
-                        <option value="create_job">
-                            Create job
-                        </option>
-                        <option value="create_job_for_multiple_clients">
-                            Create job for multiple
-                            clients
-                        </option>
-                    </select>
+                    <form id="jobTemplateDetailsOptionsForm" method="post">
+                        <fieldset form="jobTemplateDetailsOptionsForm">
+                            {% csrf_token %}
+                            <select name="options"
+                                    id="jobTemplateDetailsOptions"
+                                    class="bkchlst-input selectize"
+                                    title="Options"
+                                    disabled
+                                    data-template-pk="{{ object.pk }}"
+                                    data-status="{{ object.status }}">
+                                <option value="" data-display="Select" selected disabled>
+                                    Options
+                                </option>
+                                <option value="create_job" data-label="Create job">
+                                    Create job
+                                </option>
+                                <option value="create_job_for_multiple_clients"
+                                        data-label="Create job for multiple clients">
+                                    Create job for multiple
+                                    clients
+                                </option>
+                            </select>
+                            <button type="submit"
+                                    class="button is-success is-light"
+                                    id="jobTemplateDetailsOptionsBtn">Submit</button>
+                        </fieldset>
+                    </form>
                 </div>
                 <div>
                     <div class="buttons">
@@ -42,9 +59,14 @@
             </div>
         </div>
         {# End navbar #}
+        {# Start alert #}
+        <div class="notification is-warning is-light"
+             id="jobTemplateDetailsAlert"
+             hidden>Please wait</div>
+        {# End alert #}
         {# Start job title #}
         <header class="box has-ribbon">
-            <div class="ribbon">Template</div>
+            <div class="ribbon is-primary">Template</div>
             <h5 class="is-size-6 mt-3">{{ object.title }}</h5>
         </header>
         {# End job title #}
@@ -85,10 +107,21 @@
                         </figure>
                         <div class="media-content">
                             <div class="content">
-                                <p>
+                                <p class="mb-1">
                                     <strong>Manager</strong>
-                                    <br />
-                                    <a href=""><small>@johnsmith</small></a>
+                                    <div class="select is-small">
+                                        <select title="Select"
+                                                name="templateManager"
+                                                id="templateManager"
+                                                class="bkchlst-input">
+                                                <option value="" disabled selected>---</option>
+                                            {% for bookkeeper in all_bookkeepers %}
+                                                <option value="{{ bookkeeper.pk }}">
+                                                    {{ bookkeeper.user.fullname }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -277,14 +310,18 @@
                                     </div>
                                 </div>
                             {% empty %}
-                                <div class="notification is-warning is-light">No documents</div>
+                                <div class="notification is-warning is-light">
+                                    No documents
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="content">
-                        <h5>Notes</h5>
+                        <h5>
+                            Notes
+                        </h5>
                         <!-- <hr /> -->
                         <button class="button is-fullwidth hint--top is-light is-primary"
                                 aria-label="Add new note"
@@ -361,6 +398,11 @@
     {% include "segments/notes/templates/note_templates_form_modal.html" with user_type="manager" note_template_form=note_template_form request_object=request job_template_object=object %}
 
     <!-- End Document Template Modal Form -->
+    <!-- Start Client List Modal Form -->
+
+    {% include "segments/clients/client_list_modal.html" with all_clients=all_clients job_template=object %}
+
+    <!-- End Client List Modal Form -->
 {% endblock dashboard_content %}
 {% block externaljs %}
     <script src="{% static 'js/apps/task/templates/task_item.js' %}"

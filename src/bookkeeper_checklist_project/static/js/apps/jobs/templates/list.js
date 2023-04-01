@@ -202,9 +202,9 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
                   jobTemplateNotesNotificationElement.hidden = true;
                   const olElement = document.createElement("ol");
                   olElement.classList.add("olElement");
-                  for (const documentItem of data["notes"]) {
+                  for (const noteItem of data["notes"]) {
                     const liElement = document.createElement("li");
-                    liElement.textContent = documentItem["text"];
+                    liElement.textContent = noteItem["title"];
                     olElement.appendChild(liElement);
                   }
                   jobTemplateNotesElement.appendChild(olElement);

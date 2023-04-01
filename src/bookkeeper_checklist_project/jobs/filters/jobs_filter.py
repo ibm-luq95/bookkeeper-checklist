@@ -34,6 +34,7 @@ class JobFilter(django_filters.FilterSet):
             "job_type": ["exact"],
             "status": ["exact"],
             "state": ["exact"],
+            "categories": ["exact"],
             # "due_date": ["gt", "lt"],
         }
         # fields = [

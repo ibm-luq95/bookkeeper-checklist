@@ -483,6 +483,48 @@ const addTxtToClipboardWithNotification = ({
   }
 };
 
+/**
+ * Enable or disable form fieldset items with form's submit button
+ * @typedef param
+ * @param {Object} param - this is object param
+ * @param {HTMLFormElement} param.formElement HTML form element
+ * @param {string} param.state this will enable or disable
+ */
+const disableAndEnableFieldsetItems = ({ formElement, state }) => {
+  const stateLower = state.toLowerCase();
+  const fieldset = formElement.querySelector("fieldset");
+  const allFormInputs = document.querySelectorAll(`[data-form-id=${formElement.id}]`);
+  const submitBtn = document.querySelector(`button[form=${formElement.id}]`);
+  switch (stateLower) {
+    case "enable":
+    case "e":
+    case "en":
+      // fieldset.disabled = false;
+      // submitBtn.disabled = false;
+      if (allFormInputs.length > 0) {
+        allFormInputs.forEach((element) => {
+          element.disabled = false;
+          element.classList.remove("not-allowed");
+        });
+      }
+      break;
+    case "disable":
+    case "dis":
+    case "d":
+      // fieldset.disabled = true;
+      // submitBtn.disabled = true;
+      if (allFormInputs.length > 0) {
+        allFormInputs.forEach((element) => {
+          element.disabled = true;
+          element.classList.add("not-allowed");
+        });
+      }
+      break;
+    default:
+      break;
+  }
+};
+
 export {
   capitalizedFirstLetter,
   enableInputsOnLoad,
@@ -498,4 +540,5 @@ export {
   checkIfInputSingleOrList,
   orderObjectItems,
   addTxtToClipboardWithNotification,
+  disableAndEnableFieldsetItems,
 };

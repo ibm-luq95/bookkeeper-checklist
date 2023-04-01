@@ -9,6 +9,7 @@ from django.utils.translation import gettext as _
 from client.models import ClientProxy
 from core.choices import JobStatusEnum, JobTypeEnum, JobStateEnum
 from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin, StrModelMixin
+from . import JobCategory
 
 # from task.models import Task
 from .help_messages import JOB_HELP_MESSAGES
@@ -70,10 +71,16 @@ class Job(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
         null=True,
         blank=True,
     )
+    categories = models.ManyToManyField(
+        to=JobCategory, related_name="job", blank=True
+    )
 
     # tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
     note = models.TextField(
         _("note"), null=True, help_text=JOB_HELP_MESSAGES.get("note"), blank=True
+    )
+    is_created_from_template = models.BooleanField(
+        _("is_created_from_template"), default=False, editable=False
     )
 
     # not_filtered_objects = JobManager()

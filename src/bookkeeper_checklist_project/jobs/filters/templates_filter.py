@@ -20,4 +20,6 @@ class JobTemplateFilter(django_filters.FilterSet):
             "description": ["icontains"],
             "job_type": ["exact"],
             "status": ["exact"],
+            "state": ["exact"],
+            "categories": ["exact"],
         }

@@ -117,8 +117,6 @@ document.addEventListener("readystatechange", (ev) => {
 
     // bulma css modal js
 
-
-
     // Add a click event on various child elements to close the parent modal
     (
       document.querySelectorAll(
@@ -141,5 +139,11 @@ document.addEventListener("readystatechange", (ev) => {
         closeAllModals();
       }
     });
+    const allSelectizeElements = document.querySelectorAll("select.selectize");
+    if (allSelectizeElements) {
+      allSelectizeElements.forEach((element) => {
+        NiceSelect.bind(element);
+      });
+    }
   }
 });

@@ -1,0 +1,57 @@
+{% load crispy_forms_tags %}
+
+{% nospaces %}
+<div class="hystmodal" id="client-list-form-modal" aria-hidden="true">
+    <div class="hystmodal__wrap">
+        <div class="hystmodal__window" role="dialog" aria-modal="true">
+            <button class="hystmodal__close" data-hystclose>Закрыть</button>
+            <div class="hystmodal__styled">
+                <!-- text-center -->
+                {% if all_clients %}
+                    <div class="h1">
+                        Pick client
+                        <div class="custom-loader-small-circle ml-3" id="clientListLoader" hidden></div>
+                    </div>
+                    <hr />
+                    <form action="" id="clientListForm" method="post">
+                        <fieldset form="clientListForm">
+                            {% csrf_token %}
+                            {% if job_template %}
+                                <input type="hidden"
+                                       name="job_template_pk"
+                                       id="job_template_pk"
+                                       value="{{ job_template.pk }}"/>
+                            {% endif %}
+                            {% for client in all_clients %}
+                                <div class="field">
+                                    <label class="checkbox" data-form-id="clientListForm" for="{{ client.pk }}">
+                                        <input type="checkbox"
+                                               id="{{ client.pk }}"
+                                               value="{{ client.pk }}"
+                                               class="client-modal-checkbox-item"
+                                               data-client-name="{{ client.name }}"
+                                               data-form-id="clientListForm"/>
+                                        &nbsp;
+                                        {{ client.name }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </fieldset>
+                    </form>
+                    <div class="buttons is-right">
+                        <button class="button is-success"
+                                type="submit"
+                                data-form-id="clientListForm"
+                                form="clientListForm">Create jobs</button>
+                        {% comment  %}
+                            <button data-form-id="clientListForm" class="button is-danger">Cancel</button>
+                        {% endcomment %}
+                    </div>
+                {% else %}
+                    <div class="notification is-warning">No clients</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endnospaces %}

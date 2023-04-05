@@ -16,6 +16,7 @@
           <th>Title</th>
           {% if is_show_client_column is True %}<th>Client</th>{% endif %}
           {% if is_show_manager is True %}<th>Manager</th>{% endif %}
+          {% if is_show_categories is True %}<th>Category</th>{% endif %}
           <th>Task</th>
           <th>Type</th>
           <th>Status</th>
@@ -28,7 +29,19 @@
       </thead>
       <tbody>
         {% for job_object in object_list %}
-          <tr>
+          {% var row_color="" %}
+          {% var tooltip_txt="" %}
+          {% if job_object.state == STALLED %}
+            {% var row_color="danger-table-row" %}
+            {% var tooltip_txt="The job state is stalled" %}
+          {% elif job_object.state == NEED_INFO %}
+            {% var row_color="warning-table-row" %}
+            {% var tooltip_txt="The job state is need info" %}
+          {% elif job_object.status == CON_PAST_DUE %}
+            {% var row_color="danger-table-row" %}
+            {% var tooltip_txt="The job status is past dude!" %}
+          {% endif %}
+          <tr class="{{ row_color }}" title="{{ tooltip_txt }}">
             <td data-label="Title">
               <a href="{% fetch_app_url_for_user app_name='jobs' path_name='details' object_pk=job_object.pk %}">{{ job_object.title|truncatechars:30 }}</a>
             </td>
@@ -68,6 +81,19 @@
           {% empty %}
           {% endfor %}
                 {% endcomment %}
+              </td>
+            {% endif %}
+            {% if is_show_categories is True %}
+              <td data-label="Category">
+                <div class="tags">
+                  {% for category in job_object.categories.all %}
+                    <span class="tag is-rounded bk-tag">{{ category.name }}</span>
+                  {% empty %}
+
+                    {% include "components/core/red_text.html" with text="No categories" only %}
+
+                  {% endfor %}
+                </div>
               </td>
             {% endif %}
             <td data-label="Task">{{ job_object.tasks.count }}</td>

@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
+from bookkeeper.models import BookkeeperProxy
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.utils import get_trans_txt
 from core.views.mixins import BaseLoginRequiredMixin, BaseListViewMixin
@@ -15,6 +16,7 @@ from manager.views.mixins import ManagerAssistantAccessMixin
 from jobs.models import JobTemplate
 from notes.forms import NoteTemplateForm
 from task.forms import TaskItemForm, TaskTemplateForm
+from client.models import ClientProxy
 
 
 class JobTemplateDetailsView(
@@ -35,6 +37,9 @@ class JobTemplateDetailsView(
         context.setdefault("task_template_form", TaskTemplateForm())
         context.setdefault("document_template_form", DocumentTemplateForm())
         context.setdefault("note_template_form", NoteTemplateForm())
+        context.setdefault("all_clients", ClientProxy.objects.all())
+        context.setdefault("all_bookkeepers", BookkeeperProxy.objects.all())
+        # context.setdefault("all_clients", [])
         return context
 
 

@@ -12,6 +12,7 @@ from core.models import (
     StrModelMixin,
 )
 from jobs.models import JobProxy
+from task.models import TaskItem
 
 
 class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
@@ -59,6 +60,7 @@ class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
         blank=True,
         help_text=_("Additional note for the task"),
     )
+    items = models.ManyToManyField(to=TaskItem, related_name="task", blank=True)
 
     def get_is_completed_label(self) -> str:
         if self.is_completed is True:

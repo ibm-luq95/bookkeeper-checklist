@@ -6,4 +6,4 @@ from .jobs import (
     RetrieveJobApiView,
     UpdateJobApiView,
 )
-from .templates import JobRetrieveTemplateApi
+from .templates import JobRetrieveTemplateApi, CreateNewJobFromTemplateApi

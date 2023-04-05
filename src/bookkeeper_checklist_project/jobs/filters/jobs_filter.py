@@ -2,7 +2,7 @@
 import django_filters
 from django import forms
 
-from jobs.models import Job, JobProxy
+from jobs.models import Job, JobProxy, JobCategory
 from bookkeeper.models import get_all_bookkeepers_as_choices
 
 
@@ -20,6 +20,12 @@ class JobFilter(django_filters.FilterSet):
         widget=forms.DateInput(attrs={"type": "date"}),
         lookup_expr="lt",
     )
+    categories = django_filters.ModelMultipleChoiceFilter(
+        field_name="categories",
+        queryset=JobCategory.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        lookup_expr="exact",
+    )
     # bookkeeper = django_filters.ChoiceFilter(
     #     widget=forms.Select(), choices=get_all_bookkeepers_as_choices
     # )
@@ -34,6 +40,7 @@ class JobFilter(django_filters.FilterSet):
             "job_type": ["exact"],
             "status": ["exact"],
             "state": ["exact"],
+            # "categories": ["exact"],
             # "due_date": ["gt", "lt"],
         }
         # fields = [

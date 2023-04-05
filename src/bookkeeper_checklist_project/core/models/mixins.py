@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from core.choices import StatusEnum
+from core.constants.general import DEFAULT_SHORT_TRUNCATED_STRING
 from core.models import SoftDeleteManager
 from core.utils import sort_dict
 from core.utils.developments.debugging_print import debugging_print
@@ -168,12 +169,18 @@ class DueDateOnlyMixin(models.Model):
 class StrModelMixin(models.Model):
     def __str__(self) -> str:
         if hasattr(self, "title"):
-            return textwrap.shorten(self.title, width=40, placeholder="...")
+            return textwrap.shorten(
+                self.title, width=DEFAULT_SHORT_TRUNCATED_STRING, placeholder="..."
+            )
             # return self.title
         elif hasattr(self, "body"):
-            return textwrap.shorten(self.body, width=40, placeholder="...")
+            return textwrap.shorten(
+                self.body, width=DEFAULT_SHORT_TRUNCATED_STRING, placeholder="..."
+            )
         elif hasattr(self, "name"):
-            return textwrap.shorten(self.name, width=40, placeholder="...")
+            return textwrap.shorten(
+                self.name, width=DEFAULT_SHORT_TRUNCATED_STRING, placeholder="..."
+            )
 
     class Meta:
         abstract = True

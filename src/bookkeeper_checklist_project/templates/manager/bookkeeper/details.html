@@ -1,135 +1,148 @@
 {% extends "core/layouts/dashboard.html" %}
+
 {% load static %}
+
 {% load crispy_forms_tags %}
 
 {% block externalcss %}
-<link rel="stylesheet" href="{% static 'css/manager/bookkeeper/details.css' %}" />
+  <link rel="stylesheet"
+        href="{% static 'css/manager/bookkeeper/details.css' %}"/>
 {% endblock externalcss %}
-
 {% block dashboard_content %}
+  <section id="manager-bookkeepers-details">
 
-<section id="manager-bookkeepers-details">
-  {% include 'components/core/ribbon_status.html' with object=object.user %}
-  <div class="box">
-    <div class="columns">
-      <div class="container profile is-fluid">
-        <!-- Start update modal -->
-        {% include 'manager/bookkeeper/segments/update_bookkeeper_modal.html' with object=object %}
-        <!-- End update modal -->
-        <div class="section profile-heading px-3">
-          <div class="columns is-mobile is-multiline">
-            <div class="column is-2">
-              <span class="header-icon user-profile-image">
-                {% comment %} <img alt="" src="http://placehold.it/300x225" /> {% endcomment %}
+    {% include 'components/core/ribbon_status.html' with object=object.user %}
 
-                {% if object.profile_picture %}
-                <img src="{{ object.profile_picture.url }}" alt="{{ object.user.fullname }}" />
-                {% else %}
-                <img src="{% static 'imgs/avatar.jpg' %}" alt="{{ object.user.fullname }}" />
-                {% endif %}
-              </span>
-            </div>
-            <div class="column is-2-tablet is-10-mobile name">
-              <p>
-                <span class="title is-bold is-3">{{ object.user.fullname }}</span>
-                <br />
-              </p>
-              <p class="tagline">
+    <div class="box">
+      <div class="columns">
+        <div class="container profile is-fluid">
+          <!-- Start update modal -->
 
-                <a class="button is-primary is-outlined mt-5" id="edit-preferences">Preferences</a>
+          {% include 'manager/bookkeeper/segments/update_bookkeeper_modal.html' with object=object %}
 
-              </p>
-            </div>
-            <div class="column is-2-tablet is-5-mobile has-text-centered">
-              <p class="stat-val">{{ object.user.jobs.count }}</p>
-              <p class="stat-key">Jobs</p>
-            </div>
-            <div class="column is-2-tablet is-5-mobile has-text-centered">
-              <p class="stat-val">{{ object.get_tasks_count }}</p>
-              <p class="stat-key">Tasks</p>
-            </div>
-            <div class="column is-2-tablet is-5-mobile has-text-centered">
-              <p class="stat-val">{{ object.clients.count }}</p>
-              <p class="stat-key">Clients</p>
-            </div>
-            <div class="column is-2-tablet is-5-mobile has-text-centered">
-              <p class="stat-val">{{ object.special_assignments.count }}</p>
-              <p class="stat-key">Assignments</p>
+          <!-- End update modal -->
+          <div class="section profile-heading px-3">
+            <div class="columns is-mobile is-multiline">
+              <div class="column is-2">
+                <span class="header-icon user-profile-image">
+                  {% comment %} <img alt="" src="http://placehold.it/300x225" /> {% endcomment %}
+                  {% if object.profile_picture %}
+                    <img src="{{ object.profile_picture.url }}"
+                         alt="{{ object.user.fullname }}"/>
+                  {% else %}
+                    <img src="{% static 'imgs/avatar.jpg' %}" alt="{{ object.user.fullname }}" />
+                  {% endif %}
+                </span>
+              </div>
+              <div class="column is-2-tablet is-10-mobile name">
+                <p>
+                  <span class="title is-bold is-3">{{ object.user.fullname }}</span>
+                  <br />
+                </p>
+                <p class="tagline">
+                  <a class="button is-primary is-outlined mt-5" id="edit-preferences">Preferences</a>
+                </p>
+              </div>
+              <div class="column is-2-tablet is-5-mobile has-text-centered">
+                <p class="stat-val">{{ object.user.jobs.count }}</p>
+                <p class="stat-key">Jobs</p>
+              </div>
+              <div class="column is-2-tablet is-5-mobile has-text-centered">
+                <p class="stat-val">{{ object.get_tasks_count }}</p>
+                <p class="stat-key">Tasks</p>
+              </div>
+              <div class="column is-2-tablet is-5-mobile has-text-centered">
+                <p class="stat-val">{{ object.clients.count }}</p>
+                <p class="stat-key">Clients</p>
+              </div>
+              <div class="column is-2-tablet is-5-mobile has-text-centered">
+                <p class="stat-val">{{ object.special_assignments.count }}</p>
+                <p class="stat-key">Assignments</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="profile-options is-fullwidth">
-          <div class="tabs is-toggle is-fullwidth" id="tabs">
-            <ul>
-              <li class="is-active" data-tab="1">
-                <a>
-                  <span class="icon is-small"><i class="fa-solid fa-briefcase"></i></span>
-                  <span>Jobs</span>
-                </a>
-              </li>
-              <li data-tab="2">
-                <a>
-                  <span class="icon is-small"><i class="fa-solid fa-users"></i></span>
-                  <span>Clients</span>
-                </a>
-              </li>
-              <!-- <li data-tab="3">
+          <div class="profile-options is-fullwidth">
+            <div class="tabs is-toggle is-fullwidth" id="tabs">
+              <ul>
+                <li class="is-active" data-tab="1">
+                  <a>
+                    <span class="icon is-small"><i class="fa-solid fa-briefcase"></i></span>
+                    <span>Jobs</span>
+                  </a>
+                </li>
+                <li data-tab="2">
+                  <a>
+                    <span class="icon is-small"><i class="fa-solid fa-users"></i></span>
+                    <span>Clients</span>
+                  </a>
+                </li>
+                <!-- <li data-tab="3">
                                 <a>
                                     <span class="icon is-small"><i class="fa-solid fa-solid fa-key"></i></span>
                                     <span>Accounts & Services</span>
                                 </a>
                             </li> -->
-              <li data-tab="3">
-                <a>
-                  <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
-                  <span>Tasks</span>
-                </a>
-              </li>
-              <li data-tab="4">
-                <a>
-                  <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
-                  <span>Special Assignment</span>
-                </a>
-              </li>
+                <li data-tab="3">
+                  <a>
+                    <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
+                    <span>Tasks</span>
+                  </a>
+                </li>
+                <li data-tab="4">
+                  <a>
+                    <span class="icon is-small"><i class="fa-solid fa-list-check"></i></span>
+                    <span>Special Assignment</span>
+                  </a>
+                </li>
+                <li data-tab="5">
+                  <a>
+                    <span class="icon is-small"><i class="fa-solid fa-user-plus"></i></span>
+                    <span>Add to clients</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div id="tab-content">
+              <section class="is-active" data-content="1">
+                {# Start Include Jobs Table List Component #}
 
-            </ul>
-          </div>
-          <div id="tab-content">
-            <section class="is-active" data-content="1">
-              {# Start Include Jobs Table List Component #}
-              {% include 'components/jobs/table_list.html' with object_list=object.user.jobs.all user_type=request.user.user_type details_url="jobs"|add:":details" action_urls_pattern="jobs" app_name="jobs" enabled_action_btns='details' perms=perms is_show_created_at=is_show_created_at is_show_client_column=True is_show_manager=False %}
-              {# End Include Jobs Table List Component #}
-            </section>
-            <section data-content="2">
-              {# Start Include Client Table List Component #}
-              {% include 'components/client/table_list.html' with object_list=object.clients.all user_type=request.user.user_type details_url="client"|add:":details:overview" action_urls_pattern="client" app_name="client" enabled_action_btns='details' is_show_created_at=is_show_created_at request=request is_show_managed_by=False %}
-              {# End Include Client Table List Component #}
-            </section>
+                {% include "components/jobs/table_list.html" with object_list=object.user.jobs.all user_type=request.user.user_type details_url="jobs"|add:":details" action_urls_pattern="jobs" app_name="jobs" enabled_action_btns="details" perms=perms is_show_created_at=is_show_created_at is_show_client_column=True is_show_manager=False is_show_categories=True %}
 
-            <section data-content="3">
-              {# Start Include Task Table List Component #}
-              {% include 'components/task/table_list.html' with object_list=object.get_tasks user_type=request.user.user_type details_url='task'|add:":details" action_urls_pattern='task' enabled_action_btns='update' perms=perms app_name='task' is_show_created_at=is_show_created_at is_show_job_column=True is_show_start_date=True request=request is_show_manager=False %}
-              {# End Include Task Table List Component #}
-            </section>
+                {# End Include Jobs Table List Component #}
+              </section>
+              <section data-content="2">
+                {# Start Include Client Table List Component #}
 
-            <section data-content="4">
-              {# Start Include Special Assignments Table List Component #}
-              {% include 'components/special_assignment/table_list.html' with object_list=object.special_assignments.all user_type=request.user.user_type details_url='special_assignment'|add:":details" action_urls_pattern='special_assignment' enabled_action_btns='details' app_name='special_assignment' perms=perms is_show_created_at=is_show_created_at request=request is_show_manager=False %}
-              {# End Include Special Assignments Table List Component #}
-            </section>
+                {% include "components/client/table_list.html" with object_list=object.clients.all user_type=request.user.user_type details_url="client"|add:":details:overview" action_urls_pattern="client" app_name="client" enabled_action_btns="details" is_show_created_at=is_show_created_at request=request is_show_managed_by=False %}
 
+                {# End Include Client Table List Component #}
+              </section>
+              <section data-content="3">
+                {# Start Include Task Table List Component #}
+
+                {% include "components/task/table_list.html" with object_list=object.get_tasks user_type=request.user.user_type details_url="task"|add:":details" action_urls_pattern="task" enabled_action_btns="update" perms=perms app_name="task" is_show_created_at=is_show_created_at is_show_job_column=True is_show_start_date=True request=request is_show_manager=False %}
+
+                {# End Include Task Table List Component #}
+              </section>
+              <section data-content="4">
+                {# Start Include Special Assignments Table List Component #}
+
+                {% include "components/special_assignment/table_list.html" with object_list=object.special_assignments.all user_type=request.user.user_type details_url="special_assignment"|add:":details" action_urls_pattern="special_assignment" enabled_action_btns="details" app_name="special_assignment" perms=perms is_show_created_at=is_show_created_at request=request is_show_manager=False %}
+
+                {# End Include Special Assignments Table List Component #}
+              </section>
+              <section data-content="5">
+                Add to client, coming soon
+              </section>
+            </div>
           </div>
         </div>
-
       </div>
     </div>
-
-  </div>
-</section>
-
+  </section>
 {% endblock dashboard_content %}
-
-
 {% block externaljs %}
-<script src="{% static 'js/manager/bookkeeper/details.js' %}" defer type="module"></script>
+  <script src="{% static 'js/manager/bookkeeper/details.js' %}"
+          defer
+          type="module"></script>
 {% endblock externaljs %}

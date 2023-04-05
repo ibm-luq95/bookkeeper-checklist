@@ -12,11 +12,12 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   const jobFormModalId = "job-form-modal";
   const jobFormModalElement = document.querySelector(`#${jobFormModalId}`);
   const updateJobBtn = document.querySelector("button#updateJobBtn");
+  const addDiscussionJobForm = document.querySelector("form#addDiscussionJobForm");
   const jobsForm = jobFormModalElement.querySelector("form");
   // if (jobFormModalElement) {
-    const jobModalTitleElement = jobFormModalElement.querySelector(".modal__title");
-    const jobModalSubmitBtn = jobFormModalElement.querySelector("button[type='submit']");
-    const jobsFormFieldset = jobsForm.querySelector("fieldset");
+  const jobModalTitleElement = jobFormModalElement.querySelector(".modal__title");
+  const jobModalSubmitBtn = jobFormModalElement.querySelector("button[type='submit']");
+  const jobsFormFieldset = jobsForm.querySelector("fieldset");
   // }
 
   // const jobsFormWrapper = document.querySelector("div#jobsFormWrapper");
@@ -188,10 +189,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   });
   if (typeof jobsForm !== "undefined") {
     // create new job form event
-   
-    
   }
- 
 
   // delete job buttons
   managerDeleteJobBtn.forEach((btn) => {
@@ -430,4 +428,12 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           }); */
     });
   });
+
+  // add discussion form event
+  if (addDiscussionJobForm) {
+    addDiscussionJobForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      showToastNotification("Still working on it", "info");
+    });
+  }
 });

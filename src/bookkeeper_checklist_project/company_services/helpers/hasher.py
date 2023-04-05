@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-#
 import base64
-import logging
+
 import traceback
 
 from cryptography.fernet import Fernet
 from django.conf import settings
+
+from core.utils import get_formatted_logger
+
+logger = get_formatted_logger()
 
 
 class PasswordHasher:
@@ -33,7 +37,7 @@ class PasswordHasher:
             encrypt_pass = base64.urlsafe_b64encode(encrypt_pass).decode("ascii")
             return encrypt_pass
         except Exception as e:
-            logging.getLogger("error_logger").error(traceback.format_exc())
+            logger.error(traceback.format_exc())
             return None
 
     @staticmethod
@@ -61,5 +65,5 @@ class PasswordHasher:
             decod_pass = cipher_pass.decrypt(pas).decode()
             return decod_pass
         except Exception as e:
-            logging.getLogger("error_logger").error(traceback.format_exc())
+            logger.error(traceback.format_exc())
             return None

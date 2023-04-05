@@ -6,9 +6,10 @@ from jobs.models import JobTemplate, JobCategory
 
 
 class JobTemplateFilter(django_filters.FilterSet):
-    categories = django_filters.ChoiceFilter(
+    categories = django_filters.ModelMultipleChoiceFilter(
         field_name="categories",
-        choices=[(choice.pk, choice) for choice in JobCategory.objects.all()],
+        queryset=JobCategory.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
         lookup_expr="exact",
     )
 
@@ -21,5 +22,5 @@ class JobTemplateFilter(django_filters.FilterSet):
             "job_type": ["exact"],
             "status": ["exact"],
             "state": ["exact"],
-            "categories": ["exact"],
+            # "categories": ["exact"],
         }

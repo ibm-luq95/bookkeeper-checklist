@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
+from bookkeeper.models import BookkeeperProxy
 from core.choices import JobStatusEnum
 from core.constants import LIST_VIEW_PAGINATE_BY
 from core.constants.status_labels import CON_COMPLETED, CON_ARCHIVED
@@ -23,6 +24,7 @@ from jobs.models import Job, JobProxy
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from notes.forms import NoteForm
 from special_assignment.forms import DiscussionForm
+from special_assignment.models import Discussion
 from task.forms import TaskForm
 
 
@@ -51,7 +53,12 @@ class JobListView(
         return context
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        user_type = self.request.user.user_type
+        if user_type == "bookkeeper":
+            bookkeeper = BookkeeperProxy.objects.get(pk=self.request.user.bookkeeper.pk)
+            queryset = bookkeeper.get_user_jobs()
+        else:
+            queryset = super().get_queryset()
         self.filterset = JobFilter(self.request.GET, queryset=queryset)
         return self.filterset.qs
 
@@ -116,6 +123,7 @@ class JobDetailsView(
             },
             removed_fields=["client", "task"],
         )
+        all_discussions = Discussion.objects.filter(job=job_object)
         context.setdefault("job_status", JobStatusEnum.choices)
         context.setdefault("title", f"Job - {job_object.title}")
         context.setdefault("task_form", task_form)
@@ -123,6 +131,7 @@ class JobDetailsView(
         context.setdefault("note_form", note_form)
         context.setdefault("job_form", job_form)
         context.setdefault("discussion_form", discussion_form)
+        context.setdefault("all_discussions", all_discussions)
         return context
 
 

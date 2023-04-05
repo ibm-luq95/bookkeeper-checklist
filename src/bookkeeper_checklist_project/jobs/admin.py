@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.template.defaultfilters import truncatechars
 
 from core.admin import BaseAdminModelMixin
-from core.constants.general import DEFAULT_TRUNCATED_STRING
+from core.constants.general import DEFAULT_SHORT_TRUNCATED_STRING
 from .models import Job, JobTemplate, JobCategory
 
 
@@ -18,10 +18,10 @@ class JobTemplateAdmin(BaseAdminModelMixin):
     list_display = ("get_title", "status", "get_categories")
 
     def get_categories(self, obj):
-        return "\n,".join([category.name for category in obj.categories.all()])
+        return "\n, ".join([category.name for category in obj.categories.all()])
 
     def get_title(self, obj):
-        return truncatechars(obj.title, DEFAULT_TRUNCATED_STRING)
+        return truncatechars(obj.title, DEFAULT_SHORT_TRUNCATED_STRING)
 
 
 @admin.register(JobCategory)

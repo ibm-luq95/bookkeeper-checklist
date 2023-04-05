@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-#
-import ast
-import logging
-import os
+
 import traceback
 from typing import Any
+
 from decouple import config
 
-if os.environ.get("STAGE_ENVIRONMENT") == "PRODUCTION":
+from .custom_logger import get_formatted_logger
+
+if config("STAGE_ENVIRONMENT", cast=str) == "PRODUCTION":
     from prettyprinter import cpprint
     from termcolor import cprint
 
-logger = logging.getLogger(__name__)
+logger = get_formatted_logger()
 
 IS_DEBUGGING = config("DEBUG", cast=bool)
 
@@ -43,9 +44,9 @@ def debugging_print(txt_object, **kwargs):
                 pprint(txt_object, expand_all=True)
                 # console.log(txt_object)
     except ImportError:
-        logger.error("The package rich not installed!")
+        logger.error("The packages rich or prettyprinter or termcolor not installed!")
         pass
-    except Exception:
+    except Exception as ex:
         logger.error(traceback.format_exc())
 
 

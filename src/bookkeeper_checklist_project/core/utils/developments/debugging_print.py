@@ -7,7 +7,7 @@ from decouple import config
 
 from .custom_logger import get_formatted_logger
 
-if config("STAGE_ENVIRONMENT", cast=str) == "PRODUCTION":
+if config("STAGE_ENVIRONMENT", cast=str) == "DEV":
     from prettyprinter import cpprint
     from termcolor import cprint
 

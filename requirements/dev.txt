@@ -11,6 +11,7 @@ djangorestframework-stubs
 djangorestframework-stubs[compatible-mypy]
 django-request-viewer
 djlint
+djipsum
 docformatter
 faker
 flake8

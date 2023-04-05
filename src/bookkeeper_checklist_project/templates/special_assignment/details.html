@@ -42,7 +42,7 @@
         <figure class="media-left">
           <p class="image is-64x64">
             {% if object.get_managed_user.profile_picture %}
-            <img src="{{ object.get_managed_user.profile_picture }}" alt="{{ object.get_managed_user.fullname }}" />
+            <img src="{{ object.get_managed_user.profile_picture.url }}" alt="{{ object.get_managed_user.fullname }}" />
             {% else %}
             <img src="{% static 'imgs/avatar.jpg' %}" alt="{{ object.get_managed_user.fullname }}" />
             {% endif %}

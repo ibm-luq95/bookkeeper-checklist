@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     # "rest_framework.authtoken",
     "crispy_forms",
     "crispy_bulma",
-    "betterforms",
     "core.apps.CoreConfig",
     "users.apps.UsersConfig",
     "site_settings.apps.SiteSettingsConfig",

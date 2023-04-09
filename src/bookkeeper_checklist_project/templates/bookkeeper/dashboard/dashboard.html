@@ -1,139 +1,134 @@
 {% extends "core/layouts/dashboard.html" %}
+
 {% load development_tags %}
+
 {% load url_helpers %}
+
 {% block dashboard_content %}
-<section class="hero is-info welcome is-small">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title">Hello, {{ bookkeeper_name }}</h1>
-            <h2 class="subtitle">{{ quote_text }}</h2>
-        </div>
-    </div>
-</section>
-<section class="info-tiles">
-    <div class="tile is-ancestor has-text-centered">
-        <div class="tile is-parent">
-            <article class="tile is-child box">
-                <p class="title">{{ bookkeeper.clients.count }}</p>
-                <p class="subtitle">Clients</p>
-            </article>
-        </div>
-
-        <div class="tile is-parent">
-            <article class="tile is-child box">
-                <p class="title">{{ bookkeeper.user.jobs.count }}</p>
-                <p class="subtitle">Jobs</p>
-            </article>
-        </div>
-        <div class="tile is-parent">
-            <article class="tile is-child box">
-                <p class="title">{{ bookkeeper.special_assignments.count }}</p>
-                <p class="subtitle is-capitalized">special assignments</p>
-            </article>
-        </div>
-        <div class="tile is-parent">
-            <article class="tile is-child box">
-                <p class="title has-text-danger">{{ total_past_due_total }}</p>
-                <p class="subtitle has-text-danger-dark">Past Due</p>
-            </article>
-        </div>
-    </div>
-</section>
-<div class="columns">
-    <div class="column is-6">
-        <div class="card events-card">
-            <header class="card-header">
-                <p class="card-header-title subtitle is-capitalized has-text-weight-bold has-text-dark">Clients</p>
-                <!-- <a href="#" class="card-header-icon" aria-label="more options">
-                    <span class="icon">
-                        <i class="fa fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </a> -->
-            </header>
-            <div class="card-table p-2">
-                <div class="content">
-                    <table class="table is-fullwidth is-striped">
-                        <tbody>
-
-                            {% for client in bookkeeper.clients.all %}
-                            <tr>
-                                <td width="5%" class="pl-5">
-                                    <i class="fa-solid fa-user"></i>
-                                </td>
-                                <td>
-                                    <a href="{% url 'bookkeeper:client:details' client.pk %}">
-                                        {{ client.name }}
-
-                                    </a>
-                                </td>
-                                <td class="level-right">
-                                    <a class="button is-small is-primary" title="Jobs count"
-                                        href="{% url 'bookkeeper:client:details' client.pk %}">
-                                        {{ client.jobs.count }}
-                                    </a>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                            <tr class="is-empty">
-                                <td colspan="3">
-                                    <section class="section">
-                                        <div class="content has-text-grey has-text-centered">
-                                            <p><span class="icon is-large"><i
-                                                        class="fa-solid fa-face-meh fa-3x"></i></span></p>
-                                            <p>Nothing's there &hellip;</p>
-                                        </div>
-                                    </section>
-                                </td>
-                            </tr>
-                            </tr>
-                            {% endfor %}
-
-                        </tbody>
-                    </table>
-                </div>
+    <section class="hero is-info welcome is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Hello, {{ bookkeeper_name }}</h1>
+                <h2 class="subtitle">{{ quote_text }}</h2>
             </div>
-            <footer class="card-footer">
-                <a href="{% url 'client:list' %}" class="card-footer-item">View
-                    All</a>
-            </footer>
         </div>
-    </div>
-    <div class="column is-6">
-        <div class="card events-card">
-            <header class="card-header">
-                <p class="card-header-title subtitle is-capitalized has-text-weight-bold has-text-dark">Last Tasks</p>
-                <!-- <a href="#" class="card-header-icon" aria-label="more options">
+    </section>
+    <section class="info-tiles">
+        <div class="tile is-ancestor has-text-centered">
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">{{ bookkeeper.clients.count }}</p>
+                    <p class="subtitle">Clients</p>
+                </article>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">{{ bookkeeper.user.jobs.count }}</p>
+                    <p class="subtitle">Jobs</p>
+                </article>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title">{{ bookkeeper.special_assignments.count }}</p>
+                    <p class="subtitle is-capitalized">special assignments</p>
+                </article>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <p class="title has-text-danger">{{ total_past_due_total }}</p>
+                    <p class="subtitle has-text-danger-dark">Past Due</p>
+                </article>
+            </div>
+        </div>
+    </section>
+    <div class="columns">
+        <div class="column is-6">
+            <div class="card events-card">
+                <header class="card-header">
+                    <p class="card-header-title subtitle is-capitalized has-text-weight-bold has-text-dark">Clients</p>
+                    <!-- <a href="#" class="card-header-icon" aria-label="more options">
                     <span class="icon">
                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </span>
                 </a> -->
-            </header>
-            <div class="card-content p-2 card-table">
-                <div class="list">
-                    {% if last_tasks|length > 0 %}
-                    {% for task in last_tasks %}
-                    <div class="list-item">
-                        <div class="list-item-title">
-                            <a href="{% fetch_app_url_for_user app_name='task' path_name='update' object_pk=task.pk %}" class="has-text-dark">
-                                {{ task.title }}
-                            </a>
-                        </div>
+                </header>
+                <div class="card-table p-2">
+                    <div class="content">
+                        <table class="table is-fullwidth is-striped">
+                            <tbody>
+                                {% for client in bookkeeper.clients.all %}
+                                    <tr>
+                                        <td width="5%" class="pl-5">
+                                            <i class="fa-solid fa-user"></i>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'client:details:default' client.pk %}">{{ client.name }}</a>
+                                        </td>
+                                        <td class="level-right">
+                                            <a class="button is-small is-primary"
+                                               title="Jobs count"
+                                               href="{% url 'client:details:default' client.pk %}">
+                                                {{ client.jobs.count }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <tr class="is-empty">
+                                            <td colspan="3">
+                                                <section class="section">
+                                                    <div class="content has-text-grey has-text-centered">
+                                                        <p>
+                                                            <span class="icon is-large"><i class="fa-solid fa-face-meh fa-3x"></i></span>
+                                                        </p>
+                                                        <p>Nothing's there &hellip;</p>
+                                                    </div>
+                                                </section>
+                                            </td>
+                                        </tr>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                    {% endfor %}
-                    {% else %}
-                    <div class="notification is-warning">No Task(s).</div>
-                    {% endif %}
-
-
-
                 </div>
-            </div>
-            <footer class="card-footer">
-                <a href="{% url 'task:list' %}" class="card-footer-item">View
+                <footer class="card-footer">
+                    <a href="{% url 'client:list' %}" class="card-footer-item">View
                     All</a>
-            </footer>
+                </footer>
+            </div>
+        </div>
+        <div class="column is-6">
+            <div class="card events-card">
+                <header class="card-header">
+                    <p class="card-header-title subtitle is-capitalized has-text-weight-bold has-text-dark">Last Tasks</p>
+                    <!-- <a href="#" class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </a> -->
+                </header>
+                <div class="card-content p-2 card-table">
+                    <div class="list">
+                        {% if last_tasks|length > 0 %}
+                            {% for task in last_tasks %}
+                                <div class="list-item">
+                                    <div class="list-item-title">
+                                        <a href="{% fetch_app_url_for_user app_name='task' path_name='update' object_pk=task.pk %}"
+                                           class="has-text-dark">{{ task.title }}</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="notification is-warning">No Task(s).</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="{% url 'task:list' %}" class="card-footer-item">View
+                    All</a>
+                </footer>
+            </div>
         </div>
     </div>
-</div>
 {% endblock dashboard_content %}

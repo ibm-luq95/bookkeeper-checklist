@@ -1,75 +1,102 @@
 {% load url_helpers %}
-{%  for object in object_list  %}
-{% if forloop.counter0|divisibleby:4 %} <div class="columns is-flex"> {%  endif %}
-    <div class="column is-3 is-flex">
-        <div class="card has-ribbon card-static">
 
-            {% if object.status == "draft" %}
-            <div class="ribbon is-warning">{{ object.get_status_display }}</div>
-            {% else %}
-            <div class="ribbon is-primary">Template</div>
-            {% endif %}
+<div class="list has-visible-pointer-controls">
+    {% for object in object_list %}
+        <div class="list-item">
+            <div class="list-item-image mr-5">
+                <!-- <i class="fa-solid fa-copy fa-2x has-text-success"></i> -->
+                <figure class="image">
+                    <i class="fa-solid fa-file-lines fa-3x has-text-success"></i>
+                </figure>
+            </div>
+            <div class="list-item-content">
+                <div class="list-item-title mb-1">
+                    <div class="is-flex is-justify-content-space-between">
+                        <div>
+                            <a href="{% url 'jobs:templates:details' object.pk %}">{{ object.title|truncatechars:70 }}</a>
+                        </div>
+                        <div>
 
-            <header class="card-header">
-                <p class="card-header-title has-text-black">
-                    <a href="{% url 'jobs:templates:details' object.pk %}">
-                        {{ object.title|truncatechars:25 }}
-                    </a>
-                </p>
-                <!-- <button class="card-header-icon" aria-label="more options">
-                    <span class="icon">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </button> -->
-            </header>
-            <div class="card-content ">
-                <div class="content">
-                    <article>
-                        <p>{{ object.description|truncatechars:80 }}</p>
+                            {% include "components/core/table_list/status_tag.html" with status=object.status tag_size="is-small" status_label=object.get_status_display %}
 
-                        <p>
-                            {% if object.tasks.all %}
-                            <strong>Tasks: </strong> {{ object.tasks.count }}
-                            {% endif %}
-                        </p>
-
-                        <p>
-                            {% if object.documents.all %}
-                            <strong>Documents: </strong> {{ object.documents.count }}
-                            {% endif %}
-                        </p>
-
-                        <p>
-                            {% if object.notes.all %}
-                            <strong>Notes: </strong> {{ object.notes.count }}
-                            {% endif %}
-                        </p>
-
-                        {% if object.categories.all %}
-
-                        {% for category in object.categories.all  %}
-                        <a href="#" class="hint--top disabledAnchorElement" aria-label="Category">#{{ category }}</a>
-                        {% endfor %}
-
-                        {% endif %}
-                    </article>
-
+                        </div>
+                    </div>
+                </div>
+                <div class="list-item-description">
+                    <p>{{ object.description|truncatechars:200 }}</p>
+                    {% if object.categories.all %}
+                        <div class="tags mt-2 mb-2">
+                            {% for category in object.categories.all %}<span class="tag">{{ category.name }}</span>{% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control">
+                            <div class="tags has-addons">
+                                <span class="tag is-light">Tasks</span>
+                                <span class="tag is-success">{{ object.tasks.count }}</span>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <div class="tags has-addons">
+                                <span class="tag is-light">Notes</span>
+                                <span class="tag is-success">{{ object.notes.count }}</span>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <div class="tags has-addons">
+                                <span class="tag is-light">Documents</span>
+                                <span class="tag is-success">{{ object.documents.count }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <footer class="card-footer card-footer-mt-auto">
-                <!-- <a href="#" class="card-footer-item">Save</a>
-              <a href="#" class="card-footer-item">Edit</a>
-              <a href="#" class="card-footer-item">Delete</a> -->
-                <button type="button" data-job-id="{{ object.pk }}"
-                    class="button is-fullwidth is-responsive job-template-preview-btn hint--top"
-                    aria-label="more details">
-                    Preview &nbsp; <i class="fa-solid fa-eye fa-xs"></i>
-                </button>
-            </footer>
+            <div class="list-item-controls">
+                <div class="buttons is-right">
+                    <button class="button job-template-clone-list-btn hint--top"
+                            type="button"
+                            aria-label="Clone or duplicate template"
+                            data-pk="{{ object.pk }}">
+                        <span class="icon is-small">
+                            <i class="fa-regular fa-clone"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown is-right">
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                <!-- <span class="icon is-small">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </span> -->
+                                <span class="icon is-small">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a href="#"
+                                   class="dropdown-item job-template-archive-template-list-btn"
+                                   data-pk="{{ object.pk }}">Archive template</a>
+                                <hr class="dropdown-divider" />
+                                <a href="#"
+                                   class="dropdown-item has-text-danger job-template-delete-list-btn"
+                                   data-pk="{{ object.pk }}">Delete template</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment  %}
+                        <button class="button">
+                        <span class="icon is-small">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </span>
+                    </button>
+                    {% endcomment %}
+                </div>
+            </div>
         </div>
-    </div>
-    {%  if forloop.counter|divisibleby:4 or forloop.last %}</div><!-- columns closing -->
-{%  endif %}
-{% empty %}
-No templates
-{% endfor %}
+    {% empty %}
+        <div class="list-item">
+            <div class="list-item-title">No Templates</div>
+        </div>
+    {% endfor %}
+</div>

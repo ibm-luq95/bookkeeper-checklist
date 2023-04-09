@@ -59,7 +59,7 @@ class JobTemplatesListView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context.setdefault("title", get_trans_txt("All jobs templates"))
+        context.setdefault("title", get_trans_txt("Job templates"))
         context.update({"app_label": "job_template"})
         context.setdefault("list_type", self.list_type)
         context.setdefault("page_header", "jobs templates".title())

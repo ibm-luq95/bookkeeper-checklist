@@ -339,3 +339,5 @@ src/bookkeeper_checklist_project/templates/template_boilerplate.html
 src/bookkeeper_checklist_project/chromedriver
 .htmlhintrc
 src/bookkeeper_checklist_project/db_backups/**
+src/bookkeeper_checklist_project/development_backups
+src/bookkeeper_checklist_project/development_backups/**

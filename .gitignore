@@ -342,3 +342,4 @@ src/bookkeeper_checklist_project/db_backups/**
 src/bookkeeper_checklist_project/development_backups
 src/bookkeeper_checklist_project/development_backups/**
 src/bookkeeper_checklist_project/mytestdatabase.sqlite3
+src/bookkeeper_checklist_project/db.sqlite3

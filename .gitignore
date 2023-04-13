@@ -341,3 +341,4 @@ src/bookkeeper_checklist_project/chromedriver
 src/bookkeeper_checklist_project/db_backups/**
 src/bookkeeper_checklist_project/development_backups
 src/bookkeeper_checklist_project/development_backups/**
+src/bookkeeper_checklist_project/mytestdatabase.sqlite3

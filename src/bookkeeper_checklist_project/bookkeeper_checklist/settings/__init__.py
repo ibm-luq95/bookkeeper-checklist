@@ -1,10 +1,11 @@
-import logging
-import os
+
 from decouple import config
+
+from core.utils import get_formatted_logger
 
 # from dotenv import load_dotenv
 
-log = logging.getLogger(__name__)
+logger = get_formatted_logger()
 
 ### [ONLY FOR DEPLOYMENT] ###
 # dotenv_path = os.path.join("/home/ibrahim/bookkeeper-checklist/src", ".env")
@@ -16,7 +17,7 @@ log = logging.getLogger(__name__)
 # pprint()
 environment = config("STAGE_ENVIRONMENT", cast=str)
 # environment = os.environ.get("STAGE_ENVIRONMENT")
-log.info(f" Environment is: ({environment})")
+logger.info(f" Environment is: ({environment})")
 
 if environment == "DEV":
     from .dev import *

@@ -9,12 +9,14 @@ django-stubs
 django-stubs-ext
 djangorestframework-stubs
 djangorestframework-stubs[compatible-mypy]
+django-debug-permissions
 django-request-viewer
 djlint
 djipsum
 docformatter
 faker
 flake8
+factory_boy
 inquirer
 isort
 mypy

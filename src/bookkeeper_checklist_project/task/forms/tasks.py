@@ -1,11 +1,17 @@
 from django import forms
+from django_summernote.fields import SummernoteTextFormField
 
-from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
+# from django_summernote.fields import SummernoteTextFormField
+from core.forms import (
+    BaseModelFormMixin,
+    SaveCreatedByFormMixin,
+    SetSummernoteDynamicAttrsMixin,
+)
 from jobs.models import Job
 from task.models import Task
 
 
-class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAttrsMixin):
     field_order = [
         "title",
         "job",
@@ -14,14 +20,24 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         "start_date",
         "due_date",
         "additional_notes",
-        "hints"
+        "hints",
     ]
+    additional_notes = SummernoteTextFormField()
 
     def __init__(
-        self, client=None, is_disable_job=False, job=None, created_by=None, *args, **kwargs
+        self,
+        client=None,
+        is_disable_job=False,
+        job=None,
+        created_by=None,
+        remove_type_and_status=False,
+        remove_job=False,
+        set_full_width=False,
+        *args,
+        **kwargs,
     ):
         super(TaskForm, self).__init__(*args, **kwargs)
-        self.fields.pop("is_completed")
+        SetSummernoteDynamicAttrsMixin.__init__(self, set_full_width=set_full_width)
         self.fields["job"].widget.attrs.update({"class": "input"})
 
         # check if job passed and set it to job input
@@ -42,8 +58,16 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         if created_by is not None:
             self.created_by = created_by
 
+        if remove_type_and_status is True:
+            self.fields.pop("status")
+            self.fields.pop("task_type")
+            self.fields.pop("hints")
+
+        if remove_job is True:
+            self.fields.pop("job")
+
     class Meta(BaseModelFormMixin.Meta):
         model = Task
-        widgets = {
-            "additional_notes": forms.TextInput()
-        }
+        # widgets = {
+        #     "additional_notes": forms.TextInput()
+        # }

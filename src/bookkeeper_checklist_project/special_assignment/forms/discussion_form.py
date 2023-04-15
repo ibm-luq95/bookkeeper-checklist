@@ -2,27 +2,31 @@
 from typing import Optional
 
 from django import forms
+from django_summernote.fields import SummernoteTextFormField
 
 from core.constants.form import EXCLUDED_FIELDS
-from core.forms import BaseModelFormMixin
+from core.forms import BaseModelFormMixin, SetSummernoteDynamicAttrsMixin
 from core.utils import get_trans_txt
 from jobs.models import Job
 from special_assignment.models import Discussion, SpecialAssignment
 from users.models import CustomUser
 
 
-class DiscussionForm(BaseModelFormMixin):
+class DiscussionForm(BaseModelFormMixin, SetSummernoteDynamicAttrsMixin):
+    body = SummernoteTextFormField()
+
     def __init__(
         self,
         special_assignment: Optional[SpecialAssignment] = None,
         discussion_user: Optional[CustomUser] = None,
         job: Optional[Job] = None,
         reply_object: Optional[Discussion] = None,
+        set_full_width=False,
         *args,
         **kwargs,
     ):
         super(DiscussionForm, self).__init__(*args, **kwargs)
-
+        SetSummernoteDynamicAttrsMixin.__init__(self, set_full_width=set_full_width)
         self.fields["body"].widget.attrs.update({"rows": 5, "cols": 10})
 
         # self.fields["title"].widget.attrs.update(
@@ -72,4 +76,3 @@ class DiscussionForm(BaseModelFormMixin):
     class Meta(BaseModelFormMixin.Meta):
         model = Discussion
         exclude = EXCLUDED_FIELDS + ["is_seen"]
-

@@ -45,7 +45,7 @@ class JobListView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context.setdefault("title", get_trans_txt("All jobs"))
+        context.setdefault("title", get_trans_txt("Jobs"))
         context.setdefault("list_type", self.list_type)
         context.setdefault("page_header", "jobs".title())
 
@@ -87,6 +87,7 @@ class JobCreateView(
     def get_form_kwargs(self):
         kwargs = super(JobCreateView, self).get_form_kwargs()
         kwargs.update({"created_by": self.request.user})
+        kwargs.update({"set_full_width": True})
         return kwargs
 
 
@@ -112,16 +113,20 @@ class JobDetailsView(
                 "document_section": "job",
                 "job": job_object,
             },
-            removed_fields=["client", "task"],
+            removed_fields=["client", "task", "status", "job", "document_section"],
         )
-        task_form = TaskForm(initial={"client": job_object.client, "job": job_object})
+        task_form = TaskForm(
+            initial={"client": job_object.client, "job": job_object},
+            remove_type_and_status=True,
+            remove_job=True,
+        )
         note_form = NoteForm(
             initial={
                 # "client": job_object.client,
                 "note_section": "job",
                 "job": job_object,
             },
-            removed_fields=["client", "task"],
+            removed_fields=["client", "task", "job", "note_section"],
         )
         all_discussions = Discussion.objects.filter(job=job_object)
         context.setdefault("job_status", JobStatusEnum.choices)
@@ -160,6 +165,7 @@ class JobUpdateView(
     def get_form_kwargs(self):
         kwargs = super(JobUpdateView, self).get_form_kwargs()
         kwargs.update({"is_updated": True})
+        kwargs.update({"set_full_width": True})
         return kwargs
 
     # def get_success_url(self) -> str:

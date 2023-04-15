@@ -40,7 +40,7 @@ class TasksListView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context.setdefault("title", get_trans_txt("All tasks"))
+        context.setdefault("title", get_trans_txt("Tasks"))
         context.setdefault("list_type", self.list_type)
         context.setdefault("page_header", get_trans_txt("tasks".title()))
         context.setdefault("filter_form", self.filterset.form)
@@ -75,7 +75,7 @@ class TasksArchiveListView(
         context = super().get_context_data(**kwargs)
         context.setdefault("filter_form", self.filterset.form)
         context.setdefault("list_type", self.list_type)
-        context.setdefault("title", get_trans_txt("All archived tasks"))
+        context.setdefault("title", get_trans_txt("Archived tasks"))
         context.setdefault("page_header", get_trans_txt("archived tasks".title()))
         return context
 
@@ -109,6 +109,7 @@ class TaskCreateView(
     def get_form_kwargs(self):
         kwargs = super(TaskCreateView, self).get_form_kwargs()
         kwargs.update({"created_by": self.request.user})
+        kwargs.update({"set_full_width": True})
         return kwargs
 
 
@@ -142,8 +143,12 @@ class TaskUpdateView(
     def form_valid(self, form):
         """If the form is valid, save the associated model."""
         self.object = form.save()
-        debugging_print(form.cleaned_data)
         return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(TaskUpdateView, self).get_form_kwargs()
+        kwargs.update({"set_full_width": True})
+        return kwargs
 
 
 class TaskDeleteView(

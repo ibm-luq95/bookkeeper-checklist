@@ -8,10 +8,10 @@ from task.models import TaskTemplate
 class TaskTemplateSerializer(
     SaveRelatedJobTemplateSerializer, serializers.ModelSerializer
 ):
-    task_type_display = serializers.CharField(
-        source="get_task_type_display", required=False
-    )
-    status_display = serializers.CharField(source="get_status_display", required=False)
+    # task_type_display = serializers.CharField(
+    #     source="get_task_type_display", required=False
+    # )
+    # status_display = serializers.CharField(source="get_status_display", required=False)
 
     class Meta:
         model = TaskTemplate
@@ -25,6 +25,6 @@ class TaskTemplateSerializer(
             "status",
             "attachment",
             "items",
-            "status_display",
-            "task_type_display"
+            # "status_display",
+            # "task_type_display"
         ]

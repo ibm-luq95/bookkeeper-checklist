@@ -19,7 +19,7 @@ class JobTemplateFilter(django_filters.FilterSet):
         fields = {
             "title": ["icontains"],
             "description": ["icontains"],
-            "job_type": ["exact"],
+            # "job_type": ["exact"],
             "status": ["exact"],
             "state": ["exact"],
             # "categories": ["exact"],

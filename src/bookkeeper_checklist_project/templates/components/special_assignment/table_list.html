@@ -30,7 +30,7 @@
         {% for assignment_object in object_list %}
           <tr>
             <td data-label="Title">
-              <a href="{% fetch_app_url_for_user app_name='special_assignment' path_name='details' object_pk=assignment_object.pk %}">{{ assignment_object.title|truncatechars:20 }}</a>
+              <a href="{% fetch_app_url_for_user app_name='special_assignment' path_name='details' object_pk=assignment_object.pk %}">{{ assignment_object.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}</a>
             </td>
             <td data-label="Client">
               <a href="{% fetch_url_by_name_pk url_name='client:details:overview' object_pk=assignment_object.client.pk %}"
@@ -65,37 +65,37 @@
             <td data-label="Reply(s)">{{ assignment_object.discussions.count }}</td>
             <td data-label="Status">
 
-              {% include 'components/core/table_list/status_tag.html' with status=assignment_object.status tag_size="is-small" status_label=assignment_object.get_status_display %}
+              {% include "components/core/table_list/status_tag.html" with status=assignment_object.status tag_size="is-small" status_label=assignment_object.get_status_display %}
 
             </td>
             <td data-label="Seen">
 
-              {% include 'components/core/is_seen.html' with is_seen=assignment_object.is_seen %}
+              {% include "components/core/is_seen.html" with is_seen=assignment_object.is_seen %}
 
             </td>
             <td data-label="Start Date"
                 data-sort="{{ assignment_object.start_date|date:"Ymd" }}">
 
-              {% include 'components/core/table_list/table_cell_created.html' with created_at=assignment_object.start_date user_type=user_type only %}
+              {% include "components/core/table_list/table_cell_created.html" with created_at=assignment_object.start_date user_type=user_type only %}
 
             </td>
             <td data-label="Due Date"
                 data-sort="{{ assignment_object.due_date|date:"Ymd" }}">
 
-              {% include 'components/core/table_list/table_cell_created.html' with created_at=assignment_object.due_date user_type=user_type only %}
+              {% include "components/core/table_list/table_cell_created.html" with created_at=assignment_object.due_date user_type=user_type only %}
 
             </td>
             {% if is_show_created_at is True %}
               <td data-label="Created"
                   data-sort="{{ assignment_object.created_at|date:"Ymd" }}">
 
-                {% include 'components/core/table_list/table_cell_created.html' with created_at=assignment_object.created_at user_type=user_type %}
+                {% include "components/core/table_list/table_cell_created.html" with created_at=assignment_object.created_at user_type=user_type %}
 
               </td>
             {% endif %}
             <td class="is-actions-cell">
 
-              {% include 'components/core/table_list/table_cell_actions.html' with object_pk=assignment_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms only %}
+              {% include "components/core/table_list/table_cell_actions.html" with object_pk=assignment_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms %}
 
             </td>
           </tr>

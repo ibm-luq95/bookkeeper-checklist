@@ -37,7 +37,7 @@ class JobFilter(django_filters.FilterSet):
             "title": ["icontains"],
             # "bookkeeper": ["icontains"],
             "client__name": ["icontains"],
-            "job_type": ["exact"],
+            # "job_type": ["exact"],
             "status": ["exact"],
             "state": ["exact"],
             # "categories": ["exact"],

@@ -1,18 +1,20 @@
-from django import forms
+from django.core.exceptions import ValidationError
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from django.utils.translation import gettext as _
-
-from assistant.models import Assistant
-from bookkeeper.models import Bookkeeper
 from django.utils.safestring import mark_safe
-from core.forms import BaseModelFormMixin, SaveCreatedByFormMixin
-from core.utils import debugging_print
-from jobs.models import Job, JobProxy
+from django.utils.translation import gettext as _
+from django_summernote.fields import SummernoteTextFormField
+
+from core.forms import (
+    BaseModelFormMixin,
+    SaveCreatedByFormMixin,
+    SetSummernoteDynamicAttrsMixin,
+)
+from jobs.models import JobProxy
 from users.models import CustomUser
 
 
-class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAttrsMixin):
     field_order = [
         "title",
         "client",
@@ -24,6 +26,8 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         "job_type",
         "note",
     ]
+    description = SummernoteTextFormField()
+    note = SummernoteTextFormField(required=False)
 
     def __init__(
         self,
@@ -31,11 +35,12 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         client=None,
         created_by=None,
         is_updated=False,
+        set_full_width=False,
         *args,
         **kwargs,
     ):
         super(JobForm, self).__init__(*args, **kwargs)
-
+        SetSummernoteDynamicAttrsMixin.__init__(self, set_full_width=set_full_width)
         if client is not None:
             self.fields["client"].initial = client
             self.fields["client"].widget.attrs.update(
@@ -47,10 +52,11 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin):
             # if is_updated is not True:
             # debugging_print(self.instance.title)
             if hasattr(self.instance.client, "bookkeepers"):
-
                 all_client_bookkeepers = self.instance.client.bookkeepers.all()
                 # debugging_print(all_client_bookkeepers)
-                bookkeepers_pks = [bookkeeper.user.pk for bookkeeper in all_client_bookkeepers]
+                bookkeepers_pks = [
+                    bookkeeper.user.pk for bookkeeper in all_client_bookkeepers
+                ]
                 self.fields["managed_by"].queryset = CustomUser.objects.filter(
                     pk__in=bookkeepers_pks
                 )

@@ -1,7 +1,10 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
+
 {% block table_content_block %}
   {% if enable_create_btn == True %}
+
     {% include 'components/core/table_list/create_btn.html' with btn_id="addDocumentBtn" app_name=app_name perms=perms only %}
+
   {% endif %}
   <div class="table-container">
     <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
@@ -19,10 +22,12 @@
         {% for document_object in object_list %}
           <tr>
             <td data-label="Title">
-              <a href="{{ document_object.document_file.url }}">{{ document_object.title|truncatechars:40 }}</a>
+              <a href="{{ document_object.document_file.url }}">{{ document_object.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}</a>
             </td>
             <td data-label="Section">
-              {% include 'components/core/tag.html' with tag_text=document_object.get_document_section_display size="is-medium" %}
+
+              {% include "components/core/tag.html" with tag_text=document_object.get_document_section_display size="is-medium" %}
+
             </td>
             <td data-label="Download">
               <a class="button is-small"
@@ -34,11 +39,15 @@
             {% if is_show_created_at is True %}
               <td data-label="Created"
                   data-sort="{{ document_object.created_at|date:"Ymd" }}">
-                {% include 'components/core/table_list/table_cell_created.html' with created_at=document_object.created_at user_type=request.user.user_type only %}
+
+                {% include "components/core/table_list/table_cell_created.html" with created_at=document_object.created_at user_type=request.user.user_type %}
+
               </td>
             {% endif %}
             <td class="is-actions-cell">
-              {% include 'components/core/table_list/table_cell_actions.html' with object_pk=document_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_name=app_name only %}
+
+              {% include "components/core/table_list/table_cell_actions.html" with object_pk=document_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_name=app_name %}
+
             </td>
           </tr>
         {% empty %}

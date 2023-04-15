@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-#
-from core.constants.general import DEFAULT_FULL_DATE_TIME_FORMAT
+from core.constants.general import (
+    DEFAULT_FULL_DATE_TIME_FORMAT,
+    DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING, DEFAULT_TEMPLATE_TABLE_LIST_LONG_TRUNCATED_STRING,
+)
 from core.constants.status_labels import (
     CON_ENABLED,
     CON_COMPLETED,
@@ -40,6 +43,7 @@ def access_constants(request) -> dict:
         "NEED_INFO": NEED_INFO,
         "STALLED": STALLED,
         "ONGOING": ONGOING,
+        "DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING": DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING,
     }
 
 
@@ -65,5 +69,7 @@ def access_constants_as_group(request) -> dict:
             "NEED_INFO": NEED_INFO,
             "STALLED": STALLED,
             "ONGOING": ONGOING,
+            "DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING": DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING,
+            "DEFAULT_TEMPLATE_TABLE_LIST_LONG_TRUNCATED_STRING": DEFAULT_TEMPLATE_TABLE_LIST_LONG_TRUNCATED_STRING,
         }
     }

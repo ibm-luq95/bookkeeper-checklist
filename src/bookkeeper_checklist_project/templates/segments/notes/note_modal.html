@@ -16,14 +16,17 @@
 
         <form action="" method="" id="{{ user_type }}NoteForm">
           {% csrf_token %}
-
           <fieldset form="{{ user_type }}NoteForm">
             <input type="hidden" name="_method" value="" />
             <input type="hidden" name="created_by" value="{{ request.user.pk }}" />
             {% if job_object %}
             <input type="hidden" name="job" value="{{ job_object.pk }}" />
             {% endif %}
+            {% if note_section %}
+            <input type="hidden" name="note_section" value="{{ note_section }}" />
+            {% endif %}
             <input type="hidden" name="id" value="" />
+            
             {{ note_form|crispy }}
           </fieldset>
 

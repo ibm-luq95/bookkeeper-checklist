@@ -14,7 +14,6 @@
         <form action="" method="" id="{{ user_type }}TaskForm">
           {% csrf_token %}
           <fieldset form="{{ user_type }}TaskForm">
-            <legend>Task</legend>
             <input type="hidden" name="_method" value="POST" />
             <input type="hidden" name="user" value="{{ request_object.user.pk }}" />
 

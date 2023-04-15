@@ -11,11 +11,11 @@ from assistant.models import Assistant
 from bookkeeper.models import BookkeeperProxy
 from core.cache import BWCacheHandler
 from core.constants import BOOKKEEPER_GROUP_NAME, MANAGER_GROUP_NAME, ASSISTANT_GROUP_NAME
-from core.constants.site_settings import WEB_APP_SETTINGS_KEY
+from core.constants.site_settings import WEB_APP_SETTINGS_KEY, APP_CONFIGS_SETTINGS_KEY
 from core.utils import ProjectError
 from core.utils import get_formatted_logger
 from manager.models import Manager
-from site_settings.models import SiteSettings
+from site_settings.models import SiteSettings, ApplicationConfigurations
 from users.models import CustomUser
 
 # TODO: remove the custom logger before push (only for development)
@@ -112,15 +112,18 @@ def create_groups(sender, instance, created, **kwargs):
 def log_user_login(sender, request, user, **kwargs):
     # if user.user_type == "manager":
     site_settings = SiteSettings.objects.select_related().filter(slug="web-app").first()
+    app_configs = ApplicationConfigurations.objects.filter(slug="app-configs").first()
     if site_settings:
         BWCacheHandler.set_item(WEB_APP_SETTINGS_KEY, site_settings)
+    if app_configs:
+        BWCacheHandler.set_item(APP_CONFIGS_SETTINGS_KEY, app_configs)
 
 
-@receiver(user_logged_out)
-def log_user_logout(sender, request, user, **kwargs):
-    stage = os.environ.get("STAGE_ENVIRONMENT")
-    if stage == "DEV" and user.user_type == "manager":
-        BWCacheHandler.clear()
+# @receiver(user_logged_out)
+# def log_user_logout(sender, request, user, **kwargs):
+#     stage = os.environ.get("STAGE_ENVIRONMENT")
+#     if stage == "DEV" and user.user_type == "manager":
+#         BWCacheHandler.clear()
 
 
 # post_delete.connect(delete_user_vacuum, sender=get_user_model())

@@ -19,5 +19,24 @@ HELP_MESSAGES = {
     "facebook": _("Facebook URL"),
     "twitter": _("Twitter URL"),
     "youtube": _("Youtube channel URL"),
-    "instagram": _("Instagram channel URL"),
+    "instagram": _("Instagram URL"),
+}
+
+APPLICATION_CONFIGURATIONS_HELP_MESSAGES = {
+    "slug": _("Site settings code name which indicate the settings section"),
+    "list_view_paginate_by": _("Default number of rows for table list view"),
+    "default_db_string_column_length": _("Default varchar length for string columns"),
+    "default_date_time_format": _("Default datetime format"),
+    "default_short_truncated_string": _("Default string short truncate string"),
+    "default_medium_truncated_string": _("Default string medium truncate string"),
+    "default_long_truncated_string": _("Default string long truncate string"),
+    "default_short_template_truncated_string": _(
+        "Default string short truncate string (for template)"
+    ),
+    "default_medium_template_truncated_string": _(
+        "Default string medium truncate string (for template)"
+    ),
+    "default_long_template_truncated_string": _(
+        "Default string long truncate string (for template)"
+    ),
 }

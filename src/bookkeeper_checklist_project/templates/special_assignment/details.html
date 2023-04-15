@@ -57,7 +57,7 @@
                       href="">@{{ object.get_managed_user }}</a></small>
                   <small>{{ object.created_at|naturaltime }}</small>
                   <br />
-                  {{ object.body|capfirst }}
+                  {{ object.body|safe }}
                 </p>
                 <nav class="level is-mobile">
                   <div class="level-left">
@@ -88,7 +88,7 @@
                   <p>
 
                     {% if object.notes %}
-                    {{ object.notes }}
+                    {{ object.notes|safe }}
                     {% else %}
                     <div class="notification">
                       No notes
@@ -208,7 +208,7 @@
               </p>
             </div>
             {% else %}
-            {% include 'components/core/no_permissions.html' with msg="no permissions to add any reply" %}
+            {% include "components/core/no_permissions.html" with msg="no permissions to add any reply" %}
             {% endif %}
 
           </fieldset>
@@ -234,7 +234,7 @@
           <p>
             <strong>{{ reply.get_managed_user }}</strong>
             <br />
-            {{ reply.body|capfirst }}
+            {{ reply.body|safe }}
             <br />
             <small>
               {% if reply.attachment %}
@@ -267,7 +267,7 @@
               <p>
                 <strong>{{ discussion_reply.get_managed_user }}</strong>
                 <br />
-                {{ discussion_reply.body|capfirst }}
+                {{ discussion_reply.body|safe }}
                 <br />
                 <small>
                   {% if discussion_reply.attachment %}

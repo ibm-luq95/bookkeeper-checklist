@@ -199,7 +199,7 @@
                                         <td>
                                             <details>
                                                 <summary class="has-cursor-pointer disable-text-selection font-size-14px">
-                                                    {{ task.title|truncatechars:25 }}
+                                                    {{ task.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}
                                                 </summary>
                                                 <div class="content mt-5">
                                                     <!-- <hr /> -->
@@ -210,7 +210,7 @@
                                                             <li>
                                                                 <a class="task-template-item font-size-13px"
                                                                    data-task-parent-pk="{{ task.pk }}"
-                                                                   data-element-pk="{{ item.pk }}">{{ item.title|truncatechars:25 }}</a>
+                                                                   data-element-pk="{{ item.pk }}">{{ item.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}</a>
                                                             </li>
                                                         {% empty %}
                                                             <li>No items</li>

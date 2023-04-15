@@ -1,8 +1,12 @@
 {% extends 'components/core/table_list/table_list_layout.html' %}
+
 {% load url_helpers %}
+
 {% block table_content_block %}
   {% if enable_create_btn == True %}
+
     {% include 'components/core/table_list/create_btn.html' with btn_id="addTaskBtn" app_name=app_name perms=perms only %}
+
   {% endif %}
   <div class="table-container">
     <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
@@ -19,10 +23,8 @@
           <th>Title</th>
           {% if is_show_job_column is True %}<th>Job</th>{% endif %}
           {% if is_show_manager is True %}<th>Manager</th>{% endif %}
-          <th>Type</th>
-          <th>Status</th>
-          {% if is_show_start_date is True %}<th>Start Date</th>{% endif %}
-          <th>Due Date</th>
+          {% if is_show_type is True %}<th>Type</th>{% endif %}
+          {% if is_show_status is True %}<th>Status</th>{% endif %}
           {% if is_show_created_at is True %}<th>Created</th>{% endif %}
           <th class="no-sort"></th>
         </tr>
@@ -42,17 +44,19 @@
             <td data-label="Title">
               <a href="{% fetch_app_url_for_user app_name='task' path_name='update' object_pk=task_object.pk %}"
                  class="taskUpdateBtn"
-                 data-item-id="{{ task_object.pk }}">{{ task_object.title|truncatechars:25 }}</a>
+                 data-item-id="{{ task_object.pk }}">{{ task_object.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}</a>
             </td>
             {% if is_show_job_column is True %}
               <td data-label="Job">
                 {% if task_object.job %}
                   <a href="{% fetch_app_url_for_user app_name='jobs' path_name='details' object_pk=task_object.job.pk %}"
                      target="_blank">
-                    {{ task_object.job|truncatechars:25 }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
+                    {{ task_object.job.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }} <i class="fas fa-external-link-alt is-small fa-xs"></i>
                   </a>
                 {% else %}
-                  {% include 'components/core/red_text.html' with text="no job for this task" only %}
+
+                  {% include "components/core/red_text.html" with text="no job for this task" only %}
+
                 {% endif %}
               </td>
             {% endif %}
@@ -67,32 +71,38 @@
                        class="is-block">{{ task_object.job.managed_by }} <i class="fas fa-external-link-alt fa-xs"></i></a>
                   {% endif %}
                 {% else %}
-                  {% include 'components/core/red_text.html' with text="no manager" only %}
+
+                  {% include "components/core/red_text.html" with text="no manager" only %}
+
                 {% endif %}
               </td>
             {% endif %}
-            <td data-label="Type">{% include 'components/core/tag.html' with tag_text=task_object.get_task_type_display %}</td>
-            <td data-label="Status" class="is-progress-cell">
-              {% include 'components/core/table_list/status_tag.html' with status=task_object.status tag_size="is-small" status_label=task_object.get_status_display %}
-            </td>
-            {% if is_show_start_date is True %}
-              <td data-label="Start Date"
-                  data-sort="{{ task_object.start_date|date:"Ymd" }}">
-                {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.start_date user_type=user_type only %}
+            {% if is_show_type is True %}
+              <td data-label="Type">
+
+                {% include "components/core/tag.html" with tag_text=task_object.get_task_type_display %}
+
               </td>
             {% endif %}
-            <td data-label="Due Date"
-                data-sort="{{ task_object.due_date|date:"Ymd" }}">
-              {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.due_date user_type=user_type %}
-            </td>
+            {% if is_show_status is True %}
+              <td data-label="Status" class="is-progress-cell">
+
+                {% include "components/core/table_list/status_tag.html" with status=task_object.status tag_size="is-small" status_label=task_object.get_status_display %}
+
+              </td>
+            {% endif %}
             {% if is_show_created_at is True %}
               <td data-label="Created"
                   data-sort="{{ task_object.created_at|date:"Ymd" }}">
+
                 {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.created_at user_type=user_type only %}
+
               </td>
             {% endif %}
             <td class="is-actions-cell">
+
               {% include 'components/core/table_list/table_cell_actions.html' with object_pk=task_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms action_btn_css_class="task" only %}
+
             </td>
           </tr>
         {% empty %}

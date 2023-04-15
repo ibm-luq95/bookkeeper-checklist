@@ -13,7 +13,7 @@
                 <div class="list-item-title mb-1">
                     <div class="is-flex is-justify-content-space-between">
                         <div>
-                            <a href="{% url 'jobs:templates:details' object.pk %}">{{ object.title|truncatechars:70 }}</a>
+                            <a href="{% url 'jobs:templates:details' object.pk %}">{{ object.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}</a>
                         </div>
                         <div>
 
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="list-item-description">
-                    <p>{{ object.description|truncatechars:200 }}</p>
+                    <p>{{ object.description|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_LONG_TRUNCATED_STRING }}</p>
                     {% if object.categories.all %}
                         <div class="tags mt-2 mb-2">
                             {% for category in object.categories.all %}<span class="tag">{{ category.name }}</span>{% endfor %}

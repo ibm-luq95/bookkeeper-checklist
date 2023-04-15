@@ -25,7 +25,7 @@
               <div class="content">
                 <article>
                   <section>
-                    {{ object.description }}
+                    {{ object.description|safe }}
                   </section>
                 </article>
                 <hr />
@@ -404,7 +404,7 @@
                             <br />
                             <details>
                               <summary class="unset-style-type hint--top" aria-label="Click to read more">
-                                {{ discussion.body|truncatechars:70 }}
+                                {{ discussion.body|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}
                               </summary>
                               <p class="manager-as-lbl">
                                 {{ discussion.body }}
@@ -471,12 +471,12 @@
   <!-- End Task Modal Form -->
   <!-- Start Document Modal Form -->
 
-  {% include "segments/documents/document_modal.html" with user_type="manager" job_object=object document_form=document_form request_object=request %}
+  {% include "segments/documents/document_modal.html" with user_type="manager" job_object=object document_form=document_form request_object=request document_section="job" %}
 
   <!-- End Document Modal Form -->
   <!-- Start Note Modal Form -->
 
-  {% include "segments/notes/note_modal.html" with user_type="manager" job_object=object note_form=note_form request_object=request %}
+  {% include "segments/notes/note_modal.html" with user_type="manager" job_object=object note_form=note_form request_object=request note_section="job" %}
 
   <!-- End Note Modal Form -->
 {% endblock dashboard_content %}

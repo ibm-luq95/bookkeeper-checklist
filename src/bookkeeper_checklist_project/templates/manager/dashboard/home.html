@@ -140,7 +140,7 @@
                         <tr>
                           <td>
                             <a href="{% url 'special_assignment:details' special_assignment.pk %}">
-                              {{ special_assignment.title|truncatechars:20 }}
+                              {{ special_assignment.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}
                             </a>
                           </td>
                           <td>{{ special_assignment.get_managed_user }}</td>
@@ -184,7 +184,7 @@
                       {% for task in all_tasks|slice:5 %}
                         <tr>
                           <td>
-                            <a href="{% url 'task:update' task.pk %}">{{ task.title|truncatechars:20 }}</a>
+                            <a href="{% url 'task:update' task.pk %}">{{ task.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}</a>
                           </td>
                           <td>
                             <span class="tag">{{ task.get_status_display }}</span>

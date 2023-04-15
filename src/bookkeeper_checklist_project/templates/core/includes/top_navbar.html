@@ -164,10 +164,13 @@
           </a>
           <div class="navbar-dropdown">
             <a class="navbar-item" href="{% url 'site_settings:web-app-settings' %}">
-              Web App Settings
+              Web Application Settings
             </a>
             <a class="navbar-item"
-               href="{% url 'db_backup_restore:backup:list' %}">
+               href="{% url 'site_settings:app-configs-settings' %}">
+              Application Configurations
+            </a>
+            <a class="navbar-item" href="{% url 'db_backup_restore:backup:list' %}">
               DB Backups
             </a>
           </div>

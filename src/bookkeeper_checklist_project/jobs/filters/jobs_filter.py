@@ -35,6 +35,7 @@ class JobFilter(django_filters.FilterSet):
         # form = JobFilterForm
         fields = {
             "title": ["icontains"],
+            "managed_by": ["exact"],
             # "bookkeeper": ["icontains"],
             "client__name": ["icontains"],
             # "job_type": ["exact"],

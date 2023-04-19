@@ -11,6 +11,7 @@ django-log-viewer
 django-import-export
 django-extensions
 django-summernote
+django-csp
 hiredis
 mysql-connector-python
 mysqlclient

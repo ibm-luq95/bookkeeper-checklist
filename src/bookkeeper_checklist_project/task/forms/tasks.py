@@ -1,5 +1,5 @@
 from django import forms
-from django_summernote.fields import SummernoteTextFormField
+# from django_summernote.fields import SummernoteTextFormField
 
 # from django_summernote.fields import SummernoteTextFormField
 from core.forms import (
@@ -22,7 +22,7 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicA
         "additional_notes",
         "hints",
     ]
-    additional_notes = SummernoteTextFormField()
+    # additional_notes = SummernoteTextFormField()
 
     def __init__(
         self,

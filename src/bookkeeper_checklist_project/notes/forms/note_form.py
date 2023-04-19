@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-#
 from typing import Optional
 
-from django_summernote.fields import SummernoteTextFormField
+from django import forms
+# from django_summernote.fields import SummernoteTextFormField
+from django_summernote.widgets import SummernoteInplaceWidget
+# from tinymce.widgets import TinyMCE
 
 from notes.models import Note
 from core.forms import (
@@ -18,8 +21,8 @@ class NoteForm(
     RemoveFieldsMixin,
     SetSummernoteDynamicAttrsMixin,
 ):
-    body = SummernoteTextFormField()
-
+    # body = SummernoteTextFormField(widget=SummernoteInplaceWidget)
+    # body = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
     def __init__(
         self,
         client=None,
@@ -49,6 +52,6 @@ class NoteForm(
         model = Note
         # fields = "__all__"
         # widgets = {
-        # "body": SummernoteWidget()
-        # "body": SummernoteInplaceWidget()
+            # "body": SummernoteWidget()
+            # "body": SummernoteInplaceWidget()
         # }

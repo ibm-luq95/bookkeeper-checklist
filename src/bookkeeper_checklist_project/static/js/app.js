@@ -78,6 +78,26 @@ document.addEventListener("readystatechange", (ev) => {
       });
     });
 
+    // tinymce.init({
+    //   selector: ".rich-textarea", // change this value according to your HTML
+    //   placeholder: "Type here...",
+    //   highlight_on_focus: true,
+    //   plugins: ["advlist", "autolink", "link", "image", "lists"],
+    //   // content_security_policy: "default-src 'self'",
+    //   content_security_policy: "style-src 'self' 'unsafe-inline';",
+    //   referrer_policy: "origin",
+    //   // referrer_policy: "strict-origin-when-cross-origin",
+    //   // content_security_policy: "default-src 'self'",
+    //   xss_sanitization: true,
+    //   resize: "both",
+    //   // menubar: false,
+    //   // removed_menuitems: 'file redo'
+    //   menubar: 'edit insert view format table tools help',
+    //   // toolbar: false,
+    //   // height: 300,
+    //   // width: 300,
+    // });
+
     const dropdowns = document.querySelectorAll(".dropdown:not(.is-hoverable)");
 
     /*

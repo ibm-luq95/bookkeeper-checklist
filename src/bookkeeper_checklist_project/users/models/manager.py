@@ -1,3 +1,5 @@
+import traceback
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import transaction
 from django.utils.translation import gettext as _
@@ -5,6 +7,9 @@ from django.db.models.aggregates import Count
 from random import randint
 
 from core.models import BaseQuerySetMixin
+from core.utils import get_formatted_logger
+
+logger = get_formatted_logger()
 
 
 class CustomUserManager(BaseUserManager):
@@ -36,31 +41,35 @@ class CustomUserManager(BaseUserManager):
         """
         Create and save a SuperUser with the given email and password.
         """
-        with transaction.atomic():
-            from manager.models import Manager
+        try:
+            with transaction.atomic():
+                from manager.models import Manager
 
-            extra_fields.setdefault("is_staff", True)
-            extra_fields.setdefault("is_superuser", True)
-            extra_fields.setdefault("is_active", True)
+                extra_fields.setdefault("is_staff", True)
+                extra_fields.setdefault("is_superuser", True)
+                extra_fields.setdefault("is_active", True)
 
-            # create admin names for superuser in case it is admin
-            if email == "admin@admin.com":
-                extra_fields.setdefault("first_name", "Administrator")
-                extra_fields.setdefault("last_name", "Account")
-                extra_fields.setdefault("user_type", "manager")
+                # create admin names for superuser in case it is admin
+                if email == "admin@admin.com":
+                    extra_fields.setdefault("first_name", "Administrator")
+                    extra_fields.setdefault("last_name", "Account")
+                    extra_fields.setdefault("user_type", "manager")
 
-            if extra_fields.get("is_staff") is not True:
-                raise ValueError(_("Superuser must have is_staff=True."))
-            if extra_fields.get("is_superuser") is not True:
-                raise ValueError(_("Superuser must have is_superuser=True."))
-            created_user = self.create_user(email, password, **extra_fields)
-            # debugging_print("##############")
-            if created_user.user_type == "manager":
-                manager = Manager.objects.create(user=created_user)
-                # debugging_print(created_user)
-                # debugging_print(manager)
-            # debugging_print("##############")
-            return created_user
+                if extra_fields.get("is_staff") is not True:
+                    raise ValueError(_("Superuser must have is_staff=True."))
+                if extra_fields.get("is_superuser") is not True:
+                    raise ValueError(_("Superuser must have is_superuser=True."))
+                created_user = self.create_user(email, password, **extra_fields)
+                # debugging_print("##############")
+                # if created_user.user_type == "manager":
+                #     manager = Manager.objects.create(user=created_user)
+                    # debugging_print(created_user)
+                    # debugging_print(manager)
+                # debugging_print("##############")
+                return created_user
+        except Exception as ex:
+            logger.error(traceback.format_exc())
+            raise Exception(str(ex))
 
     def random(self):
         count = self.aggregate(count=Count("id"))["count"]

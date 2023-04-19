@@ -1,11 +1,16 @@
 {% load static %}
+
+{% comment %}
+nonce="{{request.csp_nonce}}"
+{% endcomment %}
+  
 <script src="{% url 'js_settings' %}" defer></script>
-<script type="text/javascript" src="{% static 'js/vendors/jquery/jquery.min.js' %}"></script>
+<script type="text/javascript"
+        src="{% static 'js/vendors/jquery/jquery.min.js' %}"></script>
 {% comment  %}
-  <script type = "text/javascript" src = "{% static 'vendors/DataTables/jQuery-3.6.0/jquery-3.6.0.js' %}" ></script>
+  <script type = "text/javascript" src = "{% static 'vendors/DataTables/jQuery-3.6.0/jquery-3.6.0.js' %}"></script>
   <script type="text/javascript" src="{% static 'vendors/DataTables/datatables.js' %}"></script>
-  <script type="text/javascript" src="{% static 'vendors/DataTables/Buttons-2.2.3/js/buttons.bulma.js' %}">
-  </script>
+  <script type="text/javascript" src="{% static 'vendors/DataTables/Buttons-2.2.3/js/buttons.bulma.js' %}"></script>
   <script type="text/javascript" src="{% static 'vendors/DataTables/FixedHeader-3.2.4/js/fixedHeader.bulma.js' %}">
   </script>
   <script type="text/javascript" src="{% static 'vendors/DataTables/Responsive-2.3.0/js/responsive.bulma.js' %}">
@@ -15,24 +20,35 @@
   <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/pdfmake.js' %}"></script>
   <script type="text/javascript" src="{% static 'vendors/DataTables/pdfmake-0.1.36/vfs_fonts.js' %}"></script>
 {% endcomment %}
-<script src="{% static 'js/chart.js' %}" type="text/javascript" defer></script>
-<script src="{% static 'js/all.js' %}" defer></script>
-<script type="text/javascript" src="{% static 'js/vendors/micromodal/micromodal.min.js' %}"></script>
-
-<script type="text/javascript" src="{% static 'js/vendors/toastify/toastify.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/vendors/clipboard/clipboard.js' %}"></script>
-
-<script type="text/javascript" src="{% static 'vendors/sortable-tablesort/sortable.js' %}"></script>
-<script type="text/javascript" src="{% static 'vendors/tingle/tingle.js' %}"></script>
-<script type="text/javascript" src="{% static 'vendors/nice-select2/js/nice-select2.js' %}"></script>
-<script type="text/javascript" src="{% static 'vendors/hystmodal/hystmodal.min.js' %}"></script>
+<script src="{% static 'js/chart.js' %}" type="text/javascript" defer nonce="{{request.csp_nonce}}"></script>
+<script src="{% static 'js/all.js' %}" defer nonce="{{request.csp_nonce}}"></script>
+<script type="text/javascript"
+        src="{% static 'js/vendors/micromodal/micromodal.min.js' %}" nonce="{{request.csp_nonce}}"></script>
+<script type="text/javascript"
+        src="{% static 'js/vendors/toastify/toastify.js' %}" nonce="{{request.csp_nonce}}"></script>
+<script type="text/javascript"
+        src="{% static 'js/vendors/clipboard/clipboard.js' %}" nonce="{{request.csp_nonce}}"></script>
+<script type="text/javascript"
+        src="{% static 'vendors/sortable-tablesort/sortable.js' %}" nonce="{{request.csp_nonce}}"></script>
+<script type="text/javascript" src="{% static 'vendors/tingle/tingle.js' %}" nonce="{{request.csp_nonce}}"></script>
+<script type="text/javascript"
+        src="{% static 'vendors/nice-select2/js/nice-select2.js' %}" nonce="{{request.csp_nonce}}"></script>
+<script type="text/javascript"
+        src="{% static 'vendors/hystmodal/hystmodal.min.js' %}" nonce="{{request.csp_nonce}}"></script>
+        <script type="text/javascript" src="{% static 'vendors/summernote/summernote.js' %}"></script>
+        <script type="text/javascript" src="{% static 'vendors/summernote/summernote-lite.js' %}"></script>
 {% comment  %}
-  <script type="text/javascript" src="{% static 'summernote/summernote.js' %}"></script>
-<script type="text/javascript" src="{% static 'summernote/summernote-lite.js' %}"></script>
+nonce="{{request.csp_nonce}}" referrerpolicy="origin"
+<script type="text/javascript"
+        src="{% static 'vendors/tinymce/tinymce.min.js' %}"></script>
 {% endcomment %}
 
-<script type="module" src="{% static 'js/utils/datatable-helper.js' %}" defer></script>
-<script type="module" src="{% static 'js/apps/core/inputs.js' %}" defer></script>
-<script type="module" src="{% static 'js/apps/core/table_list_components.js' %}" defer></script>
-<script type="module" src="{% static 'js/utils/generate_elements.js' %}" defer></script>
-<script type="module" src="{% static 'js/app.js' %}" defer></script>
+<script type="module" src="{% static 'js/utils/datatable-helper.js' %}" defer nonce="{{request.csp_nonce}}"></script>
+<script type="module" src="{% static 'js/apps/core/inputs.js' %}" defer nonce="{{request.csp_nonce}}"></script>
+<script type="module"
+        src="{% static 'js/apps/core/table_list_components.js' %}"
+        defer></script>
+<script type="module"
+        src="{% static 'js/utils/generate_elements.js' %}"
+        defer nonce="{{request.csp_nonce}}"></script>
+<script type="module" src="{% static 'js/app.js' %}" nonce="{{request.csp_nonce}}" defer></script>

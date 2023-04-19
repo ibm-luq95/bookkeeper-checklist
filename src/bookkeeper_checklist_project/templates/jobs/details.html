@@ -475,7 +475,7 @@
 
   <!-- End Document Modal Form -->
   <!-- Start Note Modal Form -->
-
+  {{ note_form.media }}
   {% include "segments/notes/note_modal.html" with user_type="manager" job_object=object note_form=note_form request_object=request note_section="job" %}
 
   <!-- End Note Modal Form -->

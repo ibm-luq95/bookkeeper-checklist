@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-#
 from django import forms
-from django_summernote.fields import SummernoteTextFormField
+# from django_summernote.fields import SummernoteTextFormField
 
 from core.constants.form import EXCLUDED_FIELDS
 from core.forms import BaseModelFormMixin, SetSummernoteDynamicAttrsMixin
@@ -21,8 +21,8 @@ class SpecialAssignmentForm(BaseModelFormMixin, SetSummernoteDynamicAttrsMixin):
         "status",
     ]
 
-    body = SummernoteTextFormField()
-    notes = SummernoteTextFormField(required=False)
+    # body = SummernoteTextFormField()
+    # notes = SummernoteTextFormField(required=False)
 
     def __init__(self, assigned_by, set_full_width=False, *args, **kwargs):
         super(SpecialAssignmentForm, self).__init__(*args, **kwargs)

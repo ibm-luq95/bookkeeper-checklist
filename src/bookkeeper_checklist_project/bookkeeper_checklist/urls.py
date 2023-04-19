@@ -16,6 +16,7 @@ urlpatterns = [
     # path("secret/", admin.site.urls),
     # path(r"^maintenance-mode/", include("maintenance_mode.urls")),
     path("summernote/", include("django_summernote.urls")),
+    # path("tinymce/", include("tinymce.urls")),
     path("logs/", include("log_viewer.urls")),
     path("", include("users.urls.auth"), name="users-auth-urls"),
     path("api-auth/", include("rest_framework.urls")),

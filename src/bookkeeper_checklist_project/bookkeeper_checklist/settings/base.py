@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
 
 from decouple import config
 from decouple import Csv
@@ -98,6 +99,7 @@ MIDDLEWARE = [
     "core.middleware.DynamicSiteMiddleware",
     "bookkeeper.middleware.BookkeeperMiddleware",
     "maintenance_mode.middleware.MaintenanceModeMiddleware",
+    # "csp.middleware.CSPMiddleware",
     # "django_hide.middleware.CSRFHIDEMiddleware",
     # "django.middleware.cache.FetchFromCacheMiddleware",  # new for the cache
 ]
@@ -179,7 +181,7 @@ STATIC_URL = "static/"
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-STATICFIELS_DIRS = [BASE_DIR / "static"]
+# STATICFIELS_DIRS = [BASE_DIR / "static"]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
@@ -396,10 +398,12 @@ COMPRESS_LEVEL = config("COMPRESS_LEVEL", cast=int)
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SUMMERNOTE_THEME = "lite"  # Show summernote with lite theme
 SUMMERNOTE_CONFIG = {
-    # 'iframe': True,
+    "iframe": False,
     "summernote": {
         # 'airMode': True,
         "width": "750",
+        "minHeight": None,  # set minimum height of editor
+        "maxHeight": None,  # set maximum height of editor
         # "height": "100%",
         "toolbar": [
             ["style", ["style"]],
@@ -421,9 +425,50 @@ SUMMERNOTE_CONFIG = {
         # Set custom model for attachments (default: 'django_summernote.Attachment')
         # "attachment_model": "my.custom.attachment.model",  # must inherit 'django_summernote.AbstractAttachment'
         # You can completely disable the attachment feature.
-        "disable_attachment": False,
-    }
+        "disable_attachment": True,
+    },
 }
+
+# Content Security Policy
+# TINYMCE_JS_URL = os.path.join(MEDIA_URL, "vendors/tinymce/tinymce.min.js")
+TINYMCE_SPELLCHECKER = True
+# TINYMCE_COMPRESSOR = True
+CSP_IMG_SRC = (
+    "'self' 'sha256-p6mA130cDc4HStcM59w4BqV/qpvgY7ZMDK0IMyF0VKk='",
+    "'self' 'sha256-4sNwvmWshEzqW5S25HVAak+QIUCkjYSbAaQ7Ieh/EDA='",
+    "http://127.0.0.1:8000/",
+    "https://dev.beachwoodfinancial.com/",
+    "https://app.beachwoodfinancial.com/",
+)
+
+CSP_STYLE_SRC = (
+    "'self' 'sha256-p6mA130cDc4HStcM59w4BqV/qpvgY7ZMDK0IMyF0VKk='",
+    "'self' 'sha256-4sNwvmWshEzqW5S25HVAak+QIUCkjYSbAaQ7Ieh/EDA='",
+    "'self' 'sha256-p6mA130cDc4HStcM59w4BqV/qpvgY7ZMDK0IMyF0VKk='",
+    "http://127.0.0.1:8000/",
+    "https://dev.beachwoodfinancial.com/",
+    "https://app.beachwoodfinancial.com/",
+)
+
+CSP_SCRIPT_SRC = (
+    "'self' 'sha256-p6mA130cDc4HStcM59w4BqV/qpvgY7ZMDK0IMyF0VKk='",
+    "'self' 'sha256-4sNwvmWshEzqW5S25HVAak+QIUCkjYSbAaQ7Ieh/EDA='",
+    "'self' 'sha256-p6mA130cDc4HStcM59w4BqV/qpvgY7ZMDK0IMyF0VKk='",
+    "http://127.0.0.1:8000/",
+    "https://dev.beachwoodfinancial.com/",
+    "https://app.beachwoodfinancial.com/",
+)
+CSP_INCLUDE_NONCE_IN = ["script-src"]
+# Keep our policy as strict as possible
+# CSP_DEFAULT_SRC = ("'none'", )
+#
+# CSP_STYLE_SRC = ("'self'",)
+#
+# CSP_SCRIPT_SRC = ("'self'",)
+#
+# CSP_IMG_SRC = ("'self'",)
+#
+# CSP_FONT_SRC = ("'self'",)
 
 # check if cache enabled
 # if ast.literal_eval(os.environ.get("IS_CACHE_ENABLED")) is True:

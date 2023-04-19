@@ -1,15 +1,19 @@
 from django.core.exceptions import ValidationError
 from django.core.exceptions import ValidationError
+from django import forms
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from django_summernote.fields import SummernoteTextFormField
+from tinymce.widgets import TinyMCE
+
+# from django_summernote.fields import SummernoteTextFormField
 
 from core.forms import (
     BaseModelFormMixin,
     SaveCreatedByFormMixin,
     SetSummernoteDynamicAttrsMixin,
 )
+from core.utils.developments import debugging_print
 from jobs.models import JobProxy
 from users.models import CustomUser
 
@@ -26,8 +30,9 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAt
         "job_type",
         "note",
     ]
-    description = SummernoteTextFormField()
-    note = SummernoteTextFormField(required=False)
+    # description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    # note = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}), required=False)
+    # note = SummernoteTextFormField(required=False)
 
     def __init__(
         self,
@@ -40,7 +45,7 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAt
         **kwargs,
     ):
         super(JobForm, self).__init__(*args, **kwargs)
-        SetSummernoteDynamicAttrsMixin.__init__(self, set_full_width=set_full_width)
+        SetSummernoteDynamicAttrsMixin.__init__(self)
         if client is not None:
             self.fields["client"].initial = client
             self.fields["client"].widget.attrs.update(
@@ -72,7 +77,7 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAt
     def clean_due_date(self):
         data = self.cleaned_data["due_date"]
         now = timezone.now().date()
-
+        # debugging_print(self.cleaned_data)
         if self.is_update is False:
             if data < now:
                 raise ValidationError(_("Due date not valid!"), code="invalid")

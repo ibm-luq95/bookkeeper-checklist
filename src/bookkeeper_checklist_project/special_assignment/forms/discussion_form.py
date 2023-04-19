@@ -2,7 +2,7 @@
 from typing import Optional
 
 from django import forms
-from django_summernote.fields import SummernoteTextFormField
+# from django_summernote.fields import SummernoteTextFormField
 
 from core.constants.form import EXCLUDED_FIELDS
 from core.forms import BaseModelFormMixin, SetSummernoteDynamicAttrsMixin
@@ -13,7 +13,7 @@ from users.models import CustomUser
 
 
 class DiscussionForm(BaseModelFormMixin, SetSummernoteDynamicAttrsMixin):
-    body = SummernoteTextFormField()
+    # body = SummernoteTextFormField()
 
     def __init__(
         self,

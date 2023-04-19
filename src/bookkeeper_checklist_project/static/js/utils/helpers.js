@@ -350,19 +350,38 @@ const setFormInputValues = (formElement, objectOfValues) => {
     throw new Error("The element to set values not form element!!");
   }
   for (const name in objectOfValues) {
-    try {
-      if (Object.hasOwnProperty.call(objectOfValues, name)) {
-        const element = objectOfValues[name];
-        formElement.elements[name].value = element;
-      }
-    } catch (error) {
-      if (error instanceof TypeError) {
-        // in case the input or element not exists
-        if (DEBUG === true) {
-          console.warn(`The element ${name} not exists in the form ${formElement.id}`);
+    // try {
+    if (Object.hasOwnProperty.call(objectOfValues, name)) {
+      const element = objectOfValues[name];
+      const domElement = formElement.elements[name];
+      // console.log(domElement);
+      if (domElement) {
+        if (domElement.classList.contains("summernotewidget")) {
+          const jQDomElement = $(`#${domElement.id}`)[0];
+          // console.log(jQDomElement);
+          console.warn(element);
+          console.error("@@@@@@@@@@@@@@@@@@@@@@@");
+          console.log(formElement);
+          // $(`#${domElement.id}`).summernote("code", element);
+          const dd = formElement.querySelector(".note-editing-area");
+          console.log(dd);
+          // $("textarea.note-codable").val(element);
+          // const dd = jQDomElement.summernote();
+          // console.error(jQDomElement);
+          // console.error(dd);
+        } else {
+          domElement.value = element;
         }
       }
     }
+    // } catch (error) {
+    // if (error instanceof TypeError) {
+    //   // in case the input or element not exists
+    //   if (DEBUG === true) {
+    //     console.warn(`The element ${name} not exists in the form ${formElement.id}`);
+    //   }
+    // }
+    // }
   }
 };
 

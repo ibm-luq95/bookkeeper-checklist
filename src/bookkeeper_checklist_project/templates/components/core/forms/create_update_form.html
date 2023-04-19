@@ -1,7 +1,6 @@
 {% load crispy_forms_tags %}
 {% load url_helpers %}
 
-{% if form.media %}{{ form.media }}{% endif %}
 <section id="{{ user_type }}-{{ form_type }}-{{ app_name }}-form">
   <div class="box block has-ribbon">
 
@@ -15,8 +14,8 @@
     <form method="post"
           id="{{ form_type }}-{{ app_name }}-form"
           {% if is_file_form is True %}enctype="multipart/form-data"{% endif %}>
-          {{ form.media }}
       <fieldset form="{{ form_type }}-{{ app_name }}-form">
+        {% if form.media %}{{ form.media }}{% endif %}
         <div class="columns is-flex is-justify-content-space-between mt-1">
           <div class="column">
             <legend class="title has-text-black">{{ title }}</legend>

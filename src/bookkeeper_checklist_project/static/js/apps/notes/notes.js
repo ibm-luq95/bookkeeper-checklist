@@ -46,12 +46,20 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   noteModalFormElement.addEventListener("submit", (event) => {
     event.preventDefault();
     const currentTarget = event.currentTarget;
+    // Array.from(currentTarget.elements).forEach(element => {
+    //   console.warn(element);
+    //   console.warn(element.name);
+    //   console.log(element.value);
+    // })
+    
     noteModalFormFieldsetElement.disabled = true;
     const formData = formInputSerializer({
       formElement: currentTarget,
       excludedFields: ["_method"],
       isOrdered: true,
     });
+    // console.log(formData);
+    throw new Error("sto")
     // console.log(formData);
     // throw new Error("dd");
     // const formData = {
@@ -106,6 +114,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           const callBacks = {
             onOpenCallBack: () => {
               setFormInputValues(noteModalFormElement, noteData);
+              console.log(noteData);
               noteModalTitleElement.textContent = "Update note";
               noteModalSubmitElement.textContent = "Update";
               noteModalFormElement.setAttribute("method", "PUT");

@@ -26,13 +26,16 @@ class NoteForm(
         note_section=None,
         created_by=None,
         set_full_width=False,
+        reset_text_widget=False,
         removed_fields: Optional[list] = None,
         *args,
         **kwargs,
     ):
         super(NoteForm, self).__init__(*args, **kwargs)
         RemoveFieldsMixin.__init__(self, removed_fields=removed_fields)
-        SetSummernoteDynamicAttrsMixin.__init__(self, set_full_width=set_full_width)
+        SetSummernoteDynamicAttrsMixin.__init__(
+            self, set_full_width=set_full_width, reset_text_widget=reset_text_widget
+        )
         if client is not None:
             self.fields["client"].initial = client
             self.fields.pop("task")

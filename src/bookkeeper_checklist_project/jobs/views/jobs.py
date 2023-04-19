@@ -127,6 +127,7 @@ class JobDetailsView(
                 "job": job_object,
             },
             removed_fields=["client", "task", "job", "note_section"],
+            reset_text_widget=True,
         )
         all_discussions = Discussion.objects.filter(job=job_object)
         context.setdefault("job_status", JobStatusEnum.choices)

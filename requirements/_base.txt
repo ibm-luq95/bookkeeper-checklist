@@ -10,6 +10,7 @@ djangorestframework
 django-log-viewer
 django-import-export
 django-extensions
+django-summernote
 hiredis
 mysql-connector-python
 mysqlclient
@@ -25,3 +26,4 @@ slippers
 redis
 requests
 Whitenoise
+bleach==4.1.0  # keep it to this version because this is the fixed version for django-summernote

@@ -353,7 +353,7 @@ const setFormInputValues = (formElement, objectOfValues) => {
     try {
       if (Object.hasOwnProperty.call(objectOfValues, name)) {
         const element = objectOfValues[name];
-        formElement.elements[name].value = element;
+        formElement.elements[name].value = element.replace(/(<([^>]+)>)/gi, "");
       }
     } catch (error) {
       if (error instanceof TypeError) {

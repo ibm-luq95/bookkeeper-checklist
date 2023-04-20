@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-#
 import django_filters
-from client.models import Client
+from django import forms
+
+from bookkeeper.models import BookkeeperProxy
+from client.models import ClientProxy
 
 
 class ClientFilter(django_filters.FilterSet):
+    bookkeepers = django_filters.ModelMultipleChoiceFilter(
+        field_name="bookkeepers",
+        queryset=BookkeeperProxy.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        lookup_expr="exact",
+    )
+
     class Meta:
-        model = Client
+        model = ClientProxy
         fields = {
             "name": ["icontains"],
             # "managed_by": ["exact"],

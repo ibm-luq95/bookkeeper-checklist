@@ -15,7 +15,8 @@ from jobs.models import JobProxy
 from task.models import TaskItem
 
 
-class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
+# class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
+class Task(BaseModelMixin, StrModelMixin, CreatedByMixin):
     """Tasks for every job
 
     Args:
@@ -46,7 +47,7 @@ class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
         default=TaskStatusEnum.NOT_STARTED
         # db_column="status"
     )
-    is_completed = models.BooleanField(_("is completed"), default=False)
+    is_completed = models.BooleanField(_("is completed"), default=False, editable=False)
     hints = models.CharField(
         _("hints"),
         max_length=60,
@@ -60,7 +61,7 @@ class Task(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
         blank=True,
         help_text=_("Additional note for the task"),
     )
-    items = models.ManyToManyField(to=TaskItem, related_name="task", blank=True)
+    # items = models.ManyToManyField(to=TaskItem, related_name="task", blank=True)
 
     def get_is_completed_label(self) -> str:
         if self.is_completed is True:

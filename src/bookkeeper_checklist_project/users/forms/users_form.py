@@ -52,16 +52,16 @@ class UserCreationForm(UserCreationForm):
             user.set_password(self.cleaned_data["password1"])
             if commit:
                 user.save()
-            if user.user_type == "manager":
-                permission_codename = "manager_user"
-                Manager.objects.create(user=user)
-            elif user.user_type == "bookkeeper":
-                permission_codename = "bookkeeper_user"
-                Bookkeeper.objects.create(user=user)
-            elif user.user_type == "assistant":
-                permission_codename = "assistant_user"
-                Assistant.objects.create(user=user)
-            user.user_permissions.add(Permission.objects.get(codename=permission_codename))
+            # if user.user_type == "manager":
+            #     permission_codename = "manager_user"
+            #     Manager.objects.create(user=user)
+            # elif user.user_type == "bookkeeper":
+            #     permission_codename = "bookkeeper_user"
+            #     Bookkeeper.objects.create(user=user)
+            # elif user.user_type == "assistant":
+            #     permission_codename = "assistant_user"
+            #     Assistant.objects.create(user=user)
+            # user.user_permissions.add(Permission.objects.get(codename=permission_codename))
             return user
 
 

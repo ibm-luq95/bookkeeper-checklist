@@ -15,6 +15,7 @@ urlpatterns = [
     # path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
     # path("secret/", admin.site.urls),
     # path(r"^maintenance-mode/", include("maintenance_mode.urls")),
+    path("summernote/", include("django_summernote.urls")),
     path("logs/", include("log_viewer.urls")),
     path("", include("users.urls.auth"), name="users-auth-urls"),
     path("api-auth/", include("rest_framework.urls")),
@@ -58,7 +59,7 @@ if settings.DEBUG:
     urlpatterns.append(
         path("request-logs/", include("request_viewer.urls")),
     )
-    urlpatterns.append(path('admin/doc/', include('django.contrib.admindocs.urls')))
+    urlpatterns.append(path("admin/doc/", include("django.contrib.admindocs.urls")))
     urlpatterns.append(path("admin/", admin.site.urls))
 else:
     urlpatterns.append(path("secret/", admin.site.urls))

@@ -5,7 +5,7 @@
 {% block table_content_block %}
   {% if enable_create_btn == True %}
 
-    {% include "components/core/table_list/create_btn.html" with btn_id="addJobBtn" app_name=app_name perms=perms only %}
+    {% include "components/core/table_list/create_btn.html" with btn_id="addJobBtn" app_name=app_name perms=perms %}
 
   {% endif %}
   <div class="table-container">
@@ -17,8 +17,8 @@
           {% if is_show_client_column is True %}<th>Client</th>{% endif %}
           {% if is_show_manager is True %}<th>Manager</th>{% endif %}
           {% if is_show_categories is True %}<th>Category</th>{% endif %}
-          <th>Task</th>
-          <th>Type</th>
+          {% if is_show_tasks_count is True %}<th>Task</th>{% endif %}
+          {% if is_show_type is True %}<th>Type</th>{% endif %}
           <th>Status</th>
           <th>State</th>
           <th>Start Date</th>
@@ -43,7 +43,7 @@
           {% endif %}
           <tr class="{{ row_color }}" title="{{ tooltip_txt }}">
             <td data-label="Title">
-              <a href="{% fetch_app_url_for_user app_name='jobs' path_name='details' object_pk=job_object.pk %}">{{ job_object.title|truncatechars:30 }}</a>
+              <a href="{% fetch_app_url_for_user app_name='jobs' path_name='details' object_pk=job_object.pk %}">{{ job_object.title|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}</a>
             </td>
             {% if is_show_client_column is True %}
               <td data-label="Client">
@@ -54,7 +54,7 @@
                   </a>
                 {% else %}
 
-                  {% include "components/core/red_text.html" with text="no client" only %}
+                  {% include "components/core/red_text.html" with text="no client" %}
 
                 {% endif %}
               </td>
@@ -72,7 +72,7 @@
                   {% endif %}
                 {% else %}
 
-                  {% include "components/core/red_text.html" with text="No staff member for this job" only %}
+                  {% include "components/core/red_text.html" with text="No staff member for this job"  %}
 
                 {% endif %}
                 {% comment  %}
@@ -90,18 +90,22 @@
                     <span class="tag is-rounded bk-tag">{{ category.name }}</span>
                   {% empty %}
 
-                    {% include "components/core/red_text.html" with text="No categories" only %}
+                    {% include "components/core/red_text.html" with text="No categories"  %}
 
                   {% endfor %}
                 </div>
               </td>
             {% endif %}
-            <td data-label="Task">{{ job_object.tasks.count }}</td>
+            {% if is_show_tasks_count is True %}<td data-label="Task">{{ job_object.tasks.count }}</td>{% endif %}
+            
+            {% if is_show_type is True %}
             <td data-label="Type">
 
               {% include "components/core/tag.html" with tag_text=job_object.get_job_type_display tag_size="is-small" %}
 
             </td>
+            {% endif %}
+              
             <td data-label="Status" class="is-progress-cell">
 
               {% include "components/core/table_list/status_tag.html" with status=job_object.status tag_size="is-small" status_label=job_object.get_status_display %}
@@ -114,26 +118,26 @@
             <td data-label="Start Date"
                 data-sort="{{ job_object.start_date|date:"Ymd" }}">
 
-              {% include "components/core/table_list/table_cell_created.html" with created_at=job_object.start_date user_type=user_type only %}
+              {% include "components/core/table_list/table_cell_created.html" with created_at=job_object.start_date user_type=user_type %}
 
             </td>
             <td data-label="Due Date"
                 data-sort="{{ job_object.due_date|date:"Ymd" }}">
 
-              {% include "components/core/table_list/table_cell_created.html" with created_at=job_object.due_date user_type=user_type only %}
+              {% include "components/core/table_list/table_cell_created.html" with created_at=job_object.due_date user_type=user_type %}
 
             </td>
             {% if is_show_created_at is True %}
               <td data-label="Created"
                   data-sort="{{ job_object.created_at|date:"Ymd" }}">
 
-                {% include "components/core/table_list/table_cell_created.html" with created_at=job_object.created_at user_type=user_type only %}
+                {% include "components/core/table_list/table_cell_created.html" with created_at=job_object.created_at user_type=user_type %}
 
               </td>
             {% endif %}
             <td class="is-actions-cell">
 
-              {% include "components/core/table_list/table_cell_actions.html" with object_pk=job_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_name=app_name only %}
+              {% include "components/core/table_list/table_cell_actions.html" with object_pk=job_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_name=app_name %}
 
             </td>
           </tr>

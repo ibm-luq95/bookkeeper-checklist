@@ -57,6 +57,10 @@ INSTALLED_APPS = [
     "slippers",
     "import_export",
     "django_filters",
+    "django_summernote",
+    # "django_quill",
+    # "tinymce",
+    # "ckeditor",
     "rest_framework",
     # "rest_framework.authtoken",
     "crispy_forms",
@@ -174,6 +178,8 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STATICFIELS_DIRS = [BASE_DIR / "static"]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
@@ -373,17 +379,51 @@ LOGGERS = (
     },
 )
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": FORMATTERS[0],
-    "handlers": HANDLERS,
-    "loggers": LOGGERS[0],
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": FORMATTERS[0],
+#     "handlers": HANDLERS,
+#     "loggers": LOGGERS[0],
+# }
 
 # Backup password
 BACKUP_KEY = config("BACKUP_KEY", cast=str)
 COMPRESS_LEVEL = config("COMPRESS_LEVEL", cast=int)
+
+
+# summernote configs
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SUMMERNOTE_THEME = "lite"  # Show summernote with lite theme
+SUMMERNOTE_CONFIG = {
+    # 'iframe': True,
+    "summernote": {
+        # 'airMode': True,
+        "width": "750",
+        # "height": "100%",
+        "toolbar": [
+            ["style", ["style"]],
+            ["font", ["bold", "underline", "clear"]],
+            ["fontname", ["fontname"]],
+            ["color", ["color"]],
+            ["para", ["ul", "ol", "paragraph"]],
+            ["table", ["table"]],
+            ["insert", ["link", "picture", "video", "hr"]],
+            # ["view", ["fullscreen", "codeview", "help"]],
+        ],
+        # Require users to be authenticated for uploading attachments.
+        "attachment_require_authentication": True,
+        # Set `upload_to` function for attachments.
+        # 'attachment_upload_to': my_custom_upload_to_func(),
+        "attachment_upload_to": "/media/summernote_attachments",
+        # Set custom storage class for attachments.
+        # "attachment_storage_class": "my.custom.storage.class.name",
+        # Set custom model for attachments (default: 'django_summernote.Attachment')
+        # "attachment_model": "my.custom.attachment.model",  # must inherit 'django_summernote.AbstractAttachment'
+        # You can completely disable the attachment feature.
+        "disable_attachment": False,
+    }
+}
 
 # check if cache enabled
 # if ast.literal_eval(os.environ.get("IS_CACHE_ENABLED")) is True:

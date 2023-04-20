@@ -21,6 +21,9 @@
             {% if job_object %}
             <input type="hidden" name="job" value="{{ job_object.pk }}" />
             {% endif %}
+            {% if document_section %}
+            <input type="hidden" name="document_section" value="{{ document_section }}" />
+            {% endif %}
             <!-- <input type="hidden" name="id" id="id" value="" /> -->
             {{ document_form|crispy }}
           </fieldset>

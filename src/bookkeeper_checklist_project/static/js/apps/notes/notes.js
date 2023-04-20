@@ -16,16 +16,11 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   const notOwnerTagElement = noteModalElement.querySelector(".not-owner-tag");
   const noteModalFormElement = noteModalElement.querySelector("form");
   const noteModalTitleElement = noteModalElement.querySelector(".modal__title");
-  const noteModalSubmitElement = noteModalElement.querySelector(
-    "button[type='submit']"
-  );
-  const noteModalFormFieldsetElement =
-    noteModalFormElement.querySelector("fieldset");
+  const noteModalSubmitElement = noteModalElement.querySelector("button[type='submit']");
+  const noteModalFormFieldsetElement = noteModalFormElement.querySelector("fieldset");
   const managerAddNoteBtn = document.querySelector("button#addNoteBtn");
   const managerViewNoteBtn = document.querySelectorAll(".managerViewNoteBtn");
-  const managerDeleteNoteBtn = document.querySelectorAll(
-    ".managerDeleteNoteBtn"
-  );
+  const managerDeleteNoteBtn = document.querySelectorAll(".managerDeleteNoteBtn");
   // create note button
   managerAddNoteBtn.addEventListener("click", (event) => {
     const callBacks = {
@@ -77,10 +72,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       })
       .catch((error) => {
         console.error(error);
-        showToastNotification(
-          `${JSON.stringify(error["user_error_msg"])}`,
-          "danger"
-        );
+        showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
       });
   });
 
@@ -90,9 +82,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       const currentTarget = event.currentTarget;
       const data = currentTarget.dataset;
       const noteId = data["noteId"];
-      const retrieveUrl = await fetchUrlPathByName(
-        "notes:api:retrieve"
-      );
+      const retrieveUrl = await fetchUrlPathByName("notes:api:retrieve");
       const updateUrl = await fetchUrlPathByName("notes:api:update");
       const requestOptions = {
         method: "POST",
@@ -130,10 +120,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         })
         .catch((error) => {
           console.error(error);
-          showToastNotification(
-            `${JSON.stringify(error["user_error_msg"])}`,
-            "danger"
-          );
+          showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
         });
     });
   });
@@ -145,9 +132,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       const noteId = data["noteId"];
       const noteTitle = data["noteTitle"];
       const deleteUrl = await fetchUrlPathByName("notes:api:delete");
-      const confirmMsg = confirm(
-        `Do you want to delete the note ${noteTitle}?`
-      );
+      const confirmMsg = confirm(`Do you want to delete the note ${noteTitle}?`);
       if (confirmMsg) {
         const requestOptions = {
           method: "DELETE",
@@ -164,10 +149,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           })
           .catch((error) => {
             console.error(error);
-            showToastNotification(
-              `${JSON.stringify(error["user_error_msg"])}`,
-              "danger"
-            );
+            showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
           });
       }
     });

@@ -13,7 +13,7 @@
             <hr />
             {# Start Include Filter Form Component #}
 
-            {% include "components/core/forms/filter_form.html" with object_list=object_list user_type=request.user.user_type action_url="accounts:list" reset_url="accounts:list" filter_form=filter_form only %}
+            {% include "components/core/forms/filter_form.html" with object_list=object_list user_type=request.user.user_type action_url="accounts:list" reset_url="accounts:list" filter_form=filter_form %}
 
             {# End Include Filter Form Component #}
             {# Start Include Client Table List Component #}

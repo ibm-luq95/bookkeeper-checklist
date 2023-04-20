@@ -34,16 +34,16 @@
                             <td data-label="Created"
                                 data-sort="{{ db_backup.created_at|date:"Ymd" }}">
 
-                                {% include "components/core/table_list/table_cell_created.html" with created_at=db_backup.created_at user_type=request.user.user_type only %}
+                                {% include "components/core/table_list/table_cell_created.html" with created_at=db_backup.created_at user_type=request.user.user_type %}
 
                             </td>
                         {% endif %}
                         <td data-label="Restored AT" data-sort="{{ db_backup.restored_at|date:"Ymd" }}">
-                            {% include "components/core/table_list/table_cell_created.html" with created_at=db_backup.restored_at user_type=request.user.user_type only %}
+                            {% include "components/core/table_list/table_cell_created.html" with created_at=db_backup.restored_at user_type=request.user.user_type %}
                         </td>
                         <td class="is-actions-cell">
 
-                            {% include "components/core/table_list/table_cell_actions.html" with object_pk=db_backup.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_name=app_name only %}
+                            {% include "components/core/table_list/table_cell_actions.html" with object_pk=db_backup.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True perms=perms app_name=app_name %}
 
                         </td>
                     </tr>

@@ -38,7 +38,7 @@
                     <br />
                   {% empty %}
 
-                    {% include "components/core/red_text.html" with text="No staff member for this client" only %}
+                    {% include "components/core/red_text.html" with text="No staff member for this client" %}
 
                   {% endfor %}
                 </div>
@@ -53,7 +53,7 @@
                   <br />
                 {% empty %}
 
-                  {% include "components/core/red_text.html" with text="No contacts" only %}
+                  {% include "components/core/red_text.html" with text="No contacts" %}
 
                 {% endfor %}
               </div>
@@ -70,7 +70,7 @@
               <td data-label="Created"
                   data-sort="{{ client_object.created_at|date:"Ymd" }}">
 
-                {% include "components/core/table_list/table_cell_created.html" with created_at=client_object.created_at user_type=user_type only %}
+                {% include "components/core/table_list/table_cell_created.html" with created_at=client_object.created_at user_type=user_type %}
 
               </td>
             {% endif %}

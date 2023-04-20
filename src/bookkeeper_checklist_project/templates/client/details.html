@@ -39,7 +39,7 @@
             &nbsp;
             <small title="Created at">{{ object.created_at|date }}</small>
             &nbsp;
-            {% include 'components/core/table_list/status_tag.html' with status=object.status tag_size="is-small" status_label=object.get_status_display %}
+            {% include "components/core/table_list/status_tag.html" with status=object.status tag_size="is-small" status_label=object.get_status_display %}
             <br />
             {{ object.industry }}
           </p>
@@ -148,14 +148,14 @@
   {% if perms.documents.can_view_list %}
   <!-- Start Documents Segment -->
   <div id="documentsContentWrapper" hidden>
-    {% include 'components/documents/table_list.html' with object_list=object.documents.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="documents" action_urls_pattern="documents" enabled_action_btns='update,delete' is_show_created_at=False only %}
+    {% include "components/documents/table_list.html" with object_list=object.documents.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="documents" action_urls_pattern="documents" enabled_action_btns='update,delete' is_show_created_at=False %}
     <!-- Start Document Modal Form -->
-    {% include 'segments/documents/document_modal.html' with user_type=request.user.user_type document_form=document_form request_object=request %}
+    {% include "segments/documents/document_modal.html" with user_type=request.user.user_type document_form=document_form request_object=request %}
     <!-- End Document Modal Form -->
   </div>
   <!-- End Documents Segment -->
   {% else %}
-  {% include 'components/core/no_permissions.html' with msg="no permissions to see documents" %}
+  {% include "components/core/no_permissions.html" with msg="no permissions to see documents" %}
   {% endif %}
 
   {% elif page_section_name == "jobs" %}
@@ -163,16 +163,16 @@
   {% if perms.jobs.can_view_list %}
   <!-- Start Jobs Segment -->
   <div id="jobsContentWrapper" hidden>
-    {% include 'components/jobs/table_list.html' with object_list=object.jobs.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="jobs" action_urls_pattern="jobs" enabled_action_btns='update,delete,details' details_url="jobs:details" is_show_created_at=False request=request only %}
+    {% include "components/jobs/table_list.html" with object_list=object.jobs.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="jobs" action_urls_pattern="jobs" enabled_action_btns="update,delete,details" details_url="jobs:details" is_show_created_at=False request=request %}
 
     <!-- Start Jobs Form -->
-    {% include 'segments/jobs/job_modal.html' with user_type=request.user.user_type job_form=jobs_form request_object=request %}
+    {% include "segments/jobs/job_modal.html" with user_type=request.user.user_type job_form=jobs_form request_object=request %}
     <!-- End Jobs Form -->
   </div>
 
   <!-- End Jobs Segment -->
   {% else %}
-  {% include 'components/core/no_permissions.html' with msg="no permissions to see jobs" %}
+  {% include "components/core/no_permissions.html" with msg="no permissions to see jobs" %}
   {% endif %}
 
   {% elif page_section_name == "assignments" %}
@@ -180,15 +180,15 @@
   {% if perms.special_assignment.can_view_list %}
   <!-- Start Special Assignments Segment -->
   <div id="specialAssignmentsContentWrapper" hidden>
-    {% include 'components/special_assignment/table_list.html' with object_list=object.special_assignments.all user_type=request.user.user_type perms=perms app_name="special_assignment" action_urls_pattern="special_assignment" enabled_action_btns='update,delete,details' details_url="special_assignment:details" is_show_created_at=False enable_create_btn=True request=request only %}
+    {% include "components/special_assignment/table_list.html" with object_list=object.special_assignments.all user_type=request.user.user_type perms=perms app_name="special_assignment" action_urls_pattern="special_assignment" enabled_action_btns="update,delete,details" details_url="special_assignment:details" is_show_created_at=False enable_create_btn=True request=request %}
 
     <!-- Start Special Assignment Form -->
-    {% include 'segments/special_assignment/special_assignment_modal.html' with user_type=request.user.user_type form=special_assignment_form request_object=request client_object=object %}
+    {% include "segments/special_assignment/special_assignment_modal.html" with user_type=request.user.user_type form=special_assignment_form request_object=request client_object=object %}
     <!-- End Special Assignment Form -->
   </div>
   <!-- End Special Assignments Segment -->
   {% else %}
-  {% include 'components/core/no_permissions.html' with msg="no permissions to see special assignments" %}
+  {% include "components/core/no_permissions.html" with msg="no permissions to see special assignments" %}
   {% endif %}
 
   {% elif page_section_name == "notes" %}
@@ -196,14 +196,14 @@
   {% if perms.notes.can_view_list %}
   <!-- Start Notes Segment -->
   <div id="notesContentWrapper" hidden>
-    {% include 'components/notes/table_list.html' with object_list=object.notes.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="note" action_urls_pattern="notes" enabled_action_btns='update,delete' is_show_created_at=False only %}
+    {% include "components/notes/table_list.html" with object_list=object.notes.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="note" action_urls_pattern="notes" enabled_action_btns="update,delete" is_show_created_at=False %}
     <!-- Start Note Modal Form -->
-    {% include 'segments/notes/note_modal.html' with user_type=request.user.user_type note_form=note_form request_object=request %}
+    {% include "segments/notes/note_modal.html" with user_type=request.user.user_type note_form=note_form request_object=request %}
     <!-- End Note Modal Form -->
   </div>
   <!-- End Notes Segment -->
   {% else %}
-  {% include 'components/core/no_permissions.html' with msg="no permissions to see notes" %}
+  {% include "components/core/no_permissions.html" with msg="no permissions to see notes" %}
   {% endif %}
 
   {% elif page_section_name == "services" %}
@@ -211,15 +211,15 @@
   {% if perms.company_services.can_view_list %}
   <!-- Start Account & Services Segment -->
   <div id="servicesContentWrapper" hidden>
-    {% include 'components/company_services/table_list.html' with object_list=object.company_services.all all=request.user.user_type enable_create_btn=True is_show_client_column=False perms=perms app_name="company_services" is_show_client_column=False action_urls_pattern="company_services" enabled_action_btns='update,delete' is_show_created_at=False  only %}
+    {% include "components/company_services/table_list.html" with object_list=object.company_services.all all=request.user.user_type enable_create_btn=True is_show_client_column=False perms=perms app_name="company_services" is_show_client_column=False action_urls_pattern="company_services" enabled_action_btns="update,delete" is_show_created_at=False %}
 
     <!-- Start Company Services Form -->
-    {% include 'segments/company_service/company_service_modal.html' with user_type=request.user.user_type company_services_form=company_services_form request_object=request %}
+    {% include "segments/company_service/company_service_modal.html" with user_type=request.user.user_type company_services_form=company_services_form request_object=request %}
     <!-- End Company Services Form -->
   </div>
   <!-- End Account & Services Segment -->
   {% else %}
-  {% include 'components/core/no_permissions.html' with msg="no permissions to see company and services" %}
+  {% include "components/core/no_permissions.html" with msg="no permissions to see company and services" %}
   {% endif %}
 
   {% comment  %}
@@ -227,7 +227,7 @@
 
   <!-- Start Tasks Segment -->
   <div id="tasksContentWrapper" hidden>
-    {% include 'components/task/table_list.html' with client_object=object object_list=object.get_all_tasks user_type=request.user.user_type enable_create_btn=True perms=perms app_name="task" details_url="task:update" action_urls_pattern="task" enabled_action_btns='update,delete' is_show_job_column=True is_show_start_date=True is_show_checkboxes=False only %}
+    {% include 'components/task/table_list.html' with client_object=object object_list=object.get_all_tasks user_type=request.user.user_type enable_create_btn=True perms=perms app_name="task" details_url="task:update" action_urls_pattern="task" enabled_action_btns='update,delete' is_show_job_column=True is_show_start_date=True is_show_checkboxes=False %}
     <!-- Start Task Modal Form -->
     {% include 'segments/tasks/task_modal.html' with user_type=request.user.user_type task_form=tasks_form request_object=request %}
     <!-- End Task Modal Form -->
@@ -237,7 +237,7 @@
   {% elif page_section_name == "overview" %}
   <!-- Start Overview Segment -->
   <div id="overviewContentWrapper" hidden>
-    {% include 'client/segments/overview.html' with client_object=object user_type=request.user.user_type %}
+    {% include "client/segments/overview.html" with client_object=object user_type=request.user.user_type %}
   </div>
   <!-- End overview Segment -->
 
@@ -246,15 +246,15 @@
   {% if perms.important_contact.can_view_list %}
   <!-- Start Important Contacts Segment -->
   <div id="contactsContentWrapper" hidden>
-    {% include 'components/important_contact/table_list.html' with object_list=object.important_contacts.all user_type=request.user.user_type perms=perms app_name="important_contact" action_urls_pattern="important_contact" enabled_action_btns='update,delete' enable_create_btn=True only %}
+    {% include "components/important_contact/table_list.html" with object_list=object.important_contacts.all user_type=request.user.user_type perms=perms app_name="important_contact" action_urls_pattern="important_contact" enabled_action_btns="update,delete" enable_create_btn=True %}
 
     <!-- Start Important Contact Form -->
-    {% include 'segments/important_contact/important_contact_modal.html' with user_type=request.user.user_type form=important_contact_form request_object=request client_object=object %}
+    {% include "segments/important_contact/important_contact_modal.html" with user_type=request.user.user_type form=important_contact_form request_object=request client_object=object %}
     <!-- End Important Contact Form -->
   </div>
   <!-- End Important Contacts Segment -->
   {% else %}
-  {% include 'components/core/no_permissions.html' with msg="no permissions to see contacts" %}
+  {% include "components/core/no_permissions.html" with msg="no permissions to see contacts" %}
   {% endif %}
 
   {% endif %}

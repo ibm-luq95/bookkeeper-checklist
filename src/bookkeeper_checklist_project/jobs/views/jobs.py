@@ -119,6 +119,7 @@ class JobDetailsView(
             initial={"client": job_object.client, "job": job_object},
             remove_type_and_status=True,
             remove_job=True,
+            reset_text_widget=True,
         )
         note_form = NoteForm(
             initial={

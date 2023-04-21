@@ -95,14 +95,13 @@
               <td data-label="Created"
                   data-sort="{{ task_object.created_at|date:"Ymd" }}">
 
-                {% include 'components/core/table_list/table_cell_created.html' with created_at=task_object.created_at user_type=user_type  %}
+                {% include "components/core/table_list/table_cell_created.html" with created_at=task_object.created_at user_type=user_type %}
 
               </td>
             {% endif %}
             <td class="is-actions-cell">
 
-              {% include 'components/core/table_list/table_cell_actions.html' with object_pk=task_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms action_btn_css_class="task"  %}
-
+              {% include "components/core/table_list/table_cell_actions.html" with object_pk=task_object.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms action_btn_css_class="task"  %}
             </td>
           </tr>
         {% empty %}

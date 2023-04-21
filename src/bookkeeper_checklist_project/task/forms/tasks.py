@@ -22,7 +22,7 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicA
         "additional_notes",
         "hints",
     ]
-    additional_notes = SummernoteTextFormField()
+    additional_notes = SummernoteTextFormField(required=False)
 
     def __init__(
         self,

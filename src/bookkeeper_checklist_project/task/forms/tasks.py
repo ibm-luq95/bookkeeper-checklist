@@ -33,11 +33,14 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicA
         remove_type_and_status=False,
         remove_job=False,
         set_full_width=False,
+        reset_text_widget=False,
         *args,
         **kwargs,
     ):
         super(TaskForm, self).__init__(*args, **kwargs)
-        SetSummernoteDynamicAttrsMixin.__init__(self, set_full_width=set_full_width)
+        SetSummernoteDynamicAttrsMixin.__init__(
+            self, set_full_width=set_full_width, reset_text_widget=reset_text_widget
+        )
         self.fields["job"].widget.attrs.update({"class": "input"})
 
         # check if job passed and set it to job input
@@ -59,7 +62,7 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicA
             self.created_by = created_by
 
         if remove_type_and_status is True:
-            self.fields.pop("status")
+            # self.fields.pop("status")
             self.fields.pop("task_type")
             self.fields.pop("hints")
 

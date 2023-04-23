@@ -1,0 +1,7 @@
+/* django-quill-widget ql-container ql-snow */
+/* .django-quill-widget { */
+.ql-container {
+  /* overflow-y: visible !important; */
+  /* height: 500px !important; */
+  height: 300px !important;
+}

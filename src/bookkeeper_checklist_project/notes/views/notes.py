@@ -68,7 +68,7 @@ class NoteCreateView(
     def get_form_kwargs(self):
         kwargs = super(NoteCreateView, self).get_form_kwargs()
         client_pk = self.request.GET.get("client")
-        kwargs.update({"set_full_width": True})
+        kwargs.update({"add_jodit_css_class": True})
         kwargs.update({"created_by": self.request.user})
         if client_pk is not None:
             kwargs.update({"client_pk": client_pk})
@@ -95,7 +95,7 @@ class NotesUpdateView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", get_trans_txt("Update note"))
-        kwargs.update({"set_full_width": True})
+        kwargs.update({"add_jodit_css_class": True})
         return context
 
     def get_form_kwargs(self):

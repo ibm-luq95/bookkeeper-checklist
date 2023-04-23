@@ -110,7 +110,7 @@ class SpecialAssignmentCreateView(
         """Return the keyword arguments for instantiating the form."""
         kwargs = super().get_form_kwargs()
         kwargs.update({"assigned_by": self.request.user})
-        kwargs.update({"set_full_width": True})
+        kwargs.update({"add_jodit_css_class": True})
         return kwargs
 
     def form_valid(self, form):
@@ -155,7 +155,7 @@ class SpecialAssignmentUpdateView(
         assigned_by = self.get_object().assigned_by
         kwargs = super().get_form_kwargs()
         kwargs.update({"assigned_by": assigned_by})
-        kwargs.update({"set_full_width": True})
+        kwargs.update({"add_jodit_css_class": True})
         return kwargs
 
     def form_valid(self, form):
@@ -211,7 +211,7 @@ class SpecialAssignmentDetailsView(
         discussion_form = DiscussionForm(
             special_assignment=special_assignment,
             discussion_user=self.request.user,
-            set_full_width=True,
+            add_jodit_css_class=True,
         )
         context.setdefault("status", status)
         context.setdefault("discussion_form", discussion_form)

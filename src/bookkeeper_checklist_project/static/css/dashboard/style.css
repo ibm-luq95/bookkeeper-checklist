@@ -687,3 +687,20 @@ select[multiple] {
 .warning-table-row {
   background-color: rgb(255, 221, 87, 0.27) !important;
 }
+
+/* @media only screen and (max-width: 700px) {
+  .jodit-editor-custom-editor {
+    max-width: 600px !important;
+    margin: 0 auto;
+  }
+} */
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+/* @media only screen and (min-width: 1200px) {
+  .jodit-editor-custom-editor {
+    max-width: 100% !important;
+    margin: 0 auto;
+  }
+} */
+.modal__content {
+  width: 850px;
+}

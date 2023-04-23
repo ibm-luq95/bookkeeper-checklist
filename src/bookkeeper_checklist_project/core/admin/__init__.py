@@ -1,2 +1,2 @@
 from .mixin import BaseAdminModelMixin
-from .summernote_mixin import SummernoteAdminMixin
+from .jodit_js_editor import JoditEditorAdminMixin

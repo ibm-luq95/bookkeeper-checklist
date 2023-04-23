@@ -145,5 +145,6 @@ document.addEventListener("readystatechange", (ev) => {
         NiceSelect.bind(element);
       });
     }
+    
   }
 });

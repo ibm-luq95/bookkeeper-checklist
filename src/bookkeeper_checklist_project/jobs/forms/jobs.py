@@ -1,20 +1,21 @@
 from django.core.exceptions import ValidationError
-from django.core.exceptions import ValidationError
+
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from django_summernote.fields import SummernoteTextFormField
+
+# from django_summernote.fields import SummernoteTextFormField
 
 from core.forms import (
     BaseModelFormMixin,
     SaveCreatedByFormMixin,
-    SetSummernoteDynamicAttrsMixin,
+    JoditFormMixin,
 )
 from jobs.models import JobProxy
 from users.models import CustomUser
 
 
-class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAttrsMixin):
+class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, JoditFormMixin):
     field_order = [
         "title",
         "client",
@@ -26,8 +27,8 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAt
         "job_type",
         "note",
     ]
-    description = SummernoteTextFormField()
-    note = SummernoteTextFormField(required=False)
+    # description = SummernoteTextFormField()
+    # note = SummernoteTextFormField(required=False)
 
     def __init__(
         self,
@@ -35,12 +36,12 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAt
         client=None,
         created_by=None,
         is_updated=False,
-        set_full_width=False,
+        add_jodit_css_class=False,
         *args,
         **kwargs,
     ):
         super(JobForm, self).__init__(*args, **kwargs)
-        SetSummernoteDynamicAttrsMixin.__init__(self, set_full_width=set_full_width)
+        JoditFormMixin.__init__(self, add_jodit_css_class=add_jodit_css_class)
         if client is not None:
             self.fields["client"].initial = client
             self.fields["client"].widget.attrs.update(

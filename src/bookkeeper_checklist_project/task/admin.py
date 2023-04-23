@@ -1,13 +1,13 @@
 # from django_summernote.admin import SummernoteModelAdmin
 
-from core.admin import BaseAdminModelMixin, SummernoteAdminMixin
+from core.admin import BaseAdminModelMixin, JoditEditorAdminMixin
 from django.contrib import admin
 
 from .models import Task, TaskTemplate, TaskItem
 
 
 @admin.register(Task)
-class TaskAdmin(BaseAdminModelMixin, SummernoteAdminMixin):
+class TaskAdmin(BaseAdminModelMixin, JoditEditorAdminMixin):
     # pass
     # list_filter = ("is_completed", "start_date", "due_date", "task_type")
     list_filter = ("is_completed",)
@@ -15,7 +15,7 @@ class TaskAdmin(BaseAdminModelMixin, SummernoteAdminMixin):
 
 
 @admin.register(TaskTemplate)
-class TaskTemplateAdmin(BaseAdminModelMixin, SummernoteAdminMixin):
+class TaskTemplateAdmin(BaseAdminModelMixin, JoditEditorAdminMixin):
     pass
 
 

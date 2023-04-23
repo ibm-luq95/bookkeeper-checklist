@@ -2,18 +2,18 @@
 from typing import Optional
 
 from django import forms
-from django_summernote.fields import SummernoteTextFormField
+# from django_summernote.fields import SummernoteTextFormField
 
 from core.constants.form import EXCLUDED_FIELDS
-from core.forms import BaseModelFormMixin, SetSummernoteDynamicAttrsMixin
+from core.forms import BaseModelFormMixin, JoditFormMixin
 from core.utils import get_trans_txt
 from jobs.models import Job
 from special_assignment.models import Discussion, SpecialAssignment
 from users.models import CustomUser
 
 
-class DiscussionForm(BaseModelFormMixin, SetSummernoteDynamicAttrsMixin):
-    body = SummernoteTextFormField()
+class DiscussionForm(BaseModelFormMixin, JoditFormMixin):
+    # body = SummernoteTextFormField()
 
     def __init__(
         self,
@@ -21,12 +21,12 @@ class DiscussionForm(BaseModelFormMixin, SetSummernoteDynamicAttrsMixin):
         discussion_user: Optional[CustomUser] = None,
         job: Optional[Job] = None,
         reply_object: Optional[Discussion] = None,
-        set_full_width=False,
+        add_jodit_css_class=False,
         *args,
         **kwargs,
     ):
         super(DiscussionForm, self).__init__(*args, **kwargs)
-        SetSummernoteDynamicAttrsMixin.__init__(self, set_full_width=set_full_width)
+        JoditFormMixin.__init__(self, add_jodit_css_class=add_jodit_css_class)
         self.fields["body"].widget.attrs.update({"rows": 5, "cols": 10})
 
         # self.fields["title"].widget.attrs.update(

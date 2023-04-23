@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-#
+from decouple import config
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.messages.views import SuccessMessageMixin
@@ -7,12 +8,9 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 
 from core.cache import CacheViewMixin
+from core.utils import get_trans_txt
 from users.forms import CustomUserLoginForm
 from users.models import CustomUser
-
-
-# from prettyprinter import cpprint
-# from termcolor import cprint
 
 
 class LoginView(SuccessMessageMixin, CacheViewMixin, FormView):
@@ -20,7 +18,7 @@ class LoginView(SuccessMessageMixin, CacheViewMixin, FormView):
     success_url = reverse_lazy("users:auth:login")
     template_name = "users/login.html"
     form_class = CustomUserLoginForm
-    success_message: str = "Login successfully"
+    success_message: str = get_trans_txt("Login successfully")
 
     def get(self, request, *args, **kwargs):
         """Handle GET requests: instantiate a blank version of the form."""
@@ -40,9 +38,16 @@ class LoginView(SuccessMessageMixin, CacheViewMixin, FormView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context.setdefault("title", "Login")
+        context.setdefault("title", get_trans_txt("Login"))
 
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        environment = config("STAGE_ENVIRONMENT", cast=str)
+        if environment == "DEV" or environment == "STAGE":
+            kwargs.update({"initial": {"user_type": "manager"}})
+        return kwargs
 
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.

@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           jobsForm.elements["_method"].value = "PUT";
           jobsForm.setAttribute("method", "PUT");
           jobsForm.setAttribute("action", updateJobUrl["urlPath"]);
-          console.log(jobsForm.getAttribute("action"));
+          // console.log(jobsForm.getAttribute("action"));
           jobModalTitleElement.textContent = "Update job";
           jobModalSubmitBtn.textContent = "Update";
         },

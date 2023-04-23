@@ -10,7 +10,6 @@ djangorestframework
 django-log-viewer
 django-import-export
 django-extensions
-django-summernote
 hiredis
 mysql-connector-python
 mysqlclient

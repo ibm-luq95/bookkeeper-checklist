@@ -113,7 +113,9 @@ class UpdateJobApiView(APIView):
             job_object = JobProxy.objects.get(pk=data.get("jobId"))
             del data["jobId"]
             # serializer = JobSerializer(instance=job_object, data=data, partial=True)
-            serializer = JobSerializer(instance=job_object, data=data)
+            serializer = JobSerializer(
+                instance=job_object, data=data, context={"request": request}
+            )
             if not serializer.is_valid(raise_exception=True):
                 raise APIException(serializer.errors)
             debugging_print(serializer.validated_data)

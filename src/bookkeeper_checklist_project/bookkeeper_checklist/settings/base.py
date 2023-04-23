@@ -57,10 +57,11 @@ INSTALLED_APPS = [
     "slippers",
     "import_export",
     "django_filters",
-    "django_summernote",
+    # "django_summernote",
     # "django_quill",
     # "tinymce",
     # "ckeditor",
+    # "ckeditor_uploader",
     "rest_framework",
     # "rest_framework.authtoken",
     "crispy_forms",
@@ -422,6 +423,102 @@ SUMMERNOTE_CONFIG = {
         # "attachment_model": "my.custom.attachment.model",  # must inherit 'django_summernote.AbstractAttachment'
         # You can completely disable the attachment feature.
         "disable_attachment": False,
+    }
+}
+# ckeditor upload path
+CKEDITOR_UPLOAD_PATH = "ckeditor/upload/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         # 'toolbar': 'Basic',
+#         'toolbar_Basic': [
+#             ['Source', '-', 'Bold', 'Italic']
+#         ],
+#         "toolbar": "toolbar_Basic",
+#         'extraPlugins': ','.join([
+#             'uploadimage', # the upload image feature
+#             # your extra plugins here
+#             "list"
+#         ])
+#     },
+# }
+CKEDITOR_CONFIGS = {
+    "default": {
+        # 'skin': 'moono',
+        # 'skin': 'office2013',
+        "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
+        "toolbar_YourCustomToolbarConfig": [
+            # {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            # {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {"name": "clipboard", "items": ["-", "Undo", "Redo"]},
+            {"name": "editing", "items": ["Find", "Replace", "-", "SelectAll"]},
+            # {'name': 'forms',
+            #  'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+            #            'HiddenField']},
+            # '/',
+            {
+                "name": "basicstyles",
+                "items": [
+                    "Bold",
+                    "Italic",
+                    "Underline",
+                    "Strike",
+                    # "Subscript",
+                    # "Superscript",
+                    "-",
+                    "RemoveFormat",
+                ],
+            },
+            # {'name': 'paragraph',
+            #  'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+            #            'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+            #            'Language']},
+            {"name": "paragraph", "items": ["NumberedList", "BulletedList"]},
+            # {"name": "links", "items": ["Link", "Unlink", "Anchor"]},
+            {"name": "links", "items": ["Link", "Unlink"]},
+            # {'name': 'insert',
+            #  'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            # "/",
+            {"name": "styles", "items": ["Styles", "Format", "Font", "FontSize"]},
+            {"name": "colors", "items": ["TextColor", "BGColor"]},
+            # {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            # {'name': 'about', 'items': ['About']},
+            # '/',  # put this to force next toolbar on new line
+            # {'name': 'yourcustomtools', 'items': [
+            #     # put the name of your editor.ui.addButton here
+            #     'Preview',
+            #     'Maximize',
+            # ]},
+        ],
+        "toolbar": "YourCustomToolbarConfig",  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        # 'height': 291,
+        # 'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        "tabSpaces": 4,
+        "width": "100%",
+        # "height": "100%",
+        "extraPlugins": ",".join(
+            [
+                "uploadimage",  # the upload image feature
+                # your extra plugins here
+                "div",
+                "autolink",
+                "autoembed",
+                "embedsemantic",
+                "autogrow",
+                # 'devtools',
+                "widget",
+                "lineutils",
+                "clipboard",
+                "dialog",
+                "dialogui",
+                "elementspath",
+            ]
+        ),
     }
 }
 

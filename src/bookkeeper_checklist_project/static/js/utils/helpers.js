@@ -345,6 +345,7 @@ const formInputSerializer = ({
  * @param {Object} objectOfValues Object of values to set
  */
 const setFormInputValues = (formElement, objectOfValues) => {
+  const wyswygCssClass = "wyswyg-textarea";
   // check the type of formElement is HTMLFormElement
   if (formElement.constructor.name !== "HTMLFormElement") {
     throw new Error("The element to set values not form element!!");
@@ -352,8 +353,17 @@ const setFormInputValues = (formElement, objectOfValues) => {
   for (const name in objectOfValues) {
     try {
       if (Object.hasOwnProperty.call(objectOfValues, name)) {
-        const element = objectOfValues[name];
-        formElement.elements[name].value = element.replace(/(<([^>]+)>)/gi, "");
+        const inputValue = objectOfValues[name];
+        const cleanValue = inputValue.replace(/(<([^>]+)>)/gi, "");
+        const fElement = formElement.elements[name];
+        if (fElement.classList.contains(wyswygCssClass)) {
+          const el = formElement.querySelector(`#${fElement.id}`);
+          const editor = Jodit.make(`#${el.id}`);
+          editor.value = inputValue;
+        } else {
+          fElement.value = cleanValue;
+        }
+        // formElement.elements[name].value =
       }
     } catch (error) {
       if (error instanceof TypeError) {

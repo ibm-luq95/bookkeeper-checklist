@@ -87,7 +87,7 @@ class JobCreateView(
     def get_form_kwargs(self):
         kwargs = super(JobCreateView, self).get_form_kwargs()
         kwargs.update({"created_by": self.request.user})
-        kwargs.update({"set_full_width": True})
+        kwargs.update({"add_jodit_css_class": True})
         return kwargs
 
 
@@ -106,7 +106,7 @@ class JobDetailsView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         job_object = self.get_object()
-        job_form = JobForm(instance=job_object, is_updated=True)
+        job_form = JobForm(instance=job_object, is_updated=True, add_jodit_css_class=True)
         discussion_form = DiscussionForm(initial={"job": job_object})
         document_form = DocumentForm(
             initial={
@@ -119,7 +119,7 @@ class JobDetailsView(
             initial={"client": job_object.client, "job": job_object},
             remove_type_and_status=True,
             remove_job=True,
-            reset_text_widget=True,
+            add_jodit_css_class=True,
         )
         note_form = NoteForm(
             initial={
@@ -128,7 +128,7 @@ class JobDetailsView(
                 "job": job_object,
             },
             removed_fields=["client", "task", "job", "note_section"],
-            reset_text_widget=True,
+            add_jodit_css_class=True,
         )
         all_discussions = Discussion.objects.filter(job=job_object)
         context.setdefault("job_status", JobStatusEnum.choices)
@@ -167,7 +167,7 @@ class JobUpdateView(
     def get_form_kwargs(self):
         kwargs = super(JobUpdateView, self).get_form_kwargs()
         kwargs.update({"is_updated": True})
-        kwargs.update({"set_full_width": True})
+        kwargs.update({"add_jodit_css_class": True})
         return kwargs
 
     # def get_success_url(self) -> str:

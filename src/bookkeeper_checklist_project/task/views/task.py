@@ -109,7 +109,7 @@ class TaskCreateView(
     def get_form_kwargs(self):
         kwargs = super(TaskCreateView, self).get_form_kwargs()
         kwargs.update({"created_by": self.request.user})
-        kwargs.update({"set_full_width": True})
+        kwargs.update({"add_jodit_css_class": True})
         return kwargs
 
 
@@ -147,7 +147,7 @@ class TaskUpdateView(
 
     def get_form_kwargs(self):
         kwargs = super(TaskUpdateView, self).get_form_kwargs()
-        kwargs.update({"set_full_width": True})
+        kwargs.update({"add_jodit_css_class": True})
         return kwargs
 
 

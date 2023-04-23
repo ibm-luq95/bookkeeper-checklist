@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-#
 from typing import Optional
 
-from django_summernote.fields import SummernoteTextFormField
+# from django_summernote.fields import SummernoteTextFormField
 
 from notes.models import Note
 from core.forms import (
     BaseModelFormMixin,
     SaveCreatedByFormMixin,
     RemoveFieldsMixin,
-    SetSummernoteDynamicAttrsMixin,
+    JoditFormMixin,
 )
 
 
@@ -16,25 +16,24 @@ class NoteForm(
     BaseModelFormMixin,
     SaveCreatedByFormMixin,
     RemoveFieldsMixin,
-    SetSummernoteDynamicAttrsMixin,
+    JoditFormMixin,
 ):
-    body = SummernoteTextFormField()
+    # body = SummernoteTextFormField()
 
     def __init__(
         self,
         client=None,
         note_section=None,
         created_by=None,
-        set_full_width=False,
-        reset_text_widget=False,
+        add_jodit_css_class=False,
         removed_fields: Optional[list] = None,
         *args,
         **kwargs,
     ):
         super(NoteForm, self).__init__(*args, **kwargs)
         RemoveFieldsMixin.__init__(self, removed_fields=removed_fields)
-        SetSummernoteDynamicAttrsMixin.__init__(
-            self, set_full_width=set_full_width, reset_text_widget=reset_text_widget
+        JoditFormMixin.__init__(
+            self, add_jodit_css_class=add_jodit_css_class
         )
         if client is not None:
             self.fields["client"].initial = client

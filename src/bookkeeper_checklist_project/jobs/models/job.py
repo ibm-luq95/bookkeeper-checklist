@@ -9,6 +9,9 @@ from django.utils.translation import gettext as _
 from client.models import ClientProxy
 from core.choices import JobStatusEnum, JobTypeEnum, JobStateEnum
 from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin, StrModelMixin
+
+# from django_quill.fields import QuillField
+# from ckeditor.fields import RichTextField
 from . import JobCategory
 
 # from task.models import Task
@@ -41,7 +44,15 @@ class Job(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
     title = models.CharField(
         _("title"), max_length=100, null=False, help_text=JOB_HELP_MESSAGES.get("title")
     )
-    slug = models.SlugField(_("slug"), max_length=250, null=True, blank=True)
+    slug = models.SlugField(
+        _("slug"), max_length=250, null=True, blank=True, editable=False
+    )
+    # description = models.TextField(
+    #     _("description"),
+    #     null=True,
+    #     blank=True,
+    #     help_text=JOB_HELP_MESSAGES.get("description"),
+    # )
     description = models.TextField(
         _("description"),
         null=True,
@@ -71,9 +82,7 @@ class Job(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
         null=True,
         blank=True,
     )
-    categories = models.ManyToManyField(
-        to=JobCategory, related_name="job", blank=True
-    )
+    categories = models.ManyToManyField(to=JobCategory, related_name="job", blank=True)
 
     # tasks = models.ManyToManyField(to=Task, help_text=JOB_HELP_MESSAGES.get("tasks"))
     note = models.TextField(

@@ -8,6 +8,7 @@ from client.serializers import ClientSerializer
 from core.choices import JobTypeEnum, JobStatusEnum
 from core.constants import EXCLUDED_FIELDS
 from core.serializers import CreatedBySerializerMixin
+from core.utils.developments import debugging_print
 from jobs.models import Job, JobProxy, JobCategory
 from task.serializers import TaskSerializer
 from users.models import CustomUser
@@ -54,8 +55,9 @@ class JobSerializer(serializers.ModelSerializer):
         Check that start is before finish.
         """
         now = timezone.now().date()
-        if data["due_date"] < now:
-            raise serializers.ValidationError({"due_date": "Due date old!"})
+        if self.context.get("request").method != "PUT":
+            if data["due_date"] < now:
+                raise serializers.ValidationError({"due_date": "Due date old!"})
         return data
 
 

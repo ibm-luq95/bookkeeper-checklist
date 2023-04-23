@@ -1,17 +1,17 @@
 from django import forms
-from django_summernote.fields import SummernoteTextFormField
+# from django_summernote.fields import SummernoteTextFormField
 
 # from django_summernote.fields import SummernoteTextFormField
 from core.forms import (
     BaseModelFormMixin,
     SaveCreatedByFormMixin,
-    SetSummernoteDynamicAttrsMixin,
+    JoditFormMixin,
 )
 from jobs.models import Job
 from task.models import Task
 
 
-class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicAttrsMixin):
+class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, JoditFormMixin):
     field_order = [
         "title",
         "job",
@@ -22,7 +22,7 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicA
         "additional_notes",
         "hints",
     ]
-    additional_notes = SummernoteTextFormField(required=False)
+    # additional_notes = SummernoteTextFormField(required=False)
 
     def __init__(
         self,
@@ -32,14 +32,13 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, SetSummernoteDynamicA
         created_by=None,
         remove_type_and_status=False,
         remove_job=False,
-        set_full_width=False,
-        reset_text_widget=False,
+        add_jodit_css_class=False,
         *args,
         **kwargs,
     ):
         super(TaskForm, self).__init__(*args, **kwargs)
-        SetSummernoteDynamicAttrsMixin.__init__(
-            self, set_full_width=set_full_width, reset_text_widget=reset_text_widget
+        JoditFormMixin.__init__(
+            self, add_jodit_css_class=add_jodit_css_class
         )
         self.fields["job"].widget.attrs.update({"class": "input"})
 

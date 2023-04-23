@@ -1,6 +1,6 @@
 # from django_summernote.admin import SummernoteModelAdmin
 
-from core.admin import BaseAdminModelMixin, SummernoteAdminMixin
+from core.admin import BaseAdminModelMixin, JoditEditorAdminMixin
 from django.contrib import admin
 
 from .models import SpecialAssignment, Discussion
@@ -13,7 +13,7 @@ class DiscussionInline(admin.TabularInline):
 
 
 @admin.register(SpecialAssignment)
-class SpecialAssignmentAdmin(BaseAdminModelMixin, SummernoteAdminMixin):
+class SpecialAssignmentAdmin(BaseAdminModelMixin, JoditEditorAdminMixin):
     list_filter = (
         "is_seen",
         "start_date",
@@ -26,5 +26,5 @@ class SpecialAssignmentAdmin(BaseAdminModelMixin, SummernoteAdminMixin):
 
 
 @admin.register(Discussion)
-class DiscussionAdmin(BaseAdminModelMixin, SummernoteAdminMixin):
+class DiscussionAdmin(BaseAdminModelMixin, JoditEditorAdminMixin):
     pass

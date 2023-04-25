@@ -34,7 +34,7 @@ class CreateJobApiView(APIView):
             json_data = json.dumps(data)
             json_data = json.loads(json_data)
             # pprint(data)
-            serializer = JobSerializer(data=json_data)
+            serializer = JobSerializer(data=json_data, context={"request": request})
             # debugging_print(serializer.is_valid())
             if not serializer.is_valid():
                 raise APIException(serializer.errors)
@@ -75,7 +75,7 @@ class RetrieveJobApiView(APIView):
         try:
             data = request.data
             job_object = JobProxy.objects.get(pk=data.get("jobId"))
-            serializer = JobSerializer(instance=job_object)
+            serializer = JobSerializer(instance=job_object, context={"request": request})
             return Response(
                 data={"job": serializer.data},
                 status=status.HTTP_200_OK,

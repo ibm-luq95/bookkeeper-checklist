@@ -19,8 +19,12 @@ class Command(BaseCommand, CommandStdOutputMixin):
                     "name": "Bookkeeper Checklist App",
                 }
                 # site_settings = SiteSettings.objects.select_related().create(**data)
-                site_settings, created = SiteSettings.objects.get_or_create(slug="web-app", defaults=data)
-                app_configs, created2 = ApplicationConfigurations.objects.get_or_create(slug="app-configs")
+                site_settings, created = SiteSettings.objects.get_or_create(
+                    slug="web-app", defaults=data
+                )
+                app_configs, created2 = ApplicationConfigurations.objects.get_or_create(
+                    slug="app-configs"
+                )
                 self.stdout_output("success", site_settings)
                 self.stdout_output("success", app_configs)
                 self.stdout_output(

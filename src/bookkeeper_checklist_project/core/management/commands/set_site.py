@@ -60,8 +60,8 @@ class Command(BaseCommand, CommandStdOutputMixin):
                             return
                     else:
                         self.stdout_output("warn", "No sites to delete")
-                else:
-                    self.stdout_output("error", "You have to pass -i option!")
+                # else:
+                #     self.stdout_output("error", "You have to pass -i option!")
 
                 if init_set_site is True:
                     site_domain = config("SITE_DOMAIN", cast=str)

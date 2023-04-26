@@ -55,8 +55,8 @@ class CustomUserManager(BaseUserManager):
                 raise ValueError(_("Superuser must have is_superuser=True."))
             created_user = self.create_user(email, password, **extra_fields)
             # debugging_print("##############")
-            if created_user.user_type == "manager":
-                manager = Manager.objects.create(user=created_user)
+            # if created_user.user_type == "manager":
+                # manager = Manager.objects.create(user=created_user)
                 # debugging_print(created_user)
                 # debugging_print(manager)
             # debugging_print("##############")

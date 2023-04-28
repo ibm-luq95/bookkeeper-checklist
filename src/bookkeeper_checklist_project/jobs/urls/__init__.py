@@ -14,6 +14,7 @@ app_name = "jobs"
 urlpatterns = [
     path("api/", include("jobs.urls.api"), name="jobs-api-urls"),
     path("templates/", include("jobs.urls.templates"), name="jobs-templates-urls"),
+    path("category/", include("jobs.urls.category"), name="jobs-category-urls"),
     # path("manager/", include("jobs.urls.manager"), name="jobs-manager-urls"),
     path("", JobListView.as_view(), name="list"),
     path("create", JobCreateView.as_view(), name="create"),

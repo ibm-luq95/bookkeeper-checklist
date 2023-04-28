@@ -156,7 +156,7 @@ class ClientDetailsView(
             assigned_by=self.request.user, initial={"client": client}
         )
         company_services_form = CompanyServiceForm(initial={"client": client})
-        jobs_form = JobForm(initial={"client": client})
+        jobs_form = JobForm(initial={"client": client}, add_jodit_css_class=True)
         tasks_form = TaskForm(initial={"client": client})
         context.setdefault("important_contact_form", important_contact_form)
         document_form = DocumentForm(

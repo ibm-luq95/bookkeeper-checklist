@@ -112,15 +112,18 @@ class UpdateJobApiView(APIView):
             data = request.data
             job_object = JobProxy.objects.get(pk=data.get("jobId"))
             del data["jobId"]
+            # debugging_print(data)
+
             # serializer = JobSerializer(instance=job_object, data=data, partial=True)
             serializer = JobSerializer(
-                instance=job_object, data=data, context={"request": request}
+                instance=job_object, data=data, context={"request": request}, partial=True
             )
             if not serializer.is_valid(raise_exception=True):
                 raise APIException(serializer.errors)
-            debugging_print(serializer.validated_data)
+            # debugging_print(serializer.validated_data)
+            # raise APIException("stop")
             serializer.save()
-            tasks = data.get("tasks")
+            # tasks = data.get("tasks")
             # bookkeepers = data.get("bookkeeper")
 
             # update bookkeeper
@@ -144,7 +147,8 @@ class UpdateJobApiView(APIView):
             # logger.error(ex.detail)
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
-                "user_error_msg": ex.detail,
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.errors,
                 # "user_error_msg": str(ex),
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
@@ -154,7 +158,7 @@ class UpdateJobApiView(APIView):
             response_data = {
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
-                "user_error_msg": "Error while retrieve job!",
+                "user_error_msg": "Error while update job!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -187,7 +191,8 @@ class DeleteJobApiView(APIView):
             else:
                 response_msg_data["is_allowed_deleted"] = False
                 response_msg_data["msg"] = (
-                    f"You cant delete '{job_object.title}', it contains un-completed {response_msg_data.get('not_completed_tasks')} "
+                    f"You cant delete '{job_object.title}', it contains un-completed "
+                    f"{response_msg_data.get('not_completed_tasks')} "
                     f"tasks!"
                 )
 

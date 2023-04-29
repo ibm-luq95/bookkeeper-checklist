@@ -3,13 +3,16 @@ import json
 import traceback
 from pprint import pprint
 
+import stringcase
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.exceptions import APIException
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from stringcase import sentencecase
 
+from bookkeeper.models import BookkeeperProxy
 from core.api.permissions import ManagerApiPermission, BaseApiPermissionMixin
 from core.utils import get_formatted_logger, debugging_print
 from jobs.models import Job, JobProxy
@@ -256,5 +259,61 @@ class UpdateJobStatusApiView(APIView):
                 "status": status.HTTP_400_BAD_REQUEST,
                 "error": str(ex),
                 "user_error_msg": "Error while create job!",
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateEditableJobApiView(APIView):
+    permission_classes = (
+        permissions.IsAuthenticated,
+        BaseApiPermissionMixin,
+    )
+    perm_slug = "jobs.job"
+
+    def put(self, request: Request, *args, **kwargs):
+        try:
+            data = request.data
+            job_object = JobProxy.objects.get(pk=data.get("pk"))
+            is_managed_by = data.get("isManagedBy")
+            # del data["jobId"]
+            # debugging_print(data)
+            # new_data = data.get("newData")
+            # debugging_print(new_data)
+            if is_managed_by is False:
+                setattr(job_object, data.get("field"), data.get("newValue"))
+            else:
+                bookkeeper = BookkeeperProxy.objects.get(pk=data.get("newValue"))
+                user = bookkeeper.user
+                setattr(job_object, "managed_by", user)
+            job_object.save()
+
+            return Response(
+                # data={"job": serializer.data, "msg": "Job updated successfully!"},
+                data={
+                    "job": job_object.pk,
+                    "msg": f"{stringcase.sentencecase(data.get('field').capitalize())} updated successfully!",
+                    "title": job_object.title,
+                    "due_dte": job_object.due_date
+                },
+                status=status.HTTP_200_OK,
+            )
+        except APIException as ex:
+            # logger.error("API Exception")
+            logger.error(traceback.format_exc())
+            # logger.error(ex.detail)
+            response_data = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                # "user_error_msg": ex.detail,
+                "user_error_msg": serializer.errors,
+                # "user_error_msg": str(ex),
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            # debugging_print(ex)
+            logger.error(traceback.format_exc())
+            response_data = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                "error": str(ex),
+                "user_error_msg": "Error while update job!",
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)

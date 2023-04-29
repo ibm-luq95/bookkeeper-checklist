@@ -14,30 +14,59 @@
         <div class="column is-8">
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title has-text-dark has-text-weight-bold is-size-5">{{ object.title }}</p>
-              <!-- Start Job Status Form -->
-
-              {% include "segments/jobs/update_job_status.html" with current_status=object.status job_status=job_status job_object=object.pk %}
-
-              <!-- End Job Status Form -->
+              <p class="card-header-title has-text-dark has-text-weight-bold is-size-5 editable-content"
+                 data-pk="{{ object.pk }}"
+                 data-field="title"
+                 data-is-editable="True">{{ object.title }}</p>
             </header>
             <div class="card-content">
               <div class="content">
                 <article>
-                  <section>
+                  <section class="editable-content"
+                           data-pk="{{ object.pk }}"
+                           data-field="description"
+                           data-is-editable="True">
                     {{ object.description|safe }}
                   </section>
                 </article>
                 <hr />
+                <section>
+                  {% if object.categories.all %}
+                    <div class="tags">
+                      {% for category in object.categories.all %}<span class="tag">{{ category.name }}</span>{% endfor %}
+                    </div>
+                  {% endif %}
+                </section>
+                <hr />
                 <article class="mt-3">
-                  <h4>
-                    Due Date: <time datetime="{{ object.due_date }}">{{ object.due_date }}</time>
-                  </h4>
-                  <hr />
-                  <h6 class="is-size-6 has-text-grey">
-                    Created AT: <time datetime="{{ object.created_at|date }}">{{ object.created_at|date }}</time>
+                  <h6 class="editable-content" data-pk="{{ object.pk }}" data-field="due_date" data-is-editable="True" data-is-date="True">
+                    Due Date: <time id="dueDateElement" datetime="{{ object.due_date }}">{{ object.due_date }}</time> <i class="fa-solid fa-check has-text-success font-size-18px ml-3 d-none" id="checkDueDateIcon"></i>
                   </h6>
-                  <span class="tag is-medium">{{ object.get_state_display }}</span>
+                  <form id="updateDueDateJobForm" method="post" class="d-none">
+                    <fieldset form="updateDueDateJobForm">
+                      {% csrf_token %}
+                      <div class="field has-addons">
+                        <div class="control">
+                          <input id="dueDateUpdateElement" data-pk="{{ object.pk }}" data-field="due_date" class="input bkchlst-input is-small" type="date" disabled />
+                        </div>
+                        <div class="control">
+                          <button class="button bkchlst-input is-primary is-small" disabled type="submit">
+                            <span class="icon is-small">
+                              <i class="fa-solid fa-floppy-disk"></i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </form>
+                 
+                  <hr />
+                  
+                  <span class="tag">{{ object.get_state_display }}</span>
+                  <hr />
+                  <h6 class="font-size-12px has-text-weight-normal hint--top" aria-label="Created">
+                    <time datetime="{{ object.created_at|date }}">{{ object.created_at|date }}</time>
+                  </h6>
                 </article>
                 <br />
               </div>
@@ -52,7 +81,7 @@
           <section id="tasksTableWrapper">
             <div class="card">
               <header class="card-header">
-                <p class="card-header-title has-text-dark">Tasks</p>
+                <p class="card-header-title has-text-dark is-size-5">Tasks</p>
                 {% if perms.task.add_task %}
                   <button type="button"
                           id="addTaskBtn"
@@ -69,9 +98,7 @@
                 <div class="buttons  is-right">
                   <button class="button is-responsive is-rounded is-primary is-light hint--top"
                           id="setTaskCompletedBtn"
-                          aria-label="Set tasks completed">
-                    Done
-                  </button>
+                          aria-label="Set tasks completed">Done</button>
                   <!-- <button class="button is-responsive is-rounded">Small</button> -->
                   <!-- <button class="button is-responsive">Small</button> -->
                   <!-- <button class="button is-responsive">Small</button> -->
@@ -96,6 +123,13 @@
           <!-- End Tasks Card -->
         </div>
         <div class="column is-4">
+          <div class="job-item-block mb-5 is-bordered has-border-bottom-width-1 p-2">
+            <!-- Start Job Status Form -->
+
+            {% include "segments/jobs/update_job_status.html" with current_status=object.status job_status=job_status job_object=object.pk %}
+
+            <!-- End Job Status Form -->
+          </div>
           <div class="box pb-1 pt-2 px-0">
             <div class="job-item-block mb-5 is-bordered has-border-bottom-width-1 p-2">
               <article class="media">
@@ -103,10 +137,8 @@
                   <div class="content">
                     {% if perms.jobs.change_job %}
                       <button id="updateJobBtn"
-                              class="button is-fullwidth has-text-weight-bold hint--top"
-                              aria-label="Update job details">
-                        Edit Job
-                      </button>
+                              class="button is-fullwidth has-text-weight-bold hint--top bkchlst-input" disabled
+                              aria-label="Update job details">Edit Job</button>
                       <!-- Start Jobs Form -->
 
                       {% include "segments/jobs/job_modal.html" with user_type=request.user.user_type job_form=job_form request_object=request jobId=object.pk %}
@@ -128,12 +160,39 @@
                   <div class="content">
                     <p>
                       <strong>Managed by</strong>
-                      <!-- <small>@johnsmith</small> <small>31m</small> -->
+                      <span class="mx-2" id="managedByCheckMark" hidden>
+                        <i class="fa-solid fa-check has-text-success font-size-18px"></i>
+                      </span>
                       <br />
-                      {% if object.managed_by %}
-                        {{ object.managed_by }}
+                      {% if all_bookkeepers %}
+                      <form method="post" id="updateManagedByForm">
+                        <fieldset form="updateManagedByForm">
+                          {% csrf_token %}
+                          <div class="field has-addons">
+                            <div class="control is-expanded">
+                              <div class="select is-fullwidth">
+                                <select disabled class="bkchlst-input" id="jobDetailsBookkeeperSelect" name="managed_by" data-pk="{{ object.pk }}">
+                                  {% for bookkeeper in all_bookkeepers %}
+                                  <option value="{{ bookkeeper.pk }}"
+                                          {% if object.managed_by.bookkeeper.pk == bookkeeper.pk %}selected{% endif %}>{{ bookkeeper }}</option>
+                                {% endfor %}
+                                </select>
+                              </div>
+                            </div>
+                            <div class="control">
+                              <button id="jobUpdateManagedByBtn" type="submit" class="button is-primary hint--top bkchlst-input" disabled aria-label="Update bookkeeper">
+                                <span class="icon is-small">
+                                  <i class="fa-solid fa-floppy-disk"></i>
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </form>
+                      
+                       
                       {% else %}
-                        <span class="has-text-danger">No manager</span>
+                        <span class="has-text-danger">No bookkeepers!</span>
                       {% endif %}
                     </p>
                   </div>
@@ -225,9 +284,7 @@
             </div>
             <div id="notesPanel">
               <article class="panel is-info">
-                <p class="panel-heading">
-                  Notes
-                </p>
+                <p class="panel-heading">Notes</p>
                 <div class="panel-block">
                   <p class="control has-icons-left">
                     {% if perms.notes.add_note %}
@@ -260,9 +317,7 @@
                     </button>
                   </div>
                 {% empty %}
-                  <div class="notification is-warning panel-block">
-                    No note(s)
-                  </div>
+                  <div class="notification is-warning panel-block">No note(s)</div>
                 {% endfor %}
               </article>
             </div>
@@ -270,9 +325,7 @@
           <div class="mt-5">
             <div class="card mb-2">
               <header class="card-header">
-                <p class="card-header-title has-text-black title is-5">
-                  Add discussions or reply
-                </p>
+                <p class="card-header-title has-text-black title is-5">Add discussions or reply</p>
               </header>
               <div class="card-content px-3">
                 <div class="content">
@@ -281,73 +334,63 @@
                       <p class="image is-40x40">
                         {% if request.user.profile_picture %}
                           <img src="{{ request.user.profile_picture.url }}"
-                               alt="{{ request.user.fullname }}"/>
+                               alt="{{ request.user.fullname }}" />
                         {% else %}
                           <img src="{% static 'imgs/avatar.jpg' %}"
-                               alt="{{ request.user.fullname }}"/>
+                               alt="{{ request.user.fullname }}" />
                         {% endif %}
                       </p>
                     </figure>
                     <div class="media-content">
-                      <form action="" method="post" id="addDiscussionJobForm" enctype="multipart/form-data">
+                      <form action=""
+                            method="post"
+                            id="addDiscussionJobForm"
+                            enctype="multipart/form-data">
                         <fieldset form="addDiscussionJobForm">
                           {% csrf_token %}
                           <input type="hidden" name="job" id="job" value="{{ object.pk }}" />
                           <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
                           <div class="field">
                             <p class="control">
-                              <textarea class="textarea manager-as-lbl"
+                              <textarea class="textarea manager-as-lbl bkchlst-input" disabled
                                         rows="2"
                                         placeholder="Add a discussion or reply..."
                                         id="body"
-                                        name="body" required></textarea>
+                                        name="body"
+                                        required></textarea>
                             </p>
                           </div>
                           <div class="field my-4">
-                            <label for="" class="mr-5">
-                              Reply
-                            </label>
+                            <label for="" class="mr-5">Reply</label>
                             <div class="select is-small">
-                              <select id="reply" name="reply">
-                                <option selected disabled>
-                                  ----
-                                </option>
-                                {% for reply in all_discussions %}
-                                  <option value="{{ reply.pk }}">
-                                    {{ reply }}
-                                  </option>
-                                {% endfor %}
+                              <select id="reply" name="reply" class="bkchlst-input" disabled>
+                                <option selected disabled>----</option>
+                                {% for reply in all_discussions %}<option value="{{ reply.pk }}">{{ reply }}</option>{% endfor %}
                               </select>
                             </div>
                           </div>
                           <div class="file is-small has-name is-fullwidth">
                             <label class="file-label">
-                              <input class="file-input" type="file" name="attachment" id="attachment" />
+                              <input class="file-input bkchlst-input" disabled type="file" name="attachment" id="attachment" />
                               <span class="file-cta">
                                 <span class="file-icon">
                                   <i class="fas fa-upload"></i>
                                 </span>
-                                <span class="file-label">
-                                </span>
+                                <span class="file-label"></span>
                               </span>
-                              <span class="file-name">
-                                Upload an attachment
-                              </span>
+                              <span class="file-name">Upload an attachment</span>
                             </label>
                           </div>
                         </fieldset>
                       </form>
                       <nav class="level">
-                        <div class="level-left">
-                        </div>
+                        <div class="level-left"></div>
                         <div class="level-right">
                           <div class="level-item">
                             <div class="level-item">
-                              <button class="button is-info mt-2 manager-as-lbl is-light"
+                              <button class="button is-info mt-2 manager-as-lbl is-light bkchlst-input" disabled
                                       type="submit"
-                                      form="addDiscussionJobForm">
-                                Submit
-                              </button>
+                                      form="addDiscussionJobForm">Submit</button>
                             </div>
                           </div>
                         </div>
@@ -359,9 +402,7 @@
             </div>
             <div class="card" id="job-discussion-card">
               <header class="card-header">
-                <p class="card-header-title has-text-black title is-5">
-                  Discussions ({{ object.discussions.count }})
-                </p>
+                <p class="card-header-title has-text-black title is-5">Discussions ({{ object.discussions.count }})</p>
                 {% comment  %}
                  <button class="card-header-icon" aria-label="more options">
                   <span class="icon">
@@ -373,16 +414,16 @@
               <div class="card-content px-3">
                 <div class="content">
                   {% for discussion in object.discussions.all %}
-                  {{ discussion.get_only_discussions_without_replies }}
+                    {{ discussion.get_only_discussions_without_replies }}
                     <article class="media">
                       <figure class="media-left ml-0 mr-2">
                         <p class="image is-40x40">
                           {% if discussion.get_managed_user.profile_picture %}
                             <img src="{{ discussion.get_managed_user.profile_picture.url }}"
-                                 alt="{{ discussion.get_managed_user.fullname }}"/>
+                                 alt="{{ discussion.get_managed_user.fullname }}" />
                           {% else %}
                             <img src="{% static 'imgs/avatar.jpg' %}"
-                                 alt="{{ discussion.get_managed_user.fullname }}"/>
+                                 alt="{{ discussion.get_managed_user.fullname }}" />
                           {% endif %}
                         </p>
                       </figure>
@@ -406,83 +447,75 @@
                               <summary class="unset-style-type hint--top" aria-label="Click to read more">
                                 {{ discussion.body|truncatechars:DEFAULT_TEMPLATE_TABLE_LIST_TRUNCATED_STRING }}
                               </summary>
-                              <p class="manager-as-lbl">
-                                {{ discussion.body }}
-                                
-                              </p>
+                              <p class="manager-as-lbl">{{ discussion.body }}</p>
                               {# Start replies #}
-                              
-                              <h6 class="title is-6 mb-2">
-                                Replies:
-                              </h6>
+                              <h6 class="title is-6 mb-2">Replies:</h6>
                               <article class="media manager-as-lbl">
                                 <div class="media-content">
                                   <details>
                                     <summary class="unset-style-type hint--top" aria-label="Click to read more">
                                       Reply summary  <a class="level-item">
-                                        <span class="icon is-small">
-                                          <i class="fa-solid fa-paperclip"></i>
-                                        </span>
-                                      </a>
-                                      
-                                    </summary>
-                                    <p>
-                                      Vivamus quis semper metus, non tincidunt dolor. Vivamus in mi eu lorem cursus ullamcorper
-                                      sit amet nec massa.
-                                    </p>
-                                  </details>
-                                </div>
-                              </article>
-                              {# End replies #}
-                            </details>
-                          </p>
-                        </div>
+                                      <span class="icon is-small">
+                                        <i class="fa-solid fa-paperclip"></i>
+                                      </span>
+                                    </a>
+                                  </summary>
+                                  <p>
+                                    Vivamus quis semper metus, non tincidunt dolor. Vivamus in mi eu lorem cursus ullamcorper
+                                    sit amet nec massa.
+                                  </p>
+                                </details>
+                              </div>
+                            </article>
+                            {# End replies #}
+                          </details>
+                        </p>
                       </div>
-                      {% comment  %}
+                    </div>
+                    {% comment  %}
                       <div class="media-right">
                       <button class="delete"></button>
                     </div>
-                      {% endcomment %}
-                    </article>
-                  {% empty %}
-                    <div class="notification is-warning is-light">
-                      No discussions or replies
-                    </div>
-                  {% endfor %}
-                </div>
+                    {% endcomment %}
+                  </article>
+                {% empty %}
+                  <div class="notification is-warning is-light">No discussions or replies</div>
+                {% endfor %}
               </div>
-              {% comment  %}
+            </div>
+            {% comment  %}
                <footer class="card-footer">
                 <a href="#" class="card-footer-item">Save</a>
                 <a href="#" class="card-footer-item">Edit</a>
                 <a href="#" class="card-footer-item">Delete</a>
               </footer>
-              {% endcomment %}
-            </div>
+            {% endcomment %}
           </div>
         </div>
       </div>
     </div>
-  </section>
-  <!-- Start Task Modal Form -->
+  </div>
+</section>
+<!-- Start Task Modal Form -->
 
-  {% include "segments/tasks/task_modal.html" with user_type="manager" job_object=object task_form=task_form request_object=request %}
+{% include "segments/tasks/task_modal.html" with user_type="manager" job_object=object task_form=task_form request_object=request %}
 
-  <!-- End Task Modal Form -->
-  <!-- Start Document Modal Form -->
+<!-- End Task Modal Form -->
+<!-- Start Document Modal Form -->
 
-  {% include "segments/documents/document_modal.html" with user_type="manager" job_object=object document_form=document_form request_object=request document_section="job" %}
+{% include "segments/documents/document_modal.html" with user_type="manager" job_object=object document_form=document_form request_object=request document_section="job" %}
 
-  <!-- End Document Modal Form -->
-  <!-- Start Note Modal Form -->
+<!-- End Document Modal Form -->
+<!-- Start Note Modal Form -->
 
-  {% include "segments/notes/note_modal.html" with user_type="manager" job_object=object note_form=note_form request_object=request note_section="job" %}
+{% include "segments/notes/note_modal.html" with user_type="manager" job_object=object note_form=note_form request_object=request note_section="job" %}
 
-  <!-- End Note Modal Form -->
+<!-- End Note Modal Form -->
 {% endblock dashboard_content %}
 {% block externaljs %}
   <script src="{% static 'js/apps/notes/notes.js' %}" defer type="module"></script>
   <script src="{% static 'js/apps/jobs/jobs.js' %}" defer type="module"></script>
+  <script src="{% static 'js/apps/jobs/job_editable.js' %}" defer type="module"></script>
   <script src="{% static 'js/apps/task/task.js' %}" defer type="module"></script>
   <script src="{% static 'js/apps/documents/documents.js' %}"
           defer

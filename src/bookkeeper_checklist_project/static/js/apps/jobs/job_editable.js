@@ -116,6 +116,8 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           showToastNotification(data["msg"], "success");
           // dueDateElement.textContent = data["due_date"];
           dueDateElement.datetime = data["due_date"];
+          dueDateUpdateElement.value = null;
+          // dueDateUpdateElement.value = data["due_date"];
           // console.log(data);
           // checkDueDateIcon.classList.remove("d-none");
           setTimeout(() => {

@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
   formElement.addEventListener("submit", (event) => {
     event.preventDefault();
     const currentTarget = event.currentTarget;
+    const fieldset = currentTarget.querySelector("fieldset");
+    fieldset.disabled = true;
     const status = currentTarget["status"].value;
     const jobId = currentTarget["jobId"].value;
     const formInputs = {
@@ -34,12 +36,14 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
 //            window.location.reload();
 //          }
            window.location.reload();
-        }, 500);
+        }, 600);
       })
       .catch((error) => {
         console.error(error);
         showToastNotification(`${JSON.stringify(error["user_error_msg"])}`, "danger");
       })
-      .finally(() => {});
+      .finally(() => {
+        fieldset.disabled = false;
+      });
   });
 });

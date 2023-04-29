@@ -5,5 +5,6 @@ from .jobs import (
     DeleteJobApiView,
     RetrieveJobApiView,
     UpdateJobApiView,
+    UpdateEditableJobApiView,
 )
 from .templates import JobRetrieveTemplateApi, CreateNewJobFromTemplateApi

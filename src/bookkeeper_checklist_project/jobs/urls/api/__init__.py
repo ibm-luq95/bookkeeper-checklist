@@ -6,6 +6,7 @@ from jobs.views.api import (
     UpdateJobApiView,
     UpdateJobStatusApiView,
     DeleteJobApiView,
+    UpdateEditableJobApiView,
 )
 
 app_name = "api"
@@ -19,6 +20,7 @@ urlpatterns = [
     path("retrieve", RetrieveJobApiView.as_view(), name="retrieve"),
     path("update", UpdateJobApiView.as_view(), name="update"),
     path("delete", DeleteJobApiView.as_view(), name="delete"),
+    path("update-editable", UpdateEditableJobApiView.as_view(), name="update-editable"),
     path("update-status", UpdateJobStatusApiView.as_view(), name="update-job-status"),
     path("templates/", include("jobs.urls.api.templates"), name="jobs-api-templates-urls"),
 ]

@@ -1,10 +1,10 @@
 from django.core.exceptions import ValidationError
+from django.db import transaction
+from django import forms
 
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-
-# from django_summernote.fields import SummernoteTextFormField
 
 from core.forms import (
     BaseModelFormMixin,
@@ -27,8 +27,6 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, JoditFormMixin):
         "job_type",
         "note",
     ]
-    # description = SummernoteTextFormField()
-    # note = SummernoteTextFormField(required=False)
 
     def __init__(
         self,
@@ -82,5 +80,15 @@ class JobForm(BaseModelFormMixin, SaveCreatedByFormMixin, JoditFormMixin):
         # this method didn't change it.
         return data
 
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        job = super().save(commit=False)
+        with transaction.atomic():
+            if commit is True:
+                job.save()
+                self.save_m2m()
+        return job
+
     class Meta(BaseModelFormMixin.Meta):
         model = JobProxy
+        widgets = {"categories": forms.CheckboxSelectMultiple}

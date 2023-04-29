@@ -13,3 +13,9 @@ from .templates import (
     JobTemplateDetailsView,
     JobTemplateUpdateView,
 )
+from .category import (
+    JobCategoryListView,
+    JobCategoryCreateView,
+    JobCategoryDeleteView,
+    JobCategoryUpdateView,
+)

@@ -130,6 +130,7 @@ class JobDetailsView(
             removed_fields=["client", "task", "job", "note_section"],
             add_jodit_css_class=True,
         )
+        client = job_object.client
         all_discussions = Discussion.objects.filter(job=job_object)
         context.setdefault("job_status", JobStatusEnum.choices)
         context.setdefault("title", f"Job - {job_object.title}")
@@ -139,6 +140,7 @@ class JobDetailsView(
         context.setdefault("job_form", job_form)
         context.setdefault("discussion_form", discussion_form)
         context.setdefault("all_discussions", all_discussions)
+        context.setdefault("all_bookkeepers", client.bookkeepers.all())
         return context
 
 

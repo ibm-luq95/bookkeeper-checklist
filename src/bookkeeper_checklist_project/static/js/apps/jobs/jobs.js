@@ -87,10 +87,20 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       const bookkeepersArray = new Array();
       const assistantsArray = new Array();
       const tasksArray = new Array();
+      let categoriesArray;
       Array.from(jobsForm.elements).forEach((element) => {
         element.classList.remove("is-danger");
       });
-
+      // console.log(jobsForm["categories"].value);
+      // check if categories exists
+      if (jobsForm["categories"]) {
+        // check if bookkeeper single or multiple
+        // console.log(Array.from(jobsForm["categories"]));
+        categoriesArray = Array.from(jobsForm["categories"]).filter(
+          (element) => element.checked === true,
+        );
+      }
+      categoriesArray = categoriesArray.map((element) => element.value);
       // check if bookkeeper exists
       if (jobsForm["bookkeeper"]) {
         // check if bookkeeper single or multiple
@@ -141,12 +151,13 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       // throw new Error("s");
       const formInputs = formInputSerializer({
         formElement: jobsForm,
-        excludedFields: ["bookkeeper", "tasks", "_method", "assistants"],
+        excludedFields: ["bookkeeper", "tasks", "_method", "assistants", "categories"],
         isOrdered: true,
       });
-      formInputs["tasks"] = tasksArray;
-      formInputs["bookkeeper"] = bookkeepersArray;
-      formInputs["assistants"] = assistantsArray;
+      // formInputs["tasks"] = tasksArray;
+      // formInputs["bookkeeper"] = bookkeepersArray;
+      // formInputs["assistants"] = assistantsArray;
+      formInputs["categories"] = categoriesArray;
       if (jobsForm["_method"].value === "PUT") {
         formInputs["jobId"] = jobsForm["jobId"].value;
       }

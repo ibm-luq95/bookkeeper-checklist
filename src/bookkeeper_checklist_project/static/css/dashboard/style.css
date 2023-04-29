@@ -315,7 +315,9 @@ div.select:has(select.cursor-not-allowed) {
 /* .manager-dashboard-card-widget {
   width: max-content;
 } */
-
+.font-size-12px {
+  font-size: 12px !important;
+}
 .manager-as-lbl {
   font-size: 13px;
 }
@@ -676,7 +678,12 @@ select[multiple] {
   height: 40px;
   width: 40px;
 }
-
+.font-size-18px {
+  font-size: 18px;
+}
+.d-none {
+  display: none;
+}
 .unset-style-type {
   list-style: none;
 }
@@ -703,4 +710,24 @@ select[multiple] {
 } */
 .modal__content {
   width: 850px;
+}
+
+.tmp-disabled {
+  /* background-color: rgba(204, 201, 201, 0.219); */
+  /* background-color: red; */
+  /* animation: pulse 1s; */
+  transition: background-color 1s;
+  animation-name: col;
+  animation-duration: 2s;
+}
+@keyframes col {
+  0% {
+    background-color: rgba(204, 201, 201, 0.616);
+  }
+  50% {
+    background-color: rgba(204, 201, 201, 0.342);
+  }
+  100% {
+    background-color: unset;
+  }
 }

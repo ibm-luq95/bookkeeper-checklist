@@ -6,4 +6,4 @@ from core.models import BaseModelMixin, CreatedByMixin, StrModelMixin
 
 
 class JobCategory(BaseModelMixin, StrModelMixin):
-    name = models.CharField(_("name"), max_length=50)
+    name = models.CharField(_("name"), max_length=50, unique=True, db_index=True)

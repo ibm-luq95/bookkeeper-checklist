@@ -66,6 +66,13 @@
                   <a class="navbar-item" href="{% url 'jobs:create' %}">Create new job</a>
                 {% endif %}
                 <hr class="dropdown-divider" />
+                
+                
+                {% if perms.manager.manager_user %}
+                <a class="navbar-item" href="{% url 'jobs:category:list' %}">Category</a>
+                {% endif %}
+                  
+                <hr class="dropdown-divider" />
                 {% if perms.manager.manager_user or perms.jobtemplate.can_view_list %}
                 <a class="navbar-item" href="{% url 'jobs:templates:list' %}">Templates&nbsp;&nbsp; <span class="tag is-link is-small is-rounded">ALPHA</span>
               </a>

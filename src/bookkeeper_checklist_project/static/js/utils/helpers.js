@@ -534,6 +534,19 @@ const disableAndEnableFieldsetItems = ({ formElement, state }) => {
       break;
   }
 };
+/**
+ * Check if the text is true or false
+ * @param {string} text Text to check true | false
+ * @returns bool
+ */
+const convertStrToBool = (text) => {
+  const boolValue = /true/i.test(text);
+  if (boolValue === true) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 export {
   capitalizedFirstLetter,
@@ -551,4 +564,5 @@ export {
   orderObjectItems,
   addTxtToClipboardWithNotification,
   disableAndEnableFieldsetItems,
+  convertStrToBool,
 };

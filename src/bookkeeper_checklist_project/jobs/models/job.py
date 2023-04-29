@@ -13,7 +13,6 @@ from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin, St
 from core.utils import debugging_print
 from django.core.exceptions import ValidationError
 
-
 from . import JobCategory
 
 # from task.models import Task
@@ -107,9 +106,13 @@ class Job(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        due_date = parse_date(self.due_date)
-        if due_date < timezone.now().date():
-            raise ValidationError("The date cannot be in the past!")
+        if isinstance(self.due_date, str):
+            due_date = parse_date(self.due_date)
+        else:
+            due_date = self.due_date
+        if self.get_changed_columns().get("due_date") != due_date:
+            if due_date < timezone.now().date():
+                raise ValidationError("The date cannot be in the past!")
         super(Job, self).save(*args, **kwargs)
 
     def get_all_not_completed_tasks(self):

@@ -3,15 +3,17 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 from client.models import ClientProxy
 from core.choices import JobStatusEnum, JobTypeEnum, JobStateEnum
 from core.models import BaseModelMixin, CreatedByMixin, StartAndDueDateMixin, StrModelMixin
+from core.utils import debugging_print
+from django.core.exceptions import ValidationError
 
-# from django_quill.fields import QuillField
-# from ckeditor.fields import RichTextField
+
 from . import JobCategory
 
 # from task.models import Task
@@ -105,8 +107,9 @@ class Job(BaseModelMixin, StartAndDueDateMixin, StrModelMixin, CreatedByMixin):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        # self.bookkeeper.clients.add(self.client)
-        # self.bookkeeper.save()
+        due_date = parse_date(self.due_date)
+        if due_date < timezone.now().date():
+            raise ValidationError("The date cannot be in the past!")
         super(Job, self).save(*args, **kwargs)
 
     def get_all_not_completed_tasks(self):

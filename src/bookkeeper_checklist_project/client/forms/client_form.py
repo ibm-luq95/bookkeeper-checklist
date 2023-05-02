@@ -10,6 +10,8 @@ from users.models import CustomUser
 
 
 class ClientForm(BaseModelFormMixin, SaveCreatedByFormMixin):
+    field_order = ["name", "email", "categories", "bookkeepers", "important_contacts"]
+
     def __init__(
         self, created_by=None, user: Optional[CustomUser] = None, *args, **kwargs
     ):
@@ -27,7 +29,10 @@ class ClientForm(BaseModelFormMixin, SaveCreatedByFormMixin):
                     self.fields.get("bookkeepers").widget.attrs.setdefault(
                         "disabled", "disabled"
                     )
-                    help_txt = "<strong class='has-text-danger'>**You dont have permission to assign bookkeeper to this client,contact administrator for more details **</strong>"
+                    help_txt = (
+                        "<strong class='has-text-danger'>**You dont have permission to assign bookkeeper to "
+                        "this client,contact administrator for more details **</strong>"
+                    )
 
                     self.fields.get("bookkeepers").help_text = mark_safe(help_txt)
 
@@ -37,6 +42,7 @@ class ClientForm(BaseModelFormMixin, SaveCreatedByFormMixin):
         widgets = {
             "bookkeepers": forms.CheckboxSelectMultiple(),
             "important_contacts": forms.CheckboxSelectMultiple(),
+            "categories": forms.CheckboxSelectMultiple(),
         }
 
     def save(self, commit=True):

@@ -29,7 +29,7 @@ urlpatterns = [
     path("manager/", include("manager.urls"), name="manager-urls"),
     path("core/", include("core.urls"), name="core-urls"),
     path("documents/", include("documents.urls"), name="documents-urls"),
-    path("client/", include("client.urls"), name="client-urls"),
+    path("clients/", include("client.urls"), name="client-urls"),
     path("notes/", include("notes.urls"), name="notes-urls"),
     path(
         "special_assignment/",

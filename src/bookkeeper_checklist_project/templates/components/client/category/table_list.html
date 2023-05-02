@@ -1,5 +1,7 @@
-{% extends 'components/core/table_list/table_list_layout.html' %}
+{% extends "components/core/table_list/table_list_layout.html" %}
+
 {% load url_helpers %}
+
 {% block table_content_block %}
   <div class="table-container">
     <table class="table sortable is-fullwidth is-striped is-hoverable is-fullwidth table-list-comp"
@@ -21,11 +23,15 @@
             <td data-label="Clients">{{ category.clients.count }}</td>
             {% if is_show_created_at is True %}
               <td data-label="Created" data-sort="{{ category.created_at|date:"Ymd" }}">
-                {% include 'components/core/table_list/table_cell_created.html' with created_at=category.created_at user_type=user_type %}
+
+                {% include "components/core/table_list/table_cell_created.html" with created_at=category.created_at user_type=user_type %}
+
               </td>
             {% endif %}
             <td class="is-actions-cell">
-              {% include 'components/core/table_list/table_cell_actions.html' with object_pk=category.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms %}
+
+              {% include "components/core/table_list/table_cell_actions.html" with object_pk=category.pk user_type=user_type details_url=details_url action_urls_pattern=action_urls_pattern enabled_action_btns=enabled_action_btns is_enabled=True app_name=app_name perms=perms %}
+
             </td>
           </tr>
         {% empty %}

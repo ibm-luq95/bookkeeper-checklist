@@ -5,7 +5,7 @@
 {% block dashboard_content %}
     <section id="{{ request.user.user_type }}-{{ app_label }}-list" class="box">
         {# Start Include Header List Component #}
-        {% include "components/core/dashboard/header_title.html" with user_type=request.user.user_type app_name=app_label page_header=page_header list_type=list_type is_archived_enabled=True perms=perms %}
+        {% include "components/core/dashboard/header_title.html" with user_type=request.user.user_type app_name="client:category" page_header=page_header list_type=list_type is_archived_enabled=True perms=perms %}
         {# End Include Header List Component #}
         <hr />
         <div>

@@ -145,6 +145,16 @@ document.addEventListener("readystatechange", (ev) => {
         NiceSelect.bind(element);
       });
     }
-    
+
+    const allForms = document.forms;
+    Array.from(allForms).forEach((form) => {
+      Array.from(form.elements).forEach((input) => {
+        if (input.type === "url") {
+          input.addEventListener("focusout", (event) => {
+            input.value = `https://${input.value}`;
+          });
+        }
+      });
+    });
   }
 });

@@ -56,7 +56,7 @@ class ClientListView(
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["title"] = get_trans_txt("All clients")
+        context["title"] = get_trans_txt("Clients")
         context.setdefault("filter_form", self.filterset.form)
         context.setdefault("list_type", self.list_type)
         context.setdefault("page_header", "all clients".title())

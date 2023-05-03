@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         element.classList.remove("is-danger");
       });
       // console.log(jobsForm["categories"].value);
-
+      // throw new Error("dd")
       // check if bookkeeper exists
       if (jobsForm["bookkeeper"]) {
         // check if bookkeeper single or multiple

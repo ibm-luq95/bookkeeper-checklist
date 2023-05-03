@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           url: url["urlPath"],
         };
         setTaskCompletedBtn.setAttribute("disabled", "disabled");
+        // console.log(requestOptions);
         const request = sendRequest(requestOptions);
         request
           .then((data) => {

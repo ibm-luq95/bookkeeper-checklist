@@ -1,72 +1,72 @@
-{% extends 'core/layouts/dashboard.html' %}
+{% extends "core/layouts/dashboard.html" %}
+
 {% load static %}
+
 {% load url_helpers %}
 
 {% block dashboard_content %}
-<section class="box block has-ribbon" id="assistant-client-details">
-  {% include 'components/core/ribbon_status.html' with object=object %}
-  {% comment %}
+  <section class="box block has-ribbon" id="assistant-client-details">
+
+    {% include "components/core/ribbon_status.html" with object=object %}
+
+    {% comment %}
   <div class="ribbon is-warning">Default</div>
-  {% endcomment %}
-
-  <!-- start client media -->
-  <div class="mb-4">
-    <article class="media">
-      <figure class="media-left">
-        <p class="image is-64x64">
-          {% if object.company_logo %}
-          <img src="{{ object.company_logo.url }}" loading="lazy" alt="{{ object.name }}" />
-          {% else %}
-          <img src="{% static 'imgs/default_client.jpg' %}" loading="lazy" alt="{{ object.name }}" />
-          {% endif %}
-
-        </p>
-        <p>
-          {% if perms.client.change_client %}
-          <a href="{% url 'client:update' object.pk %}" target="_blank"
-            class="button is-primary is-light hint--top is-hoverable is-responsive is-medium" aria-label="Update client details">
-            <span class="icon is-medium">
-              <i class="fa-solid fa-pencil fa-1x"></i>
-            </span>
-          </a>
-          {% endif %}
-        </p>
-      </figure>
-      <div class="media-content">
-        <div class="content">
-          <p>
-            <strong>{{ object.name }}</strong>
-            &nbsp;
-            <small title="Created at">{{ object.created_at|date }}</small>
-            &nbsp;
-            {% include "components/core/table_list/status_tag.html" with status=object.status tag_size="is-small" status_label=object.get_status_display %}
-            <br />
-            {{ object.industry }}
-          </p>
-          <p>
-            <a href="mailto:{{ object.email }}">
-              {{ object.email }}
-            </a>
-          </p>
-
-          <p>
-
-            {% if object.categories.all %}
-            <div class="tags">
-              {% for category in object.categories.all %}
-              <a class="tag">
-                {{ category.name }}
-              </a>
-              {% endfor %}
-            </div>
-
+    {% endcomment %}
+    <!-- start client media -->
+    <div class="mb-4">
+      <article class="media">
+        <figure class="media-left">
+          <p class="image is-64x64">
+            {% if object.company_logo %}
+              <img src="{{ object.company_logo.url }}"
+                   loading="lazy"
+                   alt="{{ object.name }}" />
+            {% else %}
+              <img src="{% static 'imgs/default_client.jpg' %}"
+                   loading="lazy"
+                   alt="{{ object.name }}" />
             {% endif %}
           </p>
-          
-        </div>
-        <nav class="level is-mobile">
-          <div class="level-left">
-            <!-- <a class="level-item">
+          <p>
+            {% if perms.client.change_client %}
+              <a href="{% url 'client:update' object.pk %}"
+                 target="_blank"
+                 class="button is-primary is-light hint--top is-hoverable is-responsive is-medium"
+                 aria-label="Update client details">
+                <span class="icon is-medium">
+                  <i class="fa-solid fa-pencil fa-1x"></i>
+                </span>
+              </a>
+            {% endif %}
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>{{ object.name }}</strong>
+              &nbsp;
+              <small title="Created at">{{ object.created_at|date }}</small>
+              &nbsp;
+
+              {% include "components/core/table_list/status_tag.html" with status=object.status tag_size="is-small" status_label=object.get_status_display %}
+
+              <br />
+              {{ object.industry }}
+            </p>
+            <p>
+              <a href="mailto:{{ object.email }}">{{ object.email }}</a>
+            </p>
+            <p>
+              {% if object.categories.all %}
+                <div class="tags">
+                  {% for category in object.categories.all %}<a class="tag">{{ category.name }}</a>{% endfor %}
+                </div>
+              {% endif %}
+            </p>
+          </div>
+          <nav class="level is-mobile">
+            <div class="level-left">
+              <!-- <a class="level-item">
               <span class="icon is-small"><i class="fas fa-reply"></i></span>
             </a>
             <a class="level-item">
@@ -75,154 +75,175 @@
             <a class="level-item">
               <span class="icon is-small"><i class="fas fa-heart"></i></span>
             </a> -->
-          </div>
-        </nav>
-      </div>
-      <!-- <div class="media-right">
-
-
-
-      </div> -->
-    </article>
-  </div>
-  <!-- end client media -->
-
-  <!-- Start tab links -->
-  <div class="tabs">
-    <ul>
-      <li class="client-link" data-link-name="overview" data-link-label="Overview">
-        <a class="tabItemLink" href="{% url 'client:details:overview' object.pk %}"
-          data-tab-element="overviewContentWrapper">Overview</a>
-      </li>
-      <li class="client-link" data-link-name="jobs" data-link-label="Jobs">
-        <a class="tabItemLink" href="{% url 'client:details:jobs' object.pk %}"
-          data-tab-element="jobsContentWrapper">Jobs</a>
-      </li>
-      {% comment  %}
+            </div>
+          </nav>
+        </div>
+        <!-- <div class="media-right"></div> -->
+      </article>
+    </div>
+    <!-- end client media -->
+    <!-- Start tab links -->
+    <div class="tabs">
+      <ul>
+        <li class="client-link"
+            data-link-name="overview"
+            data-link-label="Overview">
+          <a class="tabItemLink"
+             href="{% url 'client:details:overview' object.pk %}"
+             data-tab-element="overviewContentWrapper">Overview</a>
+        </li>
+        <li class="client-link" data-link-name="jobs" data-link-label="Jobs">
+          <a class="tabItemLink"
+             href="{% url 'client:details:jobs' object.pk %}"
+             data-tab-element="jobsContentWrapper">Jobs</a>
+        </li>
+        {% comment  %}
       <li class="client-link" data-link-name="tasks" data-link-label="Tasks">
-        <a class="tabItemLink" href="{% url 'client:details:tasks' object.pk %}"
-          data-tab-element="tasksContentWrapper">Tasks</a>
+        <a class="tabItemLink" href="{% url 'client:details:tasks' object.pk %}" data-tab-element="tasksContentWrapper">Tasks</a>
       </li>
-      {% endcomment %}
-      <li class="client-link" data-link-name="services" data-link-label="Accounts & Services">
-        <a class="tabItemLink" href="{% url 'client:details:services' object.pk %}"
-          data-tab-element="servicesContentWrapper">Accounts &
+        {% endcomment %}
+        <li class="client-link"
+            data-link-name="services"
+            data-link-label="Accounts & Services">
+          <a class="tabItemLink"
+             href="{% url 'client:details:services' object.pk %}"
+             data-tab-element="servicesContentWrapper">Accounts &
           Services</a>
-      </li>
-      <li class="client-link" data-link-name="contacts" data-link-label="Important Contacts">
-        <a class="tabItemLink" href="{% url 'client:details:contacts' object.pk %}"
-          data-tab-element="contactsContentWrapper">
-          Important Contacts
-        </a>
-      </li>
-      <li class="client-link" data-link-name="assignments" data-link-label="Special Assignments">
-        <a class="tabItemLink" href="{% url 'client:details:assignments' object.pk %}"
-          data-tab-element="specialAssignmentsContentWrapper">Special Assignments</a>
-      </li>
-      <li class="client-link" data-link-name="documents" data-link-label="Documents">
-        <a class="tabItemLink" href="{% url 'client:details:documents' object.pk %}"
-          data-tab-element="documentsContentWrapper">Documents</a>
-      </li>
-      <li class="client-link" data-link-name="notes" data-link-label="Notes">
-        <a class="tabItemLink" href="{% url 'client:details:notes' object.pk %}"
-          data-tab-element="notesContentWrapper">Notes</a>
-      </li>
-    </ul>
-  </div>
-  <!-- End tab links -->
-</section>
+        </li>
+        <li class="client-link"
+            data-link-name="contacts"
+            data-link-label="Important Contacts">
+          <a class="tabItemLink"
+             href="{% url 'client:details:contacts' object.pk %}"
+             data-tab-element="contactsContentWrapper">Important Contacts</a>
+        </li>
+        <li class="client-link"
+            data-link-name="assignments"
+            data-link-label="Special Assignments">
+          <a class="tabItemLink"
+             href="{% url 'client:details:assignments' object.pk %}"
+             data-tab-element="specialAssignmentsContentWrapper">Special Assignments</a>
+        </li>
+        <li class="client-link"
+            data-link-name="documents"
+            data-link-label="Documents">
+          <a class="tabItemLink"
+             href="{% url 'client:details:documents' object.pk %}"
+             data-tab-element="documentsContentWrapper">Documents</a>
+        </li>
+        <li class="client-link" data-link-name="notes" data-link-label="Notes">
+          <a class="tabItemLink"
+             href="{% url 'client:details:notes' object.pk %}"
+             data-tab-element="notesContentWrapper">Notes</a>
+        </li>
+      </ul>
+    </div>
+    <!-- End tab links -->
+  </section>
+  <!-- Start Section Header -->
+  <section class="box block">
+    <h5 id="sectionContentHeader" class="title is-size-6"></h5>
+  </section>
+  <!-- End Section Header -->
+  <!-- Start section content -->
+  <section id="clientDetailsSectionsWrapper" class="box block">
+    {% with request.get_full_path|get_last_url_part as page_section_name %}
+      {% if page_section_name == "documents" %}
+        {% if perms.documents.can_view_list %}
+          <!-- Start Documents Segment -->
+          <div id="documentsContentWrapper" hidden>
 
-<!-- Start Section Header -->
-<section class="box block">
-  <h5 id="sectionContentHeader" class="title is-size-6"></h5>
-</section>
-<!-- End Section Header -->
+            {% include "components/documents/table_list.html" with object_list=object.documents.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="documents" action_urls_pattern="documents" enabled_action_btns="update,delete" is_show_created_at=False %}
 
-<!-- Start section content -->
-<section id="clientDetailsSectionsWrapper" class="box block">
+            <!-- Start Document Modal Form -->
 
-  {% with request.get_full_path|get_last_url_part as page_section_name %}
+            {% include "segments/documents/document_modal.html" with user_type=request.user.user_type document_form=document_form request_object=request %}
 
-  {% if page_section_name == "documents" %}
+            <!-- End Document Modal Form -->
+          </div>
+          <!-- End Documents Segment -->
+        {% else %}
 
-  {% if perms.documents.can_view_list %}
-  <!-- Start Documents Segment -->
-  <div id="documentsContentWrapper" hidden>
-    {% include "components/documents/table_list.html" with object_list=object.documents.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="documents" action_urls_pattern="documents" enabled_action_btns='update,delete' is_show_created_at=False %}
-    <!-- Start Document Modal Form -->
-    {% include "segments/documents/document_modal.html" with user_type=request.user.user_type document_form=document_form request_object=request %}
-    <!-- End Document Modal Form -->
-  </div>
-  <!-- End Documents Segment -->
-  {% else %}
-  {% include "components/core/no_permissions.html" with msg="no permissions to see documents" %}
-  {% endif %}
+          {% include "components/core/no_permissions.html" with msg="no permissions to see documents" %}
 
-  {% elif page_section_name == "jobs" %}
+        {% endif %}
+      {% elif page_section_name == "jobs" %}
+        {% if perms.jobs.can_view_list %}
+          <!-- Start Jobs Segment -->
+          <div id="jobsContentWrapper" hidden>
 
-  {% if perms.jobs.can_view_list %}
-  <!-- Start Jobs Segment -->
-  <div id="jobsContentWrapper" hidden>
-    {% include "components/jobs/table_list.html" with object_list=object.jobs.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="jobs" action_urls_pattern="jobs" enabled_action_btns="update,delete,details" details_url="jobs:details" is_show_created_at=False request=request %}
+            {% include "components/jobs/table_list.html" with object_list=object.jobs.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="jobs" action_urls_pattern="jobs" enabled_action_btns="update,delete,details" details_url="jobs:details" is_show_created_at=False request=request is_show_categories=True %}
 
-    <!-- Start Jobs Form -->
-    {% include "segments/jobs/job_modal.html" with user_type=request.user.user_type job_form=jobs_form request_object=request %}
-    <!-- End Jobs Form -->
-  </div>
+            <!-- Start Jobs Form -->
 
-  <!-- End Jobs Segment -->
-  {% else %}
-  {% include "components/core/no_permissions.html" with msg="no permissions to see jobs" %}
-  {% endif %}
+            {% include "segments/jobs/job_modal.html" with user_type=request.user.user_type job_form=jobs_form request_object=request %}
 
-  {% elif page_section_name == "assignments" %}
+            <!-- End Jobs Form -->
+          </div>
+          <!-- End Jobs Segment -->
+        {% else %}
 
-  {% if perms.special_assignment.can_view_list %}
-  <!-- Start Special Assignments Segment -->
-  <div id="specialAssignmentsContentWrapper" hidden>
-    {% include "components/special_assignment/table_list.html" with object_list=object.special_assignments.all user_type=request.user.user_type perms=perms app_name="special_assignment" action_urls_pattern="special_assignment" enabled_action_btns="update,delete,details" details_url="special_assignment:details" is_show_created_at=False enable_create_btn=True request=request %}
+          {% include "components/core/no_permissions.html" with msg="no permissions to see jobs" %}
 
-    <!-- Start Special Assignment Form -->
-    {% include "segments/special_assignment/special_assignment_modal.html" with user_type=request.user.user_type form=special_assignment_form request_object=request client_object=object %}
-    <!-- End Special Assignment Form -->
-  </div>
-  <!-- End Special Assignments Segment -->
-  {% else %}
-  {% include "components/core/no_permissions.html" with msg="no permissions to see special assignments" %}
-  {% endif %}
+        {% endif %}
+      {% elif page_section_name == "assignments" %}
+        {% if perms.special_assignment.can_view_list %}
+          <!-- Start Special Assignments Segment -->
+          <div id="specialAssignmentsContentWrapper" hidden>
 
-  {% elif page_section_name == "notes" %}
+            {% include "components/special_assignment/table_list.html" with object_list=object.special_assignments.all user_type=request.user.user_type perms=perms app_name="special_assignment" action_urls_pattern="special_assignment" enabled_action_btns="update,delete,details" details_url="special_assignment:details" is_show_created_at=False enable_create_btn=True request=request %}
 
-  {% if perms.notes.can_view_list %}
-  <!-- Start Notes Segment -->
-  <div id="notesContentWrapper" hidden>
-    {% include "components/notes/table_list.html" with object_list=object.notes.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="note" action_urls_pattern="notes" enabled_action_btns="update,delete" is_show_created_at=False %}
-    <!-- Start Note Modal Form -->
-    {% include "segments/notes/note_modal.html" with user_type=request.user.user_type note_form=note_form request_object=request %}
-    <!-- End Note Modal Form -->
-  </div>
-  <!-- End Notes Segment -->
-  {% else %}
-  {% include "components/core/no_permissions.html" with msg="no permissions to see notes" %}
-  {% endif %}
+            <!-- Start Special Assignment Form -->
 
-  {% elif page_section_name == "services" %}
+            {% include "segments/special_assignment/special_assignment_modal.html" with user_type=request.user.user_type form=special_assignment_form request_object=request client_object=object %}
 
-  {% if perms.company_services.can_view_list %}
-  <!-- Start Account & Services Segment -->
-  <div id="servicesContentWrapper" hidden>
-    {% include "components/company_services/table_list.html" with object_list=object.company_services.all all=request.user.user_type enable_create_btn=True is_show_client_column=False perms=perms app_name="company_services" is_show_client_column=False action_urls_pattern="company_services" enabled_action_btns="update,delete" is_show_created_at=False %}
+            <!-- End Special Assignment Form -->
+          </div>
+          <!-- End Special Assignments Segment -->
+        {% else %}
 
-    <!-- Start Company Services Form -->
-    {% include "segments/company_service/company_service_modal.html" with user_type=request.user.user_type company_services_form=company_services_form request_object=request %}
-    <!-- End Company Services Form -->
-  </div>
-  <!-- End Account & Services Segment -->
-  {% else %}
-  {% include "components/core/no_permissions.html" with msg="no permissions to see company and services" %}
-  {% endif %}
+          {% include "components/core/no_permissions.html" with msg="no permissions to see special assignments" %}
 
-  {% comment  %}
+        {% endif %}
+      {% elif page_section_name == "notes" %}
+        {% if perms.notes.can_view_list %}
+          <!-- Start Notes Segment -->
+          <div id="notesContentWrapper" hidden>
+
+            {% include "components/notes/table_list.html" with object_list=object.notes.all user_type=request.user.user_type enable_create_btn=True perms=perms app_name="note" action_urls_pattern="notes" enabled_action_btns="update,delete" is_show_created_at=False %}
+
+            <!-- Start Note Modal Form -->
+
+            {% include "segments/notes/note_modal.html" with user_type=request.user.user_type note_form=note_form request_object=request %}
+
+            <!-- End Note Modal Form -->
+          </div>
+          <!-- End Notes Segment -->
+        {% else %}
+
+          {% include "components/core/no_permissions.html" with msg="no permissions to see notes" %}
+
+        {% endif %}
+      {% elif page_section_name == "services" %}
+        {% if perms.company_services.can_view_list %}
+          <!-- Start Account & Services Segment -->
+          <div id="servicesContentWrapper" hidden>
+
+            {% include "components/company_services/table_list.html" with object_list=object.company_services.all all=request.user.user_type enable_create_btn=True is_show_client_column=False perms=perms app_name="company_services" is_show_client_column=False action_urls_pattern="company_services" enabled_action_btns="update,delete" is_show_created_at=False %}
+
+            <!-- Start Company Services Form -->
+
+            {% include "segments/company_service/company_service_modal.html" with user_type=request.user.user_type company_services_form=company_services_form request_object=request %}
+
+            <!-- End Company Services Form -->
+          </div>
+          <!-- End Account & Services Segment -->
+        {% else %}
+
+          {% include "components/core/no_permissions.html" with msg="no permissions to see company and services" %}
+
+        {% endif %}
+        {% comment  %}
   {% elif page_section_name == "tasks" %}
 
   <!-- Start Tasks Segment -->
@@ -233,55 +254,64 @@
     <!-- End Task Modal Form -->
   </div>
   <!-- End Tasks Segment -->
-  {% endcomment %}
-  {% elif page_section_name == "overview" %}
-  <!-- Start Overview Segment -->
-  <div id="overviewContentWrapper" hidden>
-    {% include "client/segments/overview.html" with client_object=object user_type=request.user.user_type %}
-  </div>
-  <!-- End overview Segment -->
+        {% endcomment %}
+      {% elif page_section_name == "overview" %}
+        <!-- Start Overview Segment -->
+        <div id="overviewContentWrapper" hidden>
 
-  {% elif page_section_name == "contacts" %}
+          {% include "client/segments/overview.html" with client_object=object user_type=request.user.user_type %}
 
-  {% if perms.important_contact.can_view_list %}
-  <!-- Start Important Contacts Segment -->
-  <div id="contactsContentWrapper" hidden>
-    {% include "components/important_contact/table_list.html" with object_list=object.important_contacts.all user_type=request.user.user_type perms=perms app_name="important_contact" action_urls_pattern="important_contact" enabled_action_btns="update,delete" enable_create_btn=True %}
+        </div>
+        <!-- End overview Segment -->
+      {% elif page_section_name == "contacts" %}
+        {% if perms.important_contact.can_view_list %}
+          <!-- Start Important Contacts Segment -->
+          <div id="contactsContentWrapper" hidden>
 
-    <!-- Start Important Contact Form -->
-    {% include "segments/important_contact/important_contact_modal.html" with user_type=request.user.user_type form=important_contact_form request_object=request client_object=object %}
-    <!-- End Important Contact Form -->
-  </div>
-  <!-- End Important Contacts Segment -->
-  {% else %}
-  {% include "components/core/no_permissions.html" with msg="no permissions to see contacts" %}
-  {% endif %}
+            {% include "components/important_contact/table_list.html" with object_list=object.important_contacts.all user_type=request.user.user_type perms=perms app_name="important_contact" action_urls_pattern="important_contact" enabled_action_btns="update,delete" enable_create_btn=True %}
 
-  {% endif %}
+            <!-- Start Important Contact Form -->
 
-  {% endwith %}
+            {% include "segments/important_contact/important_contact_modal.html" with user_type=request.user.user_type form=important_contact_form request_object=request client_object=object %}
 
-</section>
-<!-- End section content -->
+            <!-- End Important Contact Form -->
+          </div>
+          <!-- End Important Contacts Segment -->
+        {% else %}
+
+          {% include "components/core/no_permissions.html" with msg="no permissions to see contacts" %}
+
+        {% endif %}
+      {% endif %}
+    {% endwith %}
+  </section>
+  <!-- End section content -->
 {% endblock dashboard_content %}
 {% block externaljs %}
-<script src="{% static 'js/apps/client/details.js' %}" defer type="module"></script>
-{% with request.get_full_path|get_last_url_part as page_section_name %}
-{% if page_section_name == "jobs" %}
-<script src="{% static 'js/apps/jobs/jobs.js' %}" defer type="module"></script>
-{% elif page_section_name == "tasks" %}
-<script src="{% static 'js/apps/task/task.js' %}" defer type="module"></script>
-{% elif page_section_name == "documents" %}
-<script src="{% static 'js/apps/documents/documents.js' %}" defer type="module"></script>
-{% elif page_section_name == "notes" %}
-<script src="{% static 'js/apps/notes/notes.js' %}" defer type="module"></script>
-{% elif page_section_name == "services" %}
-<script src="{% static 'js/apps/company_service/company_service.js' %}" defer type="module"></script>
-{% elif page_section_name == "contacts" %}
-<script src="{% static 'js/apps/important_contact/important_contact.js' %}" defer type="module"></script>
-{% elif page_section_name == "assignments" %}
-<script src="{% static 'js/apps/special_assignment/special_assignment.js' %}" defer type="module"></script>
-{% endif %}
-{% endwith %}
-
+  <script src="{% static 'js/apps/client/details.js' %}" defer type="module"></script>
+  {% with request.get_full_path|get_last_url_part as page_section_name %}
+    {% if page_section_name == "jobs" %}
+      <script src="{% static 'js/apps/jobs/jobs.js' %}" defer type="module"></script>
+    {% elif page_section_name == "tasks" %}
+      <script src="{% static 'js/apps/task/task.js' %}" defer type="module"></script>
+    {% elif page_section_name == "documents" %}
+      <script src="{% static 'js/apps/documents/documents.js' %}"
+              defer
+              type="module"></script>
+    {% elif page_section_name == "notes" %}
+      <script src="{% static 'js/apps/notes/notes.js' %}" defer type="module"></script>
+    {% elif page_section_name == "services" %}
+      <script src="{% static 'js/apps/company_service/company_service.js' %}"
+              defer
+              type="module"></script>
+    {% elif page_section_name == "contacts" %}
+      <script src="{% static 'js/apps/important_contact/important_contact.js' %}"
+              defer
+              type="module"></script>
+    {% elif page_section_name == "assignments" %}
+      <script src="{% static 'js/apps/special_assignment/special_assignment.js' %}"
+              defer
+              type="module"></script>
+    {% endif %}
+  {% endwith %}
 {% endblock externaljs %}

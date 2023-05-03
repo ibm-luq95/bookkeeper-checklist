@@ -92,15 +92,7 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
         element.classList.remove("is-danger");
       });
       // console.log(jobsForm["categories"].value);
-      // check if categories exists
-      if (jobsForm["categories"]) {
-        // check if bookkeeper single or multiple
-        // console.log(Array.from(jobsForm["categories"]));
-        categoriesArray = Array.from(jobsForm["categories"]).filter(
-          (element) => element.checked === true,
-        );
-      }
-      categoriesArray = categoriesArray.map((element) => element.value);
+
       // check if bookkeeper exists
       if (jobsForm["bookkeeper"]) {
         // check if bookkeeper single or multiple
@@ -157,6 +149,19 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
       // formInputs["tasks"] = tasksArray;
       // formInputs["bookkeeper"] = bookkeepersArray;
       // formInputs["assistants"] = assistantsArray;
+      // check if categories exists
+      if (jobsForm["categories"]) {
+        // check if bookkeeper single or multiple
+        // console.log(Array.from(jobsForm["categories"]));
+        if (checkIfInputSingleOrList(jobsForm["categories"]) === "multiple") {
+          categoriesArray = Array.from(jobsForm["categories"]).filter(
+            (element) => element.checked === true,
+          );
+          categoriesArray = categoriesArray.map((element) => element.value);
+        } else {
+          categoriesArray = [jobsForm["categories"].value];
+        }
+      }
       formInputs["categories"] = categoriesArray;
       if (jobsForm["_method"].value === "PUT") {
         formInputs["jobId"] = jobsForm["jobId"].value;

@@ -39,18 +39,30 @@
                 </section>
                 <hr />
                 <article class="mt-3">
-                  <h6 class="editable-content" data-pk="{{ object.pk }}" data-field="due_date" data-is-editable="True" data-is-date="True">
-                    Due Date: <time id="dueDateElement" datetime="{{ object.due_date }}">{{ object.due_date }}</time> <i class="fa-solid fa-check has-text-success font-size-18px ml-3 d-none" id="checkDueDateIcon"></i>
+                  <h6 class="editable-content"
+                      data-pk="{{ object.pk }}"
+                      data-field="due_date"
+                      data-is-editable="True"
+                      data-is-date="True">
+                    Due Date: <time id="dueDateElement" datetime="{{ object.due_date }}">{{ object.due_date }}</time> <i class="fa-solid fa-check has-text-success font-size-18px ml-3 d-none"
+    id="checkDueDateIcon"></i>
                   </h6>
                   <form id="updateDueDateJobForm" method="post" class="d-none">
                     <fieldset form="updateDueDateJobForm">
                       {% csrf_token %}
                       <div class="field has-addons">
                         <div class="control">
-                          <input id="dueDateUpdateElement" data-pk="{{ object.pk }}" data-field="due_date" class="input bkchlst-input is-small" type="date" disabled />
+                          <input id="dueDateUpdateElement"
+                                 data-pk="{{ object.pk }}"
+                                 data-field="due_date"
+                                 class="input bkchlst-input is-small"
+                                 type="date"
+                                 disabled />
                         </div>
                         <div class="control">
-                          <button class="button bkchlst-input is-primary is-small" disabled type="submit">
+                          <button class="button bkchlst-input is-primary is-small"
+                                  disabled
+                                  type="submit">
                             <span class="icon is-small">
                               <i class="fa-solid fa-floppy-disk"></i>
                             </span>
@@ -59,14 +71,21 @@
                       </div>
                     </fieldset>
                   </form>
-                 
                   <hr />
-                  
                   <span class="tag">{{ object.get_state_display }}</span>
                   <hr />
-                  <h6 class="font-size-12px has-text-weight-normal hint--top" aria-label="Created">
+                  <h6 class="font-size-12px has-text-weight-normal hint--top"
+                      aria-label="Created">
                     <time datetime="{{ object.created_at|date }}">{{ object.created_at|date }}</time>
                   </h6>
+                  {% if object.note %}
+                    <hr />
+                    <h6>Note:</h6>
+                    <div class="editable-content"
+                       data-pk="{{ object.pk }}"
+                       data-field="note"
+                       data-is-editable="True">{{ object.note|safe }}</div>
+                  {% endif %}
                 </article>
                 <br />
               </div>
@@ -137,7 +156,8 @@
                   <div class="content">
                     {% if perms.jobs.change_job %}
                       <button id="updateJobBtn"
-                              class="button is-fullwidth has-text-weight-bold hint--top bkchlst-input" disabled
+                              class="button is-fullwidth has-text-weight-bold hint--top bkchlst-input"
+                              disabled
                               aria-label="Update job details">Edit Job</button>
                       <!-- Start Jobs Form -->
 
@@ -165,32 +185,38 @@
                       </span>
                       <br />
                       {% if all_bookkeepers %}
-                      <form method="post" id="updateManagedByForm">
-                        <fieldset form="updateManagedByForm">
-                          {% csrf_token %}
-                          <div class="field has-addons">
-                            <div class="control is-expanded">
-                              <div class="select is-fullwidth">
-                                <select disabled class="bkchlst-input" id="jobDetailsBookkeeperSelect" name="managed_by" data-pk="{{ object.pk }}">
-                                  {% for bookkeeper in all_bookkeepers %}
-                                  <option value="{{ bookkeeper.pk }}"
-                                          {% if object.managed_by.bookkeeper.pk == bookkeeper.pk %}selected{% endif %}>{{ bookkeeper }}</option>
-                                {% endfor %}
-                                </select>
+                        <form method="post" id="updateManagedByForm">
+                          <fieldset form="updateManagedByForm">
+                            {% csrf_token %}
+                            <div class="field has-addons">
+                              <div class="control is-expanded">
+                                <div class="select is-fullwidth">
+                                  <select disabled
+                                          class="bkchlst-input"
+                                          id="jobDetailsBookkeeperSelect"
+                                          name="managed_by"
+                                          data-pk="{{ object.pk }}">
+                                    {% for bookkeeper in all_bookkeepers %}
+                                      <option value="{{ bookkeeper.pk }}"
+                                              {% if object.managed_by.bookkeeper.pk == bookkeeper.pk %}selected{% endif %}>{{ bookkeeper }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="control">
+                                <button id="jobUpdateManagedByBtn"
+                                        type="submit"
+                                        class="button is-primary hint--top bkchlst-input"
+                                        disabled
+                                        aria-label="Update bookkeeper">
+                                  <span class="icon is-small">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                  </span>
+                                </button>
                               </div>
                             </div>
-                            <div class="control">
-                              <button id="jobUpdateManagedByBtn" type="submit" class="button is-primary hint--top bkchlst-input" disabled aria-label="Update bookkeeper">
-                                <span class="icon is-small">
-                                  <i class="fa-solid fa-floppy-disk"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                      </form>
-                      
-                       
+                          </fieldset>
+                        </form>
                       {% else %}
                         <span class="has-text-danger">No bookkeepers!</span>
                       {% endif %}
@@ -352,7 +378,8 @@
                           <input type="hidden" name="user" id="user" value="{{ request.user.pk }}" />
                           <div class="field">
                             <p class="control">
-                              <textarea class="textarea manager-as-lbl bkchlst-input" disabled
+                              <textarea class="textarea manager-as-lbl bkchlst-input"
+                                        disabled
                                         rows="2"
                                         placeholder="Add a discussion or reply..."
                                         id="body"
@@ -371,7 +398,11 @@
                           </div>
                           <div class="file is-small has-name is-fullwidth">
                             <label class="file-label">
-                              <input class="file-input bkchlst-input" disabled type="file" name="attachment" id="attachment" />
+                              <input class="file-input bkchlst-input"
+                                     disabled
+                                     type="file"
+                                     name="attachment"
+                                     id="attachment" />
                               <span class="file-cta">
                                 <span class="file-icon">
                                   <i class="fas fa-upload"></i>
@@ -388,7 +419,8 @@
                         <div class="level-right">
                           <div class="level-item">
                             <div class="level-item">
-                              <button class="button is-info mt-2 manager-as-lbl is-light bkchlst-input" disabled
+                              <button class="button is-info mt-2 manager-as-lbl is-light bkchlst-input"
+                                      disabled
                                       type="submit"
                                       form="addDiscussionJobForm">Submit</button>
                             </div>

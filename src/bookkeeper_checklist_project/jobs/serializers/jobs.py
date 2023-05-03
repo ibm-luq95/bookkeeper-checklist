@@ -40,7 +40,7 @@ class JobSerializer(serializers.ModelSerializer):
     )
     # categories = JobCategorySerializer(read_only=True, many=True)
     categories = serializers.PrimaryKeyRelatedField(
-        queryset=JobCategory.objects.all(), many=True
+        queryset=JobCategory.objects.all(), many=True, required=False
     )
 
     # due_date = serializers.DateField(read_only=True)

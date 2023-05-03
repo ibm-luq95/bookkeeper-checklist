@@ -18,6 +18,7 @@ class CompanyServiceForm(BaseModelFormMixin, SaveCreatedByFormMixin):
     ):
         super(CompanyServiceForm, self).__init__(*args, **kwargs)
         # debugging_print(self.fields)
+        self.fields.pop("status")
         self.is_update = is_update
         self.updated_object = updated_object
         if client is not None:

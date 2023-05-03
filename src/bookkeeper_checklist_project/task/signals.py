@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-#
+from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.db import transaction
 
 from core.constants.status_labels import CON_COMPLETED, CON_NOT_COMPLETED
 from task.models import Task
 
 
-# @receiver(post_save, sender=Task)
+@receiver(post_save, sender=Task)
 def update_job_status_when_add_task(sender, instance: Task, created: bool, **kwargs):
+    # pass
     with transaction.atomic():
         if not created:
             created_task_obj = instance

@@ -1,7 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
 
-from client.models import Client
+from client.models import ClientProxy
 from client.serializers import ClientSerializer
 from core.choices import JobTypeEnum, JobStatusEnum
 from core.constants import EXCLUDED_FIELDS
@@ -34,7 +34,9 @@ class CreateJobSerializer(serializers.ModelSerializer, CreatedBySerializerMixin)
 
 class JobSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
-    client = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all(), many=False)
+    client = serializers.PrimaryKeyRelatedField(
+        queryset=ClientProxy.objects.all(), many=False
+    )
     managed_by = serializers.PrimaryKeyRelatedField(
         queryset=CustomUser.objects.all(), many=False, allow_null=True
     )
@@ -51,7 +53,7 @@ class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobProxy
         exclude = EXCLUDED_FIELDS
-        depth = 3
+        depth = 2
 
     def validate(self, data):
         """
@@ -69,7 +71,7 @@ class JobSerializer(serializers.ModelSerializer):
             instance.categories.clear()
             for category in categories:
                 instance.categories.add(category)
-        instance.save()
+        instance = super().update(instance, validated_data)
         return instance
 
 

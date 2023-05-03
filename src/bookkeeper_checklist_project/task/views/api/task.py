@@ -195,9 +195,9 @@ class SetTaskCompletedApiView(APIView):
                 task_object.save()
                 job_object = task_object.job
                 # check if all tasks done set the job completed
-                if len(job_object.get_all_not_completed_tasks()) == 0:
-                    job_object.status = CON_COMPLETED
-                    job_object.save()
+                # if len(job_object.get_all_not_completed_tasks()) == 0:
+                #     job_object.status = CON_COMPLETED
+                #     job_object.save()
             return Response(
                 data={"msg": "Task set to completed successfully!", "tasks": tasks},
                 status=status.HTTP_200_OK,
@@ -229,7 +229,7 @@ class TaskRetrieveAPIView(generics.RetrieveAPIView):
     ]
     perm_slug = "task.task"
     serializer_class = TaskSerializer
-    queryset = Task.objects.select_related().all()
+    queryset = Task.objects.all()
 
     def get_object(self):
         qs = self.get_queryset()

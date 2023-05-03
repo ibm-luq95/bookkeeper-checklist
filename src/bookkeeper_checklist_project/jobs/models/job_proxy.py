@@ -2,6 +2,7 @@
 from django.db import transaction
 from django.db.models import Q
 
+from bookkeeper.models import BookkeeperProxy
 from core.constants.status_labels import (
     CON_ARCHIVED,
     CON_COMPLETED,
@@ -22,6 +23,7 @@ class JobProxy(Job):
                 with transaction.atomic():
                     client = self.client
                     bookkeeper_obj = managed_by.bookkeeper
+                    bookkeeper_obj = BookkeeperProxy.objects.get(pk=bookkeeper_obj.pk)
                     client.bookkeepers.remove(bookkeeper_obj)
                     client.save()
                     # debugging_print(self.model_class())

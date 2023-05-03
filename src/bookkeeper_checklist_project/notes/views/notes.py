@@ -95,13 +95,14 @@ class NotesUpdateView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context.setdefault("title", get_trans_txt("Update note"))
-        kwargs.update({"add_jodit_css_class": True})
+
         return context
 
     def get_form_kwargs(self):
         kwargs = super(NotesUpdateView, self).get_form_kwargs()
         sections = ["job", "client", "task"]
         object = self.get_object()
+        kwargs.update({"add_jodit_css_class": True})
         for sec in sections:
             if sec == object.note_section:
                 sections.remove(sec)

@@ -161,11 +161,12 @@ class ClientDetailsView(
         context.setdefault("important_contact_form", important_contact_form)
         document_form = DocumentForm(
             initial={"document_section": "client", "client": client},
-            removed_fields=["job", "task"],
+            removed_fields=["job", "task", "status"],
         )
         note_form = NoteForm(
             initial={"note_section": "client", "client": client},
             removed_fields=["job", "task"],
+            add_jodit_css_class=True,
         )
         context.setdefault("document_form", document_form)
         context.setdefault("note_form", note_form)

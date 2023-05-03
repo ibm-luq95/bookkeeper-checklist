@@ -121,25 +121,16 @@ class UpdateJobApiView(APIView):
             serializer = JobSerializer(
                 instance=job_object, data=data, context={"request": request}, partial=True
             )
-            if not serializer.is_valid(raise_exception=True):
-                raise APIException(serializer.errors)
+            serializer.is_valid(raise_exception=True)
+            # if not serializer.is_valid(raise_exception=True):
+            #     raise APIException(serializer.errors)
             # debugging_print(serializer.validated_data)
             # raise APIException("stop")
+            # serializer.update(job_object, serializer.validated_data)
             serializer.save()
             # tasks = data.get("tasks")
             # bookkeepers = data.get("bookkeeper")
 
-            # update bookkeeper
-            # bookkeepers_objects_list = []
-            # for bookkeeper in bookkeepers:
-            #     bookkeepers_objects_list.append(bookkeeper)
-            # job_object.bookkeeper.set(bookkeepers_objects_list)
-
-            # update tasks
-            tasks_objects_list = []
-            # for task in tasks:
-            #     tasks_objects_list.append(Task.objects.get(pk=task))
-            # job_object.tasks.set(tasks_objects_list)
             return Response(
                 data={"job": serializer.data, "msg": "Job updated successfully!"},
                 status=status.HTTP_200_OK,
@@ -293,7 +284,7 @@ class UpdateEditableJobApiView(APIView):
                     "job": job_object.pk,
                     "msg": f"{stringcase.sentencecase(data.get('field').capitalize())} updated successfully!",
                     "title": job_object.title,
-                    "due_dte": job_object.due_date
+                    "due_dte": job_object.due_date,
                 },
                 status=status.HTTP_200_OK,
             )

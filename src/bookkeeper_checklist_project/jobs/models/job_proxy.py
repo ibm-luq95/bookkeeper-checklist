@@ -69,7 +69,8 @@ class JobProxy(Job):
                         tasks = tasks.filter()
                         for task in tasks:
                             logged_task = task.history.filter()
-                            if logged_task:
+                            if logged_task.exists():
+                                logged_task = logged_task.first()
                                 task.status = logged_task.previous_status
                                 task.save()
                                 logged_task.delete()

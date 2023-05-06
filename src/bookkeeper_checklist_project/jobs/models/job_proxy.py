@@ -68,7 +68,8 @@ class JobProxy(Job):
                         # tasks.filter(Q(status=CON_ARCHIVED)).update(status=CON_NOT_STARTED)
                         tasks = tasks.filter()
                         for task in tasks:
-                            logged_task = task.history.get()
-                            task.status = logged_task.previous_status
-                            task.save()
-                            logged_task.delete()
+                            logged_task = task.history.filter()
+                            if logged_task:
+                                task.status = logged_task.previous_status
+                                task.save()
+                                logged_task.delete()

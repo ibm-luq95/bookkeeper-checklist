@@ -8,7 +8,7 @@ from client.models import ClientProxy
 from core.choices import DocumentTypesEnum
 from core.models import BaseModelMixin, CreatedByMixin, GeneralStatusFieldMixin
 from jobs.models import JobProxy
-from task.models import Task
+from task.models import TaskProxy
 
 
 # def saved_document_file_path(instance, filename):
@@ -54,7 +54,7 @@ class Documents(BaseModelMixin, GeneralStatusFieldMixin, CreatedByMixin):
         to=JobProxy, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
     )
     task = models.ForeignKey(
-        to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
+        to=TaskProxy, on_delete=models.SET_NULL, null=True, blank=True, related_name="documents"
     )
 
     # def delete(self, *args, **kwargs):

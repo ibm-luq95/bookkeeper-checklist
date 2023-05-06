@@ -68,6 +68,9 @@ class BaseModelMixin(DiffingMixin, models.Model):
         self.deleted_at = timezone.now()
         self.save()
 
+    def hard_delete(self):
+        self.original_objects.delete()
+
     def delete(self):
         self.is_deleted = True
         self.deleted_at = timezone.now()

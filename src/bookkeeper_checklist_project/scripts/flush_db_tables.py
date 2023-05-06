@@ -9,7 +9,7 @@ from colorama import Fore, Back, Style
 from client.models import Client
 from special_assignment.models import SpecialAssignment, Discussion
 from jobs.models import JobProxy, JobCategory
-from task.models import Task
+from task.models import TaskProxy
 from documents.models import Documents
 from notes.models import Note
 from company_services.models import CompanyService
@@ -39,8 +39,8 @@ def run(*args):
     print(Fore.RESET + "###################################################")
 
     print(Fore.YELLOW + f"Start flush (Task) table:")
-    debugging_print(f"Total records: {Task.original_objects.all().count()}")
-    Task.original_objects.all().delete()
+    debugging_print(f"Total records: {TaskProxy.original_objects.all().count()}")
+    TaskProxy.original_objects.all().delete()
     debugging_print(f"Finished flush (Task) table")
     print(Fore.RESET + "###################################################")
 

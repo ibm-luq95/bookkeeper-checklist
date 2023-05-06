@@ -24,17 +24,17 @@ class BookkeeperProxy(Bookkeeper):
         return sum(all_tasks)
 
     def get_all_tasks_qs(self) -> BaseQuerySetMixin | None:
-        from task.models import Task
+        from task.models import TaskProxy
 
         bookkeeper_jobs = self.get_user_jobs()
-
+        debugging_print(bookkeeper_jobs)
         if bookkeeper_jobs:
             all_tasks_list = []
             for job in bookkeeper_jobs:
                 tasks = job.tasks.all()
                 if tasks:
                     all_tasks_list = all_tasks_list + [task.pk for task in tasks]
-            all_tasks_qs = Task.objects.filter(pk__in=all_tasks_list)
+            all_tasks_qs = TaskProxy.objects.filter(pk__in=all_tasks_list)
             return all_tasks_qs
         else:
             return None

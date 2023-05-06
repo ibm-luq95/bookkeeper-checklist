@@ -10,7 +10,13 @@ from core.constants.status_labels import (
     CON_ARCHIVED,
     CON_DISABLED,
 )
-from core.constants.users import CON_BOOKKEEPER, CON_MANAGER, CON_ASSISTANT
+from core.constants.users import (
+    CON_BOOKKEEPER,
+    CON_MANAGER,
+    CON_ASSISTANT,
+    CON_USER,
+    CON_DEVELOPER,
+)
 
 
 class CustomUserTypeEnum(models.TextChoices):
@@ -25,3 +31,8 @@ class CustomUserStatusEnum(models.TextChoices):
     CANCELED = CON_CANCELED, _(stringcase.sentencecase(CON_CANCELED))
     DISABLED = CON_DISABLED, _(stringcase.sentencecase(CON_DISABLED))
     ARCHIVED = CON_ARCHIVED, _(stringcase.sentencecase(CON_ARCHIVED))
+
+
+class UserTypesEnum(models.TextChoices):
+    DEVELOPER = CON_DEVELOPER, _(stringcase.sentencecase(CON_DEVELOPER))
+    USER = CON_USER, _(stringcase.sentencecase(CON_USER))

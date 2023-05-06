@@ -8,7 +8,7 @@ from core.forms import (
     JoditFormMixin,
 )
 from jobs.models import Job
-from task.models import Task
+from task.models import TaskProxy
 
 
 class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, JoditFormMixin):
@@ -69,7 +69,7 @@ class TaskForm(BaseModelFormMixin, SaveCreatedByFormMixin, JoditFormMixin):
             self.fields.pop("job")
 
     class Meta(BaseModelFormMixin.Meta):
-        model = Task
+        model = TaskProxy
         # widgets = {
         #     "additional_notes": forms.TextInput()
         # }

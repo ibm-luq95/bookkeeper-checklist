@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from core.api.permissions import ManagerApiPermission, BaseApiPermissionMixin
 from core.constants.status_labels import CON_COMPLETED
 from core.utils import get_formatted_logger, debugging_print
-from task.models import Task
+from task.models import TaskProxy
 from task.serializers import CreateTaskSerializer, TaskSerializer
 from pprint import pprint
 
@@ -70,7 +70,7 @@ class RetrieveTaskApiView(APIView):
         serializer = ""
         try:
             data = request.data
-            task_object = Task.objects.get(pk=data.get("taskId"))
+            task_object = TaskProxy.objects.get(pk=data.get("taskId"))
             serializer = TaskSerializer(instance=task_object)
             return Response(data={"task": serializer.data}, status=status.HTTP_200_OK)
         except APIException as ex:
@@ -104,7 +104,7 @@ class UpdateTaskApiView(APIView):
         serializer = ""
         try:
             data = request.data
-            task_object = Task.objects.get(pk=data.get("id"))
+            task_object = TaskProxy.objects.get(pk=data.get("id"))
             serializer = TaskSerializer(instance=task_object, data=data)
             if not serializer.is_valid(raise_exception=True):
                 raise APIException(serializer.errors)
@@ -145,7 +145,7 @@ class DeleteTaskApiView(APIView):
         serializer = ""
         try:
             data = request.data
-            task_object = Task.objects.get(pk=data.get("taskId"))
+            task_object = TaskProxy.objects.get(pk=data.get("taskId"))
             task_object.delete()
             return Response(
                 data={"msg": "Task deleted successfully!"}, status=status.HTTP_200_OK
@@ -185,7 +185,7 @@ class SetTaskCompletedApiView(APIView):
             current_user = request.user
 
             for task in tasks:
-                task_object = Task.objects.get(pk=task)
+                task_object = TaskProxy.objects.get(pk=task)
                 # if current_user != task_object.created_by:
                 #     raise PermissionDenied(
                 #         {"user_error_msg": "You don't have permission to update this task!"}
@@ -229,7 +229,7 @@ class TaskRetrieveAPIView(generics.RetrieveAPIView):
     ]
     perm_slug = "task.task"
     serializer_class = TaskSerializer
-    queryset = Task.objects.all()
+    queryset = TaskProxy.objects.all()
 
     def get_object(self):
         qs = self.get_queryset()

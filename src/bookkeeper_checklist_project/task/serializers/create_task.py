@@ -3,12 +3,12 @@ from django.utils import timezone
 from rest_framework import serializers
 
 from core.serializers import CreatedBySerializerMixin
-from task.models import Task
+from task.models import TaskProxy
 
 
 class CreateTaskSerializer(serializers.ModelSerializer, CreatedBySerializerMixin):
     class Meta:
-        model = Task
+        model = TaskProxy
         exclude = (
             "metadata",
             "is_deleted",

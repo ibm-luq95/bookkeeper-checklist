@@ -10,7 +10,7 @@ from core.models import (
     GeneralStatusFieldMixin,
 )
 from jobs.models import JobProxy
-from task.models import Task
+from task.models import TaskProxy
 
 
 class Note(BaseModelMixin, CreatedByMixin, GetObjectSectionMixin, GeneralStatusFieldMixin):
@@ -33,7 +33,7 @@ class Note(BaseModelMixin, CreatedByMixin, GetObjectSectionMixin, GeneralStatusF
         to=JobProxy, on_delete=models.SET_NULL, null=True, blank=True, related_name="notes"
     )
     task = models.ForeignKey(
-        to=Task, on_delete=models.SET_NULL, null=True, blank=True, related_name="notes"
+        to=TaskProxy, on_delete=models.SET_NULL, null=True, blank=True, related_name="notes"
     )
     note_section = models.CharField(
         _("note section"),

@@ -14,7 +14,7 @@ from core.views.mixins import (
     ArchiveListViewMixin,
 )
 from task.forms import TaskForm
-from task.models import Task
+from task.models import TaskProxy
 from core.constants import LIST_VIEW_PAGINATE_BY
 from manager.views.mixins import ManagerAccessMixin, ManagerAssistantAccessMixin
 from task.filters import TaskFilter
@@ -30,7 +30,7 @@ class TasksListView(
 ):
     permission_required = "task.can_view_list"
     template_name = "task/list.html"
-    model = Task
+    model = TaskProxy
     # queryset = Task.objects.select_related().filter(
     #     ~Q(task_status__in=[CON_ARCHIVED, CON_COMPLETED])
     # )
@@ -48,11 +48,13 @@ class TasksListView(
 
     def get_queryset(self):
         queryset = super().get_queryset()
+
         if self.request.user.user_type == "bookkeeper":
             queryset = BookkeeperProxy.objects.get(
                 pk=self.request.user.bookkeeper.pk
             ).get_all_tasks_qs()
         self.filterset = TaskFilter(self.request.GET, queryset=queryset)
+        debugging_print(dir(self.filterset))
         return self.filterset.qs
 
 
@@ -66,7 +68,7 @@ class TasksArchiveListView(
 ):
     permission_required = "task.can_view_archive"
     template_name = "task/list.html"
-    model = Task
+    model = TaskProxy
     paginate_by = LIST_VIEW_PAGINATE_BY
     list_type = "archive"
 
@@ -93,7 +95,7 @@ class TaskCreateView(
     CreateView,
 ):
     permission_required = "task.add_task"
-    # model = Task
+    # model = TaskProxy
     template_name = "task/create.html"
     form_class = TaskForm
     http_method_names = ["post", "get"]
@@ -126,7 +128,7 @@ class TaskUpdateView(
     form_class = TaskForm
     http_method_names = ["post", "get"]
     success_message: str = get_trans_txt("Task updated successfully")
-    model = Task
+    model = TaskProxy
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -159,7 +161,7 @@ class TaskDeleteView(
     DeleteView,
 ):
     permission_required = "task.delete_task"
-    model = Task
+    model = TaskProxy
     template_name = "task/delete.html"
     success_message: str = get_trans_txt("Task deleted successfully!")
     success_url = reverse_lazy("task:list")

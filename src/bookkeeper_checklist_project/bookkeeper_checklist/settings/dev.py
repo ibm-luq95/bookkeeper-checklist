@@ -13,13 +13,15 @@ INSTALLED_APPS = INSTALLED_APPS + [
     "django.contrib.admindocs",
     "debug_toolbar",
     "request_viewer",
+    "django_browser_reload",
 ]
 
 MIDDLEWARE = MIDDLEWARE + [
     "request_viewer.middleware.RequestViewerMiddleware",
     "request_viewer.middleware.ExceptionMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "django.contrib.admindocs.middleware.XViewMiddleware"
+    "django.contrib.admindocs.middleware.XViewMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 # Database configurations
@@ -45,7 +47,8 @@ CACHES = {
     "default": {
         # "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
         "BACKEND": config("CACHE_BACKEND_ENGINE", cast=str),
-        # "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
+        # "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@{os.environ.get('REDIS_HOST')}:{os.environ.get(
+        # 'REDIS_PORT')}",
         "LOCATION": f"redis://:{config('REDIS_PASSWORD')}@{config('REDIS_HOST')}:{config('REDIS_PORT')}",
         "TIMEOUT": None,
     }

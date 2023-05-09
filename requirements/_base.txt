@@ -2,6 +2,8 @@ cryptography
 colorama
 Django
 crispy-bulma
+django-tailwind
+crispy-tailwind
 django-crispy-forms
 django-filter
 django-maintenance-mode

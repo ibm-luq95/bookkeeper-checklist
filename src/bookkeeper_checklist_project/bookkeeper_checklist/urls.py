@@ -62,5 +62,6 @@ if settings.DEBUG:
     )
     urlpatterns.append(path("admin/doc/", include("django.contrib.admindocs.urls")))
     urlpatterns.append(path("admin/", admin.site.urls))
+    urlpatterns.append(path("__reload__/", include("django_browser_reload.urls")))
 else:
     urlpatterns.append(path("secret/", admin.site.urls))

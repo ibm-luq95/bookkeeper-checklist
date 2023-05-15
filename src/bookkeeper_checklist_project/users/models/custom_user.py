@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from core.choices import CustomUserTypeEnum, CustomUserStatusEnum
+from core.choices import CustomUserTypeEnum, CustomUserStatusEnum, UserTypesEnum
 from core.models.mixins import BaseModelMixin
 from core.utils import get_formatted_logger
 from .manager import CustomUserManager
@@ -43,6 +43,13 @@ class CustomUser(BaseModelMixin, AbstractBaseUser, PermissionsMixin):
         choices=CustomUserStatusEnum.choices,
         default=CustomUserStatusEnum.ENABLED,
     )
+    user_genre = models.CharField(
+        _("user genre"),
+        max_length=10,
+        choices=UserTypesEnum.choices,
+        default=UserTypesEnum.USER,
+        db_index=True,
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -53,6 +60,9 @@ class CustomUser(BaseModelMixin, AbstractBaseUser, PermissionsMixin):
         verbose_name = "user"
         verbose_name_plural = "users"
         ordering = ["-created_at", "-updated_at"]
+        permissions = [
+            ("developer_user", "Developer User"),
+        ]
 
     def __str__(self):
         # return self.email

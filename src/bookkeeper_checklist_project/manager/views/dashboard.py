@@ -6,7 +6,7 @@ from django.views.generic.base import TemplateView
 from core.cache import CacheViewMixin
 from core.utils import get_trans_txt
 from .mixins import ManagerAccessMixin
-from task.models import Task
+from task.models import TaskProxy
 from client.models import Client
 from special_assignment.models import SpecialAssignment
 from jobs.models import Job
@@ -30,7 +30,7 @@ class DashboardHomeView(LoginRequiredMixin, ManagerAccessMixin, CacheViewMixin, 
         context = super().get_context_data(**kwargs)
         context.setdefault("title", get_trans_txt("Management"))
         context.setdefault("web_app_settings_cache", self.cmx_get_item("web_app_settings"))
-        all_tasks = Task.objects.select_related().filter()
+        all_tasks = TaskProxy.objects.select_related().filter()
         all_jobs = Job.objects.select_related().filter()
         all_special_assignments = SpecialAssignment.objects.select_related().filter()
         all_clients = Client.objects.select_related().filter()

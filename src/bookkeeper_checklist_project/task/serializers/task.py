@@ -5,7 +5,7 @@ from rest_framework import serializers
 from client.models import Client
 from core.serializers import CreatedBySerializerMixin
 from jobs.models import Job, JobProxy
-from task.models import Task
+from task.models import TaskProxy
 
 
 class TaskSerializer(serializers.ModelSerializer, CreatedBySerializerMixin):
@@ -18,7 +18,7 @@ class TaskSerializer(serializers.ModelSerializer, CreatedBySerializerMixin):
     job = serializers.PrimaryKeyRelatedField(queryset=JobProxy.objects.all(), many=False)
 
     class Meta:
-        model = Task
+        model = TaskProxy
         # fields = ("get_task_type_display",)
         exclude = (
             "metadata",

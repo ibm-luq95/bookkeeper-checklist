@@ -20,7 +20,7 @@ from core.utils import get_formatted_logger, debugging_print, get_trans_txt
 from documents.models import Documents
 from jobs.models import JobTemplate, Job, JobProxy
 from notes.models import Note
-from task.models import Task
+from task.models import TaskProxy
 from jobs.serializers import JobTemplateSerializer, JobSerializer, JobOnlySerializer
 
 logger = get_formatted_logger()
@@ -94,7 +94,7 @@ class CreateNewJobFromTemplateApi(APIView):
                             "status": task.status,
                             "job": new_job,
                         }
-                        task_object = Task.objects.create(**task_data)
+                        task_object = TaskProxy.objects.create(**task_data)
                         if task.items.all():
                             task_items = []
                             for item in task.items.all():

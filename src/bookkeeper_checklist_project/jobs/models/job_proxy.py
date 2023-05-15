@@ -9,6 +9,7 @@ from core.constants.status_labels import (
     CON_ENABLED,
     CON_NOT_STARTED,
 )
+from core.utils import debugging_print
 from jobs.models import Job
 
 
@@ -22,12 +23,14 @@ class JobProxy(Job):
             if managed_by:
                 with transaction.atomic():
                     client = self.client
-                    bookkeeper_obj = managed_by.bookkeeper
-                    bookkeeper_obj = BookkeeperProxy.objects.get(pk=bookkeeper_obj.pk)
-                    client.bookkeepers.remove(bookkeeper_obj)
-                    client.save()
-                    # debugging_print(self.model_class())
-                    JobProxy.objects.filter(pk=self.pk).update(managed_by=None)
+                    if hasattr(managed_by, "bookkeeper"):
+                        bookkeeper_obj = managed_by.bookkeeper
+                        # debugging_print(bookkeeper_obj)
+                        bookkeeper_obj = BookkeeperProxy.objects.get(pk=bookkeeper_obj.pk)
+                        client.bookkeepers.remove(bookkeeper_obj)
+                        client.save()
+                        # debugging_print(self.model_class())
+                        JobProxy.objects.filter(pk=self.pk).update(managed_by=None)
 
     def archive_and_unarchived_related_items(self, status: str) -> None:
         with transaction.atomic():
@@ -43,7 +46,13 @@ class JobProxy(Job):
                     documents.update(status=CON_ARCHIVED)
                 # Set tasks to archived
                 if tasks:
-                    tasks.update(status=CON_ARCHIVED)
+                    # tasks.update(status=CON_ARCHIVED)
+                    for task in tasks:
+                        task.status = (
+                            CON_ARCHIVED if status == CON_ARCHIVED else CON_COMPLETED
+                        )
+                        # task.status = CON_ARCHIVED
+                        task.save()
             else:
                 # Set notes to enabled
                 if notes:
@@ -53,4 +62,15 @@ class JobProxy(Job):
                     documents.filter(Q(status=CON_ARCHIVED)).update(status=CON_ENABLED)
                 # Set tasks to archived
                 if tasks:
-                    tasks.filter(Q(status=CON_ARCHIVED)).update(status=CON_NOT_STARTED)
+                    from task.models import TaskHistory
+
+                    with transaction.atomic():
+                        # tasks.filter(Q(status=CON_ARCHIVED)).update(status=CON_NOT_STARTED)
+                        tasks = tasks.filter()
+                        for task in tasks:
+                            logged_task = task.history.filter()
+                            if logged_task.exists():
+                                logged_task = logged_task.first()
+                                task.status = logged_task.previous_status
+                                task.save()
+                                logged_task.delete()

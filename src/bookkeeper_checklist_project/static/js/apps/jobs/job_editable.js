@@ -138,6 +138,14 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
     });
   }
 
+  let tmpSelectedManager;
+  if (jobDetailsBookkeeperSelect) {
+    jobDetailsBookkeeperSelect.addEventListener("focus", (event) => {
+      const idx = jobDetailsBookkeeperSelect.selectedIndex;
+      tmpSelectedManager = idx;
+    });
+  }
+
   if (updateManagedByForm) {
     updateManagedByForm.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -180,6 +188,9 @@ document.addEventListener("DOMContentLoaded", (readyEvent) => {
           .finally(() => {
             fieldset.disabled = false;
           });
+      } else {
+        fieldset.disabled = false;
+        jobDetailsBookkeeperSelect.selectedIndex = tmpSelectedManager;
       }
     });
   }

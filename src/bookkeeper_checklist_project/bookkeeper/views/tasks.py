@@ -10,7 +10,7 @@ from django.views.generic import ListView, UpdateView
 
 from core.utils import get_formatted_logger
 from task.forms import TaskForm
-from task.models import Task
+from task.models import TaskProxy
 from .mixins import BookkeeperAccessMixin
 
 logger = get_formatted_logger()
@@ -19,7 +19,7 @@ logger = get_formatted_logger()
 class TaskListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
     template_name = "bookkeeper/tasks/list.html"
     login_url = reverse_lazy("users:auth:login")
-    model = Task
+    model = TaskProxy
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -51,7 +51,7 @@ class TaskListView(LoginRequiredMixin, BookkeeperAccessMixin, ListView):
                     for task in job_tasks:
                         # debugging_print(dir(task.pk))
                         tasks_list.append(task.pk)
-            queryset = Task.objects.prefetch_related().filter(pk__in=tasks_list)
+            queryset = TaskProxy.objects.filter(pk__in=tasks_list)
         else:
             # debugging_print("IN ELSE")
             raise ImproperlyConfigured(
@@ -76,7 +76,7 @@ class TaskUpdateView(
 ):
     template_name = "bookkeeper/tasks/details.html"
     login_url = reverse_lazy("users:auth:login")
-    model = Task
+    model = TaskProxy
     form_class = TaskForm
     success_message = "Task Update Successfully"
 

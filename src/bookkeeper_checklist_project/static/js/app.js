@@ -151,7 +151,10 @@ document.addEventListener("readystatechange", (ev) => {
       Array.from(form.elements).forEach((input) => {
         if (input.type === "url") {
           input.addEventListener("focusout", (event) => {
-            input.value = `https://${input.value}`;
+            const currentTarget = event.currentTarget;
+            if (!currentTarget.value.includes("https")) {
+              input.value = `https://${input.value}`;
+            }
           });
         }
       });

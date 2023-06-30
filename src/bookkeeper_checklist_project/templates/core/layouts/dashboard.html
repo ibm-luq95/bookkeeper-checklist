@@ -19,11 +19,9 @@
     {% endblock externalcss %}
   </head>
   <body>
-    <!-- START NAV -->
-
-    {% include "core/includes/top_navbar.html" %}
-
-    <!-- END NAV -->
+    {# START NAV #}
+    {% #top-navbar request=request perms=perms %}{% /top-navbar %}
+    {# END NAV #}
     <main class="container is-fluid">
       <!-- Include flash messages file -->
 

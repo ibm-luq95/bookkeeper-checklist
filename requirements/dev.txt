@@ -2,7 +2,6 @@
 autopep8
 bandit
 black
-#black[d]
 bpython
 django-debug-toolbar
 django-stubs

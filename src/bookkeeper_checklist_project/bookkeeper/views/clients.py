@@ -66,8 +66,9 @@ class ClientsDetailsView(
         bookkeeper = self.request.user.bookkeeper
         special_assignments = bookkeeper.special_assignments.select_related().all()
         for job in client.jobs.filter():
-            for bookk in job.bookkeeper.filter():
-                bookkeepers_list.append(bookk)
+            if hasattr(job, "bookkeeper"):
+                for bookk in job.bookkeeper.filter():
+                    bookkeepers_list.append(bookk)
         for sa in special_assignments:  # TODO: check if this correct to use
             bookkeepers_list.append(sa.get_managed_user())
         if bookkeeper in bookkeepers_list:

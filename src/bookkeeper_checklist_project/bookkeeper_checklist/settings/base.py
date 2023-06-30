@@ -57,11 +57,6 @@ INSTALLED_APPS = [
     "slippers",
     "import_export",
     "django_filters",
-    # "django_summernote",
-    # "django_quill",
-    # "tinymce",
-    # "ckeditor",
-    # "ckeditor_uploader",
     "rest_framework",
     # "rest_framework.authtoken",
     "crispy_forms",
@@ -314,7 +309,8 @@ LOG_VIEWER_FILE_LIST_TITLE = "Log viewer"
 FORMATTERS = (
     {
         "verbose": {
-            "format": "{levelname} {asctime:s} - {name} {threadName} {thread:d} {module} {filename} {lineno:d} {name} {funcName} {process:d} {message}",
+            "format": "{levelname} {asctime:s} - {name} {threadName} {thread:d} {module} {filename} {lineno:d} {name} "
+            "{funcName} {process:d} {message}",
             "style": "{",
             # "datefmt": "%Y-%m-%d %H:%M:%S",
         },
@@ -391,136 +387,6 @@ LOGGERS = (
 # Backup password
 BACKUP_KEY = config("BACKUP_KEY", cast=str)
 COMPRESS_LEVEL = config("COMPRESS_LEVEL", cast=int)
-
-
-# summernote configs
-X_FRAME_OPTIONS = "SAMEORIGIN"
-SUMMERNOTE_THEME = "lite"  # Show summernote with lite theme
-SUMMERNOTE_CONFIG = {
-    # 'iframe': True,
-    "summernote": {
-        # 'airMode': True,
-        "width": "750",
-        # "height": "100%",
-        "toolbar": [
-            ["style", ["style"]],
-            ["font", ["bold", "underline", "clear"]],
-            ["fontname", ["fontname"]],
-            ["color", ["color"]],
-            ["para", ["ul", "ol", "paragraph"]],
-            ["table", ["table"]],
-            ["insert", ["link", "picture", "video", "hr"]],
-            # ["view", ["fullscreen", "codeview", "help"]],
-        ],
-        # Require users to be authenticated for uploading attachments.
-        "attachment_require_authentication": True,
-        # Set `upload_to` function for attachments.
-        # 'attachment_upload_to': my_custom_upload_to_func(),
-        "attachment_upload_to": "/media/summernote_attachments",
-        # Set custom storage class for attachments.
-        # "attachment_storage_class": "my.custom.storage.class.name",
-        # Set custom model for attachments (default: 'django_summernote.Attachment')
-        # "attachment_model": "my.custom.attachment.model",  # must inherit 'django_summernote.AbstractAttachment'
-        # You can completely disable the attachment feature.
-        "disable_attachment": False,
-    }
-}
-# ckeditor upload path
-CKEDITOR_UPLOAD_PATH = "ckeditor/upload/"
-CKEDITOR_IMAGE_BACKEND = "pillow"
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#         # 'toolbar': 'Basic',
-#         'toolbar_Basic': [
-#             ['Source', '-', 'Bold', 'Italic']
-#         ],
-#         "toolbar": "toolbar_Basic",
-#         'extraPlugins': ','.join([
-#             'uploadimage', # the upload image feature
-#             # your extra plugins here
-#             "list"
-#         ])
-#     },
-# }
-CKEDITOR_CONFIGS = {
-    "default": {
-        # 'skin': 'moono',
-        # 'skin': 'office2013',
-        "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
-        "toolbar_YourCustomToolbarConfig": [
-            # {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-            # {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-            {"name": "clipboard", "items": ["-", "Undo", "Redo"]},
-            {"name": "editing", "items": ["Find", "Replace", "-", "SelectAll"]},
-            # {'name': 'forms',
-            #  'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-            #            'HiddenField']},
-            # '/',
-            {
-                "name": "basicstyles",
-                "items": [
-                    "Bold",
-                    "Italic",
-                    "Underline",
-                    "Strike",
-                    # "Subscript",
-                    # "Superscript",
-                    "-",
-                    "RemoveFormat",
-                ],
-            },
-            # {'name': 'paragraph',
-            #  'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-            #            'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
-            #            'Language']},
-            {"name": "paragraph", "items": ["NumberedList", "BulletedList"]},
-            # {"name": "links", "items": ["Link", "Unlink", "Anchor"]},
-            {"name": "links", "items": ["Link", "Unlink"]},
-            # {'name': 'insert',
-            #  'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
-            # "/",
-            {"name": "styles", "items": ["Styles", "Format", "Font", "FontSize"]},
-            {"name": "colors", "items": ["TextColor", "BGColor"]},
-            # {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
-            # {'name': 'about', 'items': ['About']},
-            # '/',  # put this to force next toolbar on new line
-            # {'name': 'yourcustomtools', 'items': [
-            #     # put the name of your editor.ui.addButton here
-            #     'Preview',
-            #     'Maximize',
-            # ]},
-        ],
-        "toolbar": "YourCustomToolbarConfig",  # put selected toolbar config here
-        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-        # 'height': 291,
-        # 'width': '100%',
-        # 'filebrowserWindowHeight': 725,
-        # 'filebrowserWindowWidth': 940,
-        # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
-        "tabSpaces": 4,
-        "width": "100%",
-        # "height": "100%",
-        "extraPlugins": ",".join(
-            [
-                "uploadimage",  # the upload image feature
-                # your extra plugins here
-                "div",
-                "autolink",
-                "autoembed",
-                "embedsemantic",
-                "autogrow",
-                # 'devtools',
-                "widget",
-                "lineutils",
-                "clipboard",
-                "dialog",
-                "dialogui",
-                "elementspath",
-            ]
-        ),
-    }
-}
 
 # check if cache enabled
 # if ast.literal_eval(os.environ.get("IS_CACHE_ENABLED")) is True:

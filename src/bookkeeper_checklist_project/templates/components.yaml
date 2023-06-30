@@ -13,3 +13,4 @@ components:
   no-permissions: "components/core/v2/no_permissions.html"
   manager-icon-card: "components/core/v2/widgets/manager_icon_card.html"
   manager-table-card: "components/core/v2/widgets/manager_table_card.html"
+  top-navbar: "components/core/v2/core/top_navbar.html"

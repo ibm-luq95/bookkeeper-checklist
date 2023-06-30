@@ -19,7 +19,7 @@ MIDDLEWARE = MIDDLEWARE + [
     "request_viewer.middleware.RequestViewerMiddleware",
     "request_viewer.middleware.ExceptionMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "django.contrib.admindocs.middleware.XViewMiddleware"
+    "django.contrib.admindocs.middleware.XViewMiddleware",
 ]
 
 # Database configurations
@@ -43,9 +43,7 @@ DATABASES = {
 # Cache Redis
 CACHES = {
     "default": {
-        # "BACKEND": os.environ.get("CACHE_BACKEND_ENGINE"),
         "BACKEND": config("CACHE_BACKEND_ENGINE", cast=str),
-        # "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@{os.environ.get('REDIS_HOST')}:{os.environ.get('REDIS_PORT')}",
         "LOCATION": f"redis://:{config('REDIS_PASSWORD')}@{config('REDIS_HOST')}:{config('REDIS_PORT')}",
         "TIMEOUT": None,
     }
@@ -90,7 +88,10 @@ GRAPH_MODELS = {
 
 # ENCRYPT_KEY
 # ENCRYPT_KEY = bytes(os.environ.get("ENCRYPT_KEY"), "ascii")
-ENCRYPT_KEY = bytes(config("ENCRYPT_KEY"), "ascii")
+ENCRYPT_KEY = bytes(config("ENCRYPT_KEY"), "ascii") # type: ignore
 
 # django-request-viewer configs
 REQUEST_VIEWER = {"LIVE_MONITORING": False, "WHITELISTED_PATH": []}
+
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
